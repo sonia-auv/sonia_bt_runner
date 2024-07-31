@@ -1,0 +1,31 @@
+<root BTCPP_format="4">
+    <TreeNodesModel>
+        <Action ID="AddPoseToTraj">
+            <inout_port name="trajectory" type="Trajectory"/>
+            <input_port name="precision" type="int" default="0"/>
+            <input_port name="speed" type="int" default="0"/>
+            <input_port name="frame" type="int" default="1"/>
+            <input_port name="orientationZ" type="float" default="0.000000"/>
+            <input_port name="longRotation" type="bool" default="false"/>
+            <input_port name="positionZ" type="float" default="0.000000"/>
+            <input_port name="positionY" type="float" default="0.000000"/>
+            <input_port name="orientationY" type="float" default="0.000000"/>
+            <input_port name="orientationX" type="float" default="0.000000"/>
+            <input_port name="positionX" type="float" default="0.000000"/>
+        </Action>
+        <Action ID="DropperActionNode">
+            <input_port name="side" type="std::string"/>
+        </Action>
+        <Action ID="InitTraj">
+            <output_port name="trajectory" type="Trajectory"/>
+        </Action>
+        <Condition ID="MissionSwitchStatus"/>
+        <Action ID="SendTrajToPlanner">
+            <input_port name="trajectory" type="Trajectory"/>
+            <input_port name="interpolation" type="int" default="0"/>
+        </Action>
+        <Action ID="WaitTargetReached">
+            <input_port name="timeout" type="int" default="5"/>
+        </Action>
+    </TreeNodesModel>
+</root>

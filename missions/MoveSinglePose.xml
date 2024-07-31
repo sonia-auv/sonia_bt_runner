@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="SinglePose">
+    <Sequence>
+      <InitTraj trajectory="{traj}"/>
+      <AddPoseToTraj trajectory="{traj}"
+                     precision="0"
+                     speed="0"
+                     frame="1"
+                     orientationZ="180"
+                     longRotation="false"
+                     positionZ="0.000000"
+                     positionY="0.000000"
+                     orientationY="0.000000"
+                     orientationX="0.000000"
+                     positionX="0"/>
+      <SendTrajToPlanner trajectory="{traj}"
+                         interpolation="0"/>
+      <WaitTargetReached timeout="5"/>
+      <Sleep msec="10000"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Action ID="AddPoseToTraj">
+      <inout_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="precision"
+                  default="0"
+                  type="int"/>
+      <input_port name="speed"
+                  default="0"
+                  type="int"/>
+      <input_port name="frame"
+                  default="1"
+                  type="int"/>
+      <input_port name="orientationZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="longRotation"
+                  default="false"
+                  type="bool"/>
+      <input_port name="positionZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationX"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionX"
+                  default="0.000000"
+                  type="float"/>
+    </Action>
+    <Action ID="InitTraj">
+      <output_port name="trajectory"
+                   type="Trajectory"/>
+    </Action>
+    <Action ID="SendTrajToPlanner">
+      <input_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="interpolation"
+                  default="0"
+                  type="int"/>
+    </Action>
+    <Action ID="WaitTargetReached">
+      <input_port name="timeout"
+                  default="5"
+                  type="int"/>
+    </Action>
+  </TreeNodesModel>
+
+</root>
