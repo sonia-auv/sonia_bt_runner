@@ -14,7 +14,6 @@ public:
         _traj_complete = false;
         _launch_time = std::chrono::system_clock::now();
         _param_timeout = 0;
-        getInput<float>("timeout", _param_timeout);
         _timeout_pub = _nh.advertise<sonia_common::MissionTimer>("/sonia_behaviors/timeout", 5);
     }
 
@@ -33,11 +32,13 @@ public:
     BT::NodeStatus onStart() override
     {
         ROS_INFO("Starting WaitTargetReached");
+        getInput<float>("timeout", _param_timeout);
         _traj_complete = false;
         _time_diff = 0;
         _target_reached = false;
         _trajectory_done = true;
         _is_alive = true;
+        _launch_time = std::chrono::system_clock::now();
 
         _controller_info_sub = _nh.subscribe("/proc_control/controller_info", 1, &WaitTargetReached::get_controller_info_cb, this);
         return BT::NodeStatus::RUNNING;
@@ -52,13 +53,12 @@ public:
 
         if (_traj_complete)
         {
-            ROS_INFO("Traj Complete");
-            _time_diff = (std::chrono::system_clock::now() - _launch_time).count();
+            std::chrono::duration<double> diff = std::chrono::system_clock::now() - _launch_time;
+            _time_diff = diff.count();
         }
 
         if (_time_diff > _param_timeout || _target_reached)
         {
-            ROS_INFO("Target reached status, %d", (int)_target_reached);
             if (_target_reached)
             {
                 _timeout_pub.publish(missionTimerFunc("wait_target_reached", _param_timeout, std::chrono::system_clock::to_time_t(_launch_time), 2));
@@ -101,7 +101,7 @@ private:
         _trajectory_done_prev = _trajectory_done;
     }
 
-    static sonia_common::MissionTimer missionTimerFunc(std::string mission, int timeout, time_t uniqueID, int status)
+    static sonia_common::MissionTimer missionTimerFunc(std::string mission, float timeout, time_t uniqueID, int status)
     {
         sonia_common::MissionTimer buffer;
         buffer.mission = mission;
@@ -119,7 +119,7 @@ private:
     std::chrono::_V2::system_clock::time_point _launch_time;
 
     bool _traj_complete;
-    int _time_diff;
+    float _time_diff;
     bool _target_reached;
     bool _trajectory_done_prev;
     bool _trajectory_done;

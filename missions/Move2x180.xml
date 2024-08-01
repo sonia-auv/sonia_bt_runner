@@ -17,17 +17,22 @@
                      positionX="0"/>
       <SendTrajToPlanner trajectory="{traj}"
                          interpolation="0"/>
-      <WaitTargetReached timeout="5"/>
-      <Sleep msec="10000"/>
+      <Sleep msec="1000"/>
+      <WaitTargetReached timeout="10"/>
+      <Script code="traj=&quot;&quot;"/>
     </Sequence>
   </BehaviorTree>
 
   <BehaviorTree ID="test360">
     <Sequence>
-      <SubTree ID="SinglePose"/>
-      <Sleep msec="5000"/>
-      <SubTree ID="SinglePose"/>
-      <Sleep msec="5000"/>
+      <SubTree ID="SinglePose"
+               _autoremap="true"/>
+      <Sleep msec="1000"/>
+      <SubTree ID="SinglePose"
+               _autoremap="true"/>
+      <Sleep msec="1000"/>
+      <SubTree ID="SinglePose"
+               _autoremap="true"/>
     </Sequence>
   </BehaviorTree>
 
