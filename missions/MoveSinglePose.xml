@@ -18,6 +18,7 @@
                          interpolation="0"/>
       <WaitTargetReached timeout="5"/>
       <Sleep msec="10000"/>
+      <Script code="traj=&quot;&quot;"/>
     </Sequence>
   </BehaviorTree>
 

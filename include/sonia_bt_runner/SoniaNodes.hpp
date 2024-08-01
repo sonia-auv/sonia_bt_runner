@@ -15,6 +15,8 @@ static void registerSyncActionNodes(BT::BehaviorTreeFactory &factory)
     factory.registerNodeType<DropperActionNode>("DropperActionNode");
     factory.registerNodeType<InitTraj>("InitTraj");
     factory.registerNodeType<AddPoseToTraj>("AddPoseToTraj");
+    factory.registerNodeType<EnableDisableDVL>("EnableDisableDVL");
+    factory.registerNodeType<TareDepth>("TareDepth");
 }
 
 static void registerStatefulActionNodes(BT::BehaviorTreeFactory &factory)
