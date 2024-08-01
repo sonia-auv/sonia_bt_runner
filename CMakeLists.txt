@@ -60,6 +60,8 @@ file(GLOB_RECURSE sonia_bt_runner_FILES
 
 list(REMOVE_ITEM sonia_bt_runner_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/${sonia_bt_runner_SRC_DIR}/main.cpp)
+list(REMOVE_ITEM sonia_bt_runner_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/${sonia_bt_runner_SRC_DIR}/gen_nodes.cpp)
 
 # Include all the directories where source can be found.
 include_directories(
@@ -68,13 +70,20 @@ include_directories(
 )
 #==========================================================================
 # C R E A T E   E X E C U T A B L E
-set( TARGET_NAME sonia_bt_runner_node )
-add_executable( ${TARGET_NAME}
+set( TARGET_NAME_MAIN run_mission )
+add_executable( ${TARGET_NAME_MAIN}
         ${sonia_bt_runner_SRC_DIR}/main.cpp ${sonia_bt_runner_FILES}
-        # ${sonia_bt_runner_SRC_DIR}/provider_kill_mission_node.cc)
 )
-target_link_libraries( ${TARGET_NAME} ${catkin_LIBRARIES})
-set_target_properties( ${TARGET_NAME} PROPERTIES LINKER_LANGUAGE CXX )
-add_dependencies(${PROJECT_NAME}_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries( ${TARGET_NAME_MAIN} ${catkin_LIBRARIES})
+set_target_properties( ${TARGET_NAME_MAIN} PROPERTIES LINKER_LANGUAGE CXX )
+add_dependencies(${TARGET_NAME_MAIN} ${catkin_EXPORTED_TARGETS})
+
+set( TARGET_NAME_GEN gen_nodes )
+add_executable( ${TARGET_NAME_GEN}
+        ${sonia_bt_runner_SRC_DIR}/gen_nodes.cpp ${sonia_bt_runner_FILES}
+)
+target_link_libraries( ${TARGET_NAME_GEN} ${catkin_LIBRARIES})
+set_target_properties( ${TARGET_NAME_GEN} PROPERTIES LINKER_LANGUAGE CXX )
+add_dependencies(${TARGET_NAME_GEN} ${catkin_EXPORTED_TARGETS})
 #==========================================================================
 # U N I T   T E S T S
