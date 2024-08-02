@@ -18,14 +18,14 @@ public:
 
     static BT::PortsList providedPorts()
     {
-        uint8_t camera_def = 0;
-        uint8_t count_def = 1;
+        int camera_def = 0;
+        int count_def = 1;
         float confidence_def = 0.8;
         return {
             BT::InputPort<std::string>("classification", ""),
-            BT::InputPort<uint8_t>("camera", camera_def, "0: Front, 1: Bottom"),
-            BT::InputPort<uint8_t>("min_count", count_def, ""),
-            BT::InputPort<uint8_t>("max_count", count_def, ""),
+            BT::InputPort<int>("camera", camera_def, "0: Front, 1: Bottom"),
+            BT::InputPort<int>("min_count", count_def, ""),
+            BT::InputPort<int>("max_count", count_def, ""),
             BT::InputPort<float>("confidence", confidence_def, ""),
             BT::OutputPort<AiDetectionArray>("ai_info")};
     }

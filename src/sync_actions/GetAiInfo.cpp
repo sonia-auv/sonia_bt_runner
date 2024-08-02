@@ -2,16 +2,16 @@
 
 BT::NodeStatus GetAiInfo::tick()
 {
-    uint8_t camera = 0;
-    getInput<uint8_t>("camera", camera);
+    int camera = 0;
+    getInput<int>("camera", camera);
     std::string classification = "";
     getInput<std::string>("classification", classification);
     float confidence= 0.8;
     getInput<float>("confidence", confidence);
-    uint8_t min_count = 1;
-    getInput<uint8_t>("min_count", min_count);
-    uint8_t max_count = 1;
-    getInput<uint8_t>("max_count", max_count);
+    int min_count = 1;
+    getInput<int>("min_count", min_count);
+    int max_count = 1;
+    getInput<int>("max_count", max_count);
 
     sonia_common::DetectionArray value;
 

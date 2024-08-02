@@ -17,12 +17,15 @@ static void registerSyncActionNodes(BT::BehaviorTreeFactory &factory)
     factory.registerNodeType<AddPoseToTraj>("AddPoseToTraj");
     factory.registerNodeType<AIActivation>("AIActivation");
     factory.registerNodeType<GetAiInfo>("GetAiInfo");
+    factory.registerNodeType<EnableDisableDVL>("EnableDisableDVL");
+    factory.registerNodeType<TareDepth>("TareDepth");
 }
 
 static void registerStatefulActionNodes(BT::BehaviorTreeFactory &factory)
 {
     factory.registerNodeType<SendTrajToPlanner>("SendTrajToPlanner");
     factory.registerNodeType<WaitTargetReached>("WaitTargetReached");
+    factory.registerNodeType<ControlSetMode>("ControlSetMode");
 }
 
 static void registerNodes(BT::BehaviorTreeFactory &factory)

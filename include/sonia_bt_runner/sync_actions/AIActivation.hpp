@@ -14,12 +14,12 @@ public:
 
     static BT::PortsList providedPorts()
     {
-        uint8_t activation_target_def = 0;
-        return {BT::InputPort<uint8_t>("activation_target", activation_target_def, "0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH")};
+        int activation_target_def = 0;
+        return {BT::InputPort<int>("activation_target", activation_target_def, "0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH")};
     }
     BT::NodeStatus tick() override
     {
-        uint8_t action = 0;
+        int action = 0;
         getInput("activation_target", action);
 
         sonia_common::AiActivationService srv;
