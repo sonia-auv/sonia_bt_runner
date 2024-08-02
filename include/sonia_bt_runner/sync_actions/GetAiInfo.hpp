@@ -9,12 +9,7 @@
 class GetAiInfo : public BT::SyncActionNode
 {
 public:
-    GetAiInfo(const std::string name, const BT::NodeConfig &config)
-        : BT::SyncActionNode(name, config)
-    {
-        _ai_info_front_sub = _nh.subscribe("/proc_vision/front/classification", 10, &GetAiInfo::ai_info_front_callback, this);
-        _ai_info_bottom_sub = _nh.subscribe("/proc_vision/bottom/classification", 10, &GetAiInfo::ai_info_bottom_callback, this);
-    }
+    GetAiInfo(const std::string name, const BT::NodeConfig &config);
 
     static BT::PortsList providedPorts()
     {
