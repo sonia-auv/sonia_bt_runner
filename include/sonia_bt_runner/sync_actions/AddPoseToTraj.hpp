@@ -8,7 +8,7 @@ public:
     AddPoseToTraj(const std::string &name, const BT::NodeConfig &config)
         : BT::SyncActionNode(name, config)
     {
-
+        
     }
 
     static BT::PortsList providedPorts()

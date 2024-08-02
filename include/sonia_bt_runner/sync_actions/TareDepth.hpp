@@ -8,13 +8,13 @@ class TareDepth: public BT::SyncActionNode
 {
     //This code must be tested
     public:
-        TareDepth(const std::string &name, const BT::NodeConfig &config)
-            : BT::SyncActionNode(name, config)
+        TareDepth(const std::string &name)
+            : BT::SyncActionNode(name, {})
         {    
             _depth_client = _nh.serviceClient<std_srvs::Empty>("/provider_depth/tare");   
         }   
         ~TareDepth(){}
-         BT::NodeStatus tick() override
+        BT::NodeStatus tick() override
         {
             ros::Rate r(0.25);
             std_srvs::Empty tare;

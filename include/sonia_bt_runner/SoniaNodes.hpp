@@ -23,6 +23,7 @@ static void registerStatefulActionNodes(BT::BehaviorTreeFactory &factory)
 {
     factory.registerNodeType<SendTrajToPlanner>("SendTrajToPlanner");
     factory.registerNodeType<WaitTargetReached>("WaitTargetReached");
+    factory.registerNodeType<ControlSetMode>("ControlSetMode");
 }
 
 static void registerNodes(BT::BehaviorTreeFactory &factory)
