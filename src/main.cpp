@@ -25,6 +25,17 @@ int main(int argc, char *argv[])
     // factory.registerNodeType<DropperActionNode>("DropperActionNode");
 
     std::string name = argv[1];
+
+    std::string search_directory = "./";
+
+    using std::filesystem::directory_iterator;
+    for (auto const &entry : directory_iterator(search_directory))
+    {
+        if (entry.path().extension() == ".xml")
+        {
+            factory.registerBehaviorTreeFromFile(entry.path().string());
+        }
+    }
     // std::string file_path = name + ".xml";
 
     // Get the directory containing the executable
