@@ -8,34 +8,16 @@ static bool mission_status = false;
 class MissionSwitchStatus : public BT::ConditionNode
 {
 public:
-    MissionSwitchStatus(const std::string &name, const BT::NodeConfig &config)
-        : BT::ConditionNode(name, config), _mission_status(false)
+    MissionSwitchStatus(const std::string &name)
+        : BT::ConditionNode(name, {}), _mission_status(false)
     {
-        _mission_switch_sub = _nh.subscribe("/provider_kill_mission/mission_switch_msg", 10, &MissionSwitchStatus::updateStatus, this);
+        _mission_switch_sub = _nh.subscribe("/provider_kill_mission/mission_switch_msg", 10, &MissionSwitchStatus::update_status, this);
     }
 
-    static BT::PortsList providedPorts()
-    {
-        return {};
-    }
-
-    BT::NodeStatus tick() override
-    {
-        ros::Rate r(10);
-        r.sleep();
-        ros::spinOnce();
-        if (_mission_status)
-        {
-            return BT::NodeStatus::SUCCESS;
-        }
-        return BT::NodeStatus::FAILURE;
-    }
+    BT::NodeStatus tick() override;
 
 private:
-    void updateStatus(const std_msgs::Bool::ConstPtr &msg)
-    {
-        _mission_status = msg->data;
-    }
+    void update_status(const std_msgs::Bool::ConstPtr &msg);
 
     ros::NodeHandle _nh;
     ros::Subscriber _mission_switch_sub;
