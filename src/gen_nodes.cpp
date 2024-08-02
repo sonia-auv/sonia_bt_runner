@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     BT::BehaviorTreeFactory factory;
     registerNodes(factory);
 
-    std::string xml_models = BT::writeTreeNodesModelXML(factory);
+    std::string xml_models = BT::writeTreeNodesModelXML(factory, false);
     printf("%s\n", xml_models.c_str());
     std::ofstream myfile;
     myfile.open(argv[1]);
