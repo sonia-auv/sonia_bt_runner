@@ -15,6 +15,8 @@ static void registerSyncActionNodes(BT::BehaviorTreeFactory &factory)
     factory.registerNodeType<DropperActionNode>("DropperActionNode");
     factory.registerNodeType<InitTraj>("InitTraj");
     factory.registerNodeType<AddPoseToTraj>("AddPoseToTraj");
+    factory.registerNodeType<AIActivation>("AIActivation");
+    factory.registerNodeType<GetAiInfo>("GetAiInfo");
 }
 
 static void registerStatefulActionNodes(BT::BehaviorTreeFactory &factory)
