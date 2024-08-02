@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     ros::NodeHandlePtr nh(new ros::NodeHandle("~"));
 
 
-    auto tree = factory.createTreeFromFile(fullFilePath);
+    auto tree = factory.createTree(fullFilePath);
     BT::Groot2Publisher publisher(tree, 5555);
     publisher.setEnabled(true);
 
