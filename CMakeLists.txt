@@ -55,7 +55,7 @@ set(sonia_bt_runner_INCLUDE_DIRS "include")
 set(sonia_bt_runner_SRC_DIR "src")
 
 file(GLOB_RECURSE sonia_bt_runner_FILES
-        "${sonia_bt_runner_SRC_DIR}/*.cpp"
+        "${sonia_bt_runner_SRC_DIR}/**.cpp"
         "${sonia_bt_runner_SRC_DIR}/*.hpp")
 
 list(REMOVE_ITEM sonia_bt_runner_FILES
