@@ -8,11 +8,7 @@ static bool mission_status = false;
 class MissionSwitchStatus : public BT::ConditionNode
 {
 public:
-    MissionSwitchStatus(const std::string &name)
-        : BT::ConditionNode(name, {}), _mission_status(false)
-    {
-        _mission_switch_sub = _nh.subscribe("/provider_kill_mission/mission_switch_msg", 10, &MissionSwitchStatus::update_status, this);
-    }
+    MissionSwitchStatus(const std::string &name);
 
     BT::NodeStatus tick() override;
 

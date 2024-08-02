@@ -1,5 +1,10 @@
 #include "sonia_bt_runner/sync_actions/AddPoseToTraj.hpp"
 
+AddPoseToTraj::AddPoseToTraj(const std::string &name, const BT::NodeConfig &config)
+    : BT::SyncActionNode(name, config)
+{
+}
+
 BT::NodeStatus AddPoseToTraj::tick()
 {
     float positionX = 0.0;

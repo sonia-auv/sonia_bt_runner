@@ -10,19 +10,12 @@ using namespace std::chrono_literals;
 class DropperActionNode : public BT::SyncActionNode
 {
 public:
-    DropperActionNode(const std::string &name, const BT::NodeConfig &config)
-        : BT::SyncActionNode(name, config)
-    {
-        _dropper_pub = _nh.advertise<sonia_common::ActuatorDoAction>("/provider_actuators/do_action_to_actuators", 100);
-        _dropper_sub = _nh.subscribe("/provider_actuators/do_action_from_actuators", 10, &DropperActionNode::dropper_callback, this);
-    }
-
-    ~DropperActionNode() {};
+    DropperActionNode(const std::string &name, const BT::NodeConfig &config);
 
     static BT::PortsList providedPorts()
     {
         // Options for 'side' are 'port_side' or 'starboard'
-        return {BT::InputPort<std::string>("side")};
+        return {BT::InputPort<std::string>("side", "port_side or starboard")};
     }
 
     BT::NodeStatus tick() override;

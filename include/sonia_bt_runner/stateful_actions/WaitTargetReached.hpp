@@ -7,12 +7,7 @@
 class WaitTargetReached : public BT::StatefulActionNode
 {
 public:
-    WaitTargetReached(const std::string &name, const BT::NodeConfig &config)
-        : BT::StatefulActionNode(name, config), _trajectory_done_prev(true),
-          _traj_complete(false), _launch_time(std::chrono::system_clock::now()), _param_timeout(0)
-    {
-        _timeout_pub = _nh.advertise<sonia_common::MissionTimer>("/sonia_behaviors/timeout", 5);
-    }
+    WaitTargetReached(const std::string &name, const BT::NodeConfig &config);
 
     ~WaitTargetReached()
     {

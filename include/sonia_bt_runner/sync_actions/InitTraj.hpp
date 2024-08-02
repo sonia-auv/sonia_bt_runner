@@ -5,10 +5,7 @@
 class InitTraj : public BT::SyncActionNode
 {
 public:
-    InitTraj(const std::string &name, const BT::NodeConfig &config)
-        : BT::SyncActionNode(name, config)
-    {
-    }
+    InitTraj(const std::string &name, const BT::NodeConfig &config);
 
     static BT::PortsList providedPorts()
     {

@@ -9,15 +9,8 @@ class ControlSetMode : public BT::StatefulActionNode
 {
     // This code must be tested
 public:
-    ControlSetMode(const std::string &name, const BT::NodeConfig &config)
-        : BT::StatefulActionNode(name, config),
-          _timer(std::chrono::steady_clock::now()),
-          _timeout(std::chrono::seconds(5))
-    {
+    ControlSetMode(const std::string &name, const BT::NodeConfig &config);
 
-        _setMode_pub = _nh.advertise<std_msgs::UInt8>("/proc_control/set_mode", 100);
-    }
-    ~ControlSetMode() {}
 
     static BT::PortsList providedPorts()
     {

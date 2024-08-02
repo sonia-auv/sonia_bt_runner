@@ -1,5 +1,12 @@
 #include "sonia_bt_runner/sync_actions/DropperActionNode.hpp"
 
+DropperActionNode::DropperActionNode(const std::string &name, const BT::NodeConfig &config)
+    : BT::SyncActionNode(name, config)
+{
+    _dropper_pub = _nh.advertise<sonia_common::ActuatorDoAction>("/provider_actuators/do_action_to_actuators", 100);
+    _dropper_sub = _nh.subscribe("/provider_actuators/do_action_from_actuators", 10, &DropperActionNode::dropper_callback, this);
+}
+
 BT::NodeStatus DropperActionNode::tick()
 {
     ros::Rate r(0.25);

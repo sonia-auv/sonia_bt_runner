@@ -1,5 +1,14 @@
 #include "sonia_bt_runner/stateful_actions/ControlSetMode.hpp"
 
+ControlSetMode::ControlSetMode(const std::string &name, const BT::NodeConfig &config)
+    : BT::StatefulActionNode(name, config),
+      _timer(std::chrono::steady_clock::now()),
+      _timeout(std::chrono::seconds(5))
+{
+
+    _setMode_pub = _nh.advertise<std_msgs::UInt8>("/proc_control/set_mode", 100);
+}
+
 BT::NodeStatus ControlSetMode::onStart()
 {
     std_msgs::UInt8 msg;

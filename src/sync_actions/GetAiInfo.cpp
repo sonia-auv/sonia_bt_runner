@@ -1,12 +1,19 @@
 #include "sonia_bt_runner/sync_actions/GetAiInfo.hpp"
 
+GetAiInfo::GetAiInfo(const std::string name, const BT::NodeConfig &config)
+    : BT::SyncActionNode(name, config)
+{
+    _ai_info_front_sub = _nh.subscribe("/proc_vision/front/classification", 10, &GetAiInfo::ai_info_front_callback, this);
+    _ai_info_bottom_sub = _nh.subscribe("/proc_vision/bottom/classification", 10, &GetAiInfo::ai_info_bottom_callback, this);
+}
+
 BT::NodeStatus GetAiInfo::tick()
 {
     int camera = 0;
     getInput<int>("camera", camera);
     std::string classification = "";
     getInput<std::string>("classification", classification);
-    float confidence= 0.8;
+    float confidence = 0.8;
     getInput<float>("confidence", confidence);
     int min_count = 1;
     getInput<int>("min_count", min_count);
@@ -54,7 +61,7 @@ BT::NodeStatus GetAiInfo::tick()
             confident_classifications.push_back(tmp);
         }
     }
-    
+
     // Check if count is what we want
     if (confident_classifications.size() < min_count || confident_classifications.size() > max_count)
     {
@@ -69,7 +76,7 @@ BT::NodeStatus GetAiInfo::tick()
         obj.classification = tmp.class_name;
         obj.distance = tmp.distance;
         obj.top = tmp.top;
-        obj.left= tmp.left;
+        obj.left = tmp.left;
         obj.bottom = tmp.bottom;
         obj.right = tmp.right;
         output.detection_array.push_back(obj);

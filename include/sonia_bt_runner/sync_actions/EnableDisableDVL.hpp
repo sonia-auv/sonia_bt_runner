@@ -7,12 +7,7 @@ class EnableDisableDVL : public BT::SyncActionNode
 {
     // This code must be tested
 public:
-    EnableDisableDVL(const std::string &name, const BT::NodeConfig &config)
-        : BT::SyncActionNode(name, config)
-    {
-        _dvl_pub = _nh.advertise<std_msgs::Bool>("/provider_dvl/enable_disable_ping", 100);
-    }
-    ~EnableDisableDVL() {}
+    EnableDisableDVL(const std::string &name, const BT::NodeConfig &config);
 
     static BT::PortsList providedPorts()
     {

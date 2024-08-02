@@ -1,5 +1,12 @@
 #include "sonia_bt_runner/stateful_actions/SendTrajToPlanner.hpp"
 
+SendTrajToPlanner::SendTrajToPlanner(const std::string &name, const BT::NodeConfig &config)
+    : BT::StatefulActionNode(name, config), _valid(0), _time_launch(std::chrono::system_clock::now())
+{
+
+    _planner_pub = _nh.advertise<sonia_common::MultiAddPose>("/proc_planner/send_multi_addpose", 1, true);
+}
+
 BT::NodeStatus SendTrajToPlanner::onStart()
 {
     ROS_INFO("Starting SendTrajToPlanner");
