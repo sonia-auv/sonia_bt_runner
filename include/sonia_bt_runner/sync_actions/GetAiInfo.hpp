@@ -18,9 +18,9 @@ public:
 
     static BT::PortsList providedPorts()
     {
-        int camera_def = 0;
-        int count_def = 1;
-        float confidence_def = 0.8;
+        const int camera_def = 0;
+        const int count_def = 1;
+        const float confidence_def = 0.8;
         return {
             BT::InputPort<std::string>("classification", ""),
             BT::InputPort<int>("camera", camera_def, "0: Front, 1: Bottom"),
