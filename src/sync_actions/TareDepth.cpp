@@ -12,7 +12,7 @@ BT::NodeStatus TareDepth::tick()
 
     try
     {
-        if (strcmp(auv, "AUV7") ||_depth_client.call(tare))
+        if (!strcmp(auv, "AUV7") ||_depth_client.call(tare))
         {
             return BT::NodeStatus::SUCCESS;
         }
