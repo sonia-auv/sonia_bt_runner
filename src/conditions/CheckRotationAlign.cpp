@@ -1,11 +1,11 @@
-#include "sonia_bt_runner/conditions/CheckWidthAngle.hpp"
+#include "sonia_bt_runner/conditions/CheckRotationAlign.hpp"
 
-CheckWidthAngle::CheckWidthAngle(const std::string &name, const BT::NodeConfig &config)
+CheckRotationAlign::CheckRotationAlign(const std::string &name, const BT::NodeConfig &config)
     : BT::ConditionNode(name, config)
 {
 }
 
-BT::NodeStatus CheckWidthAngle::tick()
+BT::NodeStatus CheckRotationAlign::tick()
 {
     AiDetection aiObj;
     getInput<AiDetection>("aiObj", aiObj);
@@ -17,7 +17,9 @@ BT::NodeStatus CheckWidthAngle::tick()
     float detected_ratio = (aiObj.left - aiObj.right) / (aiObj.top - aiObj.bottom);
     if (detected_ratio < min_ratio || detected_ratio > max_ratio)
     {
+        setOutput("status", 0);
         return BT::NodeStatus::FAILURE;
     }
+    setOutput("status", 1);
     return BT::NodeStatus::SUCCESS;
 }

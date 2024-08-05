@@ -6,17 +6,19 @@
 #include "sonia_bt_runner/utils/AiDetection.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 
-class GetAlignStrafe : public BT::SyncActionNode
+class CheckTranslationAlign : public BT::ConditionNode
 {
 public:
-    GetAlignStrafe(const std::string name, const BT::NodeConfig &config);
+    CheckTranslationAlign(const std::string name, const BT::NodeConfig &config);
 
     static BT::PortsList providedPorts()
     {
+        const float error_margin_def = 0.05;
         return {
             BT::InputPort<AiDetection>("detection_object"),
             BT::InputPort<int>("target_x"),
             BT::InputPort<int>("target_y"),
+            BT::InputPort<float>("error_margin", error_margin_def, "percentage of error off the target (0-1)"),
             BT::BidirectionalPort<Trajectory>("traj")};
     }
 
@@ -24,4 +26,6 @@ public:
 
 private:
     const float _pixel_to_meters = 0.0024;
+    const int _screen_height = 600; // pixels
+    const int _screen_width = 400; // pixels
 };

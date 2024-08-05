@@ -9,8 +9,10 @@ using namespace BT;
 static void registerConditionNodes(BT::BehaviorTreeFactory &factory)
 {
     factory.registerNodeType<MissionSwitchStatus>("MissionSwitchStatus");
-    factory.registerNodeType<CheckWidthAngle>("CheckWidthAngle");
+    factory.registerNodeType<CheckRotationAlign>("CheckRotationAlign");
     factory.registerNodeType<CheckAiInfo>("CheckAiInfo");
+    factory.registerNodeType<CheckTranslationAlign>("CheckTranslationAlign");
+
 }
 
 static void registerSyncActionNodes(BT::BehaviorTreeFactory &factory)
