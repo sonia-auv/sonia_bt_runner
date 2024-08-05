@@ -1,7 +1,4 @@
 #include "sonia_bt_runner/sync_actions/TareDepth.hpp"
-
-
-
 TareDepth::TareDepth(const std::string &name)
     : BT::SyncActionNode(name, {}),
     auv {std::getenv("AUV")}
@@ -13,9 +10,18 @@ BT::NodeStatus TareDepth::tick()
 {
     std_srvs::Empty tare;
 
-    if (strcmp(auv, "AUV7") ||_depth_client.call(tare))
+    try
     {
-        return BT::NodeStatus::SUCCESS;
+        if (strcmp(auv, "AUV7") ||_depth_client.call(tare))
+        {
+            return BT::NodeStatus::SUCCESS;
+        }
     }
+    catch(const std::exception& e)
+    {
+        ROS_WARN("Segmentation fault. set environnement variable");
+    }
+    
+    
     return BT::NodeStatus::FAILURE;
 }
