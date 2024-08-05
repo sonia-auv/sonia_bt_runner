@@ -12,8 +12,6 @@ BT::NodeStatus ActuatorsAction::tick()
     ros::Rate r(0.25);
 
     sonia_common::ActuatorDoAction msg;
-    msg.element = sonia_common::ActuatorDoAction::ELEMENT_DROPPER;
-    msg.action = sonia_common::ActuatorDoAction::ACTION_DROPPER_LAUNCH;
     BT::Expected<std::string> side = getInput<std::string>("side");
     BT::Expected<int> actuator = getInput<int>("actuator");
 
