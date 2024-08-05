@@ -1,13 +1,13 @@
-#include "sonia_bt_runner/sync_actions/GetAiInfo.hpp"
+#include "sonia_bt_runner/conditions/CheckAiInfo.hpp"
 
-GetAiInfo::GetAiInfo(const std::string name, const BT::NodeConfig &config)
-    : BT::SyncActionNode(name, config)
+CheckAiInfo::CheckAiInfo(const std::string name, const BT::NodeConfig &config)
+    : BT::ConditionNode(name, config)
 {
-    _ai_info_front_sub = _nh.subscribe("/proc_vision/front/classification", 10, &GetAiInfo::ai_info_front_callback, this);
-    _ai_info_bottom_sub = _nh.subscribe("/proc_vision/bottom/classification", 10, &GetAiInfo::ai_info_bottom_callback, this);
+    _ai_info_front_sub = _nh.subscribe("/proc_vision/front/classification", 10, &CheckAiInfo::ai_info_front_callback, this);
+    _ai_info_bottom_sub = _nh.subscribe("/proc_vision/bottom/classification", 10, &CheckAiInfo::ai_info_bottom_callback, this);
 }
 
-BT::NodeStatus GetAiInfo::tick()
+BT::NodeStatus CheckAiInfo::tick()
 {
     int camera = 0;
     getInput<int>("camera", camera);
@@ -85,12 +85,12 @@ BT::NodeStatus GetAiInfo::tick()
     return BT::NodeStatus::SUCCESS;
 }
 
-void GetAiInfo::ai_info_front_callback(const sonia_common::DetectionArray &msg)
+void CheckAiInfo::ai_info_front_callback(const sonia_common::DetectionArray &msg)
 {
     _last_front = msg;
 }
 
-void GetAiInfo::ai_info_bottom_callback(const sonia_common::DetectionArray &msg)
+void CheckAiInfo::ai_info_bottom_callback(const sonia_common::DetectionArray &msg)
 {
     _last_bottom = msg;
 }
