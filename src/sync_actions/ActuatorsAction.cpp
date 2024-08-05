@@ -16,11 +16,25 @@ BT::NodeStatus ActuatorsAction::tick()
     msg.action = sonia_common::ActuatorDoAction::ACTION_DROPPER_LAUNCH;
     BT::Expected<std::string> side = getInput<std::string>("side");
     BT::Expected<int> actuator = getInput<int>("actuator");
-    if (!side)
+
+    check_input(side,actuator);
+
+    if (actuator.value() == 0)//droppers
     {
-        throw BT::RuntimeError("missing required input [side]: ",
-                               side.error());
+        msg.element = sonia_common::ActuatorDoAction::ELEMENT_DROPPER;
+        msg.action = sonia_common::ActuatorDoAction::ACTION_DROPPER_LAUNCH;
     }
+    else if (actuator.value() == 1) //torpedos
+    {
+        msg.element = sonia_common::ActuatorDoAction::ELEMENT_TORPEDO;
+        msg.action = sonia_common::ActuatorDoAction::ACTION_TORPEDO_LAUNCH;
+    }
+    else
+    {
+        throw BT::RuntimeError("Bad required input [actuator]: ",
+                               actuator.error());
+    }
+
     if (side.value() == "port_side")
     {
         msg.side = sonia_common::ActuatorDoAction::SIDE_PORT;
@@ -46,12 +60,14 @@ BT::NodeStatus ActuatorsAction::tick()
     return BT::NodeStatus::FAILURE;
 }
 
-void ActuatorsAction::check_input()
+void ActuatorsAction::check_input(BT::Expected<std::string> side, BT::Expected<int> actuator)
 {
-    if(!side|| !actuator)
+    if(!side||!actuator)
     {
-        throw BT::RuntimeError("missing 1 required input: ",
+        throw BT::RuntimeError("missing required input [side]: ",
                                side.error());
+        throw BT::RuntimeError("missing required input [actuator]: ",
+                               actuator.error());
     }
 
 }
