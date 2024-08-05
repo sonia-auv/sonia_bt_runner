@@ -1,13 +1,13 @@
-#include "sonia_bt_runner/sync_actions/DropperActionNode.hpp"
+#include "sonia_bt_runner/sync_actions/ActuatorsAction.hpp"
 
-DropperActionNode::DropperActionNode(const std::string &name, const BT::NodeConfig &config)
+ActuatorsAction::ActuatorsAction(const std::string &name, const BT::NodeConfig &config)
     : BT::SyncActionNode(name, config)
 {
-    _dropper_pub = _nh.advertise<sonia_common::ActuatorDoAction>("/provider_actuators/do_action_to_actuators", 100);
-    _dropper_sub = _nh.subscribe("/provider_actuators/do_action_from_actuators", 10, &DropperActionNode::dropper_callback, this);
+    _actuator_pub = _nh.advertise<sonia_common::ActuatorDoAction>("/provider_actuators/do_action_to_actuators", 100);
+    _actuator_sub = _nh.subscribe("/provider_actuators/do_action_from_actuators", 10, &ActuatorsAction::actuator_callback, this);
 }
 
-BT::NodeStatus DropperActionNode::tick()
+BT::NodeStatus ActuatorsAction::tick()
 {
     ros::Rate r(0.25);
 
@@ -15,6 +15,7 @@ BT::NodeStatus DropperActionNode::tick()
     msg.element = sonia_common::ActuatorDoAction::ELEMENT_DROPPER;
     msg.action = sonia_common::ActuatorDoAction::ACTION_DROPPER_LAUNCH;
     BT::Expected<std::string> side = getInput<std::string>("side");
+    BT::Expected<int> actuator = getInput<int>("actuator");
     if (!side)
     {
         throw BT::RuntimeError("missing required input [side]: ",
@@ -33,7 +34,7 @@ BT::NodeStatus DropperActionNode::tick()
         throw BT::RuntimeError("Bad required input [side]: ",
                                side.error());
     }
-    _dropper_pub.publish(msg);
+    _actuator_pub.publish(msg);
 
     r.sleep();
     ros::spinOnce();
@@ -45,7 +46,16 @@ BT::NodeStatus DropperActionNode::tick()
     return BT::NodeStatus::FAILURE;
 }
 
-void DropperActionNode::dropper_callback(const sonia_common::ActuatorSendReply::ConstPtr &msg)
+void ActuatorsAction::check_input()
+{
+    if(!side|| !actuator)
+    {
+        throw BT::RuntimeError("missing 1 required input: ",
+                               side.error());
+    }
+
+}
+void ActuatorsAction::actuator_callback(const sonia_common::ActuatorSendReply::ConstPtr &msg)
 {
     _reply_msg.element = msg->element;
     _reply_msg.side = msg->side;
