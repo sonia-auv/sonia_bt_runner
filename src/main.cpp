@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     printf("LEN argc: %d\n", argc);
     BT::BehaviorTreeFactory factory;
     registerNodes(factory);
-    
+
     // factory.registerNodeType<DropperActionNode>("DropperActionNode");
 
     std::string name = argv[1];
@@ -49,11 +49,9 @@ int main(int argc, char *argv[])
     ros::init(argc, argv, "sonia_bt_runner");
     ros::NodeHandlePtr nh(new ros::NodeHandle("~"));
 
-
     auto tree = factory.createTree(fullFilePath);
     BT::Groot2Publisher publisher(tree, 5555);
     publisher.setEnabled(true);
-
 
     // Helper function to print the tree.
     BT::printTreeRecursively(tree.rootNode());
@@ -78,7 +76,7 @@ int main(int argc, char *argv[])
     }
     NodeStatus result = NodeStatus::RUNNING;
     ros::Rate r(10);
-    while(ros::ok() && result != NodeStatus::SUCCESS && result != NodeStatus::FAILURE)
+    while (ros::ok() && result != NodeStatus::SUCCESS && result != NodeStatus::FAILURE)
     {
         result = tree.tickOnce();
         // ros::Duration(0.1).sleep();
@@ -87,7 +85,6 @@ int main(int argc, char *argv[])
         if (result == NodeStatus::SUCCESS)
             std::cout << "MISSION RESULT: " << result << std::endl;
     }
-
 
     // NodeStatus result = tree.tickWhileRunning();
 

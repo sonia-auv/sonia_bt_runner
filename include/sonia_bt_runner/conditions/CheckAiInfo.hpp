@@ -6,10 +6,10 @@
 
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 
-class GetAiInfo : public BT::SyncActionNode
+class CheckAiInfo : public BT::ConditionNode
 {
 public:
-    GetAiInfo(const std::string name, const BT::NodeConfig &config);
+    CheckAiInfo(const std::string name, const BT::NodeConfig &config);
 
     static BT::PortsList providedPorts()
     {
