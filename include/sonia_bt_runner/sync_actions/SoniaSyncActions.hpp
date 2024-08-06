@@ -7,3 +7,4 @@
 #include "sonia_bt_runner/sync_actions/TareDepth.hpp"
 #include "sonia_bt_runner/sync_actions/EnableDisableDVL.hpp"
 #include "sonia_bt_runner/sync_actions/MoveToTarget.hpp"
+#include "sonia_bt_runner/sync_actions/GetAngle.hpp"

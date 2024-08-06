@@ -9,7 +9,6 @@ using namespace BT;
 static void registerConditionNodes(BT::BehaviorTreeFactory &factory)
 {
     factory.registerNodeType<MissionSwitchStatus>("MissionSwitchStatus");
-    factory.registerNodeType<CheckRotationAlign>("CheckRotationAlign");
     factory.registerNodeType<CheckAiInfo>("CheckAiInfo");
     factory.registerNodeType<CheckTranslationAlign>("CheckTranslationAlign");
 
@@ -24,6 +23,7 @@ static void registerSyncActionNodes(BT::BehaviorTreeFactory &factory)
     factory.registerNodeType<EnableDisableDVL>("EnableDisableDVL");
     factory.registerNodeType<TareDepth>("TareDepth");
     factory.registerNodeType<MoveToTarget>("MoveToTarget");
+    factory.registerNodeType<GetAngle>("GetAngle");
 }
 
 static void registerStatefulActionNodes(BT::BehaviorTreeFactory &factory)
