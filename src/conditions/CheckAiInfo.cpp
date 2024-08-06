@@ -40,9 +40,13 @@ BT::NodeStatus CheckAiInfo::tick()
     for (size_t i = 0; i < value.detected_object.size(); i++)
     {
         auto tmp = value.detected_object[i];
-        if (tmp.class_name == classification)
+        std::vector<std::string> classifcation_array= cd src/scanf(classification, ',');
+        for (std::string data: classifcation_array)
         {
-            found_classifications.push_back(tmp);
+            if (tmp.class_name == data)
+            {
+                found_classifications.push_back(tmp);
+            }
         }
     }
 
