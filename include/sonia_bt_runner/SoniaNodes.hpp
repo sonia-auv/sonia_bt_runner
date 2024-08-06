@@ -23,6 +23,7 @@ static void registerSyncActionNodes(BT::BehaviorTreeFactory &factory)
     factory.registerNodeType<AiActivation>("AiActivation");
     factory.registerNodeType<EnableDisableDVL>("EnableDisableDVL");
     factory.registerNodeType<TareDepth>("TareDepth");
+    factory.registerNodeType<MoveToTarget>("MoveToTarget");
 }
 
 static void registerStatefulActionNodes(BT::BehaviorTreeFactory &factory)
