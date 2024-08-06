@@ -2,6 +2,7 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "ros/ros.h"
 #include <sstream>
+#include <string_view>
 #include <iostream>
 #include "sonia_common/Detection.h"
 #include "sonia_common/DetectionArray.h"
@@ -30,7 +31,6 @@ public:
     BT::NodeStatus tick() override;
 
 private:
-    std::vector<std::string> split_string(std::string str);
     void ai_info_front_callback(const sonia_common::DetectionArray &msg);
     void ai_info_bottom_callback(const sonia_common::DetectionArray &msg);
 
