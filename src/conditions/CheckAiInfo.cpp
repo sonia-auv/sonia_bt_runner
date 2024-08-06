@@ -21,6 +21,8 @@ BT::NodeStatus CheckAiInfo::tick()
     getInput<int>("max_count", max_count);
 
     sonia_common::DetectionArray value;
+    ros::Duration(1).sleep();
+    ros::spinOnce();
 
     if (camera == 0) // FRONT
     {
@@ -32,6 +34,7 @@ BT::NodeStatus CheckAiInfo::tick()
     }
     else
     {
+        ROS_INFO("BAD_CAM");
         return BT::NodeStatus::FAILURE;
     }
 
@@ -48,6 +51,7 @@ BT::NodeStatus CheckAiInfo::tick()
 
     if (found_classifications.size() == 0)
     {
+        ROS_INFO("No class found");
         return BT::NodeStatus::FAILURE;
     }
 
@@ -58,6 +62,7 @@ BT::NodeStatus CheckAiInfo::tick()
         auto tmp = found_classifications[i];
         if (tmp.confidence >= confidence)
         {
+            ROS_INFO("%s", tmp.class_name.c_str());
             confident_classifications.push_back(tmp);
         }
     }
@@ -65,6 +70,7 @@ BT::NodeStatus CheckAiInfo::tick()
     // Check if count is what we want
     if (confident_classifications.size() < min_count || confident_classifications.size() > max_count)
     {
+        ROS_INFO("Class count bad!");
         return BT::NodeStatus::FAILURE;
     }
 

@@ -78,10 +78,10 @@ int main(int argc, char *argv[])
     ros::Rate r(10);
     while (ros::ok() && result != NodeStatus::SUCCESS && result != NodeStatus::FAILURE)
     {
-        result = tree.tickOnce();
-        // ros::Duration(0.1).sleep();
-        // ros::Duration(0.5).sleep();
         ros::spinOnce();
+        result = tree.tickOnce();
+        ros::Duration(0.1).sleep();
+        // ros::Duration(0.5).sleep();
         if (result == NodeStatus::SUCCESS)
             std::cout << "MISSION RESULT: " << result << std::endl;
     }

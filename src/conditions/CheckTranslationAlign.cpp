@@ -1,5 +1,5 @@
 #include "sonia_bt_runner/conditions/CheckTranslationAlign.hpp"
-
+#include "sonia_bt_runner/utils/AiDetection.hpp"
 #include "sonia_bt_runner/utils/TrajectoryPose.hpp"
 
 
@@ -10,8 +10,9 @@ CheckTranslationAlign::CheckTranslationAlign(const std::string name,const BT::No
 
 BT::NodeStatus CheckTranslationAlign::tick()
 {
-    AiDetection aiObj;
-    getInput<AiDetection>("detection_object", aiObj);
+    AiDetectionArray aiObjarr;
+    getInput<AiDetectionArray>("detection_object", aiObjarr);
+    AiDetection aiObj = aiObjarr.detection_array[0];
     float x1 = aiObj.left;
     float x2 = aiObj.right;
     float y1 = aiObj.top;
@@ -35,19 +36,23 @@ BT::NodeStatus CheckTranslationAlign::tick()
     int target_x = 0;
     getInput<int>("target_x", target_x);
     int target_y = 0;
-    getInput<int>("target_x", target_y);
+    getInput<int>("target_y", target_y);
     float error_marg = 0.0;
     getInput<float>("error_margin", error_marg);
 
-    float diff_x = target_x - cx;
-    float diff_y = target_y - cy;
+    float diff_x = cx - target_x;
+    float diff_y = cy - target_y;
+    printf("diffx: %.2f\n", diff_x);
+    printf("diffy: %.2f\n", diff_y);
+    printf("dist: %.2f\n", aiObj.distance);
+
 
     if (abs(diff_x) <= target_x * error_marg)
     {
         diff_x = 0;
     }
 
-       if (abs(diff_y) <= target_y * error_marg)
+     if (abs(diff_y) <= target_y * error_marg)
     {
         diff_y = 0;
     }
@@ -58,9 +63,18 @@ BT::NodeStatus CheckTranslationAlign::tick()
     }
 
     TrajectoryPose tp;
-
+    tp.frame = 1;
+    tp.long_rotation = false;
+    tp.precision = 0;
+    tp.speed = 0;
+    tp.positionX = 0;
+    tp.orientationX = 0;
+    tp.orientationY = 0;
+    tp.orientationZ = 0;
     tp.positionY = diff_x * aiObj.distance * _pixel_to_meters;
     tp.positionZ = diff_y * aiObj.distance * _pixel_to_meters;
+    // printf("%.2f\n", tp.positionZ);
+    // tp.positionZ = 0;
     if (half_width){
         tp.positionY = tp.positionY / 2;
     }
