@@ -41,8 +41,8 @@ BT::NodeStatus CheckAiInfo::tick()
     {
         auto tmp = value.detected_object[i];
 
-        std::vector<std::string> classifcation_array= BT::splitString(string_view(classification), ',');
-        for (std::string data: classifcation_array)
+        auto classifcation_array= BT::splitString(classification, ',');
+        for (auto data: classifcation_array)
         {
             if (tmp.class_name == data)
             {
