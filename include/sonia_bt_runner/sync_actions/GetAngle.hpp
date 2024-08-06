@@ -1,6 +1,6 @@
 #pragma once
 #include "behaviortree_cpp/behavior_tree.h"
-#include "sonia_bt_runner/utils/AiDetection.hpp"
+#include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 #include "ros/ros.h"
 
@@ -13,7 +13,7 @@ public:
     {
         const float error_marg_def = 0.1;
         return {
-            BT::InputPort<AiDetection>("aiObj"),
+            BT::InputPort<AiDetectionArray>("aiObj"),
             BT::InputPort<float>("ideal_ratio"),
             BT::InputPort<float>("error_margin", error_marg_def, ""),
             BT::OutputPort<float>("detected_angle")};
