@@ -1,4 +1,6 @@
 #pragma once
+#include <string.h>
+#include <stdio.h>
 #include "behaviortree_cpp/behavior_tree.h"
 #include <std_msgs/Float32.h>
 #include <std_srvs/Empty.h>
@@ -15,4 +17,5 @@ public:
 private:
     ros::NodeHandle _nh;
     ros::ServiceClient _depth_client;
+    const char *auv;
 };
