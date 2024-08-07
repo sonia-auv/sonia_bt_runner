@@ -10,7 +10,7 @@ BT::NodeStatus GetTorpedoTarget::tick()
 {
     AiDetectionArray torpedoObjArr;
     getInput<AiDetectionArray>("torpedo_objs", torpedoObjArr);
-    printf("NUM Targets found: %d\n", torpedoObjArr.detection_array.size());
+    printf("NUM Targets found: %ld\n", torpedoObjArr.detection_array.size());
     if (torpedoObjArr.detection_array.size() < 4)
     {
         printf("WARNING: DID NOT FIND 4 TARGETS. SIZE SELECTION MAY BE OFF.\n");
@@ -52,7 +52,7 @@ BT::NodeStatus GetTorpedoTarget::tick()
         }
         else
         {
-            change_xy = true
+            change_xy = true;
         }
         change_x = change_x_60 & change_x_140 && !change_xy;
     }
@@ -60,7 +60,7 @@ BT::NodeStatus GetTorpedoTarget::tick()
     if (diffy > diffx)
     {
         bool change_y_60 = false;
-        if (diffy * 0.6 > diffz)
+        if (diffy * 0.6 > diffx)
         {
             change_y_60 = true;
         }
@@ -76,7 +76,7 @@ BT::NodeStatus GetTorpedoTarget::tick()
         }
         else
         {
-            change_xy = true
+            change_xy = true;
         }
         change_y = change_y_60 & change_y_140 && !change_xy;
     }

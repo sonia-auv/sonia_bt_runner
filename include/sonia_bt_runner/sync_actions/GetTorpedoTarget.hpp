@@ -3,12 +3,12 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 
-class GetTorpedoTarget ": public BT::SyncActionNode
+class GetTorpedoTarget : public BT::SyncActionNode
 {
 public:
 	GetTorpedoTarget(const std::string name, const BT::NodeConfig &config);
 
-	static BT::portsList providedPorts()
+	static BT::PortsList providedPorts()
 	{
 		return {
 			BT::InputPort<AiDetectionArray>("torpedo_objs"),
