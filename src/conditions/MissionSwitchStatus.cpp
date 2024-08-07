@@ -8,6 +8,7 @@ MissionSwitchStatus::MissionSwitchStatus(const std::string &name)
 
 BT::NodeStatus MissionSwitchStatus::tick()
 {
+    ros::spinOnce();
     if (_mission_status)
     {
         return BT::NodeStatus::SUCCESS;

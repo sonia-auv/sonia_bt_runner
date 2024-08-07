@@ -11,7 +11,7 @@ BT::NodeStatus EnableDisableDVL::tick()
     std_msgs::Bool dvl_state;
 
     bool data = false;
-    getInput<bool>("Toggle_DVL", data);
+    getInput<bool>("dvl_input", data);
     if (data)
     {
         ROS_INFO("DVL is started");
