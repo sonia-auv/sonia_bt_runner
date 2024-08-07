@@ -22,7 +22,6 @@ int main(int argc, char *argv[])
     BT::BehaviorTreeFactory factory;
     registerNodes(factory);
 
-    // factory.registerNodeType<DropperActionNode>("DropperActionNode");
 
     std::string name = argv[1];
 
@@ -36,7 +35,6 @@ int main(int argc, char *argv[])
             factory.registerBehaviorTreeFromFile(entry.path().string());
         }
     }
-    // std::string file_path = name + ".xml";
 
     // Get the directory containing the executable
     const char *homeDir = getenv("HOME");
@@ -54,7 +52,7 @@ int main(int argc, char *argv[])
     publisher.setEnabled(true);
 
     // Helper function to print the tree.
-    BT::printTreeRecursively(tree.rootNode());
+    // BT::printTreeRecursively(tree.rootNode());
 
     // The purpose of the observer is to save some statistics about the number of times
     // a certain node returns SUCCESS or FAILURE.
@@ -75,18 +73,13 @@ int main(int argc, char *argv[])
         std::cout << uid << " -> " << name << std::endl;
     }
     NodeStatus result = NodeStatus::RUNNING;
-    ros::Rate r(10);
+
     while (ros::ok() && result != NodeStatus::SUCCESS && result != NodeStatus::FAILURE)
     {
+        ros::Duration(0.1).sleep();
         result = tree.tickOnce();
-        // ros::Duration(0.1).sleep();
-        // ros::Duration(0.5).sleep();
         ros::spinOnce();
-        if (result == NodeStatus::SUCCESS)
-            std::cout << "MISSION RESULT: " << result << std::endl;
     }
-
-    // NodeStatus result = tree.tickWhileRunning();
 
     std::cout << "MISSION RESULT: " << result << std::endl;
     std::cout << "----------------" << std::endl;
