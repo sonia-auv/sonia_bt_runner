@@ -84,6 +84,12 @@ BT::NodeStatus GetTorpedoTarget::tick()
     if (change_x)
     {
         // Horizontal
+        if (cx1 < cx2)
+        {
+            // cx1 is left
+            // cx2 is right
+        }
+        
     }
     else if (change_y)
     {
