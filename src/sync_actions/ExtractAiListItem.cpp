@@ -16,6 +16,6 @@ BT::NodeStatus ExtractAiListItem::tick()
         return BT::NodeStatus::FAILURE;
     }
 
-    setOutput("aiObj", arr.detection_array[index]);
+    setOutput("aiObject", arr.detection_array[index]);
     return BT::NodeStatus::SUCCESS;
 }

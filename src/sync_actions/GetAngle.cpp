@@ -17,7 +17,7 @@ BT::NodeStatus GetAngle::tick()
     float error_marg = 0.0;
     getInput<float>("error_margin", error_marg);
 
-    float height = aiObj.top - aiObj.bottom;
+    float height = aiObj.bottom - aiObj.top;
     float seen_width = aiObj.right - aiObj.left;
     float real_width = height * ideal_ratio;
 
@@ -25,8 +25,13 @@ BT::NodeStatus GetAngle::tick()
     {
         return BT::NodeStatus::SUCCESS;
     }
-
+    printf("seen_width: %.2f\n", seen_width);
+    printf("real_width: %.2f\n", real_width);
+    if (seen_width > real_width){
+        seen_width = real_width - (seen_width - real_width);
+    }
     float angle = acos(seen_width/real_width);
+    printf("angle: %.2f\n", angle);
     setOutput("detected_angle", angle);
     return BT::NodeStatus::FAILURE;
 }

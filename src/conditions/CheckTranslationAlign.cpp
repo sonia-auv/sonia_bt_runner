@@ -17,7 +17,8 @@ BT::NodeStatus CheckTranslationAlign::tick()
     float y2 = aiObj.bottom;
     float cx = x1 + ((x2 - x1) / 2);
     float cy = y1 + ((y2 - y1) / 2);
-    
+    printf("cx: %.2f\n", cx);
+    printf("cy: %.2f\n", cy);
     // Check if object is near the edge of the screen
     bool half_width = false;
     if (x1 < 20 || x2 > _screen_width - 20)
