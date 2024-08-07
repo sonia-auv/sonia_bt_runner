@@ -18,8 +18,8 @@ BT::NodeStatus GetTorpedoTarget::tick()
 
     AiDetection obj1 = torpedoObjArr.detection_array[0];
 
-    float cx1 = obj1.right - obj1.left;
-    float cy1 = obj1.bottom - obj1.top;
+    float cx1 = obj1.left + (obj1.right - obj1.left) / 2;
+    float cy1 = obj1.top + (obj1.bottom - obj1.top) / 2;
 
     AiDetection obj2 = torpedoObjArr.detection_array[1];
 
@@ -84,12 +84,26 @@ BT::NodeStatus GetTorpedoTarget::tick()
     if (change_x)
     {
         // Horizontal
+        AiDetection left_target;
+        AiDetection right_target;
         if (cx1 < cx2)
         {
-            // cx1 is left
-            // cx2 is right
+            left_target = obj1;
+            right_target = obj2;
         }
-        
+        else
+        {
+            left_target = obj2;
+            right_target = obj1;
+        }
+        if (get_area(left_target) < get_area(right_target))
+        {
+            // top row
+        }
+        else
+        {
+            // bottow row
+        }
     }
     else if (change_y)
     {
@@ -101,4 +115,10 @@ BT::NodeStatus GetTorpedoTarget::tick()
     }
 
     return BT::NodeStatus::FAILURE;
+}
+
+float GetTorpedoTarget::get_area(AiDetection obj)
+{
+    float height = left_target.bottom - left_target.top;
+    float width = left_target.right - left_target.left return height * width;
 }

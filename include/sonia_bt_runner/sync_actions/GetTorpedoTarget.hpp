@@ -16,5 +16,6 @@ public:
 	}
 
 	BT::NodeStatus tick() override;
-	
+private:
+	float get_area(AiDetection obj);
 };
