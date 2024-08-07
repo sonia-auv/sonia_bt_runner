@@ -24,6 +24,8 @@ static void registerSyncActionNodes(BT::BehaviorTreeFactory &factory)
     factory.registerNodeType<TareDepth>("TareDepth");
     factory.registerNodeType<MoveToTarget>("MoveToTarget");
     factory.registerNodeType<GetAngle>("GetAngle");
+    factory.registerNodeType<GetTorpedoTarget>("GetTorpedoTarget");
+    factory.registerNodeType<ExtractAiListItem>("ExtractAiListItem");
 }
 
 static void registerStatefulActionNodes(BT::BehaviorTreeFactory &factory)

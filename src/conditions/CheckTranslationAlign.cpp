@@ -1,5 +1,4 @@
 #include "sonia_bt_runner/conditions/CheckTranslationAlign.hpp"
-#include "sonia_bt_runner/utils/AiDetection.hpp"
 #include "sonia_bt_runner/utils/TrajectoryPose.hpp"
 
 
@@ -10,9 +9,8 @@ CheckTranslationAlign::CheckTranslationAlign(const std::string name,const BT::No
 
 BT::NodeStatus CheckTranslationAlign::tick()
 {
-    AiDetectionArray aiObjarr;
-    getInput<AiDetectionArray>("detection_object", aiObjarr);
-    AiDetection aiObj = aiObjarr.detection_array[0];
+    AiDetection aiObj;
+    getInput<AiDetection>("detection_object", aiObj);
     float x1 = aiObj.left;
     float x2 = aiObj.right;
     float y1 = aiObj.top;

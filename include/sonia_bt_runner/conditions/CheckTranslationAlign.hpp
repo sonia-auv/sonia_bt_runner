@@ -3,7 +3,7 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "ros/ros.h"
 
-#include "sonia_bt_runner/utils/AiDetectionArray.hpp"
+#include "sonia_bt_runner/utils/AiDetection.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 
 class CheckTranslationAlign : public BT::ConditionNode
@@ -15,7 +15,7 @@ public:
     {
         const float error_margin_def = 0.05;
         return {
-            BT::InputPort<AiDetectionArray>("detection_object"),
+            BT::InputPort<AiDetection>("detection_object"),
             BT::InputPort<int>("target_x"),
             BT::InputPort<int>("target_y"),
             BT::InputPort<float>("error_margin", error_margin_def, "percentage of error off the target (0-1)"),

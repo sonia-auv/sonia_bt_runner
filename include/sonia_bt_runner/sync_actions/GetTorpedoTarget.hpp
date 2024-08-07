@@ -6,7 +6,7 @@
 class GetTorpedoTarget : public BT::SyncActionNode
 {
 public:
-	GetTorpedoTarget(const std::string name, const BT::NodeConfig &config);
+	GetTorpedoTarget(const std::string &name, const BT::NodeConfig &config);
 
 	static BT::PortsList providedPorts()
 	{

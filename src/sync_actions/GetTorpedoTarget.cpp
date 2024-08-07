@@ -1,7 +1,7 @@
 #include "sonia_bt_runner/sync_actions/GetTorpedoTarget.hpp"
 #include "sonia_bt_runner/utils/AiDetection.hpp"
 
-GetTorpedoTarget::GetTorpedoTarget(const std::string name, const BT::NodeConfig &config)
+GetTorpedoTarget::GetTorpedoTarget(const std::string &name, const BT::NodeConfig &config)
     : BT::SyncActionNode(name, config)
 {
 }

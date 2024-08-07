@@ -8,3 +8,5 @@
 #include "sonia_bt_runner/sync_actions/EnableDisableDVL.hpp"
 #include "sonia_bt_runner/sync_actions/MoveToTarget.hpp"
 #include "sonia_bt_runner/sync_actions/GetAngle.hpp"
+#include "sonia_bt_runner/sync_actions/GetTorpedoTarget.hpp"
+#include "sonia_bt_runner/sync_actions/ExtractAiListItem.hpp"
