@@ -13,7 +13,7 @@ public:
     {
 
         return {
-            BT::InputPort<AiDetectionArray>("aiObj"),
+            BT::InputPort<AiDetection>("aiObj"),
             BT::BidirectionalPort<Trajectory>("trajectory"),
         };
     }
