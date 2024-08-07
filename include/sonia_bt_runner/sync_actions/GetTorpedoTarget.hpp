@@ -12,7 +12,8 @@ public:
 	{
 		return {
 			BT::InputPort<AiDetectionArray>("torpedo_objs"),
-			BT::InputPort<int>("size", "0: smallest, 3: biggest")};
+			BT::InputPort<int>("size", "0: smallest, 3: biggest"),
+			BT::OutputPort<AiDetection>("selected_target")};
 	}
 
 	BT::NodeStatus tick() override;
