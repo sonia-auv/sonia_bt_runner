@@ -1,6 +1,9 @@
 #pragma once
 #include "behaviortree_cpp/behavior_tree.h"
 #include "ros/ros.h"
+#include <sstream>
+#include <string_view>
+#include <iostream>
 #include "sonia_common/Detection.h"
 #include "sonia_common/DetectionArray.h"
 
