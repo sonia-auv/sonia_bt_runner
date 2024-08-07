@@ -6,10 +6,10 @@
 #include "sonia_bt_runner/utils/AiDetection.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 
-class CheckTranslationAlign : public BT::ConditionNode
+class CheckTranslationYZAlign : public BT::ConditionNode
 {
 public:
-    CheckTranslationAlign(const std::string name, const BT::NodeConfig &config);
+    CheckTranslationYZAlign(const std::string name, const BT::NodeConfig &config);
 
     static BT::PortsList providedPorts()
     {

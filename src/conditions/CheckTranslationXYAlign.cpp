@@ -1,12 +1,12 @@
-#include "sonia_bt_runner/conditions/CheckTranslationAlign.hpp"
+#include "sonia_bt_runner/conditions/CheckTranslationXYAlign.hpp"
 #include "sonia_bt_runner/utils/TrajectoryPose.hpp"
 
-CheckTranslationAlign::CheckTranslationAlign(const std::string name, const BT::NodeConfig &config)
+CheckTranslationXYAlign::CheckTranslationXYAlign(const std::string name, const BT::NodeConfig &config)
     : BT::ConditionNode(name, config)
 {
 }
 
-BT::NodeStatus CheckTranslationAlign::tick()
+BT::NodeStatus CheckTranslationXYAlign::tick()
 {
     AiDetection aiObj;
     getInput<AiDetection>("detection_object", aiObj);
@@ -72,12 +72,12 @@ BT::NodeStatus CheckTranslationAlign::tick()
     tp.long_rotation = false;
     tp.precision = 0;
     tp.speed = 0;
-    tp.positionX = 0;
     tp.orientationX = 0;
     tp.orientationY = 0;
     tp.orientationZ = 0;
+    tp.positionX = diff_y * aiObj.distance * _pixel_to_meters;
     tp.positionY = diff_x * aiObj.distance * _pixel_to_meters;
-    tp.positionZ = diff_y * aiObj.distance * _pixel_to_meters;
+    tp.positionZ = 0;
     // printf("%.2f\n", tp.positionZ);
     // tp.positionZ = 0;
     if (half_width)
@@ -86,7 +86,7 @@ BT::NodeStatus CheckTranslationAlign::tick()
     }
     if (half_height)
     {
-        tp.positionZ = tp.positionZ / 2;
+        tp.positionX = tp.positionX / 2;
     }
 
     Trajectory t;

@@ -10,7 +10,8 @@ static void registerConditionNodes(BT::BehaviorTreeFactory &factory)
 {
     factory.registerNodeType<MissionSwitchStatus>("MissionSwitchStatus");
     factory.registerNodeType<CheckAiInfo>("CheckAiInfo");
-    factory.registerNodeType<CheckTranslationAlign>("CheckTranslationAlign");
+    factory.registerNodeType<CheckTranslationYZAlign>("CheckTranslationYZAlign");
+    factory.registerNodeType<CheckTranslationXYAlign>("CheckTranslationXYAlign");
 
 }
 
