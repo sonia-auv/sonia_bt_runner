@@ -1,8 +1,7 @@
 #include "sonia_bt_runner/conditions/CheckTranslationAlign.hpp"
 #include "sonia_bt_runner/utils/TrajectoryPose.hpp"
 
-
-CheckTranslationAlign::CheckTranslationAlign(const std::string name,const BT::NodeConfig &config)
+CheckTranslationAlign::CheckTranslationAlign(const std::string name, const BT::NodeConfig &config)
     : BT::ConditionNode(name, config)
 {
 }
@@ -40,18 +39,25 @@ BT::NodeStatus CheckTranslationAlign::tick()
     getInput<float>("error_margin", error_marg);
 
     float diff_x = cx - target_x;
-    float diff_y = cy - target_y;
+    float diff_y;
+    if (target_y == -1)
+    {
+        diff_y = 0;
+    }
+    else
+    {
+        diff_y = cy - target_y;
+    }
     printf("diffx: %.2f\n", diff_x);
     printf("diffy: %.2f\n", diff_y);
     printf("dist: %.2f\n", aiObj.distance);
-
 
     if (abs(diff_x) <= target_x * error_marg)
     {
         diff_x = 0;
     }
 
-     if (abs(diff_y) <= target_y * error_marg)
+    if (abs(diff_y) <= target_y * error_marg)
     {
         diff_y = 0;
     }
@@ -74,10 +80,12 @@ BT::NodeStatus CheckTranslationAlign::tick()
     tp.positionZ = diff_y * aiObj.distance * _pixel_to_meters;
     // printf("%.2f\n", tp.positionZ);
     // tp.positionZ = 0;
-    if (half_width){
+    if (half_width)
+    {
         tp.positionY = tp.positionY / 2;
     }
-    if (half_height){
+    if (half_height)
+    {
         tp.positionZ = tp.positionZ / 2;
     }
 
