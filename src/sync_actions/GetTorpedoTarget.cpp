@@ -11,10 +11,10 @@ BT::NodeStatus GetTorpedoTarget::tick()
     AiDetectionArray torpedoObjArr;
     getInput<AiDetectionArray>("torpedo_objs", torpedoObjArr);
     printf("NUM Targets found: %ld\n", torpedoObjArr.detection_array.size());
-    if (torpedoObjArr.detection_array.size() < 2)
-    {
-        return BT::NodeStatus::FAILURE;
-    }
+    // if (torpedoObjArr.detection_array.size() < 2)
+    // {
+    //     return BT::NodeStatus::FAILURE;
+    // }
     if (torpedoObjArr.detection_array.size() < 4)
     {
         printf("WARNING: DID NOT FIND 4 TARGETS. SIZE SELECTION MAY BE OFF.\n");

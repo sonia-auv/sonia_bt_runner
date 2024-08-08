@@ -33,6 +33,7 @@ BT::NodeStatus SendTrajToPlanner::onStart()
         array_to_send.pose.push_back(ap);
     }
     _planner_pub.publish(array_to_send);
+    setOutput("trajectory", "");
     _time_launch = std::chrono::system_clock::now();
     _trajectory_compiled = _nh.subscribe("/proc_planner/is_waypoints_valid", 1, &SendTrajToPlanner::is_waypoints_valid_cb, this);
 

@@ -18,7 +18,7 @@ public:
         const int def_inter = 0;
         return {
             BT::InputPort<int>("interpolation", def_inter, ""),
-            BT::InputPort<Trajectory>("trajectory"),
+            BT::BidirectionalPort<Trajectory>("trajectory"),
         };
     }
 

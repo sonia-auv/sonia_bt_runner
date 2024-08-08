@@ -7,14 +7,14 @@ MoveToTarget::MoveToTarget(const std::string &name, const BT::NodeConfig &config
 
 BT::NodeStatus MoveToTarget::tick()
 {
-    AiDetectionArray aiObj;
-    getInput<AiDetectionArray>("aiObj", aiObj);
+    AiDetection aiObj;
+    getInput<AiDetection>("aiObj", aiObj);
 
     float offset;
     getInput<float>("offset", offset);
 
     TrajectoryPose tp;
-    tp.positionX = aiObj.detection_array[0].distance + offset;
+    tp.positionX = aiObj.distance + offset;
     tp.positionY = 0;
     tp.positionZ = 0;
     tp.orientationX = 0;
