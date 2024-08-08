@@ -75,8 +75,8 @@ BT::NodeStatus CheckTranslationXYAlign::tick()
     tp.orientationX = 0;
     tp.orientationY = 0;
     tp.orientationZ = 0;
-    tp.positionX = diff_y * aiObj.distance * _pixel_to_meters;
-    tp.positionY = diff_x * aiObj.distance * _pixel_to_meters;
+    tp.positionY = diff_y * aiObj.distance * _pixel_to_meters;
+    tp.positionX = diff_x * aiObj.distance * _pixel_to_meters;
     tp.positionZ = 0;
     // printf("%.2f\n", tp.positionZ);
     // tp.positionZ = 0;

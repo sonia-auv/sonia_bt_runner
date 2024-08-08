@@ -14,6 +14,7 @@ public:
 
         return {
             BT::InputPort<AiDetectionArray>("aiObj"),
+            BT::InputPort<float>("offset"),
             BT::BidirectionalPort<Trajectory>("trajectory"),
         };
     }

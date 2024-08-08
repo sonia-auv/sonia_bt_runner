@@ -5,7 +5,7 @@ GetClosestObj::GetClosestObj(const std::string &name, const BT::NodeConfig &conf
 {
 }
 
-BT::Nodestatus GetClosestObj::tick()
+BT::NodeStatus GetClosestObj::tick()
 {
     AiDetectionArray aiArr;
     getInput<AiDetectionArray>("array", aiArr);
