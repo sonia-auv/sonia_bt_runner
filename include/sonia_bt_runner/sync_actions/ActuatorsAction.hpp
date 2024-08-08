@@ -15,7 +15,7 @@ public:
     static BT::PortsList providedPorts()
     {
         // Options for 'side' are 'port_side' or 'starboard'
-        return {BT::InputPort<int>("Actuator", "0: Dropper, 1: Torpedo"),
+        return {BT::InputPort<int>("actuator", "0: Dropper, 1: Torpedo"),
                 BT::InputPort<std::string>("side", "port_side or starboard")};
     }
 

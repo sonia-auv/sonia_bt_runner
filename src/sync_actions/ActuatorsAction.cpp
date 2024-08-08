@@ -12,39 +12,39 @@ BT::NodeStatus ActuatorsAction::tick()
     ros::Rate r(0.25);
 
     sonia_common::ActuatorDoAction msg;
-    BT::Expected<std::string> side = getInput<std::string>("side");
-    BT::Expected<int> actuator = getInput<int>("actuator");
+    std::string side;
+    getInput<std::string>("side", side);
+    int actuator;
+    getInput<int>("actuator", actuator);
 
     check_input(side,actuator);
 
-    if (actuator.value() == 0)//droppers
+    if (actuator == 0)//droppers
     {
         msg.element = sonia_common::ActuatorDoAction::ELEMENT_DROPPER;
         msg.action = sonia_common::ActuatorDoAction::ACTION_DROPPER_LAUNCH;
     }
-    else if (actuator.value() == 1) //torpedos
+    else if (actuator == 1) //torpedos
     {
         msg.element = sonia_common::ActuatorDoAction::ELEMENT_TORPEDO;
         msg.action = sonia_common::ActuatorDoAction::ACTION_TORPEDO_LAUNCH;
     }
     else
     {
-        throw BT::RuntimeError("Bad required input [actuator]: ",
-                               actuator.error());
+        throw BT::RuntimeError("Bad required input actuator");
     }
 
-    if (side.value() == "port_side")
+    if (side == "port_side")
     {
         msg.side = sonia_common::ActuatorDoAction::SIDE_PORT;
     }
-    else if (side.value() == "starboard")
+    else if (side == "starboard")
     {
         msg.side = sonia_common::ActuatorDoAction::SIDE_STARBOARD;
     }
     else
     {
-        throw BT::RuntimeError("Bad required input [side]: ",
-                               side.error());
+        throw BT::RuntimeError("Bad required input side");
     }
     _actuator_pub.publish(msg);
 
@@ -62,10 +62,8 @@ void ActuatorsAction::check_input(BT::Expected<std::string> side, BT::Expected<i
 {
     if(!side||!actuator)
     {
-        throw BT::RuntimeError("missing required input [side]: ",
-                               side.error());
-        throw BT::RuntimeError("missing required input [actuator]: ",
-                               actuator.error());
+        throw BT::RuntimeError("missing required input");
+        throw BT::RuntimeError("missing required input");
     }
 
 }
