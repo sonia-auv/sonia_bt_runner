@@ -11,7 +11,7 @@ BT::NodeStatus MoveToTarget::tick()
     getInput<AiDetectionArray>("aiObj", aiObj);
 
     float offset;
-    getInput<float>("offset", offset)
+    getInput<float>("offset", offset);
 
     TrajectoryPose tp;
     tp.positionX = aiObj.detection_array[0].distance + offset;
