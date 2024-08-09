@@ -18,6 +18,7 @@ public:
             BT::InputPort<AiDetection>("detection_object"),
             BT::InputPort<int>("target_x"),
             BT::InputPort<int>("target_y"),
+            BT::InputPort<float>("distance"),
             BT::InputPort<float>("error_margin", error_margin_def, "percentage of error off the target (0-1)"),
             BT::BidirectionalPort<Trajectory>("traj")};
     }

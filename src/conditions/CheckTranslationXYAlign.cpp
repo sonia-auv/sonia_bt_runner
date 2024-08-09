@@ -35,8 +35,11 @@ BT::NodeStatus CheckTranslationXYAlign::tick()
     getInput<int>("target_x", target_x);
     int target_y = 0;
     getInput<int>("target_y", target_y);
+    float distance = 0.0;
+    getInput<float>("distance", distance);
     float error_marg = 0.0;
     getInput<float>("error_margin", error_marg);
+    
 
     float diff_x = cx - target_x;
     float diff_y;
@@ -50,7 +53,7 @@ BT::NodeStatus CheckTranslationXYAlign::tick()
     }
     printf("diffx: %.2f\n", diff_x);
     printf("diffy: %.2f\n", diff_y);
-    printf("dist: %.2f\n", aiObj.distance);
+    //printf("dist: %.2f\n", aiObj.distance);
 
     if (abs(diff_x) <= target_x * error_marg)
     {
@@ -75,8 +78,8 @@ BT::NodeStatus CheckTranslationXYAlign::tick()
     tp.orientationX = 0;
     tp.orientationY = 0;
     tp.orientationZ = 0;
-    tp.positionY = diff_y * aiObj.distance * _pixel_to_meters;
-    tp.positionX = diff_x * aiObj.distance * _pixel_to_meters;
+    tp.positionY = diff_y * distance * _pixel_to_meters;
+    tp.positionX = diff_x * distance * _pixel_to_meters;
     tp.positionZ = 0;
     // printf("%.2f\n", tp.positionZ);
     // tp.positionZ = 0;
