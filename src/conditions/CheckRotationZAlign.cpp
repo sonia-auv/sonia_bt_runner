@@ -23,6 +23,8 @@ BT::NodeStatus CheckRotationZAlign::tick()
     getInput<int>("target_x", target_x);
     float error_marg = 0.0;
     getInput<float>("error_margin", error_marg);
+    float pixel_to_degrees = 0.0666;
+    getInput<float>("pixel_to_degrees", pixel_to_degrees);
 
     float diff_x = cx - target_x;
 
@@ -31,7 +33,7 @@ BT::NodeStatus CheckRotationZAlign::tick()
         return BT::NodeStatus::SUCCESS;
     }
 
-    float angle_degree = diff_x * _pixel_to_degrees;
+    float angle_degree = diff_x * pixel_to_degrees;
 
     printf("diffx: %.2f\n", diff_x);
     printf("angle: %.2f\n", angle_degree);    
