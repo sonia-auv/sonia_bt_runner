@@ -12,6 +12,7 @@ static void registerConditionNodes(BT::BehaviorTreeFactory &factory)
     factory.registerNodeType<CheckAiInfo>("CheckAiInfo");
     factory.registerNodeType<CheckTranslationYZAlign>("CheckTranslationYZAlign");
     factory.registerNodeType<CheckTranslationXYAlign>("CheckTranslationXYAlign");
+    factory.registerNodeType<CheckRotationZAlign>("CheckRotationZAlign");
 
 }
 
