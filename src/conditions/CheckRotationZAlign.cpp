@@ -26,17 +26,15 @@ BT::NodeStatus CheckRotationZAlign::tick()
 
     float diff_x = cx - target_x;
 
-    printf("diffx: %.2f\n", diff_x);
-    printf("dist: %.2f\n", aiObj.distance);
-
     if (abs(diff_x) <= target_x * error_marg)
     {
         return BT::NodeStatus::SUCCESS;
     }
 
-    float distanceY = diff_x * aiObj.distance * _pixel_to_meters;
-    float angle_degree = 180*(distanceY/aiObj.distance)/3.14;
+    float angle_degree = diff_x * _pixel_to_degrees;
 
+    printf("diffx: %.2f\n", diff_x);
+    printf("angle: %.2f\n", angle_degree);    
 
     TrajectoryPose tp;
     tp.frame = 1;

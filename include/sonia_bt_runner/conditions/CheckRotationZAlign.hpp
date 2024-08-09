@@ -24,7 +24,7 @@ public:
     BT::NodeStatus tick() override;
 
 private:
-    const float _pixel_to_meters = 0.0024;
+    const float _pixel_to_degrees = 0.11;
     const int _screen_height = 400; // pixels
     const int _screen_width = 600; // pixels
 };
