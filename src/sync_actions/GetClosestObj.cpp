@@ -9,7 +9,10 @@ BT::NodeStatus GetClosestObj::tick()
 {
     AiDetectionArray aiArr;
     getInput<AiDetectionArray>("array", aiArr);
-
+    if (aiArr.detection_array.size() == 0)
+    {
+        BT::NodeStatus::FAILURE;
+    }
     AiDetection closest = aiArr.detection_array[0];
 
     for (size_t i = 1; i < aiArr.detection_array.size(); i++)

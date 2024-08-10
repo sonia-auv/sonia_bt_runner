@@ -74,8 +74,14 @@ int main(int argc, char *argv[])
     BT::Groot2Publisher publisher(tree, 5555);
     publisher.setEnabled(true);
 
+    std::string timestamp = getTimestamp();
+
+    std::string filename = "runs/RUN_" + timestamp + ".txt";
+
+    std::ofstream file(filename);
+
     // Helper function to print the tree.
-    // BT::printTreeRecursively(tree.rootNode());
+    BT::printTreeRecursively(tree.rootNode(), file);
 
     // The purpose of the observer is to save some statistics about the number of times
     // a certain node returns SUCCESS or FAILURE.
@@ -90,12 +96,6 @@ int main(int argc, char *argv[])
     {
         ordered_UID_to_path[uid] = name;
     }
-
-    std::string timestamp = getTimestamp();
-
-    std::string filename = "runs/RUN_" + timestamp + ".txt";
-
-    std::ofstream file(filename);
 
     for (const auto &[uid, name] : ordered_UID_to_path)
     {
