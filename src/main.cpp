@@ -8,9 +8,33 @@
 #include "behaviortree_cpp/loggers/groot2_publisher.h"
 #include "ros/ros.h"
 
+#include <iostream>
+#include <chrono>
+#include <ctime>
+#include <iomanip> // for std::put_time
+#include <sstream> // for std::stringstream
+
 #include "sonia_bt_runner/SoniaNodes.hpp"
 
 using namespace BT;
+
+std::string getTimestamp()
+{
+    // Get the current time
+    auto now = std::chrono::system_clock::now();
+
+    // Convert it to time_t which holds the time in seconds since the epoch
+    std::time_t now_time_t = std::chrono::system_clock::to_time_t(now);
+
+    // Convert to tm struct for local time
+    std::tm *now_tm = std::localtime(&now_time_t);
+
+    // Create a stringstream to format the timestamp
+    std::stringstream ss;
+    ss << std::put_time(now_tm, "%Y%m%d_%H%M%S"); // Format: YYYYMMDD_HHMMSS
+
+    return ss.str();
+}
 
 int main(int argc, char *argv[])
 {
@@ -21,7 +45,6 @@ int main(int argc, char *argv[])
     printf("LEN argc: %d\n", argc);
     BT::BehaviorTreeFactory factory;
     registerNodes(factory);
-
 
     std::string name = argv[1];
 
@@ -68,9 +91,16 @@ int main(int argc, char *argv[])
         ordered_UID_to_path[uid] = name;
     }
 
+    std::string timestamp = getTimestamp();
+
+    std::string filename = "RUN_" + timestamp + ".txt";
+
+    std::ofstream file(filename);
+
     for (const auto &[uid, name] : ordered_UID_to_path)
     {
         std::cout << uid << " -> " << name << std::endl;
+        file << uid << " -> " << name << "\n";
     }
     NodeStatus result = NodeStatus::RUNNING;
 
@@ -82,7 +112,9 @@ int main(int argc, char *argv[])
     }
 
     std::cout << "MISSION RESULT: " << result << std::endl;
+    file << "MISSION RESULT: " << result << "\n";
     std::cout << "----------------" << std::endl;
+    file << "----------------" << "\n";
     // print all the statistics
     for (const auto &[uid, name] : ordered_UID_to_path)
     {
@@ -93,6 +125,13 @@ int main(int argc, char *argv[])
                   << "/" << stats.success_count
                   << "/" << stats.failure_count
                   << std::endl;
+
+        file << "[" << name
+             << "] \tT/S/F:  " << stats.transitions_count
+             << "/" << stats.success_count
+             << "/" << stats.failure_count
+             << "\n";
     }
+    file.close();
     return EXIT_SUCCESS;
 }
