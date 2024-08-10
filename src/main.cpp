@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 
     std::string timestamp = getTimestamp();
 
-    std::string filename = "RUN_" + timestamp + ".txt";
+    std::string filename = "runs/RUN_" + timestamp + ".txt";
 
     std::ofstream file(filename);
 
