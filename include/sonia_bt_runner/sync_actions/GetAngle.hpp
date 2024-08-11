@@ -13,7 +13,7 @@ public:
     {
         const float error_marg_def = 0.1;
         return {
-            BT::InputPort<AiDetectionArray>("aiObj"),
+            BT::InputPort<AiDetection>("aiObj"),
             BT::InputPort<float>("ideal_ratio"),
             BT::InputPort<float>("error_margin", error_marg_def, ""),
             BT::OutputPort<float>("detected_angle")};

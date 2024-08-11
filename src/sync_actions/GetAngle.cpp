@@ -9,9 +9,8 @@ GetAngle::GetAngle(const std::string &name, const BT::NodeConfig &config)
 
 BT::NodeStatus GetAngle::tick()
 {
-    AiDetectionArray aiObjarr;
-    getInput<AiDetectionArray>("aiObj", aiObjarr);
-    AiDetection aiObj = aiObjarr.detection_array[0];
+    AiDetection aiObj;
+    getInput<AiDetection>("aiObj", aiObj);
     float ideal_ratio = 0.0;
     getInput<float>("ideal_ratio", ideal_ratio);
     float error_marg = 0.0;

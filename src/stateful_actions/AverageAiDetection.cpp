@@ -60,6 +60,8 @@ BT::NodeStatus AverageAiDetection::onRunning()
         }
     }
 
+    ROS_INFO("tmp_arr : %d", tmp_arr.size());
+
     // if arr is empty, continue
     if (tmp_arr.size() < 1)
     {
@@ -87,11 +89,13 @@ BT::NodeStatus AverageAiDetection::onRunning()
 
     _buffer.push_back(selected_obj);
 
+    ROS_INFO("buffer size : %d", _buffer.size());
+
     if (_buffer.size() >= _buffer_size)
     {
         AiDetection avg_res = get_average();
         setOutput("average_obj", avg_res);
-        BT::NodeStatus::SUCCESS;
+        return BT::NodeStatus::SUCCESS;
     }
     return BT::NodeStatus::RUNNING;
 }
