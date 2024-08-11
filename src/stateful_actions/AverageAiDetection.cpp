@@ -21,6 +21,9 @@ BT::NodeStatus AverageAiDetection::onStart()
 
 BT::NodeStatus AverageAiDetection::onRunning()
 {
+    ros::Duration(1).sleep();
+    ros::spinOnce();
+
     sonia_common::DetectionArray value;
 
     if (_camera == 0) // FRONT
@@ -30,6 +33,7 @@ BT::NodeStatus AverageAiDetection::onRunning()
             return BT::NodeStatus::RUNNING;
         }
         value = _last_front;
+        _last_front_fresh = false;
     }
     else if (_camera == 1) // BOTTOM
     {
@@ -38,6 +42,7 @@ BT::NodeStatus AverageAiDetection::onRunning()
             return BT::NodeStatus::RUNNING;
         }
         value = _last_bottom;
+        _last_bottom_fresh = false;
     }
     else
     {

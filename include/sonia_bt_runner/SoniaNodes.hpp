@@ -17,6 +17,7 @@ static void registerConditionNodes(BT::BehaviorTreeFactory &factory)
 
 static void registerStatefulActionNodes(BT::BehaviorTreeFactory &factory)
 {
+    factory.registerNodeType<AverageAiDetection>("AverageAiDetection");
     factory.registerNodeType<ControlSetMode>("ControlSetMode");
     factory.registerNodeType<SendTrajToPlanner>("SendTrajToPlanner");
     factory.registerNodeType<WaitTargetReached>("WaitTargetReached");

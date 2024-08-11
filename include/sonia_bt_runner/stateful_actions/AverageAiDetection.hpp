@@ -14,8 +14,8 @@ public:
     {
         return {
             BT::InputPort<int>("camera", 0, "0: Front, 1: Bottom"),
-            BT::InputPort<int>("buffer_size"),
-            BT::InputPort<int>("num_retries"),
+            BT::InputPort<int>("buffer_size", 5, "Number of detection to average"),
+            BT::InputPort<int>("num_retries", 5, "Number of invalid detection allowed between good ones"),
             BT::InputPort<std::string>("classification"),
             BT::OutputPort<AiDetection>("average_obj")};
     }
