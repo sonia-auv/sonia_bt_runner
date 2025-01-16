@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package format="2">
+    <name>sonia_bt_runner</name>
+    <version>0.0.0</version>
+    <description>The sonia_bt_runner package</description>
+    <maintainer email="sonia@todo.todo">sonia</maintainer>
+    <license>TODO</license>
+
+    <buildtool_depend>ament_cmake</buildtool_depend>
+    <depend>rclcpp</depend>
+    <depend>sonia_common_ros2</depend>
+    <!--<depend>behaviortree_cpp_v3</depend>-->
+    <depend>std_msgs</depend>
+    <depend>std_srvs</depend>
+    <export>
+        <build_type>ament_cmake</build_type>
+    </export>
+</package>
