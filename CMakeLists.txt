@@ -5,7 +5,8 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-#find dependencies
+#==============================================================================
+#C M A K E   C O N F I G U R A T I O N
 find_package(ament_cmake REQUIRED)
 
 find_package(rclcpp REQUIRED)
@@ -13,6 +14,9 @@ find_package(behaviortree_cpp REQUIRED)
 find_package(sonia_common_ros2 REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
+
+#==============================================================================
+#I N C L U D E   F I L E S
 
 include_directories(include)
 
