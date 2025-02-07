@@ -20,9 +20,10 @@ find_package(std_srvs REQUIRED)
 
 include_directories(include)
 
-file(GLOB SOURCES src/*.cpp)
+#file(GLOB SOURCES src/*.cpp)
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(TARGET_NAME_GEN src/gen_nodes.cpp)
+add_executable(TARGET_NAME_MAIN src/main.cpp)
 
 install(
     DIRECTORY include/
@@ -30,9 +31,11 @@ install(
 )
 
 install(TARGETS
-${PROJECT_NAME}
+    ${TARGET_NAME_MAIN}
+    ${TARGET_NAME_GEN}
     DESTINATION lib/${PROJECT_NAME})
 
-ament_target_dependencies(${PROJECT_NAME} rclcpp sonia_common_ros2 std_msgs std_srvs behaviortree_cpp) 
+ament_target_dependencies(${TARGET_NAME_MAIN} rclcpp sonia_common_ros2 std_msgs std_srvs behaviortree_cpp)
+ament_target_dependencies(${TARGET_NAME_GEN} rclcpp sonia_common_ros2 std_msgs std_srvs behaviortree_cpp) 
 
 ament_package()
