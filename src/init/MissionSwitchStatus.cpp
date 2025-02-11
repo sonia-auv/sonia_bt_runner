@@ -1,8 +1,8 @@
-#include "sonia_bt_runner/startUp/MissionSwitchStatus.hpp"
+#include "sonia_bt_runner/init/MissionSwitchStatus.hpp"
 
 using std::placeholders::_1;
 
-namespace start_up{     
+namespace init{     
 
     MissionSwitchStatus::MissionSwitchStatus(const std::string &name): BT::ConditionNode(name, {}), Node(name)
     {

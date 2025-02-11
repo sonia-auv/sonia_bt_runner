@@ -6,9 +6,9 @@
 
 using namespace BT;
 
-static void registerConditionNodes(BT::BehaviorTreeFactory &factory)
+static void registerInitNodes(BT::BehaviorTreeFactory &factory)
 {
-    
+    factory.registerNodeType<init::MissionSwitchStatus>("MissionSwitchStatus");
 }
 static void registerSyncActionNodes(BT::BehaviorTreeFactory &factory)
 {
@@ -22,7 +22,7 @@ static void registerStatefulActionNodes(BT::BehaviorTreeFactory &factory)
 
 static void registerNodes(BT::BehaviorTreeFactory &factory)
 {
-    registerConditionNodes(factory);
+    registerInitNodes(factory);
     registerSyncActionNodes(factory);
     registerStatefulActionNodes(factory);
 }
