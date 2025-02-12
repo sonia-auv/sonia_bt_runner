@@ -4,9 +4,10 @@ using std::placeholders::_1;
 
 namespace init{     
 
-    MissionSwitchStatus::MissionSwitchStatus(const std::string &name): BT::ConditionNode(name, {}), Node(name)
+    MissionSwitchStatus::MissionSwitchStatus(const std::string &name): BT::ConditionNode(name, {}), ros_node{std::make_shared<rclcpp::Node>(name)}
     {
-        _subscriberMissionStatus= this->create_subscription<sonia_common_ros2::msg::MissionStatus>("provider_rs485/mission_status",10, std::bind(&MissionSwitchStatus::update_status, this, _1));
+        _mission_status=false;
+        _subscriberMissionStatus= ros_node->create_subscription<sonia_common_ros2::msg::MissionStatus>("provider_rs485/mission_status",10, std::bind(&MissionSwitchStatus::update_status, this, _1));
     }
 
     MissionSwitchStatus::~MissionSwitchStatus(){}

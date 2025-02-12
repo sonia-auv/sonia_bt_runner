@@ -8,6 +8,7 @@
 #include "behaviortree_cpp/loggers/groot2_publisher.h"
 #include <rclcpp/rclcpp.hpp>
 
+#include <filesystem>
 #include <iostream>
 #include <chrono>
 #include <ctime>
@@ -47,15 +48,20 @@ int main(int argc, char *argv[])
     registerNodes(factory);
 
     std::string name = argv[1];
+    
 
     std::string search_directory = "./";
+    printf("L111");
 
     using std::filesystem::directory_iterator;
+    printf("L2222");
     for (auto const &entry : directory_iterator(search_directory))
     {
+
         if (entry.path().extension() == ".xml")
         {
             factory.registerBehaviorTreeFromFile(entry.path().string());
+            std::cout << "file"<<entry.path()<<std::endl;
         }
     }
 
