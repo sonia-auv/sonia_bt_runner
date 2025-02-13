@@ -48,13 +48,10 @@ int main(int argc, char *argv[])
     registerNodes(factory);
 
     std::string name = argv[1];
-    
-
     std::string search_directory = "./";
-    printf("L111");
 
     using std::filesystem::directory_iterator;
-    printf("L2222");
+    
     for (auto const &entry : directory_iterator(search_directory))
     {
 
