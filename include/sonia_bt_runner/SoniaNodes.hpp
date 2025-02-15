@@ -9,13 +9,16 @@ using namespace BT;
 static void registerInitNodes(BT::BehaviorTreeFactory &factory)
 {
     factory.registerNodeType<init::MissionSwitchStatus>("MissionSwitchStatus");
+    factory.registerNodeType<init::Tare>("Tare");
+    factory.registerNodeType<init::EnableDisableDVL>("EnableDisableDVL");
+    factory.registerNodeType<init::ControlSetMode>("ControlSetMode");
 }
-static void registerSyncActionNodes(BT::BehaviorTreeFactory &factory)
+static void registerNavigationNodes(BT::BehaviorTreeFactory &factory)
 {
     
 }
 
-static void registerStatefulActionNodes(BT::BehaviorTreeFactory &factory)
+static void registerVisionNodes(BT::BehaviorTreeFactory &factory)
 {
     
 }
@@ -23,6 +26,6 @@ static void registerStatefulActionNodes(BT::BehaviorTreeFactory &factory)
 static void registerNodes(BT::BehaviorTreeFactory &factory)
 {
     registerInitNodes(factory);
-    registerSyncActionNodes(factory);
-    registerStatefulActionNodes(factory);
+    registerNavigationNodes(factory);
+    registerVisionNodes(factory);
 }

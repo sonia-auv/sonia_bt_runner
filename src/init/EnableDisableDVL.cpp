@@ -1,0 +1,22 @@
+#include "sonia_bt_runner/init/EnableDisableDVL.hpp"
+
+namespace init{
+
+    EnableDisableDVL::EnableDisableDVL(const std::string& name, const BT::NodeConfig& config)
+    : BT::SyncActionNode(name, config), ros_node{std::make_shared<rclcpp::Node>(name)}
+    {
+        dvl_pub= ros_node->create_publisher<std_msgs::msg::Bool>("/provider_dvl/enable_disable_dvl",10);
+
+    }
+    EnableDisableDVL::~EnableDisableDVL() {}
+    BT::NodeStatus EnableDisableDVL::tick(){
+        std_msgs::msg::Bool dvl_state;
+        bool data = false;
+
+        getInput<bool>("dvl_input", data);
+
+        dvl_state.data=data;
+        dvl_pub->publish(dvl_state);
+        return BT::NodeStatus::SUCCESS;
+    }
+}  // namespace init
