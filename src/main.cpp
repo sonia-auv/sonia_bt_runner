@@ -45,7 +45,11 @@ int main(int argc, char *argv[])
     }
     printf("LEN argc: %d\n", argc);
     BT::BehaviorTreeFactory factory;
-    registerNodes(factory);
+
+    rclcpp::init(argc,argv);
+    auto node= std::make_shared<rclcpp::Node>("sonia_bt_runner");
+
+    registerNodes(factory, node);
 
     std::string name = argv[1];
     std::string search_directory = "./";
@@ -64,14 +68,8 @@ int main(int argc, char *argv[])
 
     // Get the directory containing the executable
     const char *homeDir = getenv("HOME");
-    // std::filesystem::path executablePath = std::string(homeDir) + "/ros2_sonia_ws/src/sonia_BehaviorTree/src/missions";
-
-    // std::filesystem::path relativeFilePath = file_path;
 
     std::filesystem::path fullFilePath = name;
-
-    rclcpp::init(argc,argv);
-    auto node= std::make_shared<rclcpp::Node>("sonia_bt_runner");
 
     auto tree = factory.createTree(fullFilePath);
     BT::Groot2Publisher publisher(tree, 5555);
@@ -106,12 +104,14 @@ int main(int argc, char *argv[])
         file << uid << " -> " << name << "\n";
     }
     NodeStatus result = NodeStatus::RUNNING;
+    rclcpp::Rate r(100);
 
     while (rclcpp::ok() && result != NodeStatus::SUCCESS && result != NodeStatus::FAILURE)
     {
-        rclcpp::sleep_for(std::chrono::milliseconds(100));
+        //rclcpp::sleep_for(std::chrono::milliseconds(100));
         result = tree.tickOnce();
         rclcpp::spin_some(node);
+        r.sleep();
     }
 
     std::cout << "MISSION RESULT: " << result << std::endl;

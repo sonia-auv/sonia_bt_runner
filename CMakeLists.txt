@@ -36,7 +36,8 @@ list(REMOVE_ITEM sonia_bt_runner_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/${sonia_bt_runner_SRC_DIR}/gen_nodes.cpp)
 
 include_directories(
-            ${sonia_bt_runner_INCLUDE_DIRS}
+        include
+        ${sonia_bt_runner_INCLUDE_DIRS}
 )
 
 #==========================================================================

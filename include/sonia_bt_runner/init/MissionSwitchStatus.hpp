@@ -8,7 +8,7 @@ namespace init{
     class MissionSwitchStatus: public BT::ConditionNode
     {
         public:
-            MissionSwitchStatus(const std::string &name);
+            MissionSwitchStatus(const std::string &name, std::shared_ptr<rclcpp::Node> node);
             ~MissionSwitchStatus();
             BT::NodeStatus tick() override;
             

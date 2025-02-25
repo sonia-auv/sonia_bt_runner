@@ -13,7 +13,9 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
     BT::BehaviorTreeFactory factory;
-    registerNodes(factory);
+    rclcpp::init(argc,argv);
+    auto node= std::make_shared<rclcpp::Node>("sonia_bt_runner");
+    registerNodes(factory,node);
 
     std::string xml_models = BT::writeTreeNodesModelXML(factory, false);
     printf("%s\n", xml_models.c_str());
@@ -21,5 +23,6 @@ int main(int argc, char *argv[])
     myfile.open(argv[1]);
     myfile << xml_models.c_str();
     myfile.close();
+    rclcpp::shutdown;
     return EXIT_SUCCESS;
 }
