@@ -16,17 +16,13 @@ namespace init{
     {
         if(_mission_status)
         {
-            std::cout <<"succes"<<std::endl;
-            return BT::NodeStatus::SUCCESS;
-            
+            return BT::NodeStatus::SUCCESS;   
         }
         return BT::NodeStatus::FAILURE;
         
     }
     void MissionSwitchStatus::update_status(const sonia_common_ros2::msg::MissionStatus::ConstPtr &msg)
     {
-        RCLCPP_INFO(ros_node->get_logger(), "status: %s", msg->status);
         _mission_status = msg->status;
-        //std::cout <<"mission: "<<_mission_status<<std::endl;
     }
 }

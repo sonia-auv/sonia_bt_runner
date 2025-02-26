@@ -7,7 +7,7 @@
 namespace init{
     class EnableDisableDVL: public BT::SyncActionNode{
         public:
-            EnableDisableDVL(const std::string &name, const BT::NodeConfig &config);
+            EnableDisableDVL(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
             ~EnableDisableDVL();
             static BT::PortsList providedPorts(){
                 return {BT::InputPort<bool>("dvl_input",true, "")};

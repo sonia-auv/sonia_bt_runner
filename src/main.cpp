@@ -104,14 +104,19 @@ int main(int argc, char *argv[])
         file << uid << " -> " << name << "\n";
     }
     NodeStatus result = NodeStatus::RUNNING;
-    rclcpp::Rate r(100);
+
+    std::thread ros_spin([&](){
+        rclcpp::Rate r(100);
+        while(rclcpp::ok()){
+            rclcpp::spin_some(node);
+            r.sleep();
+        }
+    });
 
     while (rclcpp::ok() && result != NodeStatus::SUCCESS && result != NodeStatus::FAILURE)
     {
         //rclcpp::sleep_for(std::chrono::milliseconds(100));
         result = tree.tickOnce();
-        rclcpp::spin_some(node);
-        r.sleep();
     }
 
     std::cout << "MISSION RESULT: " << result << std::endl;
@@ -136,6 +141,9 @@ int main(int argc, char *argv[])
              << "\n";
     }
     file.close();
+    if(ros_spin.joinable()){
+        ros_spin.join();
+    }
     rclcpp::shutdown();
     return EXIT_SUCCESS;
 }
