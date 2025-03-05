@@ -7,7 +7,7 @@
 namespace init{
     class Tare: public BT::SyncActionNode{
         public:
-            Tare(const std::string &name, const BT::NodeConfig &config);
+            Tare(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
             ~Tare();
             static BT::PortsList providedPorts(){
                 return {BT::InputPort<std::string>("sensor", "imu or depth")};

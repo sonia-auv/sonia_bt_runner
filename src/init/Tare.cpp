@@ -2,8 +2,8 @@
 
 namespace init{
 
-    Tare::Tare(const std::string &name, const BT::NodeConfig &config)
-    : BT::SyncActionNode(name, config), ros_node{std::make_shared<rclcpp::Node>(name)}
+    Tare::Tare(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
+    : BT::SyncActionNode(name, config), ros_node(node)
     {
         imu_client = ros_node->create_client<std_srvs::srv::Trigger>("provider_imu/tare");
         depth_client = ros_node->create_client<std_srvs::srv::Trigger>("provider_depth/tare");
