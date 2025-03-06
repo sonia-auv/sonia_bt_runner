@@ -11,7 +11,7 @@ namespace actuator{
 
     BT::NodeStatus Torpedo::onStart(){
         request = std::make_shared<sonia_common_ros2::srv::ActuatorService::Request>();
-        request->action= request->ACTION_TORPEDO_LAUNCH;
+        request->action= request->ACTION_LAUNCH;
         request->element= request->ELEMENT_TORPEDO;
         if(getInput<std::string>("side") = "port_side"){
             request->side = request->SIDE_PORT;

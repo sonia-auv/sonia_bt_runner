@@ -10,7 +10,7 @@ namespace actuator{
 
     BT::NodeStatus Dropper::onStart(){
         request = std::make_shared<sonia_common_ros2::srv::ActuatorService::Request>();
-        request->action= request->ACTION_DROPPER_LAUNCH;
+        request->action= request->ACTION_LAUNCH;
         request->element= request->ELEMENT_DROPPER;
         if(getInput<std::string>("side") = "port_side"){
             request->side = request->SIDE_PORT;
