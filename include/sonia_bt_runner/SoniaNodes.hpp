@@ -29,9 +29,10 @@ static void registerNavigationNodes(BT::BehaviorTreeFactory &factory)
     //factory.registerNodeType<navigation::SendWaypoint>("SendWaypoint");
 }
 
-static void registerVisionNodes(BT::BehaviorTreeFactory &factory)
+static void registerVisionNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
-    
+    //factory.registerBuilder<vision::AiActivation>("AiActivation", configBuilder<vision::AiActivation>(node));
+    //factory.registerBuilder<vision::AiFilter>("AirFilter", configBuilder<vision::AiFilter>(node));
 }
 
 static void registerNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
@@ -39,7 +40,7 @@ static void registerNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclc
     registerInitNodes(factory, node);
     registerActuatorNodes(factory, node);
    //registerNavigationNodes(factory);
-    //registerVisionNodes(factory);
+    registerVisionNodes(factory, node);
 }
 
 template <typename T>
