@@ -1,7 +1,8 @@
-/*#pragma once
+#pragma once
 
 #include "rclcpp/rclcpp.hpp"
 #include "behaviortree_cpp/behavior_tree.h"
+#include "sonia_common_ros2/srv/ai_activation_service.hpp"
 
 namespace vision{
     class AiActivation : public BT::SyncActionNode
@@ -12,13 +13,16 @@ namespace vision{
 
         static BT::PortsList providedPorts()
         {
-            const int activation_target_def = 0;
-            return {BT::InputPort<int>("activation_target", activation_target_def, "0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH")};
+            return {
+                BT::InputPort<bool>("Front", false, "true: ON, talse: OFF"),
+                BT::InputPort<bool>("Bottom", false, "true: ON, talse: OFF")};
         }
 
         BT::NodeStatus tick() override;
 
     private:
+        std::shared_ptr<sonia_common_ros2::srv::AiActivationService_Request> request;
+        rclcpp::Client<sonia_common_ros2::srv::AiActivationService>::SharedPtr ai_client;
         std::shared_ptr<rclcpp::Node> ros_node;
     };
-}*/
+}

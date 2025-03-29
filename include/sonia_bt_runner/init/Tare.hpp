@@ -15,10 +15,9 @@ namespace init{
 
             BT::NodeStatus tick() override;
         private:
-            BT::Expected<std::string> sensor;
+            
             std::shared_ptr<rclcpp::Node> ros_node;
             std::shared_ptr<std_srvs::srv::Trigger_Request> request;
-            std::shared_ptr<std_srvs::srv::Trigger_Response> response;
             rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr imu_client;
             rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr depth_client;
     };

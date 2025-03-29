@@ -11,8 +11,9 @@ namespace init{
     Tare::~Tare(){}
     BT::NodeStatus Tare::tick()
     {
+        std::shared_ptr<std_srvs::srv::Trigger_Response> response;
         request = std::make_shared<std_srvs::srv::Trigger_Request>();
-        sensor = getInput<std::string>("sensor");
+        BT::Expected<std::string> sensor = getInput<std::string>("sensor");
         if(sensor.value()=="imu"){
             response= imu_client->async_send_request(request).get();
         }

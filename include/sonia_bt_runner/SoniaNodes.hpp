@@ -24,22 +24,24 @@ static void registerActuatorNodes(BT::BehaviorTreeFactory &factory, std::shared_
     factory.registerBuilder<actuator::Dropper>("Droppers", configBuilder<actuator::Dropper>(node));
     factory.registerBuilder<actuator::Torpedo>("Torpedos", configBuilder<actuator::Torpedo>(node)); 
 }
-static void registerNavigationNodes(BT::BehaviorTreeFactory &factory)
+static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
-    //factory.registerNodeType<navigation::SendWaypoint>("SendWaypoint");
+    factory.registerNodeType<navigation::InitializeTrajectory>("InitializeTrajectory");
+    factory.registerNodeType<navigation::TrajectoryAppendPose>("TrajectoryAppendPose");
+    factory.registerBuilder<navigation::SendTrajectory>("SendTrajectory", configBuilder<navigation::SendTrajectory>(node));
 }
 
 static void registerVisionNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
-    //factory.registerBuilder<vision::AiActivation>("AiActivation", configBuilder<vision::AiActivation>(node));
-    //factory.registerBuilder<vision::AiFilter>("AirFilter", configBuilder<vision::AiFilter>(node));
+    factory.registerBuilder<vision::AiActivation>("AiActivation", configBuilder<vision::AiActivation>(node));
+    factory.registerBuilder<vision::AiFilter>("AirFilter", configBuilder<vision::AiFilter>(node));
 }
 
 static void registerNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
     registerInitNodes(factory, node);
     registerActuatorNodes(factory, node);
-   //registerNavigationNodes(factory);
+    registerNavigationNodes(factory, node);
     registerVisionNodes(factory, node);
 }
 

@@ -11,9 +11,9 @@ namespace init{
     BT::NodeStatus ControlSetMode::onStart(){
 
         std_msgs::msg::UInt8 msg;
-        bool data = false;
-        getInput<bool>("set_mode", data);
-        if(data){
+        
+        BT::Expected<bool> data =getInput<bool>("set_mode");
+        if(data.value()){
             msg.data = 10;
             mode_pub->publish(msg);
         }

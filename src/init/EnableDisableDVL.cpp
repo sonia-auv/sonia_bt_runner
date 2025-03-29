@@ -10,11 +10,9 @@ namespace init{
     EnableDisableDVL::~EnableDisableDVL() {}
     BT::NodeStatus EnableDisableDVL::tick(){
         std_msgs::msg::Bool dvl_state;
-        bool data = false;
+        BT::Expected<bool> data = getInput<bool>("dvl_input");
 
-        getInput<bool>("dvl_input", data);
-
-        dvl_state.data=data;
+        dvl_state.data=data.value();
         dvl_pub->publish(dvl_state);
         return BT::NodeStatus::SUCCESS;
     }
