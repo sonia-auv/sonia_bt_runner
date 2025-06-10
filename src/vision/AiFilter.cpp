@@ -5,7 +5,6 @@ namespace vision{
     :BT::StatefulActionNode(name, config), ros_node(node)
     {
 
-
     }
     AiFilter::~AiFilter(){}
     BT::NodeStatus AiFilter::onStart(){

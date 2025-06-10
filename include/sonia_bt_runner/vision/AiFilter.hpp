@@ -2,6 +2,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "behaviortree_cpp/behavior_tree.h"
+#include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 
 namespace vision{
     class AiFilter: public BT::StatefulActionNode{
@@ -17,6 +18,7 @@ namespace vision{
                     BT::InputPort<int>("Max_count", "Maximum count"),
                     BT::InputPort<int>("Max_frame", "maximum allowed frames"),
                     BT::InputPort<int>("Max_depth", "Maximum allowed depth")};
+                    BT::OutputPort<AiDetectionArray>("ai_info");
             }
 
             BT::NodeStatus onStart() override;
