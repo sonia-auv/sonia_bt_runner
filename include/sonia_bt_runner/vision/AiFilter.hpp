@@ -13,9 +13,8 @@ namespace vision{
             {
                 return {
                     BT::InputPort<int>("Object", "Searched object"),
-                    BT::InputPort<float>("Confidence", 0.8, "Ai confidence"),
-                    BT::InputPort<int>("Min_count", "Minimum count"),
-                    BT::InputPort<int>("Max_count", "Maximum count"),
+                    BT::InputPort<float>("Confidence", 0.6, "Ai confidence"),
+                    BT::InputPort<int>("Expected_count", "object count"),
                     BT::InputPort<int>("Max_frame", "maximum allowed frames"),
                     BT::InputPort<int>("Max_depth", "Maximum allowed depth")};
                     BT::OutputPort<AiDetectionArray>("ai_info");

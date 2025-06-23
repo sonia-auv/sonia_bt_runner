@@ -15,7 +15,8 @@ namespace vision{
         {
             return {
                 BT::InputPort<bool>("Front", false, "true: ON, talse: OFF"),
-                BT::InputPort<bool>("Bottom", false, "true: ON, talse: OFF")};
+                BT::InputPort<bool>("Bottom", false, "true: ON, talse: OFF"),
+                BT::InputPort<int>("Model", 0, "model choice, default = 0")};
         }
 
         BT::NodeStatus tick() override;
