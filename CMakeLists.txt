@@ -10,6 +10,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(behaviortree_cpp REQUIRED)
 find_package(sonia_common_ros2 REQUIRED)
 find_package(std_msgs REQUIRED)
@@ -34,6 +35,8 @@ list(REMOVE_ITEM sonia_bt_runner_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/${sonia_bt_runner_SRC_DIR}/main.cpp)
 list(REMOVE_ITEM sonia_bt_runner_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/${sonia_bt_runner_SRC_DIR}/gen_nodes.cpp)
+list(REMOVE_ITEM sonia_bt_runner_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/${sonia_bt_runner_SRC_DIR}/gen_server.cpp)
 
 include_directories(
         include
@@ -47,12 +50,15 @@ add_executable( ${TARGET_NAME_MAIN}
         ${sonia_bt_runner_SRC_DIR}/main.cpp ${sonia_bt_runner_FILES}
 )
 
-
 set( TARGET_NAME_GEN gen_nodes )
 add_executable( ${TARGET_NAME_GEN}
         ${sonia_bt_runner_SRC_DIR}/gen_nodes.cpp ${sonia_bt_runner_FILES}
 )
 
+set( TARGET_NAME_SERVER gen_server )
+add_executable( ${TARGET_NAME_SERVER}
+        ${sonia_bt_runner_SRC_DIR}/gen_server.cpp ${sonia_bt_runner_FILES}
+)
 
 install(
     DIRECTORY include/
@@ -62,9 +68,11 @@ install(
 install(TARGETS
     ${TARGET_NAME_MAIN}
     ${TARGET_NAME_GEN}
+    ${TARGET_NAME_SERVER}
     DESTINATION lib/${PROJECT_NAME})
 
-ament_target_dependencies(${TARGET_NAME_MAIN} rclcpp sonia_common_ros2 std_msgs std_srvs behaviortree_cpp)
-ament_target_dependencies(${TARGET_NAME_GEN} rclcpp sonia_common_ros2 std_msgs std_srvs behaviortree_cpp) 
+ament_target_dependencies(${TARGET_NAME_MAIN} rclcpp rclcpp_action sonia_common_ros2 std_msgs std_srvs behaviortree_cpp)
+ament_target_dependencies(${TARGET_NAME_GEN} rclcpp rclcpp_action sonia_common_ros2 std_msgs std_srvs behaviortree_cpp)
+ament_target_dependencies(${TARGET_NAME_SERVER} rclcpp rclcpp_action sonia_common_ros2 std_msgs std_srvs behaviortree_cpp) 
 
 ament_package()
