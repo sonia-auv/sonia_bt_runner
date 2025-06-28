@@ -35,7 +35,7 @@ namespace navigation{
         planner_pub->publish(array_to_send);
         _time_launch = std::chrono::system_clock::now();
         planner_sub =ros_node->create_subscription<std_msgs::msg::Int8>("/proc_planner/is_waypoints_valid", 1, std::bind(&SendTrajectory::isWaypointValid, this,_1));
-
+        return BT::NodeStatus::RUNNING;
     }
     BT::NodeStatus SendTrajectory::onRunning(){
         std::chrono::duration<double> elapsed_time = std::chrono::system_clock::now() - _time_launch;
