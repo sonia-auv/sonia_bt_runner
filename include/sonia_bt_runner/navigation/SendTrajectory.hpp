@@ -31,9 +31,8 @@ namespace navigation{
             std::shared_ptr<rclcpp::Node> ros_node;
             rclcpp::Publisher<sonia_common_ros2::msg::PoseArray>::SharedPtr planner_pub;
             rclcpp::Subscription<std_msgs::msg::Int8>::SharedPtr planner_sub;
-
+            
             int valid;
-            std::chrono::_V2::system_clock::time_point _time_launch;
-        
+            std::chrono::_V2::system_clock::time_point _time_launch;        
     };
 }

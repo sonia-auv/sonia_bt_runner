@@ -5,7 +5,6 @@ namespace actuator{
     :BT::StatefulActionNode(name, config), ros_node(node)
     {
         torpedo_client = ros_node->create_client<sonia_common_ros2::srv::ActuatorService>("/provider_actuator/do_action");
-
     }
     Torpedo::~Torpedo(){}
 
