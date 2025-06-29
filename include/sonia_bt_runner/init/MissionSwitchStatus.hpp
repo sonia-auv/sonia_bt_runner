@@ -4,7 +4,6 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_common_ros2/msg/mission_status.hpp"
-#include "sonia_common_ros2/action/wait_for_true.hpp"
 
 namespace init{
     class MissionSwitchStatus: public BT::ConditionNode
@@ -20,8 +19,6 @@ namespace init{
             std::shared_ptr<rclcpp::Node> ros_node;
             rclcpp::Subscription<sonia_common_ros2::msg::MissionStatus>::SharedPtr mission_sub;
             bool _mission_status;
-
-            rclcpp_action::Client<sonia_common_ros2::action::WaitForTrue>::SharedPtr client;
     };
     
 }

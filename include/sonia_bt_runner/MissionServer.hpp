@@ -2,9 +2,13 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
+#include <thread>
 
-#include "sonia_bt_runner/utils/ActionServer.hpp"
-#include "sonia_common_ros2/action/wait_for_true.hpp"
+#include "sonia_common_ros2/action/mission_control.hpp"
+
+using MissionControl = sonia_common_ros2::action::MissionControl;
+using GoalHandle = rclcpp_action::ServerGoalHandle<MissionControl>;
+//using Callback = std::function<void(const std::shared_ptr<GoalHandle> goal_handle)>;
 
 class MissionServer : public rclcpp::Node{
     public:
@@ -12,8 +16,12 @@ class MissionServer : public rclcpp::Node{
         ~MissionServer();
 
         void init();
-        void execute(const std::shared_ptr<rclcpp_action::ServerGoalHandle<sonia_common_ros2::action::WaitForTrue>> goal);
+        void execute(const std::shared_ptr<GoalHandle> goal);
     private:
-        std::shared_ptr<utils::ActionServer<sonia_common_ros2::action::WaitForTrue>> check_mission_server;
+        rclcpp_action::GoalResponse handleGoal(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const MissionControl::Goal> goal);
+        rclcpp_action::CancelResponse handleCancel(const std::shared_ptr<GoalHandle> goalhandle);
+        void handleAccept(const std::shared_ptr<GoalHandle> goal);
+
+        rclcpp_action::Server<MissionControl>::SharedPtr server_;
         
 };
