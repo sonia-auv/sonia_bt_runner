@@ -25,4 +25,4 @@ namespace init{
     {
         _mission_status = msg->status;
     }
-}
+} // namespace init

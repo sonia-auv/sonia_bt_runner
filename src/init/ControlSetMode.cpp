@@ -37,5 +37,4 @@ namespace init{
     void ControlSetMode::control_callback(const sonia_common_ros2::msg::MpcInfo &msg){
         ctrl_state=msg.mpc_mode;
     }
-
-}
+} // namespace init
