@@ -21,4 +21,4 @@ namespace init{
             bool _mission_status;
     };
     
-}
+} // namespace init

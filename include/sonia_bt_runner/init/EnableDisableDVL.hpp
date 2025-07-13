@@ -17,4 +17,4 @@ namespace init{
             std::shared_ptr<rclcpp::Node> ros_node;
             rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr dvl_pub;
     };
-}
+} // namespace init

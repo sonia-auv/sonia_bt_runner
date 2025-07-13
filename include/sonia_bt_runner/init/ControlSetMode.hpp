@@ -24,4 +24,4 @@ namespace init{
             rclcpp::Subscription<sonia_common_ros2::msg::MpcInfo>::SharedPtr ctrl_sub;
             uint8_t ctrl_state;
     };
-}
+} // namespace init
