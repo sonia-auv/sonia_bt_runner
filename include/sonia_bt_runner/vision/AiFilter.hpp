@@ -3,6 +3,9 @@
 #include "rclcpp/rclcpp.hpp"
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
+#include "sonia_common_ros2/msg/detection.hpp"
+#include "sonia_common_ros2/msg/detection_array.hpp"
+
 
 namespace vision{
     class AiFilter: public BT::StatefulActionNode{
@@ -24,7 +27,14 @@ namespace vision{
             BT::NodeStatus onRunning() override;
             void onHalted() override;
         private:
+            void ai_front_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg);
+            void ai_bottom_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg);
+
             std::shared_ptr<rclcpp::Node> ros_node;
+            rclcpp::Subscription<sonia_common_ros2::msg::DetectionArray>::SharedPtr ai_front_filter_sub;
+            rclcpp::Subscription<sonia_common_ros2::msg::DetectionArray>::SharedPtr ai_bottom_filter_sub;
+
+            
     };
 
 }
