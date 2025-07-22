@@ -10,6 +10,7 @@
 #include "behaviortree_cpp/loggers/bt_observer.h"
 #include "behaviortree_cpp/loggers/groot2_publisher.h"
 
+#include "Logging.hpp"
 #include "sonia_bt_runner/SoniaNodes.hpp"
 #include "sonia_common_ros2/action/mission_control.hpp"
 
@@ -31,7 +32,8 @@ class MissionServer : public rclcpp::Node{
         void handleAccept(const std::shared_ptr<GoalHandle> goal);
 
         std::string name_;
+        NodeStatus result_;
         BT::BehaviorTreeFactory factory_;
         rclcpp_action::Server<MissionControl>::SharedPtr server_;
-        
+        BT::Tree tree_;
 };

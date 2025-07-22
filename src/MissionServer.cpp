@@ -24,27 +24,35 @@ MissionServer::MissionServer()
     }
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal)
     {    
-    
+        
+        auto res = std::make_shared<MissionControl::Result>();
         std::filesystem::path fullFilePath = name_;
 
-        auto tree = factory_.createTree(fullFilePath);
-        BT::Groot2Publisher publisher(tree, 5555);
+        tree_ = factory_.createTree(fullFilePath);
+        BT::Groot2Publisher publisher(tree_, 5555);
         publisher.setEnabled(true);
 
-        NodeStatus result = NodeStatus::RUNNING;
+        Logging log(tree_);
 
-        while (rclcpp::ok() && result != NodeStatus::SUCCESS && result != NodeStatus::FAILURE)
+        result_=NodeStatus::RUNNING;
+        while (rclcpp::ok() && result_ != NodeStatus::SUCCESS && result_ != NodeStatus::FAILURE)
         {
-            //rclcpp::sleep_for(std::chrono::milliseconds(100));
-            result = tree.tickOnce();
+            rclcpp::sleep_for(std::chrono::milliseconds(10));
+            result_ = tree_.tickOnce();
         }
+        res->success=true;
+        goal->succeed(res);
+
+        publisher.setEnabled(false);
+        //  RCLCPP_INFO(this->get_logger(), "completed the tree");
 
     }
     rclcpp_action::GoalResponse MissionServer::handleGoal(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const MissionControl::Goal> goal){
-        RCLCPP_INFO(this->get_logger(), "Received goal request with mission root %s", goal->mission);
+        RCLCPP_INFO(this->get_logger(), "Received goal request with mission %s", goal->mission);
         (void)uuid;
 
-        std::string search_directory = "/home/sonia2/ros2_sonia_ws/src/sonia_bt_missions/mission/";
+        //std::string search_directory = "/home/sonia2/ros2_sonia_ws/src/sonia_bt_missions/mission/";
+        std::string search_directory = "/home/sawali/ros_sonia_ws2/src/sonia_bt_missions/mission/";
         name_ =goal->mission;
 
         using std::filesystem::directory_iterator;
