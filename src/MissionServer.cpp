@@ -32,7 +32,7 @@ MissionServer::MissionServer()
         BT::Groot2Publisher publisher(tree_, 5555);
         publisher.setEnabled(true);
 
-        Logging log(tree_);
+        //Logging log(tree_);
 
         result_=NodeStatus::RUNNING;
         while (rclcpp::ok() && result_ != NodeStatus::SUCCESS && result_ != NodeStatus::FAILURE)
