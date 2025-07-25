@@ -3,6 +3,8 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <thread>
+#include <filesystem>
+#include <iostream>
 
 #include "behaviortree_cpp/bt_factory.h"
 #include "behaviortree_cpp/behavior_tree.h"
@@ -35,4 +37,5 @@ class MissionServer : public rclcpp::Node{
         BT::BehaviorTreeFactory factory_;
         rclcpp_action::Server<MissionControl>::SharedPtr server_;
         BT::Tree tree_;
+        //BT::TreeObserver obs;
 };

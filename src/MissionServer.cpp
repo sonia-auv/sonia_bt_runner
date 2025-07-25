@@ -24,9 +24,19 @@ MissionServer::MissionServer()
     }
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal)
     {    
+         /*std::map<uint16_t, std::string> ordered_UID_to_path;
+        for (const auto &[name, uid] : obs.pathToUID())
+        {
+            ordered_UID_to_path[uid] = name;
+        }
+
+        for (const auto &[uid, name] : ordered_UID_to_path)
+        {
+            std::cout << uid << " -> " << name << std::endl;
+        }*/
         
         auto res = std::make_shared<MissionControl::Result>();
-        std::filesystem::path fullFilePath = name_;
+        std::filesystem::path fullFilePath(name_);
 
         tree_ = factory_.createTree(fullFilePath);
         BT::Groot2Publisher publisher(tree_, 5555);
