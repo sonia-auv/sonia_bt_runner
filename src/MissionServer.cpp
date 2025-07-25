@@ -2,7 +2,6 @@
 #include <functional>
 using namespace std::placeholders;
 
-
 MissionServer::MissionServer()
     : Node("Mission_server")
     {
@@ -19,7 +18,7 @@ MissionServer::MissionServer()
     MissionServer::~MissionServer()
     {}
     void MissionServer::init(){
-        registerNodes(factory_, shared_from_this());
+        registerNodes(factory_, this->shared_from_this());
         
     }
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal)
@@ -36,33 +35,37 @@ MissionServer::MissionServer()
         }*/
         
         auto res = std::make_shared<MissionControl::Result>();
-        std::filesystem::path fullFilePath(name_);
+        
 
-        tree_ = factory_.createTree(fullFilePath);
         BT::Groot2Publisher publisher(tree_, 5555);
         publisher.setEnabled(true);
 
         //Logging log(tree_);
-
-        result_=NodeStatus::RUNNING;
-        while (rclcpp::ok() && result_ != NodeStatus::SUCCESS && result_ != NodeStatus::FAILURE)
+        RCLCPP_INFO(this->get_logger(), "Begin tree");
+        NodeStatus result_=NodeStatus::RUNNING;
+        while (result_ != NodeStatus::SUCCESS && result_ != NodeStatus::FAILURE)
         {
-            rclcpp::sleep_for(std::chrono::milliseconds(10));
             result_ = tree_.tickOnce();
+            std::cout << "ticking..... " << result_ << std::endl;
+
         }
+        std::cout << "MISSION RESULT: " << result_ << std::endl;
+    
+        std::cout << "----------------" << std::endl;
+    
         res->success=true;
         goal->succeed(res);
 
-        publisher.setEnabled(false);
-        //  RCLCPP_INFO(this->get_logger(), "completed the tree");
+        
+        RCLCPP_INFO(this->get_logger(), "completed the tree");
 
     }
     rclcpp_action::GoalResponse MissionServer::handleGoal(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const MissionControl::Goal> goal){
-        RCLCPP_INFO(this->get_logger(), "Received goal request with mission %s", goal->mission);
+        RCLCPP_INFO(this->get_logger(), "Received goal request with mission %", goal->mission);
         (void)uuid;
 
-        //std::string search_directory = "/home/sonia2/ros2_sonia_ws/src/sonia_bt_missions/mission/";
-        std::string search_directory = "/home/sawali/ros_sonia_ws2/src/sonia_bt_missions/mission/";
+        std::string search_directory = "/home/sonia2/ros2_sonia_ws/src/sonia_bt_missions/mission/";
+        //std::string search_directory = "/home/sawali/ros_sonia_ws2/src/sonia_bt_missions/mission/";
         name_ =goal->mission;
 
         using std::filesystem::directory_iterator;
@@ -73,9 +76,12 @@ MissionServer::MissionServer()
             if (entry.path().extension() == ".xml")
             {
                 factory_.registerBehaviorTreeFromFile(entry.path().string());
-                std::cout << "file"<<entry.path()<<std::endl;
+                std::cout << "file: "<<entry.path()<<std::endl;
             }
         }
+  
+        std::filesystem::path fullFilePath(name_);
+        tree_ = factory_.createTree(fullFilePath);
 
         return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
     }

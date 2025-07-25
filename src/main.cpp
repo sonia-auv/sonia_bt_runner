@@ -11,10 +11,11 @@ int main(int argc, char *argv[])
     server->init();
     
     rclcpp::Rate r(10);
-    while(rclcpp::ok()){
+    /*while(rclcpp::ok()){
         rclcpp::spin_some(server);
         r.sleep();
-    }
+    }*/
+    rclcpp::spin(server);
     
     rclcpp::shutdown();
     return EXIT_SUCCESS;
