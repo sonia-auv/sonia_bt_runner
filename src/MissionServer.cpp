@@ -12,7 +12,7 @@ MissionServer::MissionServer()
                     std::bind(&MissionServer::handleCancel, this, _1),
                     std::bind(&MissionServer::handleAccept, this, _1));
         
-        RCLCPP_INFO(this->get_logger(), "Action Server up running");
+        RCLCPP_INFO(this->get_logger(), "Mission Server up running");
     } 
     
     MissionServer::~MissionServer()
@@ -22,17 +22,7 @@ MissionServer::MissionServer()
         
     }
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal)
-    {    
-         /*std::map<uint16_t, std::string> ordered_UID_to_path;
-        for (const auto &[name, uid] : obs.pathToUID())
-        {
-            ordered_UID_to_path[uid] = name;
-        }
-
-        for (const auto &[uid, name] : ordered_UID_to_path)
-        {
-            std::cout << uid << " -> " << name << std::endl;
-        }*/
+    {
         
         auto res = std::make_shared<MissionControl::Result>();
         
@@ -43,9 +33,12 @@ MissionServer::MissionServer()
         //Logging log(tree_);
         RCLCPP_INFO(this->get_logger(), "Begin tree");
         NodeStatus result_=NodeStatus::RUNNING;
-        while (result_ != NodeStatus::SUCCESS && result_ != NodeStatus::FAILURE)
+        while (rclcpp::ok() &&result_ != NodeStatus::SUCCESS && result_ != NodeStatus::FAILURE)
         {
+
+            RCLCPP_INFO(this->get_logger(), "%s",BT::toStr(result_).c_str());
             result_ = tree_.tickOnce();
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
             std::cout << "ticking..... " << result_ << std::endl;
 
         }
@@ -56,12 +49,11 @@ MissionServer::MissionServer()
         res->success=true;
         goal->succeed(res);
 
-        
         RCLCPP_INFO(this->get_logger(), "completed the tree");
-
     }
+
     rclcpp_action::GoalResponse MissionServer::handleGoal(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const MissionControl::Goal> goal){
-        RCLCPP_INFO(this->get_logger(), "Received goal request with mission %", goal->mission);
+        RCLCPP_INFO(this->get_logger(), "Received goal request with mission %s", goal->mission.c_str());
         (void)uuid;
 
         std::string search_directory = "/home/sonia2/ros2_sonia_ws/src/sonia_bt_missions/mission/";
@@ -79,11 +71,17 @@ MissionServer::MissionServer()
                 std::cout << "file: "<<entry.path()<<std::endl;
             }
         }
-  
-        std::filesystem::path fullFilePath(name_);
-        tree_ = factory_.createTree(fullFilePath);
-
-        return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
+        try
+        {
+            std::filesystem::path fullFilePath(name_);
+            tree_ = factory_.createTree(fullFilePath);
+            return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
+        }
+        catch(const std::exception& e)
+        {
+            return rclcpp_action::GoalResponse::REJECT;
+        }
+          
     }
     rclcpp_action::CancelResponse MissionServer::handleCancel(const std::shared_ptr<GoalHandle> goal_handle){
         RCLCPP_INFO(this->get_logger(), "Received request to cancel goal");

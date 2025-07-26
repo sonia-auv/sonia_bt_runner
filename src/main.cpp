@@ -10,11 +10,10 @@ int main(int argc, char *argv[])
     auto server= std::make_shared<MissionServer>();
     server->init();
     
-    rclcpp::Rate r(10);
-    /*while(rclcpp::ok()){
-        rclcpp::spin_some(server);
-        r.sleep();
-    }*/
+    /*rclcpp::Rate r(10);
+    rclcpp::executors::MultiThreadedExecutor executor;
+    executor.add_node(server);
+    executor.spin();*/
     rclcpp::spin(server);
     
     rclcpp::shutdown();
