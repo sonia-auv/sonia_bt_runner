@@ -1,4 +1,5 @@
 #include "sonia_bt_runner/MissionServer.hpp"
+#include "sonia_bt_runner/Tracker.hpp"
 #include <functional>
 using namespace std::placeholders;
 
@@ -33,10 +34,12 @@ MissionServer::MissionServer()
         BT::TreeObserver obs(tree_);
         RCLCPP_INFO(this->get_logger(), "Begin tree");
         NodeStatus result_=NodeStatus::RUNNING;
+        Tracker trac(tree_);
         while (rclcpp::ok() &&result_ != NodeStatus::SUCCESS && result_ != NodeStatus::FAILURE)
         {
+
             
-            RCLCPP_INFO(this->get_logger(), "%s",BT::toStr(result_).c_str());
+            //RCLCPP_INFO(this->get_logger(), "%s",BT::toStr(result_).c_str());
             result_ = tree_.tickOnce();
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
             
@@ -74,6 +77,7 @@ MissionServer::MissionServer()
         {
             std::filesystem::path fullFilePath(name_);
             tree_ = factory_.createTree(fullFilePath);
+            
             return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
         }
         catch(const std::exception& e)

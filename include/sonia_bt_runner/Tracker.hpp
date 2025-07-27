@@ -1,5 +1,6 @@
 #pragma once
 
+#include "behaviortree_cpp/behavior_tree.h"
 #include <behaviortree_cpp/loggers/abstract_logger.h>
 
 class Tracker : public BT::StatusChangeLogger
@@ -8,4 +9,5 @@ class Tracker : public BT::StatusChangeLogger
         Tracker(BT::Tree& tree);
 
         void callback(BT::Duration timestamp, const BT::TreeNode& node, BT::NodeStatus prev_status, BT::NodeStatus status) override;
+        void flush() override;
 };

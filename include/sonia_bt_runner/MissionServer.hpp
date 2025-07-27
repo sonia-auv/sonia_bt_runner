@@ -13,7 +13,7 @@
 #include "behaviortree_cpp/loggers/groot2_publisher.h"
 
 #include "sonia_bt_runner/SoniaNodes.hpp"
-#include "sonia_bt_runner/Tracker.hpp"
+
 #include "sonia_common_ros2/action/mission_control.hpp"
 
 using namespace BT;
