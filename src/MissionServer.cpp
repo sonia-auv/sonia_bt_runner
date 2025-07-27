@@ -30,17 +30,16 @@ MissionServer::MissionServer()
         BT::Groot2Publisher publisher(tree_, 5555);
         publisher.setEnabled(true);
 
-        //Logging log(tree_);
+        BT::TreeObserver obs(tree_);
         RCLCPP_INFO(this->get_logger(), "Begin tree");
         NodeStatus result_=NodeStatus::RUNNING;
         while (rclcpp::ok() &&result_ != NodeStatus::SUCCESS && result_ != NodeStatus::FAILURE)
         {
-
+            
             RCLCPP_INFO(this->get_logger(), "%s",BT::toStr(result_).c_str());
             result_ = tree_.tickOnce();
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            std::cout << "ticking..... " << result_ << std::endl;
-
+            
         }
         std::cout << "MISSION RESULT: " << result_ << std::endl;
     
