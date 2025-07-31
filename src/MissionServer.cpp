@@ -24,21 +24,21 @@ MissionServer::MissionServer()
     }
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal)
     {
-        
         auto res = std::make_shared<MissionControl::Result>();
-        
+        auto feedback = std::make_shared<MissionControl::Feedback>();
 
         BT::Groot2Publisher publisher(tree_, 5555);
         publisher.setEnabled(true);
 
-        BT::TreeObserver obs(tree_);
+       
         RCLCPP_INFO(this->get_logger(), "Begin tree");
         NodeStatus result_=NodeStatus::RUNNING;
-        Tracker trac(tree_);
+        //Tracker trac(tree_);
+        feedback->status = "testing";
+                    
         while (rclcpp::ok() &&result_ != NodeStatus::SUCCESS && result_ != NodeStatus::FAILURE)
         {
-
-            
+            goal->publish_feedback(feedback);
             //RCLCPP_INFO(this->get_logger(), "%s",BT::toStr(result_).c_str());
             result_ = tree_.tickOnce();
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -50,6 +50,7 @@ MissionServer::MissionServer()
     
         res->success=true;
         goal->succeed(res);
+        publisher.setEnabled(false);
 
         RCLCPP_INFO(this->get_logger(), "completed the tree");
     }
@@ -58,8 +59,8 @@ MissionServer::MissionServer()
         RCLCPP_INFO(this->get_logger(), "Received goal request with mission %s", goal->mission.c_str());
         (void)uuid;
 
-        std::string search_directory = "/home/sonia2/ros2_sonia_ws/src/sonia_bt_missions/mission/";
-        //std::string search_directory = "/home/sawali/ros_sonia_ws2/src/sonia_bt_missions/mission/";
+        //std::string search_directory = "/home/sonia2/ros2_sonia_ws/src/sonia_bt_missions/mission/";
+        std::string search_directory = "/home/sawali/ros_sonia_ws2/src/sonia_bt_missions/mission/";
         name_ =goal->mission;
 
         using std::filesystem::directory_iterator;
@@ -77,7 +78,6 @@ MissionServer::MissionServer()
         {
             std::filesystem::path fullFilePath(name_);
             tree_ = factory_.createTree(fullFilePath);
-            
             return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
         }
         catch(const std::exception& e)
