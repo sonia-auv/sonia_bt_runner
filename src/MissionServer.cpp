@@ -33,15 +33,15 @@ MissionServer::MissionServer()
        
         RCLCPP_INFO(this->get_logger(), "Begin tree");
         NodeStatus result_=NodeStatus::RUNNING;
-        //Tracker trac(tree_);
-        feedback->status = "testing";
+        Tracker trac(tree_, feedback); 
                     
-        while (rclcpp::ok() &&result_ != NodeStatus::SUCCESS && result_ != NodeStatus::FAILURE)
+        while (rclcpp::ok()&&result_ != NodeStatus::SUCCESS && result_ != NodeStatus::FAILURE)
         {
-            goal->publish_feedback(feedback);
-            //RCLCPP_INFO(this->get_logger(), "%s",BT::toStr(result_).c_str());
+            //feedback->status = trac->tracker_;
             result_ = tree_.tickOnce();
+            goal->publish_feedback(feedback);
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            
             
         }
         std::cout << "MISSION RESULT: " << result_ << std::endl;
@@ -59,8 +59,8 @@ MissionServer::MissionServer()
         RCLCPP_INFO(this->get_logger(), "Received goal request with mission %s", goal->mission.c_str());
         (void)uuid;
 
-        //std::string search_directory = "/home/sonia2/ros2_sonia_ws/src/sonia_bt_missions/mission/";
-        std::string search_directory = "/home/sawali/ros_sonia_ws2/src/sonia_bt_missions/mission/";
+        std::string search_directory = "/home/sonia2/ros2_sonia_ws/src/sonia_bt_missions/mission/";
+        //std::string search_directory = "/home/sawali/ros_sonia_ws2/src/sonia_bt_missions/mission/";
         name_ =goal->mission;
 
         using std::filesystem::directory_iterator;
