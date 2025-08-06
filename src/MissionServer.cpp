@@ -25,29 +25,22 @@ MissionServer::MissionServer()
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal)
     {
         auto res = std::make_shared<MissionControl::Result>();
-        auto feedback = std::make_shared<MissionControl::Feedback>();
 
         BT::Groot2Publisher publisher(tree_, 5555);
         publisher.setEnabled(true);
 
-       
-        RCLCPP_INFO(this->get_logger(), "Begin tree");
         NodeStatus result_=NodeStatus::RUNNING;
-        Tracker trac(tree_, feedback); 
-                    
-        while (rclcpp::ok()&&result_ != NodeStatus::SUCCESS && result_ != NodeStatus::FAILURE)
+        Tracker trac(tree_, goal); 
+       
+        RCLCPP_INFO(this->get_logger(), "Begin tree");     
+        while (!BT::isStatusCompleted(result_))
         {
-            //feedback->status = trac->tracker_;
             result_ = tree_.tickOnce();
-            goal->publish_feedback(feedback);
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            
-            
+            tree_.sleep(std::chrono::milliseconds(100));         
         }
         std::cout << "MISSION RESULT: " << result_ << std::endl;
-    
         std::cout << "----------------" << std::endl;
-    
+        
         res->success=true;
         goal->succeed(res);
         publisher.setEnabled(false);
@@ -59,8 +52,8 @@ MissionServer::MissionServer()
         RCLCPP_INFO(this->get_logger(), "Received goal request with mission %s", goal->mission.c_str());
         (void)uuid;
 
-        std::string search_directory = "/home/sonia2/ros2_sonia_ws/src/sonia_bt_missions/mission/";
-        //std::string search_directory = "/home/sawali/ros_sonia_ws2/src/sonia_bt_missions/mission/";
+        //std::string search_directory = "/home/sonia2/ros2_sonia_ws/src/sonia_bt_missions/mission/";
+        std::string search_directory = "/home/sawali/ros_sonia_ws2/src/sonia_bt_missions/mission/";
         name_ =goal->mission;
 
         using std::filesystem::directory_iterator;
@@ -82,6 +75,8 @@ MissionServer::MissionServer()
         }
         catch(const std::exception& e)
         {
+            factory_.clearRegisteredBehaviorTrees();
+            tree_.~Tree();
             return rclcpp_action::GoalResponse::REJECT;
         }
           

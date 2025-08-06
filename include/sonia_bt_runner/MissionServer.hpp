@@ -3,6 +3,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <thread>
+#include <chrono>
 #include <filesystem>
 #include <iostream>
 
@@ -13,13 +14,11 @@
 #include "behaviortree_cpp/loggers/groot2_publisher.h"
 
 #include "sonia_bt_runner/SoniaNodes.hpp"
-
 #include "sonia_common_ros2/action/mission_control.hpp"
 
 using namespace BT;
 using MissionControl = sonia_common_ros2::action::MissionControl;
 using GoalHandle = rclcpp_action::ServerGoalHandle<MissionControl>;
-//using Callback = std::function<void(const std::shared_ptr<GoalHandle> goal_handle)>;
 
 class MissionServer : public rclcpp::Node{
     public:
@@ -35,7 +34,6 @@ class MissionServer : public rclcpp::Node{
         void handleAccept(const std::shared_ptr<GoalHandle> goal_handle);
 
         std::string name_;
-        //NodeStatus result_;
         BehaviorTreeFactory factory_;
         rclcpp_action::Server<MissionControl>::SharedPtr server_;
         Tree tree_;
