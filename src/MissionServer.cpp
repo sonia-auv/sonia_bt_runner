@@ -75,6 +75,7 @@ MissionServer::MissionServer()
         }
         catch(const std::exception& e)
         {
+            std::cout<<e.what()<<std::endl;
             factory_.clearRegisteredBehaviorTrees();
             tree_.~Tree();
             return rclcpp_action::GoalResponse::REJECT;
