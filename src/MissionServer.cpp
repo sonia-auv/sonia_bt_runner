@@ -52,8 +52,8 @@ MissionServer::MissionServer()
         RCLCPP_INFO(this->get_logger(), "Received goal request with mission %s", goal->mission.c_str());
         (void)uuid;
 
-        //std::string search_directory = "/home/sonia2/ros2_sonia_ws/src/sonia_bt_missions/mission/";
-        std::string search_directory = "/home/sawali/ros_sonia_ws2/src/sonia_bt_missions/mission/";
+        std::string search_directory = "/home/sonia2/ssd/ros2_sonia_ws/src/sonia_bt_missions/mission/";
+        //std::string search_directory = "/home/sawali/ros_sonia_ws2/src/sonia_bt_missions/mission/";
         name_ =goal->mission;
 
         using std::filesystem::directory_iterator;

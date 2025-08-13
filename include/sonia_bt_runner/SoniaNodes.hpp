@@ -21,8 +21,8 @@ static void registerInitNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<
 }
 static void registerActuatorNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
-    factory.registerBuilder<actuator::Dropper>("Droppers", configBuilder<actuator::Dropper>(node));
-    factory.registerBuilder<actuator::Torpedo>("Torpedos", configBuilder<actuator::Torpedo>(node)); 
+    factory.registerBuilder<actuator::Dropper>("Dropper", configBuilder<actuator::Dropper>(node));
+    factory.registerBuilder<actuator::Torpedo>("Torpedo", configBuilder<actuator::Torpedo>(node)); 
 }
 static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
