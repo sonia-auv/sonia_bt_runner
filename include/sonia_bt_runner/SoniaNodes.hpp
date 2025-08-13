@@ -4,6 +4,7 @@
 #include "sonia_bt_runner/navigation/SoniaNavigation.hpp"
 #include "sonia_bt_runner/init/SoniaInit.hpp"
 #include "sonia_bt_runner/actuator/SoniaActuator.hpp"
+#include "sonia_bt_runner/sensors/DepthCheck.hpp"
 
 using namespace BT;
 template <typename T>
@@ -38,12 +39,18 @@ static void registerVisionNodes(BT::BehaviorTreeFactory &factory, std::shared_pt
     factory.registerBuilder<vision::AiFilter>("AirFilter", configBuilder<vision::AiFilter>(node));
 }
 
+static void registerSensorNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
+{
+    factory.registerBuilder<sensors::DepthCheck>("DepthCheck", simpleBuilder<sensors::DepthCheck>(node));
+}
+
 static void registerNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
     registerInitNodes(factory, node);
     registerActuatorNodes(factory, node);
     registerNavigationNodes(factory, node);
     registerVisionNodes(factory, node);
+    registerSensorNodes(factory, node);
 }
 
 template <typename T>
