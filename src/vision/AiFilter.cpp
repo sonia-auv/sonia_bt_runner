@@ -16,9 +16,10 @@ namespace vision{
         //chose camera
         if(cam.value())
             ai_filter_sub = ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/front/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
-        else    
+        else
             ai_filter_sub = ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/bottom/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));    
-            return BT::NodeStatus::RUNNING;
+        
+        return BT::NodeStatus::RUNNING;
     }
     BT::NodeStatus AiFilter::onRunning(){
         // BT::Expected<int> buffer_size= getInput<int>("Buffer_size");
@@ -34,7 +35,7 @@ namespace vision{
 
         AiDetectionArray detected_object_array;
 
-        for (int i = 0; i < _detection_array.size(); i++){
+        for (long unsigned int i = 0; i < _detection_array.size(); i++){
             AiDetection detected_object;
             detected_object.top_right_x = _detection_array[i].top_right_x;
             detected_object.top_right_y = _detection_array[i].top_right_y;
@@ -50,7 +51,7 @@ namespace vision{
             detected_object.confidence = _detection_array[i].confidence;
             detected_object.classification = _detection_array[i].class_name;
 
-            RCLCPP_INFO(ros_node->get_logger(), "Detection filtered %s : dist = %f | conf = %f", detected_object.classification, detected_object.distance, detected_object.confidence);
+            RCLCPP_INFO(ros_node->get_logger(), "Detection filtered %s : dist = %f | conf = %f", detected_object.classification.c_str(), detected_object.distance, detected_object.confidence);
 
 
             detected_object_array.detection_array.push_back(detected_object);
@@ -113,9 +114,11 @@ namespace vision{
         counter++;
         for (auto msg_obj: msg.detected_object){
             // TODO Tester la condition, devrait etre vraie si le nom de la classe est inclus dans le vecteur de noms de classes
-            RCLCPP_INFO(ros_node->get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name, msg_obj.distance, msg_obj.confidence);
+            RCLCPP_INFO(ros_node->get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name.c_str(), msg_obj.distance, msg_obj.confidence);
 
             // if(std::find(_object.value().begin(), _object.value().end(), msg_obj.class_name) != _object.value().end()){
+            RCLCPP_INFO(ros_node->get_logger(), "Comparing %s and %s", msg_obj.class_name.c_str(), _object.value().c_str());
+
             if(msg_obj.class_name.compare(_object.value()) == 0){
                 RCLCPP_INFO(ros_node->get_logger(), "Class OK");
 

@@ -29,7 +29,7 @@ static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::share
 {
     factory.registerNodeType<navigation::InitializeTrajectory>("InitializeTrajectory");
     factory.registerNodeType<navigation::TrajectoryAppendPose>("TrajectoryAppendPose");
-    factory.registerNodeType<navigation::Alignment>("Alignment");
+    // factory.registerNodeType<navigation::Alignment>("Alignment");
     factory.registerBuilder<navigation::SendTrajectory>("SendTrajectory", configBuilder<navigation::SendTrajectory>(node));
     factory.registerBuilder<navigation::WaitTargetReached>("WaitTargetReached", configBuilder<navigation::WaitTargetReached>(node));
 }
