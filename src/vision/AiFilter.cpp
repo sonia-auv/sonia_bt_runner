@@ -5,13 +5,14 @@ namespace vision{
     AiFilter::AiFilter(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
     :BT::StatefulActionNode(name, config), ros_node(node)
     {
-            
+        
     }
     AiFilter::~AiFilter(){}
     BT::NodeStatus AiFilter::onStart(){
-        _object=getInput<std::string>("Object");
+        BT::Expected<std::string> _object = getInput<std::string>("Object_class");
         BT::Expected<int> cam = getInput<int>("Camera");
-
+        counter = 0;
+        nb_detection = 0;
         //chose camera
         if(cam.value())
             ai_filter_sub = ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/front/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
@@ -20,39 +21,84 @@ namespace vision{
             return BT::NodeStatus::RUNNING;
     }
     BT::NodeStatus AiFilter::onRunning(){
-        BT::Expected<int> buffer_size= getInput<int>("Camera");
+        // BT::Expected<int> buffer_size= getInput<int>("Buffer_size");
+        BT::Expected<int> max_frame= getInput<int>("Max_frame");
         //if the array size remains small than the buffer size return
-        if(_dection_array.size()< buffer_size.value())
-            return BT::NodeStatus::RUNNING;
 
-        AiDetection avg_object;
+        if(_detection_array.empty()){
+            if(counter == max_frame.value())
+                return BT::NodeStatus::FAILURE;
+            else
+                return BT::NodeStatus::RUNNING;
+        }
 
-        float avg_bot_left_x, avg_bot_left_y, avg_bot_right_x, avg_bot_right_y= 0.0;
-        float avg_top_left_x, avg_top_left_y, avg_top_right_x, avg_top_right_y= 0.0;
+        AiDetectionArray detected_object_array;
 
-        for (auto det: _dection_array){
-            avg_top_left_x += det.top_left_x;
-            avg_top_left_y += det.top_left_y;
-            avg_top_right_x += det.top_right_x;
-            avg_top_right_x += det.top_right_x;
+        for (int i = 0; i < _detection_array.size(); i++){
+            AiDetection detected_object;
+            detected_object.top_right_x = _detection_array[i].top_right_x;
+            detected_object.top_right_y = _detection_array[i].top_right_y;
+            detected_object.top_left_x = _detection_array[i].top_left_x;
+            detected_object.top_left_y = _detection_array[i].top_left_y;
+            
+            detected_object.bottom_right_x = _detection_array[i].bottom_right_x;
+            detected_object.bottom_right_y = _detection_array[i].bottom_right_y;
+            detected_object.bottom_left_x = _detection_array[i].bottom_left_x;
+            detected_object.bottom_left_y = _detection_array[i].bottom_left_y;
 
-            avg_bot_left_x += det.bottom_left_x;
-            avg_bot_left_y += det.bottom_left_y;
-            avg_bot_right_x += det.bottom_right_x;
-            avg_bot_right_x += det.bottom_right_x;
+            detected_object.distance = _detection_array[i].distance;
+            detected_object.confidence = _detection_array[i].confidence;
+            detected_object.classification = _detection_array[i].class_name;
+
+            RCLCPP_INFO(ros_node->get_logger(), "Detection filtered %s : dist = %f | conf = %f", detected_object.classification, detected_object.distance, detected_object.confidence);
+
+
+            detected_object_array.detection_array.push_back(detected_object);
         } 
-        avg_object.bottom_left_x=avg_bot_left_x/buffer_size.value();
-        avg_object.bottom_left_y=avg_bot_left_y/buffer_size.value();
-        avg_object.bottom_right_x=avg_bot_right_x/buffer_size.value();
-        avg_object.bottom_right_y=avg_bot_right_y/buffer_size.value();
+        
+        BT::Expected<int> max_size_output = getInput<int>("Max_size_output");
 
-        avg_object.top_left_x=avg_top_left_x/buffer_size.value();
-        avg_object.top_left_y=avg_top_left_y/buffer_size.value();
-        avg_object.top_right_x=avg_top_right_x/buffer_size.value();
-        avg_object.top_right_y=avg_top_right_y/buffer_size.value();
+        if(detected_object_array.detection_array.size() > max_size_output.value()){
+            float distances [max_size_output.value()];
+            int ids [max_size_output.value()];
+            for (int n = 0; n < max_size_output.value(); n++){
+                distances[n] = 100000;
+            }
 
-        avg_object.classification= _dection_array.at(0).class_name;
-        setOutput("average_obj", avg_object);
+            int i = 0;
+            for (AiDetection detected_object: detected_object_array.detection_array){
+                int k = 0;
+                float max_dist = 0;
+                int max_id = 0;
+                for (float d: distances){
+                    if (d > max_dist){
+                        max_dist = d;
+                        max_id = k;
+                    }
+                    k++;
+                }
+
+                if (max_dist > detected_object.distance){
+                    ids[max_id] = i;
+                }
+                i++;
+            }
+
+            AiDetectionArray reduced_detected_object_array;
+            int u = 0;
+            for (int index: ids){
+                RCLCPP_INFO(ros_node->get_logger(), "Reducing id = %d | dist = %f", index, distances[u]);
+                u++;
+                reduced_detected_object_array.detection_array.push_back(detected_object_array.detection_array[index]);
+            }
+            RCLCPP_INFO(ros_node->get_logger(), "Output is reduced");
+            setOutput("detected_object_array", reduced_detected_object_array);
+        }
+        else{
+            RCLCPP_INFO(ros_node->get_logger(), "Output is not reduced");
+            setOutput("detected_object_array", detected_object_array);
+        }
+
         return BT::NodeStatus::SUCCESS;
 
     }
@@ -61,10 +107,30 @@ namespace vision{
     }
 
     void AiFilter::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) {
-        BT::Expected<float> confidence = getInput<int>("Confidence");
+        BT::Expected<float> confidence = getInput<float>("Confidence");
+        BT::Expected<float> max_depth = getInput<float>("Max_depth");
+        BT::Expected<int> min_detection = getInput<int>("Min_detection");
+        counter++;
         for (auto msg_obj: msg.detected_object){
-            if(msg_obj.class_name == _object.value()&&msg_obj.confidence>=confidence.value()){
-                _dection_array.push_back(msg_obj);
+            // TODO Tester la condition, devrait etre vraie si le nom de la classe est inclus dans le vecteur de noms de classes
+            RCLCPP_INFO(ros_node->get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name, msg_obj.distance, msg_obj.confidence);
+
+            // if(std::find(_object.value().begin(), _object.value().end(), msg_obj.class_name) != _object.value().end()){
+            if(msg_obj.class_name.compare(_object.value()) == 0){
+                RCLCPP_INFO(ros_node->get_logger(), "Class OK");
+
+                if(msg_obj.confidence >= confidence.value() && msg_obj.distance <= max_depth.value())
+                {
+                    RCLCPP_INFO(ros_node->get_logger(), "Confidence and depth OK");
+                    if(nb_detection < min_detection.value()){
+                        nb_detection++;
+                        RCLCPP_INFO(ros_node->get_logger(), "Detection on frame %d, nb_detection = %d", counter, nb_detection);
+                        continue;
+                    }
+                    else{
+                        _detection_array.push_back(msg_obj);
+                    }
+                }
             }
         }     
     }

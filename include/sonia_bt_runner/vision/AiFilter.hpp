@@ -3,6 +3,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetection.hpp"
+#include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 #include "sonia_common_ros2/msg/detection.hpp"
 #include "sonia_common_ros2/msg/detection_array.hpp"
 
@@ -16,12 +17,15 @@ namespace vision{
             {
                 return {
                     BT::InputPort<int>("Camera", 1, "0: Front, 1: Bottom"),
-                    BT::InputPort<int>("Object", "Searched object"),
+                    BT::InputPort<std::string>("Object_class", "Searched object"),
+                    // BT::InputPort<int>("Object_class", "Searched object"),
                     BT::InputPort<float>("Confidence", 0.6, "Ai confidence"),
-                    BT::InputPort<int>("Buffer_size", "Number of detection to average"),
+                    // BT::InputPort<int>("Buffer_size", "Number of detection to average"),
+                    BT::InputPort<int>("Min_detection", "minumum number of frames with at least one detection before sending results"),
                     BT::InputPort<int>("Max_frame", "maximum allowed frames"),
-                    BT::InputPort<int>("Max_depth", "Maximum allowed depth")};
-                    BT::OutputPort<AiDetection>("average_obj");
+                    BT::InputPort<float>("Max_depth", "Maximum allowed depth"),
+                    BT::InputPort<int>("Max_size_output", "Max size of the output array"),
+                    BT::OutputPort<AiDetectionArray>("detected_object_array")};
             }
 
             BT::NodeStatus onStart() override;
@@ -33,7 +37,9 @@ namespace vision{
             std::shared_ptr<rclcpp::Node> ros_node;
             rclcpp::Subscription<sonia_common_ros2::msg::DetectionArray>::SharedPtr ai_filter_sub;
 
-            std::vector<sonia_common_ros2::msg::Detection> _dection_array;
+            std::vector<sonia_common_ros2::msg::Detection> _detection_array;
+            int counter;
+            int nb_detection;
 
             BT::Expected<std::string> _object;
             

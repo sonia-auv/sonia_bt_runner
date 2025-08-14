@@ -5,6 +5,7 @@
 struct AiDetection
 {
     std::string classification;
+    float confidence;
     float distance;
     float top_left_x;
     float top_left_y;
@@ -27,6 +28,7 @@ namespace BT
         }
         AiDetection output;
         output.classification = parts[0];
+        output.confidence = convertFromString<float>(parts[1]);
         output.distance = convertFromString<float>(parts[2]);
         output.top_left_x= convertFromString<float>(parts[3]);
         output.top_left_y= convertFromString<float>(parts[4]);
