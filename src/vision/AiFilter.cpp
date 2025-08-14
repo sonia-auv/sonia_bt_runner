@@ -28,12 +28,12 @@ namespace vision{
         return BT::NodeStatus::RUNNING;
     }
     BT::NodeStatus AiFilter::onRunning(){
+        
+        if(counter >= max_frame.value())
+            return BT::NodeStatus::FAILURE;
 
         if(_detection_array.empty()){
-            if(counter == max_frame.value())
-                return BT::NodeStatus::FAILURE;
-            else
-                return BT::NodeStatus::RUNNING;
+            return BT::NodeStatus::RUNNING;
         }
 
         AiDetectionArray detected_object_array;
