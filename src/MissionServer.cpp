@@ -6,6 +6,10 @@ using namespace std::placeholders;
 MissionServer::MissionServer()
     : Node("Mission_server")
     {
+        const char *ws = std::getenv("SONIA_WS");
+        search_directory.assign(ws);
+        search_directory.append("/src/sonia_bt_missions/mission/");
+
         server_ = rclcpp_action::create_server<MissionControl>(
                     this,
                     "MissionControl",
@@ -26,9 +30,6 @@ MissionServer::MissionServer()
     {
         auto res = std::make_shared<MissionControl::Result>();
 
-        BT::Groot2Publisher publisher(tree_, 5555);
-        publisher.setEnabled(true);
-
         NodeStatus result_=NodeStatus::RUNNING;
         Tracker trac(tree_, goal); 
        
@@ -43,7 +44,6 @@ MissionServer::MissionServer()
         
         res->success=true;
         goal->succeed(res);
-        publisher.setEnabled(false);
 
         RCLCPP_INFO(this->get_logger(), "completed the tree");
     }
@@ -52,15 +52,12 @@ MissionServer::MissionServer()
         RCLCPP_INFO(this->get_logger(), "Received goal request with mission %s", goal->mission.c_str());
         (void)uuid;
 
-        std::string search_directory = "/home/sonia2/ssd/ros2_sonia_ws/src/sonia_bt_missions/mission/";
-        //std::string search_directory = "/home/sawali/ros_sonia_ws2/src/sonia_bt_missions/mission/";
         name_ =goal->mission;
 
         using std::filesystem::directory_iterator;
     
         for (auto const &entry : directory_iterator(search_directory))
         {
-
             if (entry.path().extension() == ".xml")
             {
                 factory_.registerBehaviorTreeFromFile(entry.path().string());

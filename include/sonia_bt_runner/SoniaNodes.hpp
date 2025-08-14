@@ -36,7 +36,7 @@ static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::share
 static void registerVisionNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
     factory.registerBuilder<vision::AiActivation>("AiActivation", configBuilder<vision::AiActivation>(node));
-    factory.registerBuilder<vision::AiFilter>("AirFilter", configBuilder<vision::AiFilter>(node));
+    factory.registerBuilder<vision::AiFilter>("AiFilter", configBuilder<vision::AiFilter>(node));
 }
 
 static void registerSensorNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)

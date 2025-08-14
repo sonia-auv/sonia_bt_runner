@@ -37,5 +37,6 @@ class MissionServer : public rclcpp::Node{
         BehaviorTreeFactory factory_;
         rclcpp_action::Server<MissionControl>::SharedPtr server_;
         Tree tree_;
+        std::string search_directory;
         
 };
