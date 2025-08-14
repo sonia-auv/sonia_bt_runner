@@ -9,7 +9,13 @@ namespace vision{
     }
     AiFilter::~AiFilter(){}
     BT::NodeStatus AiFilter::onStart(){
-        BT::Expected<std::string> _object = getInput<std::string>("Object_class");
+        _object = getInput<std::string>("Object_class");
+        max_frame= getInput<int>("Max_frame");
+        max_size_output = getInput<int>("Max_size_output");
+        confidence = getInput<float>("Confidence");
+        max_depth = getInput<float>("Max_depth");
+        min_detection = getInput<int>("Min_detection");
+
         BT::Expected<int> cam = getInput<int>("Camera");
         counter = 0;
         nb_detection = 0;
@@ -22,9 +28,6 @@ namespace vision{
         return BT::NodeStatus::RUNNING;
     }
     BT::NodeStatus AiFilter::onRunning(){
-        // BT::Expected<int> buffer_size= getInput<int>("Buffer_size");
-        BT::Expected<int> max_frame= getInput<int>("Max_frame");
-        //if the array size remains small than the buffer size return
 
         if(_detection_array.empty()){
             if(counter == max_frame.value())
@@ -56,8 +59,6 @@ namespace vision{
 
             detected_object_array.detection_array.push_back(detected_object);
         } 
-        
-        BT::Expected<int> max_size_output = getInput<int>("Max_size_output");
 
         if(detected_object_array.detection_array.size() > max_size_output.value()){
             float distances [max_size_output.value()];
@@ -108,16 +109,14 @@ namespace vision{
     }
 
     void AiFilter::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) {
-        BT::Expected<float> confidence = getInput<float>("Confidence");
-        BT::Expected<float> max_depth = getInput<float>("Max_depth");
-        BT::Expected<int> min_detection = getInput<int>("Min_detection");
+       
         counter++;
         for (auto msg_obj: msg.detected_object){
             // TODO Tester la condition, devrait etre vraie si le nom de la classe est inclus dans le vecteur de noms de classes
             RCLCPP_INFO(ros_node->get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name.c_str(), msg_obj.distance, msg_obj.confidence);
 
             // if(std::find(_object.value().begin(), _object.value().end(), msg_obj.class_name) != _object.value().end()){
-            RCLCPP_INFO(ros_node->get_logger(), "Comparing %s and %s", msg_obj.class_name.c_str(), _object.value().c_str());
+            RCLCPP_INFO(ros_node->get_logger(), "Comparing %s and %s = %d", msg_obj.class_name.c_str(), _object.value().c_str(), msg_obj.class_name.compare(_object.value()));
 
             if(msg_obj.class_name.compare(_object.value()) == 0){
                 RCLCPP_INFO(ros_node->get_logger(), "Class OK");
