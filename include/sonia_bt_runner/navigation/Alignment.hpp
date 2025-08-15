@@ -6,7 +6,7 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 
-
+#include "sonia_bt_runner/utils/Trajectory.hpp"
 
 // Fixed intrinsics for ZED Mini @ HD720 (single-eye image: 1280x720)
 struct CameraInfoZedMiniHD720
@@ -60,20 +60,21 @@ namespace navigation
                     BT::InputPort<bool>("alignement_by_translation"),
 
                     // Outputs
+                    BT::BidirectionalPort<Trajectory>("traj"),
                     BT::OutputPort<float>("lateral_m"),
                     BT::OutputPort<float>("bearing_rad"),
                     BT::OutputPort<float>("norm_x"),
                     BT::OutputPort<int>("has_metric"),
-                    BT::OutputPort<float>("positionX"),
-                    BT::OutputPort<float>("positionY"),
-                    BT::OutputPort<float>("positionZ"),
-                    BT::OutputPort<float>("orientationX"),
-                    BT::OutputPort<float>("orientationY"),
-                    BT::OutputPort<float>("orientationZ"),
-                    BT::OutputPort<int>("frame"),
-                    BT::OutputPort<int>("speed"),
-                    BT::OutputPort<int>("precision"),
-                    BT::OutputPort<bool>("longRotation"),
+                    // BT::OutputPort<float>("positionX"),
+                    // BT::OutputPort<float>("positionY"),
+                    // BT::OutputPort<float>("positionZ"),
+                    // BT::OutputPort<float>("orientationX"),
+                    // BT::OutputPort<float>("orientationY"),
+                    // BT::OutputPort<float>("orientationZ"),
+                    // BT::OutputPort<int>("frame"),
+                    // BT::OutputPort<int>("speed"),
+                    // BT::OutputPort<int>("precision"),
+                    // BT::OutputPort<bool>("longRotation"),
                     // OutputPort<TrajectoryPose>("tp", output_state),
                 };
             }

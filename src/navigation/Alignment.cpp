@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <math.h>
 
 
 // ----------------- Helper implementations -----------------
@@ -28,11 +29,11 @@ AlignResult computeAlignmentHD720(const AiDetection& det, bool coords_are_normal
     out.norm_x = 2.0f * (u_px - CameraInfoZedMiniHD720::cx) / std::max(1, CameraInfoZedMiniHD720::width);
     std::cout <<"center x pixel norm : "<< out.norm_x << std::endl;
 
-    float fx=(CameraInfoZedMiniHD720::width/2)/(tan(CameraInfoZedMiniHD720::fovx/2));
+    float fx=(CameraInfoZedMiniHD720::width/2)/(tan(CameraInfoZedMiniHD720::fovx*M_PI/180/2));
     ////////////////////////////////////WRONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNG : 3) bearing (radians) using fx/cx (positive = target to the right)
 
     // out.bearing_rad = std::atan((u_px - CameraInfoZedMiniHD720::cx) / CameraInfoZedMiniHD720::fx);
-    out.bearing_rad = out.norm_x * (fx)/2*M_PI/180;
+    out.bearing_rad = out.norm_x * (fx);
     std::cout <<"bearing rad : "<< out.bearing_rad << std::endl;
 
     // out.bearing_rad = std::atan((u - CameraInfoZedMiniHD720::cx) / CameraInfoZedMiniHD720::fx);
@@ -211,37 +212,45 @@ namespace navigation
 
         std::cout <<"center x pixel norm : "<< res.bearing_rad << std::endl;
         if (res.has_metric){
+            TrajectoryPose t;
             float positionY = 0.0;
             if(mode){
                 positionY=res.lateral_m;
+                t.positionY = res.lateral_m;
                 std::cout <<"translation y x pixel norm : "<< res.lateral_m << std::endl;
                 std::cout <<"mode translation : "<< mode << "  translation Y: " << positionY << std::endl;
                 }
-            setOutput("positionY", positionY);
-            float positionX = 0.0;
-            setOutput("positionX", positionX);
-            float positionZ = 0.0;
-            setOutput("positionZ", positionZ);
-            float orientationX = 0.0;
-            setOutput("orientationX", orientationX);
-            float orientationY = 0.0;
-            setOutput("orientationY", orientationY);
+            // setOutput("positionY", positionY);
+            // float positionX = 0.0;
+            // setOutput("positionX", positionX);
+            // float positionZ = 0.0;
+            // setOutput("positionZ", positionZ);
+            // float orientationX = 0.0;
+            // setOutput("orientationX", orientationX);
+            // float orientationY = 0.0;
+            // setOutput("orientationY", orientationY);
             float orientationZ = 0.0;
             if (!mode){
                 orientationZ=res.bearing_rad;
+                t.orientationZ = res.bearing_rad / M_PI * 180;
                 std::cout <<"orientation z : "<< res.bearing_rad << std::endl;
                 std::cout <<"mode translation : "<< mode << "  orientationZ: " << orientationZ << std::endl;
             }
 
             setOutput("orientationZ", orientationZ);
-            int frame = 1;
-            setOutput("frame", frame);
-            int speed = 2;
-            setOutput("speed", speed);
-            int precision = 0;
-            setOutput("precision", precision);
-            bool long_rotation = false;
-            setOutput("longRotation", long_rotation);
+            // int frame = 1;
+            t.frame = 1;
+            // setOutput("frame", frame);
+            // int speed = 2;
+            // setOutput("speed", speed);
+            t.speed = 2;
+            // int precision = 0;
+            // setOutput("precision", precision);
+            // bool long_rotation = false;
+            // setOutput("longRotation", long_rotation);
+            Trajectory traj = getInput<Trajectory>("traj").value();
+            traj.trajectory.push_back(t);
+            setOutput<Trajectory>("traj", traj);
         }
 
         float error_positionY=0.1;
