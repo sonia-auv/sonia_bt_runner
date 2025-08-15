@@ -142,9 +142,9 @@ namespace vision{
                 if(msg_obj.confidence >= confidence.value() && msg_obj.distance <= max_depth.value())
                 {
                     RCLCPP_INFO(ros_node->get_logger(), "Confidence and depth OK");
-                    nb_detection++;
+                    // nb_detection++;
                     if(nb_detection < min_detection.value()){
-                        // nb_detection++;
+                        nb_detection++;
                         RCLCPP_INFO(ros_node->get_logger(), "Detection on frame %d, nb_detection = %d", counter, nb_detection);
                         continue;
                     }
