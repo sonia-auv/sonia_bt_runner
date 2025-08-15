@@ -26,14 +26,15 @@ AlignResult computeAlignmentHD720(const AiDetection& det, bool coords_are_normal
 
     // 2) normalized lateral in [-1, 1] (no meters; control hint/UI)
     // out.norm_x = 2.0f * (u_px - CameraInfoZedMiniHD720::cx) / std::max(1, CameraInfoZedMiniHD720::width);
-    out.norm_x = 2.0f * (u_px - CameraInfoZedMiniHD720::cx) / std::max(1, CameraInfoZedMiniHD720::width);
+    // out.norm_x = 2.0f * (u_px - CameraInfoZedMiniHD720::cx) / std::max(1, CameraInfoZedMiniHD720::width);
     std::cout <<"center x pixel norm : "<< out.norm_x << std::endl;
 
     float fx=(CameraInfoZedMiniHD720::width/2)/(tan(CameraInfoZedMiniHD720::fovx*M_PI/180/2));
     ////////////////////////////////////WRONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNG : 3) bearing (radians) using fx/cx (positive = target to the right)
 
     // out.bearing_rad = std::atan((u_px - CameraInfoZedMiniHD720::cx) / CameraInfoZedMiniHD720::fx);
-    out.bearing_rad = out.norm_x * (fx);
+    // out.bearing_rad = out.norm_x*(CameraInfoZedMiniHD720::width/2) /(fx);
+    out.bearing_rad = atan((u_px - CameraInfoZedMiniHD720::cx) /(fx));
     std::cout <<"bearing rad : "<< out.bearing_rad << std::endl;
 
     // out.bearing_rad = std::atan((u - CameraInfoZedMiniHD720::cx) / CameraInfoZedMiniHD720::fx);
@@ -42,7 +43,7 @@ AlignResult computeAlignmentHD720(const AiDetection& det, bool coords_are_normal
     if (std::isfinite(det.distance) && det.distance > 0.0f)
     {
         if (alignement_by_translation){
-            out.lateral_m=det.distance*tan(out.bearing_rad);
+            out.lateral_m=det.distance*sin(out.bearing_rad);
             std::cout <<"distance in meters for x : "<< out.lateral_m << std::endl;
         }
 
