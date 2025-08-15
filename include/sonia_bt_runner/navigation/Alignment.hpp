@@ -57,13 +57,13 @@ namespace navigation
                     BT::InputPort<AiDetectionArray>("detections"),
                     BT::InputPort<bool>("normalized_coords"),
                     BT::InputPort<float>("alpha"),
-                    BT::InputPort<bool>("mode_alignement"),//
+                    BT::InputPort<bool>("alignement_by_translation"),//
 
                     // Outputs
                     BT::BidirectionalPort<Trajectory>("traj"),
                     BT::OutputPort<float>("lateral_m"),
                     BT::OutputPort<float>("bearing_rad"),
-                    BT::OutputPort<float>("norm_x"),
+                    BT::OutputPort< float>("norm_x"),
                     BT::OutputPort<int>("has_metric"),
                     // BT::OutputPort<float>("positionX"),
                     // BT::OutputPort<float>("positionY"),
