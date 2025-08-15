@@ -27,6 +27,7 @@ static void registerActuatorNodes(BT::BehaviorTreeFactory &factory, std::shared_
 }
 static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
+    factory.registerBuilder<navigation::Alignment>("Alignment", configBuilder<navigation::Alignment>(node));
     factory.registerNodeType<navigation::InitializeTrajectory>("InitializeTrajectory");
     factory.registerNodeType<navigation::TrajectoryAppendPose>("TrajectoryAppendPose");
     // factory.registerNodeType<navigation::Alignment>("Alignment");

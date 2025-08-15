@@ -29,8 +29,11 @@ namespace vision{
     }
     BT::NodeStatus AiFilter::onRunning(){
         
-        if(counter >= max_frame.value())
+        if(counter >= max_frame.value()){
+            RCLCPP_INFO(ros_node->get_logger(), "counter %d : max frame = %d", counter, max_frame.value());
             return BT::NodeStatus::FAILURE;
+        }
+
 
         if(_detection_array.empty()){
             return BT::NodeStatus::RUNNING;
@@ -61,11 +64,14 @@ namespace vision{
         } 
 
         if(detected_object_array.detection_array.size() > max_size_output.value()){
-            float distances [max_size_output.value()];
-            int ids [max_size_output.value()];
+            std::vector<float> distances;
+
+            std::vector<int> ids;
             for (int n = 0; n < max_size_output.value(); n++){
-                distances[n] = 100000;
+                distances.push_back(100000);
+                ids.push_back(0);
             }
+
 
             int i = 0;
             for (AiDetection detected_object: detected_object_array.detection_array){
@@ -88,16 +94,28 @@ namespace vision{
 
             AiDetectionArray reduced_detected_object_array;
             int u = 0;
+
+            for (AiDetection detected_object: detected_object_array.detection_array){
+                float center_x =detected_object.top_left_x+detected_object.bottom_right_x;
+                RCLCPP_INFO(ros_node->get_logger(), "Output : (IN FOR) class %s : center on x = %f | dist = %f", detected_object.classification.c_str(), center_x, detected_object.distance);
+
+            }
+
             for (int index: ids){
                 RCLCPP_INFO(ros_node->get_logger(), "Reducing id = %d | dist = %f", index, distances[u]);
                 u++;
                 reduced_detected_object_array.detection_array.push_back(detected_object_array.detection_array[index]);
             }
             RCLCPP_INFO(ros_node->get_logger(), "Output is reduced");
+            float center_x =reduced_detected_object_array.detection_array[0].top_left_x+reduced_detected_object_array.detection_array[0].bottom_right_x;
+            RCLCPP_INFO(ros_node->get_logger(), "Output : (AFTER REDUCING) class %s : center on x = %f | dist = %f", reduced_detected_object_array.detection_array[0].classification.c_str(), center_x, reduced_detected_object_array.detection_array[0].distance);
+
             setOutput("detected_object_array", reduced_detected_object_array);
         }
         else{
             RCLCPP_INFO(ros_node->get_logger(), "Output is not reduced");
+            float center_x =detected_object_array.detection_array[0].top_left_x+detected_object_array.detection_array[0].bottom_right_x;
+            RCLCPP_INFO(ros_node->get_logger(), "Output : (NOT REDUCING)class %s : center on x = %f | dist = %f", detected_object_array.detection_array[0].classification.c_str(), center_x, detected_object_array.detection_array[0].distance);
             setOutput("detected_object_array", detected_object_array);
         }
 
@@ -124,8 +142,9 @@ namespace vision{
                 if(msg_obj.confidence >= confidence.value() && msg_obj.distance <= max_depth.value())
                 {
                     RCLCPP_INFO(ros_node->get_logger(), "Confidence and depth OK");
+                    nb_detection++;
                     if(nb_detection < min_detection.value()){
-                        nb_detection++;
+                        // nb_detection++;
                         RCLCPP_INFO(ros_node->get_logger(), "Detection on frame %d, nb_detection = %d", counter, nb_detection);
                         continue;
                     }

@@ -33,7 +33,6 @@ namespace vision{
             void onHalted() override;
         private:
             void ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg);
-
             std::shared_ptr<rclcpp::Node> ros_node;
             rclcpp::Subscription<sonia_common_ros2::msg::DetectionArray>::SharedPtr ai_filter_sub;
 

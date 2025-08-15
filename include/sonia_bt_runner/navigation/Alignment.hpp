@@ -1,17 +1,21 @@
 #pragma once
 
 #include <limits>
+#include "rclcpp/rclcpp.hpp"
 
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 
+
+
 // Fixed intrinsics for ZED Mini @ HD720 (single-eye image: 1280x720)
 struct CameraInfoZedMiniHD720
 {
-    static constexpr int width = 1280;
-    static constexpr int height = 720;
-    static constexpr float fx = 736.0f;              // px (typical)
-    static constexpr float cx = (width - 1) * 0.5f;  // ~ image center (639.5)
+    // dimension image for VGA
+    static constexpr int width = 600; 
+    static constexpr int height = 400;
+    static constexpr float fovx = 30.650667*2;              // px (typical)
+    static constexpr float cx = (width - 1) * 0.5f;  // ~ image center ()
 };
 
 // Results of alignment computation
@@ -21,11 +25,12 @@ struct AlignResult
     float lateral_m = std::numeric_limits<float>::quiet_NaN();  // +right, -left
     float bearing_rad = 0.0f;                                   // yaw to target
     float norm_x = 0.0f;                                        // [-1..1] approx
+    bool in_interval=false;                                     // check if near the target
 };
 
 // Helpers (declared here, defined in .cpp)
 float bboxCenterX(const AiDetection& d);
-AlignResult computeAlignmentHD720(const AiDetection& det, bool coords_are_normalized);
+AlignResult computeAlignmentHD720(const AiDetection& det, bool coords_are_normalized, bool alignement_by_trans);
 
 // BehaviorTree node: Alignment
 // Inputs:
@@ -40,20 +45,64 @@ AlignResult computeAlignmentHD720(const AiDetection& det, bool coords_are_normal
 namespace navigation
 {
 
-    class Alignment : public BT::SyncActionNode
+    class Alignment : public BT::StatefulActionNode
     {
         public:
-        Alignment(const std::string& name, const BT::NodeConfig& cfg);
+            Alignment(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node);
+            ~Alignment()=default;
+            static BT::PortsList providedPorts()
+            {
+                return {
+                        // Inputs
+                    BT::InputPort<AiDetectionArray>("detections"),
+                    BT::InputPort<bool>("normalized_coords"),
+                    BT::InputPort<float>("alpha"),
+                    BT::InputPort<bool>("alignement_by_translation"),
 
-        static BT::PortsList providedPorts();
+                    // Outputs
+                    BT::OutputPort<float>("lateral_m"),
+                    BT::OutputPort<float>("bearing_rad"),
+                    BT::OutputPort<float>("norm_x"),
+                    BT::OutputPort<int>("has_metric"),
+                    BT::OutputPort<float>("positionX"),
+                    BT::OutputPort<float>("positionY"),
+                    BT::OutputPort<float>("positionZ"),
+                    BT::OutputPort<float>("orientationX"),
+                    BT::OutputPort<float>("orientationY"),
+                    BT::OutputPort<float>("orientationZ"),
+                    BT::OutputPort<int>("frame"),
+                    BT::OutputPort<int>("speed"),
+                    BT::OutputPort<int>("precision"),
+                    BT::OutputPort<bool>("longRotation"),
+                    // OutputPort<TrajectoryPose>("tp", output_state),
+                };
+            }
 
-        BT::NodeStatus tick() override;
+            BT::NodeStatus onStart() override;
+            BT::NodeStatus onRunning() override;
+            void onHalted() override;
+
+
+        // Alignment(const std::string& name, const BT::NodeConfig& cfg);
+
+        // static BT::PortsList providedPorts();
+
+        // BT::NodeStatus tick() override;
 
         private:
-        // Previous outputs for optional temporal smoothing
-        float prev_lateral_ = std::numeric_limits<float>::quiet_NaN();
-        float prev_bearing_ = std::numeric_limits<float>::quiet_NaN();
-        float prev_normx_ = std::numeric_limits<float>::quiet_NaN();
+            std::shared_ptr<rclcpp::Node> ros_node;
+
+
+            BT::Expected<AiDetectionArray> arr;
+            BT::Expected<bool> normalized;
+            BT::Expected<float> alpha;
+            BT::Expected<bool> mode;
+            // Previous outputs for optional temporal smoothing
+            float prev_lateral_ = std::numeric_limits<float>::quiet_NaN();
+            float prev_bearing_ = std::numeric_limits<float>::quiet_NaN();
+            float prev_normx_ = std::numeric_limits<float>::quiet_NaN();
+
+
     };
 
 }  // namespace navigation

@@ -6,6 +6,8 @@ namespace navigation{
     : BT::StatefulActionNode(name, config), ros_node(node), valid(0), _time_launch(std::chrono::system_clock::now())
     {
         planner_pub = ros_node->create_publisher<sonia_common_ros2::msg::PoseArray>("/proc_planner/send_pose_array",10);
+        depth_sub = ros_node->create_subscription<std_msgs::msg::Float32>("/provider_depth/depth", 10, std::bind(&SendTrajectory::update_depth, this, _1));
+
     }
     SendTrajectory::~SendTrajectory(){}
 
@@ -15,14 +17,22 @@ namespace navigation{
         sonia_common_ros2::msg::PoseArray array_to_send;
         int interpolation = 0;
         getInput<int>("interpolation", interpolation);
-    
+        
+        float max_depth=1.5;
+
         array_to_send.interpolation_method = interpolation;
         for (size_t i = 0; i < t.trajectory.size(); i++)
         {
             sonia_common_ros2::msg::Pose ap;
             ap.position.x = t.trajectory[i].positionX;
             ap.position.y = t.trajectory[i].positionY;
-            ap.position.z = t.trajectory[i].positionZ;
+            if (t.trajectory[i].frame==1 or t.trajectory[i].frame==2 or t.trajectory[i].frame==4){
+                if (_depth_val+t.trajectory[i].positionZ<max_depth)
+                    ap.position.z = t.trajectory[i].positionZ;
+                else{
+                    ap.position.z = max_depth;
+                }
+            }
             ap.orientation.x = t.trajectory[i].orientationX;
             ap.orientation.y = t.trajectory[i].orientationY;
             ap.orientation.z = t.trajectory[i].orientationZ;
@@ -55,5 +65,9 @@ namespace navigation{
 
     void SendTrajectory::isWaypointValid(const std_msgs::msg::Int8 &msg){
         valid= msg.data;
+    }
+    void SendTrajectory::update_depth(const std_msgs::msg::Float32::ConstPtr &msg)
+    {
+        _depth_val = msg->data;
     }
 }
