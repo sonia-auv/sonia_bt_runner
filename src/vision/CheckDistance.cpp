@@ -10,31 +10,32 @@ namespace vision{
     }
     CheckDistance::~CheckDistance(){}
     BT::NodeStatus CheckDistance::onStart(){
-        object_concerned = getInput<sonia_common_ros2::msg::Detection>("Object");
+        object_concerned = getInput<AiDetectionArray>("Object");
         return BT::NodeStatus::RUNNING;
     }
     BT::NodeStatus CheckDistance::onRunning(){
         float max_depth;
-        if (object_concerned->class_name=="gate")
+        object_concerned2=object_concerned->detection_array.front();
+        if (object_concerned2.classification=="gate")
             max_depth=0.6;
-        else if (object_concerned->class_name=="gate-shark")
+        else if (object_concerned2.classification=="gate-shark")
             max_depth=0.6;
-        else if (object_concerned->class_name=="gate-sawfish")
+        else if (object_concerned2.classification=="gate-sawfish")
             max_depth=0.6;
-        else if (object_concerned->class_name=="torpedo-poster")
+        else if (object_concerned2.classification=="torpedo-poster")
             max_depth=1;
-        else if (object_concerned->class_name=="torpedo-target")
+        else if (object_concerned2.classification=="torpedo-target")
             max_depth=0.25;
-        else if (object_concerned->class_name=="bin")
+        else if (object_concerned2.classification=="bin")
             max_depth=0.6;
-        else if (object_concerned->class_name=="red-slalom")
+        else if (object_concerned2.classification=="red-slalom")
             max_depth=0.6;
-        else if (object_concerned->class_name=="table")
+        else if (object_concerned2.classification=="table")
             max_depth=0.2;
         else 
             max_depth=1;
 
-        translationX = object_concerned->distance-max_depth;
+        translationX = object_concerned2.distance-max_depth;
         setOutput("TranslationX", translationX);
         return BT::NodeStatus::SUCCESS;
 

@@ -5,6 +5,7 @@
 #include "sonia_bt_runner/utils/AiDetection.hpp"
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 #include "sonia_common_ros2/msg/detection.hpp"
+#include "sonia_common_ros2/msg/detection_array.hpp"
 
 
 namespace vision{
@@ -15,7 +16,7 @@ namespace vision{
             static BT::PortsList providedPorts()
             {
                 return {
-                    BT::InputPort<sonia_common_ros2::msg::Detection>("Object"),
+                    BT::InputPort<AiDetectionArray>("Object"),
                     BT::OutputPort<float>("TranslationX")};
             }
 
@@ -25,7 +26,8 @@ namespace vision{
         private:
             std::shared_ptr<rclcpp::Node> ros_node;
 
-            BT::Expected<sonia_common_ros2::msg::Detection> object_concerned;
+            BT::Expected<AiDetectionArray> object_concerned;
+            AiDetection object_concerned2;
             double translationX;
             
     };
