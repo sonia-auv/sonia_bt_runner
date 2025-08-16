@@ -29,6 +29,8 @@ struct AlignResult
 // Helpers (declared here, defined in .cpp)
 float bboxCenterX(const AiDetection& d);
 AlignResult computeAlignmentHD720(const AiDetection& det, bool coords_are_normalized, bool alignement_by_trans);
+float bboxCenterY(const AiDetection& d);
+AlignResult computeAlignmentY(const AiDetection& det, bool alignement_by_translation);
 
 // BehaviorTree node: Alignment
 // Inputs:
@@ -55,14 +57,16 @@ namespace navigation
                     BT::InputPort<AiDetectionArray>("detections"),
                     BT::InputPort<bool>("normalized_coords"),
                     BT::InputPort<float>("alpha"),
-                    BT::InputPort<bool>("alignement_by_translation"),//
+                    BT::InputPort<bool>("alignement_by_translation"),
+                    BT::InputPort<bool>("Camera_front"),
+
 
                     // Outputs
                     BT::BidirectionalPort<Trajectory>("traj"),
                     BT::OutputPort<float>("lateral_m"),
                     BT::OutputPort<float>("bearing_rad"),
                     BT::OutputPort< float>("norm_x"),
-                    BT::OutputPort<int>("has_metric"),
+                    BT::OutputPort<int>("has_metric")
                     // BT::OutputPort<float>("positionX"),
                     // BT::OutputPort<float>("positionY"),
                     // BT::OutputPort<float>("positionZ"),
@@ -96,6 +100,7 @@ namespace navigation
             BT::Expected<bool> normalized;
             BT::Expected<float> alpha;
             BT::Expected<bool> mode;
+            BT::Expected<bool> camera;
             // Previous outputs for optional temporal smoothing
             float prev_lateral_ = std::numeric_limits<float>::quiet_NaN();
             float prev_bearing_ = std::numeric_limits<float>::quiet_NaN();

@@ -35,7 +35,10 @@ namespace vision{
         else 
             max_depth=1;
 
-        translationX = object_concerned2.distance-max_depth;
+        if(object_concerned2.distance==0)
+            translationX=0;
+        else 
+            translationX = object_concerned2.distance-max_depth;
         setOutput("TranslationX", translationX);
         return BT::NodeStatus::SUCCESS;
 

@@ -14,6 +14,12 @@ float bboxCenterX(const AiDetection& d)
     return 0.25f * (d.top_left_x + d.top_right_x + d.bottom_left_x + d.bottom_right_x);
 }
 
+float bboxCenterY(const AiDetection& d)
+{
+    // Average all four corners (robust to minor skew)
+    return 0.25f * (d.top_left_y + d.top_right_y + d.bottom_left_y + d.bottom_right_y);
+}
+
 AlignResult computeAlignmentHD720(const AiDetection& det, bool coords_are_normalized, bool alignement_by_translation)
 {
     AlignResult out;
@@ -38,6 +44,37 @@ AlignResult computeAlignmentHD720(const AiDetection& det, bool coords_are_normal
     std::cout <<"bearing rad : "<< out.bearing_rad << std::endl;
 
     // out.bearing_rad = std::atan((u - CameraInfoZedMiniHD720::cx) / CameraInfoZedMiniHD720::fx);
+
+    // 4) metric lateral if distance is valid: x = Z * (u - cx) / fx
+    if (std::isfinite(det.distance) && det.distance > 0.0f)
+    {
+        if (alignement_by_translation){
+            out.lateral_m=det.distance*sin(out.bearing_rad);
+            std::cout <<"distance in meters for x : "<< out.lateral_m << std::endl;
+        }
+
+        // out.lateral_m = det.distance * (u_px - CameraInfoZedMiniHD720::cx) / CameraInfoZedMiniHD720::fx;
+        
+
+    }
+    out.has_metric = true;
+    std::cout <<"has_metric : "<< out.has_metric << std::endl;
+    return out;
+}
+
+
+AlignResult computeAlignmentY(const AiDetection& det, bool alignement_by_translation)
+{
+    AlignResult out;
+
+    // 1) detection center x in pixels
+    float u_px = bboxCenterY(det);
+    std::cout <<"center x pixel : "<< u_px << std::endl;
+    std::cout <<"center dist x pixel norm : "<< (u_px - CameraInfoZedMiniHD720::cx)  << std::endl;
+
+    float fx=(CameraInfoZedMiniHD720::width/2)/(tan(CameraInfoZedMiniHD720::fovx*M_PI/180/2));
+    out.bearing_rad = atan((u_px - CameraInfoZedMiniHD720::cx) /(fx));
+    std::cout <<"bearing rad : "<< out.bearing_rad << std::endl;
 
     // 4) metric lateral if distance is valid: x = Z * (u - cx) / fx
     if (std::isfinite(det.distance) && det.distance > 0.0f)
@@ -151,6 +188,8 @@ namespace navigation
         bool mode = true;
         getInput("alignement_by_translation", mode);
         AlignResult res = computeAlignmentHD720(det, normalized,mode);
+        AlignResult res_y = computeAlignmentY(det,mode);
+
 
         // int i;
         // bool i_initialized=false;
@@ -217,12 +256,17 @@ namespace navigation
         if (res.has_metric){
             TrajectoryPose t;
             t.positionY = 0.0;
-            if(mode){
+            if(mode==1 or camera==false){
                 t.positionY = res.lateral_m;
-                std::cout <<"translation y x pixel norm : "<< res.lateral_m << std::endl;
+                std::cout <<"translation y : "<< res.lateral_m << std::endl;
                 }
             // setOutput("positionY", positionY);
             t.positionX = 0.0;
+            if (camera==false){
+                t.positionY = res_y.lateral_m;
+                std::cout <<"translation x : "<< t.positionY << std::endl;
+
+            }
             // setOutput("positionX", positionX);
             t.positionZ = 0.0;
             // setOutput("positionZ", positionZ);
