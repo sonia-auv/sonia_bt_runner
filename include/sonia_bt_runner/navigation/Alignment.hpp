@@ -2,13 +2,8 @@
 
 #include <limits>
 #include "rclcpp/rclcpp.hpp"
-<<<<<<< Updated upstream
-=======
-// #include <boost/log/trivial.hpp>
->>>>>>> Stashed changes
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
-
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 
 // Fixed intrinsics for ZED Mini @ HD720 (single-eye image: 1280x720)
