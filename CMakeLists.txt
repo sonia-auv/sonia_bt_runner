@@ -13,6 +13,7 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(behaviortree_cpp REQUIRED)
 find_package(sonia_common_ros2 REQUIRED)
+find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 
@@ -67,7 +68,7 @@ install(TARGETS
     ${TARGET_NAME_GEN}
     DESTINATION lib/${PROJECT_NAME})
 
-ament_target_dependencies(${TARGET_NAME_MAIN} rclcpp rclcpp_action sonia_common_ros2 std_msgs std_srvs behaviortree_cpp)
-ament_target_dependencies(${TARGET_NAME_GEN} rclcpp rclcpp_action sonia_common_ros2 std_msgs std_srvs behaviortree_cpp)
+ament_target_dependencies(${TARGET_NAME_MAIN} rclcpp rclcpp_action sonia_common_ros2 geometry_msgs std_msgs std_srvs behaviortree_cpp)
+ament_target_dependencies(${TARGET_NAME_GEN} rclcpp rclcpp_action sonia_common_ros2 geometry_msgs std_msgs std_srvs behaviortree_cpp)
 
 ament_package()
