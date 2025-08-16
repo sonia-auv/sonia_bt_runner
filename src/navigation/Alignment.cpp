@@ -152,28 +152,28 @@ namespace navigation
         getInput("alignement_by_translation", mode);
         AlignResult res = computeAlignmentHD720(det, normalized,mode);
 
-        int i;
-        bool i_initialized=false;
-        if (i_initialized==false)
-            i=0;
+        // int i;
+        // bool i_initialized=false;
+        // if (i_initialized==false)
+        //     i=0;
 
         // Optional temporal smoothing (IIR) for stability
-        if (do_smooth)
-        {
-            if (std::isfinite(prev_bearing_)){
-                // std::cout <<"bearing rad before smoothing: "<< i << "step"<< res.bearing_rad << std::endl;
-                res.bearing_rad = alpha * res.bearing_rad + (1.0f - alpha) * prev_bearing_;
-                // std::cout <<"bearing rad after smoothing: "<< i << "step"<< res.bearing_rad << std::endl;
-                i++;
-            }
-            if (std::isfinite(prev_normx_)) res.norm_x = alpha * res.norm_x + (1.0f - alpha) * prev_normx_;
-            if (res.has_metric && std::isfinite(prev_lateral_)){
-                std::cout <<"lateral_m before smoothing: "<< i << "step"<< res.lateral_m << std::endl;
-                res.lateral_m = alpha * res.lateral_m + (1.0f - alpha) * prev_lateral_;
-                std::cout <<"lateral_m after smoothing: "<< i << "step"<< res.lateral_m << std::endl;
-        }
+        // if (do_smooth)
+        // {
+        //     if (std::isfinite(prev_bearing_)){
+        //         // std::cout <<"bearing rad before smoothing: "<< i << "step"<< res.bearing_rad << std::endl;
+        //         res.bearing_rad = alpha * res.bearing_rad + (1.0f - alpha) * prev_bearing_;
+        //         // std::cout <<"bearing rad after smoothing: "<< i << "step"<< res.bearing_rad << std::endl;
+        //         i++;
+        //     }
+        //     if (std::isfinite(prev_normx_)) res.norm_x = alpha * res.norm_x + (1.0f - alpha) * prev_normx_;
+        //     if (res.has_metric && std::isfinite(prev_lateral_)){
+        //         std::cout <<"lateral_m before smoothing: "<< i << "step"<< res.lateral_m << std::endl;
+        //         res.lateral_m = alpha * res.lateral_m + (1.0f - alpha) * prev_lateral_;
+        //         std::cout <<"lateral_m after smoothing: "<< i << "step"<< res.lateral_m << std::endl;
+        // }
 
-        }
+        // }
         std::cout <<"center x pixel norm : "<< res.bearing_rad << std::endl;
 
 
@@ -183,23 +183,25 @@ namespace navigation
         std::cout <<"center x pixel norm : "<< res.bearing_rad << std::endl;
 
         setOutput("has_metric", res.has_metric ? 1 : 0);
-        if (mode){
-            // if (res.lateral_m<=error_positionY && res.lateral_m>=-error_positionY){
-            //     res.in_interval=true;
-            // }
-            if(prev_bearing_ == res.bearing_rad)
-                res.in_interval=true;
+        float error_positionY=0.1;
+        float error_orientationY=0.1;
+        // if (mode){
+        //     if (res.lateral_m<=error_positionY && res.lateral_m>=-error_positionY){
+        //         res.in_interval=true;
+        //     }
+        //     // if(prev_bearing_ == res.bearing_rad)
+        //     //     res.in_interval=true;
 
-        }
-        else {
-            // if (res.bearing_rad<=error_orientationY && res.bearing_rad>=-error_orientationY){
-            //     res.in_interval=true;
-            // }
+        // }
+        // else {
+        //     if (res.bearing_rad<=error_orientationY && res.bearing_rad>=-error_orientationY){
+        //         res.in_interval=true;
+        //     }
             
-            if(prev_lateral_ = res.lateral_m)
-                res.in_interval=true;
+        //     // if(prev_lateral_ = res.lateral_m)
+        //     //     res.in_interval=true;
 
-        }
+        // }
         if (res.has_metric)
         {
             setOutput("lateral_m", res.lateral_m);
@@ -237,7 +239,7 @@ namespace navigation
                 std::cout <<"orientation z : "<< res.bearing_rad << std::endl;
                 std::cout <<"mode translation : "<< mode << "  orientationZ: " << orientationZ << std::endl;
             }
-
+            
             setOutput("orientationZ", orientationZ);
             // int frame = 1;
             t.frame = 1;
@@ -250,12 +252,22 @@ namespace navigation
             // bool long_rotation = false;
             // setOutput("longRotation", long_rotation);
             Trajectory traj = getInput<Trajectory>("traj").value();
+            BOOST_LOG_TRIVIAL(info) << "position en x: "<<t.orientationZ;
+            BOOST_LOG_TRIVIAL(info) << "position en y: "<<t.orientationZ;
+            BOOST_LOG_TRIVIAL(info) << "position en z: "<<t.orientationZ;
+            BOOST_LOG_TRIVIAL(info) << "Orientation en x: "<<t.orientationZ;
+            BOOST_LOG_TRIVIAL(info) << "Orientation en y: "<<t.orientationZ;
+            BOOST_LOG_TRIVIAL(info) << "Orientation en z: "<<t.orientationZ;
+            BOOST_LOG_TRIVIAL(info) << "frame: "<<t.frame;
+            BOOST_LOG_TRIVIAL(info) << "speed: "<<t.speed;
+            BOOST_LOG_TRIVIAL(info) << "precision: "<<t.precision;
+            BOOST_LOG_TRIVIAL(info) << "long rotation: "<<t.long_rotation;
             traj.trajectory.push_back(t);
             setOutput<Trajectory>("traj", traj);
         }
 
-        float error_positionY=0.1;
-        float error_orientationY=0.1;
+        // float error_positionY=0.1;
+        // float error_orientationY=0.1;
         // if (mode){
         //     // if (res.lateral_m<=error_positionY && res.lateral_m>=-error_positionY){
         //     //     res.in_interval=true;
@@ -294,7 +306,7 @@ namespace navigation
 
 
         // SUCCESS if metric lateral is available; otherwise RUNNING so parent can fall back to bearing-only logic
-        return res.in_interval ? BT::NodeStatus::SUCCESS : BT::NodeStatus::RUNNING;
+        return res.has_metric ? BT::NodeStatus::SUCCESS : BT::NodeStatus::RUNNING;
     }
 
 }  // namespace navigation

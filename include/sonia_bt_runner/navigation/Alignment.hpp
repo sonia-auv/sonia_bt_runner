@@ -2,7 +2,7 @@
 
 #include <limits>
 #include "rclcpp/rclcpp.hpp"
-
+#include <boost/log/trivial.hpp>
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 

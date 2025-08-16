@@ -39,8 +39,8 @@ MissionServer::MissionServer()
             result_ = tree_.tickOnce();
             tree_.sleep(std::chrono::milliseconds(100));         
         }
-        std::cout << "MISSION RESULT: " << result_ << std::endl;
-        std::cout << "----------------" << std::endl;
+        RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(result_));
+        RCLCPP_INFO(this->get_logger(), "----------------");
         
         res->success=true;
         goal->succeed(res);
@@ -72,7 +72,7 @@ MissionServer::MissionServer()
         }
         catch(const std::exception& e)
         {
-            std::cout<<e.what()<<std::endl;
+            RCLCPP_INFO(this->get_logger(), "Loaded mission Error: ", e.what());
             factory_.clearRegisteredBehaviorTrees();
             tree_.~Tree();
             return rclcpp_action::GoalResponse::REJECT;

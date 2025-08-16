@@ -15,6 +15,7 @@ find_package(behaviortree_cpp REQUIRED)
 find_package(sonia_common_ros2 REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
+find_package(Boost COMPONENTS program_options filesystem REQUIRED)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
