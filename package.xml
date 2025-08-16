@@ -13,7 +13,6 @@
     <depend>behaviortree_cpp</depend>
     <depend>std_msgs</depend>
     <depend>std_srvs</depend>
-    <depend>Boost</depend>
     <export>
         <build_type>ament_cmake</build_type>
     </export>

@@ -252,16 +252,6 @@ namespace navigation
             // bool long_rotation = false;
             // setOutput("longRotation", long_rotation);
             Trajectory traj = getInput<Trajectory>("traj").value();
-            BOOST_LOG_TRIVIAL(info) << "position en x: "<<t.orientationZ;
-            BOOST_LOG_TRIVIAL(info) << "position en y: "<<t.orientationZ;
-            BOOST_LOG_TRIVIAL(info) << "position en z: "<<t.orientationZ;
-            BOOST_LOG_TRIVIAL(info) << "Orientation en x: "<<t.orientationZ;
-            BOOST_LOG_TRIVIAL(info) << "Orientation en y: "<<t.orientationZ;
-            BOOST_LOG_TRIVIAL(info) << "Orientation en z: "<<t.orientationZ;
-            BOOST_LOG_TRIVIAL(info) << "frame: "<<t.frame;
-            BOOST_LOG_TRIVIAL(info) << "speed: "<<t.speed;
-            BOOST_LOG_TRIVIAL(info) << "precision: "<<t.precision;
-            BOOST_LOG_TRIVIAL(info) << "long rotation: "<<t.long_rotation;
             traj.trajectory.push_back(t);
             setOutput<Trajectory>("traj", traj);
         }
