@@ -27,7 +27,7 @@ AlignResult computeAlignmentHD720(const AiDetection& det, bool coords_are_normal
     // 2) normalized lateral in [-1, 1] (no meters; control hint/UI)
     // out.norm_x = 2.0f * (u_px - CameraInfoZedMiniHD720::cx) / std::max(1, CameraInfoZedMiniHD720::width);
     // out.norm_x = 2.0f * (u_px - CameraInfoZedMiniHD720::cx) / std::max(1, CameraInfoZedMiniHD720::width);
-    std::cout <<"center x pixel norm : "<< out.norm_x << std::endl;
+    std::cout <<"center dist x pixel norm : "<< (u_px - CameraInfoZedMiniHD720::cx)  << std::endl;
 
     float fx=(CameraInfoZedMiniHD720::width/2)/(tan(CameraInfoZedMiniHD720::fovx*M_PI/180/2));
     ////////////////////////////////////WRONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNG : 3) bearing (radians) using fx/cx (positive = target to the right)
@@ -48,11 +48,11 @@ AlignResult computeAlignmentHD720(const AiDetection& det, bool coords_are_normal
         }
 
         // out.lateral_m = det.distance * (u_px - CameraInfoZedMiniHD720::cx) / CameraInfoZedMiniHD720::fx;
-        out.has_metric = std::isfinite(out.lateral_m);
-        std::cout <<"has_metric : "<< out.has_metric << std::endl;
+        
 
     }
-    
+    out.has_metric = true;
+    std::cout <<"has_metric : "<< out.has_metric << std::endl;
     return out;
 }
 
@@ -213,44 +213,51 @@ namespace navigation
 
         prev_normx_ = res.norm_x;
 
-        std::cout <<"center x pixel norm : "<< res.bearing_rad << std::endl;
+        std::cout <<"res has metric : "<< res.has_metric << std::endl;
         if (res.has_metric){
             TrajectoryPose t;
-            float positionY = 0.0;
+            t.positionY = 0.0;
             if(mode){
-                positionY=res.lateral_m;
                 t.positionY = res.lateral_m;
                 std::cout <<"translation y x pixel norm : "<< res.lateral_m << std::endl;
-                std::cout <<"mode translation : "<< mode << "  translation Y: " << positionY << std::endl;
                 }
             // setOutput("positionY", positionY);
-            // float positionX = 0.0;
+            t.positionX = 0.0;
             // setOutput("positionX", positionX);
-            // float positionZ = 0.0;
+            t.positionZ = 0.0;
             // setOutput("positionZ", positionZ);
-            // float orientationX = 0.0;
+            t.orientationX = 0.0;
             // setOutput("orientationX", orientationX);
-            // float orientationY = 0.0;
+            t.orientationY = 0;
             // setOutput("orientationY", orientationY);
-            float orientationZ = 0.0;
+            t.orientationZ = 0;
+            std::cout << "position en x: "<<t.positionX;
             if (!mode){
-                orientationZ=res.bearing_rad;
                 t.orientationZ = res.bearing_rad / M_PI * 180;
                 std::cout <<"orientation z : "<< res.bearing_rad << std::endl;
-                std::cout <<"mode translation : "<< mode << "  orientationZ: " << orientationZ << std::endl;
+
             }
-            
-            setOutput("orientationZ", orientationZ);
             // int frame = 1;
             t.frame = 1;
             // setOutput("frame", frame);
             // int speed = 2;
             // setOutput("speed", speed);
             t.speed = 2;
-            // int precision = 0;
+            t.precision = 0;
+            t.long_rotation=false;
             // setOutput("precision", precision);
             // bool long_rotation = false;
             // setOutput("longRotation", long_rotation);
+            std::cout << "position en x: "<<t.positionX<< std::endl;
+            std::cout<< "position en y: "<<t.positionY<< std::endl;
+            std::cout << "position en z: "<<t.positionZ<< std::endl;
+            std::cout << "Orientation en x: "<<t.orientationX<< std::endl;
+            std::cout << "Orientation en y: "<<t.orientationY<< std::endl;
+            std::cout << "Orientation en z: "<<t.orientationZ<< std::endl;
+            std::cout << "frame: "<<t.frame<< std::endl;
+            std::cout << "speed: "<<t.speed<< std::endl;
+            std::cout << "precision: "<<t.precision<< std::endl;
+            std::cout << "long rotation: "<<t.long_rotation<< std::endl;
             Trajectory traj = getInput<Trajectory>("traj").value();
             traj.trajectory.push_back(t);
             setOutput<Trajectory>("traj", traj);

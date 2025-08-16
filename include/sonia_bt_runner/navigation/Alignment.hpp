@@ -2,6 +2,10 @@
 
 #include <limits>
 #include "rclcpp/rclcpp.hpp"
+<<<<<<< Updated upstream
+=======
+// #include <boost/log/trivial.hpp>
+>>>>>>> Stashed changes
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 
@@ -11,8 +15,8 @@
 struct CameraInfoZedMiniHD720
 {
     // dimension image for VGA
-    static constexpr int width = 600; 
-    static constexpr int height = 400;
+    static constexpr int width = 672; 
+    static constexpr int height = 376;
     static constexpr float fovx = 30.650667*2;              // px (typical)
     static constexpr float cx = (width - 1) * 0.5f;  // ~ image center ()
 };
