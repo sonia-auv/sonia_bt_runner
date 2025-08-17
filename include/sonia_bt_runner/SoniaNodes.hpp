@@ -37,6 +37,7 @@ static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::share
 static void registerVisionNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
     factory.registerBuilder<vision::CheckDistance>("CheckDistance", configBuilder<vision::CheckDistance>(node));
+    factory.registerBuilder<vision::CheckBoundingBox>("CheckBoundingBox", configBuilder<vision::CheckBoundingBox>(node));
     factory.registerBuilder<vision::AiActivation>("AiActivation", configBuilder<vision::AiActivation>(node));
     factory.registerBuilder<vision::AiFilter>("AiFilter", configBuilder<vision::AiFilter>(node));
 }
