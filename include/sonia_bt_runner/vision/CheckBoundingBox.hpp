@@ -17,8 +17,8 @@ namespace vision{
             {
                 return {
                     BT::InputPort<int>("Previous_width"),
-                    BT::InputPort<bool>("Width_growing"),
-                    BT::InputPort<bool>("New_width_growth"),
+                    BT::InputPort<int>("Width_growing"),
+                    BT::OutputPort<int>("New_width_growth"),
                     BT::OutputPort<int>("New_width"),
                     BT::InputPort<AiDetectionArray>("Object")
                 };
@@ -35,7 +35,7 @@ namespace vision{
             AiDetection object_concerned2;
             BT::Expected<int> previous_width;
             BT::Expected<int> current_width;
-            BT::Expected<bool> growing_width;
+            BT::Expected<int> growing_width;
             
     };
 

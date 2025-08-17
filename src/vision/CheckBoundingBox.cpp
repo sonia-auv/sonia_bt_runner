@@ -12,35 +12,46 @@ namespace vision{
     BT::NodeStatus CheckBoundingBox::onStart(){
         previous_width = getInput<int>("Previous_width");
         object_concerned = getInput<AiDetectionArray>("Object");
-        growing_width = getInput<bool>("Growing_width"); //for the first time we check the width it needs to be false
+        growing_width = getInput<int>("Growing_width"); //for the first time we check the width it needs to be false
         return BT::NodeStatus::RUNNING;
     }
     BT::NodeStatus CheckBoundingBox::onRunning(){
         object_concerned2=object_concerned->detection_array.front();
         current_width=(object_concerned2.top_left_x+object_concerned2.top_right_x+object_concerned2.bottom_left_x+object_concerned2.bottom_right_x)/2;
-        if(growing_width){
-            if ( previous_width.value()>=current_width.value()){
-                growing_width=false;
+        if (growing_width==-1){
+            growing_width=0;
+            setOutput("New_width", current_width);
+            setOutput("New_width_growth", growing_width);
+        }
+        else if(growing_width==1){
+            if ( previous_width.value()<=current_width.value()){
+                growing_width=1;
                 setOutput("New_width", current_width);
-                return BT::NodeStatus::SUCCESS;
+                setOutput("New_width_growth", growing_width);
+
             }
             else {
-                growing_width=true;
+                growing_width=0;
                 setOutput("New_width", current_width);
-                return BT::NodeStatus::FAILURE;
+                setOutput("New_width_growth", growing_width);
+
             }
+            return BT::NodeStatus::FAILURE;
+
         }
         else{
-            if ( previous_width.value()<=current_width.value()){
-                growing_width=false;
+            if ( previous_width.value()>=current_width.value()){
+                growing_width=0;
+                return BT::NodeStatus::FAILURE;
             }
             else{
-                growing_width=true;
+                growing_width=1;
+                return BT::NodeStatus::SUCCESS;
+
             }
             setOutput("New_width", current_width);
             setOutput("New_width_growth", growing_width);
 
-            return BT::NodeStatus::FAILURE;
 
         }
 
