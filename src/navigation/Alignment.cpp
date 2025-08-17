@@ -20,7 +20,7 @@ float bboxCenterY(const AiDetection& d)
     return 0.25f * (d.top_left_y + d.top_right_y + d.bottom_left_y + d.bottom_right_y);
 }
 
-AlignResult computeAlignmentHD720(const AiDetection& det, bool coords_are_normalized, bool alignement_by_translation)
+AlignResult computeAlignmentHD720(const AiDetection& det, bool alignement_by_translation)
 {
     AlignResult out;
 
@@ -140,21 +140,6 @@ namespace navigation
     }
 
     BT::NodeStatus Alignment::onStart(){
-        // arr = getInput<AiDetectionArray>("detections");
-        // normalized= getInput<bool>("normalized_coords");
-        // alpha = getInput<float>("alpha");
-        // mode = getInput<bool>("alignement_by_translation");
-
-        // if (arr->detection_array.empty())///////////////////////////////////////////////////////////////////////////////////ZARB   
-        // {
-        //     // publish safe defaults
-        //     setOutput("bearing_rad", 0.0f);
-        //     setOutput("norm_x", 0.0f);
-        //     setOutput("has_metric", 0);
-        //     std::cout <<"In Alignement Detection array empty"<< std::endl;
-
-        //     return BT::NodeStatus::FAILURE;
-        // }
         return BT::NodeStatus::RUNNING;
     }
 
@@ -163,7 +148,6 @@ namespace navigation
         AiDetectionArray arr;
         getInput("detections", arr);
 
-        // if (!getInput("detections", arr) || arr.detection_array.empty())///////////////////////////////////////////////////////////////////////////////////ZARB   
         if (arr.detection_array.empty())///////////////////////////////////////////////////////////////////////////////////ZARB   
         {
             // publish safe defaults
@@ -175,19 +159,11 @@ namespace navigation
             return BT::NodeStatus::FAILURE;
         }
 
-        bool normalized = false;//////////////////////////////////////////////////////////////////////////////////////////////////// PAS NECESSAIRE AU FINAL
-        getInput("normalized_coords", normalized);//////////////////////////////////////////////////////////////////////////////////////////////////// PAS NECESSAIRE AU FINAL
-        float alpha = -1.0f;
-        getInput("alpha", alpha);
-        std::cout <<"alpha : "<< alpha << std::endl;
-
-        const bool do_smooth = (alpha > 0.0f && alpha <= 1.0f);
-
         // Assumption: array is pre-filtered for the object of interest → use first detection
         const AiDetection& det = arr.detection_array.front();
         bool mode = true;
         getInput("alignement_by_translation", mode);
-        AlignResult res = computeAlignmentHD720(det, normalized,mode);
+        AlignResult res = computeAlignmentHD720(det,mode);
         AlignResult res_y = computeAlignmentY(det,mode);
 
 
@@ -222,8 +198,6 @@ namespace navigation
         std::cout <<"center x pixel norm : "<< res.bearing_rad << std::endl;
 
         setOutput("has_metric", res.has_metric ? 1 : 0);
-        float error_positionY=0.1;
-        float error_orientationY=0.1;
         // if (mode){
         //     if (res.lateral_m<=error_positionY && res.lateral_m>=-error_positionY){
         //         res.in_interval=true;
@@ -305,6 +279,9 @@ namespace navigation
             Trajectory traj = getInput<Trajectory>("traj").value();
             traj.trajectory.push_back(t);
             setOutput<Trajectory>("traj", traj);
+            setOutput<float>("TranslationX_CamBottom",t.positionX);
+            setOutput<float>("TranslationY",t.positionY);
+            setOutput<float>("RotationZ",t.orientationZ);
         }
 
         // float error_positionY=0.1;
