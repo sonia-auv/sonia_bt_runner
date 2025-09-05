@@ -30,7 +30,6 @@ namespace vision{
             void onHalted() override;
         private:
             std::shared_ptr<rclcpp::Node> ros_node;
-
             BT::Expected<AiDetectionArray> object_concerned;
             AiDetection object_concerned2;
             BT::Expected<int> previous_width;

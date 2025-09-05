@@ -20,7 +20,10 @@ float bboxCenterY(const AiDetection& d)
     return 0.25f * (d.top_left_y + d.top_right_y + d.bottom_left_y + d.bottom_right_y);
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> modif-alignment
 AlignResult computeAlignmentHD720(const AiDetection& det, bool alignement_by_translation)
 {
     AlignResult out;
@@ -63,11 +66,16 @@ AlignResult computeAlignmentHD720(const AiDetection& det, bool alignement_by_tra
     return out;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> modif-alignment
 AlignResult computeAlignmentY(const AiDetection& det, bool alignement_by_translation)
 {
     AlignResult out;
 
     // 1) detection center x in pixels
+<<<<<<< HEAD
     float u_py = bboxCenterY(det);
     std::cout <<"center x pixel : "<< u_py << std::endl;
 
@@ -88,6 +96,16 @@ AlignResult computeAlignmentY(const AiDetection& det, bool alignement_by_transla
 
     // out.bearing_rad = std::atan((u - CameraInfoZedMiniHD720::cx) / CameraInfoZedMiniHD720::fx);
 
+=======
+    float u_px = bboxCenterY(det);
+    std::cout <<"center x pixel : "<< u_px << std::endl;
+    std::cout <<"center dist x pixel norm : "<< (u_px - CameraInfoZedMiniHD720::cx)  << std::endl;
+
+    float fx=(CameraInfoZedMiniHD720::width/2)/(tan(CameraInfoZedMiniHD720::fovx*M_PI/180/2));
+    out.bearing_rad = atan((u_px - CameraInfoZedMiniHD720::cx) /(fx));
+    std::cout <<"bearing rad : "<< out.bearing_rad << std::endl;
+
+>>>>>>> modif-alignment
     // 4) metric lateral if distance is valid: x = Z * (u - cx) / fx
     if (std::isfinite(det.distance) && det.distance > 0.0f)
     {
@@ -152,21 +170,6 @@ namespace navigation
     }
 
     BT::NodeStatus Alignment::onStart(){
-        // arr = getInput<AiDetectionArray>("detections");
-        // normalized= getInput<bool>("normalized_coords");
-        // alpha = getInput<float>("alpha");
-        // mode = getInput<bool>("alignement_by_translation");
-
-        // if (arr->detection_array.empty())///////////////////////////////////////////////////////////////////////////////////ZARB   
-        // {
-        //     // publish safe defaults
-        //     setOutput("bearing_rad", 0.0f);
-        //     setOutput("norm_x", 0.0f);
-        //     setOutput("has_metric", 0);
-        //     std::cout <<"In Alignement Detection array empty"<< std::endl;
-
-        //     return BT::NodeStatus::FAILURE;
-        // }
         return BT::NodeStatus::RUNNING;
     }
 
@@ -175,7 +178,6 @@ namespace navigation
         AiDetectionArray arr;
         getInput("detections", arr);
 
-        // if (!getInput("detections", arr) || arr.detection_array.empty())///////////////////////////////////////////////////////////////////////////////////ZARB   
         if (arr.detection_array.empty())///////////////////////////////////////////////////////////////////////////////////ZARB   
         {
             // publish safe defaults
@@ -190,19 +192,79 @@ namespace navigation
         getInput("alignement_by_translation", mode);
         AlignResult res = computeAlignmentHD720(det,mode);
         AlignResult res_y = computeAlignmentY(det,mode);
+        // int i;
+        // bool i_initialized=false;
+        // if (i_initialized==false)
+        //     i=0;
+
+        // Optional temporal smoothing (IIR) for stability
+        // if (do_smooth)
+        // {
+        //     if (std::isfinite(prev_bearing_)){
+        //         // std::cout <<"bearing rad before smoothing: "<< i << "step"<< res.bearing_rad << std::endl;
+        //         res.bearing_rad = alpha * res.bearing_rad + (1.0f - alpha) * prev_bearing_;
+        //         // std::cout <<"bearing rad after smoothing: "<< i << "step"<< res.bearing_rad << std::endl;
+        //         i++;
+        //     }
+        //     if (std::isfinite(prev_normx_)) res.norm_x = alpha * res.norm_x + (1.0f - alpha) * prev_normx_;
+        //     if (res.has_metric && std::isfinite(prev_lateral_)){
+        //         std::cout <<"lateral_m before smoothing: "<< i << "step"<< res.lateral_m << std::endl;
+        //         res.lateral_m = alpha * res.lateral_m + (1.0f - alpha) * prev_lateral_;
+        //         std::cout <<"lateral_m after smoothing: "<< i << "step"<< res.lateral_m << std::endl;
+        // }
+
+        // }
+        std::cout <<"center x pixel norm : "<< res.bearing_rad << std::endl;
 
 
+        // Publish outputs
+        setOutput("bearing_rad", res.bearing_rad);
+        setOutput("norm_x", res.norm_x);
+        std::cout <<"center x pixel norm : "<< res.bearing_rad << std::endl;
+
+        setOutput("has_metric", res.has_metric ? 1 : 0);
+        // if (mode){
+        //     if (res.lateral_m<=error_positionY && res.lateral_m>=-error_positionY){
+        //         res.in_interval=true;
+        //     }
+        //     // if(prev_bearing_ == res.bearing_rad)
+        //     //     res.in_interval=true;
+
+        // }
+        // else {
+        //     if (res.bearing_rad<=error_orientationY && res.bearing_rad>=-error_orientationY){
+        //         res.in_interval=true;
+        //     }
+            
+        //     // if(prev_lateral_ = res.lateral_m)
+        //     //     res.in_interval=true;
+
+        // }
+        if (res.has_metric)
+        {
+            setOutput("lateral_m", res.lateral_m);
+            prev_lateral_ = res.lateral_m;
+        }
+
+        prev_bearing_ = res.bearing_rad;
+        std::cout <<"center x pixel norm : "<< res.bearing_rad << std::endl;
+
+        prev_normx_ = res.norm_x;
+
+        std::cout <<"res has metric : "<< res.has_metric << std::endl;
         if (res.has_metric){
             TrajectoryPose t;
             t.positionY = 0.0;
-            if(mode){
+            if(mode==1 or camera==false){
                 t.positionY = res.lateral_m;
-                std::cout <<"translation y x pixel norm : "<< res.lateral_m << std::endl;
+                std::cout <<"translation y : "<< res.lateral_m << std::endl;
                 }
             // setOutput("positionY", positionY);
             t.positionX = 0.0;
-            if (camera==false)
-                t.positionX = res_y.lateral_m;
+            if (camera==false){
+                t.positionY = res_y.lateral_m;
+                std::cout <<"translation x : "<< t.positionY << std::endl;
+            }
             // setOutput("positionX", positionX);
             t.positionZ = 0.0;
             // setOutput("positionZ", positionZ);
@@ -241,6 +303,9 @@ namespace navigation
             Trajectory traj = getInput<Trajectory>("traj").value();
             traj.trajectory.push_back(t);
             setOutput<Trajectory>("traj", traj);
+            setOutput<float>("TranslationX_CamBottom",t.positionX);
+            setOutput<float>("TranslationY",t.positionY);
+            setOutput<float>("RotationZ",t.orientationZ);
         }
 
 

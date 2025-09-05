@@ -32,7 +32,11 @@ struct AlignResult
 float bboxCenterX(const AiDetection& d);
 AlignResult computeAlignmentHD720(const AiDetection& det, bool alignement_by_trans);
 float bboxCenterY(const AiDetection& d);
+<<<<<<< HEAD
 AlignResult computeAlignmentY(const AiDetection& det, bool alignement_by_trans);
+=======
+AlignResult computeAlignmentY(const AiDetection& det, bool alignement_by_translation);
+>>>>>>> modif-alignment
 
 // BehaviorTree node: Alignment
 // Inputs:
