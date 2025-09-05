@@ -19,7 +19,7 @@ struct CameraInfoZedMiniHD720
 };
 
 // Results of alignment computation
-struct AlignResultq
+struct AlignResult
 {
     bool has_metric = false;                                    // true if lateral_m valid
     float lateral_m = std::numeric_limits<float>::quiet_NaN();  // +right, -left
