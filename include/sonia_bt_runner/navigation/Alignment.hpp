@@ -19,7 +19,7 @@ struct CameraInfoZedMiniHD720
 };
 
 // Results of alignment computation
-struct AlignResult
+struct AlignResultq
 {
     bool has_metric = false;                                    // true if lateral_m valid
     float lateral_m = std::numeric_limits<float>::quiet_NaN();  // +right, -left
@@ -32,11 +32,7 @@ struct AlignResult
 float bboxCenterX(const AiDetection& d);
 AlignResult computeAlignmentHD720(const AiDetection& det, bool alignement_by_trans);
 float bboxCenterY(const AiDetection& d);
-<<<<<<< HEAD
-AlignResult computeAlignmentY(const AiDetection& det, bool alignement_by_trans);
-=======
 AlignResult computeAlignmentY(const AiDetection& det, bool alignement_by_translation);
->>>>>>> modif-alignment
 
 // BehaviorTree node: Alignment
 // Inputs:

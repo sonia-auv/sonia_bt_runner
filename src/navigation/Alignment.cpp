@@ -20,10 +20,6 @@ float bboxCenterY(const AiDetection& d)
     return 0.25f * (d.top_left_y + d.top_right_y + d.bottom_left_y + d.bottom_right_y);
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> modif-alignment
 AlignResult computeAlignmentHD720(const AiDetection& det, bool alignement_by_translation)
 {
     AlignResult out;
@@ -66,37 +62,11 @@ AlignResult computeAlignmentHD720(const AiDetection& det, bool alignement_by_tra
     return out;
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> modif-alignment
 AlignResult computeAlignmentY(const AiDetection& det, bool alignement_by_translation)
 {
     AlignResult out;
 
     // 1) detection center x in pixels
-<<<<<<< HEAD
-    float u_py = bboxCenterY(det);
-    std::cout <<"center x pixel : "<< u_py << std::endl;
-
-    // float u_px = coords_are_normalized ? (u / CameraInfoZedMiniHD720::width) : u;
-
-    // 2) normalized lateral in [-1, 1] (no meters; control hint/UI)
-    // out.norm_x = 2.0f * (u_px - CameraInfoZedMiniHD720::cx) / std::max(1, CameraInfoZedMiniHD720::width);
-    // out.norm_x = 2.0f * (u_px - CameraInfoZedMiniHD720::cx) / std::max(1, CameraInfoZedMiniHD720::width);
-    std::cout <<"center dist x pixel norm : "<< (u_py - CameraInfoZedMiniHD720::c_y)  << std::endl;
-
-    float fy=(CameraInfoZedMiniHD720::height/2)/(tan(CameraInfoZedMiniHD720::fov_y*M_PI/180/2));
-    ////////////////////////////////////WRONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNG : 3) bearing (radians) using fx/cx (positive = target to the right)
-
-    // out.bearing_rad = std::atan((u_px - CameraInfoZedMiniHD720::cx) / CameraInfoZedMiniHD720::fx);
-    // out.bearing_rad = out.norm_x*(CameraInfoZedMiniHD720::width/2) /(fx);
-    out.bearing_rad = atan((u_py - CameraInfoZedMiniHD720::c_y) /(fy));
-    std::cout <<"bearing rad : "<< out.bearing_rad << std::endl;
-
-    // out.bearing_rad = std::atan((u - CameraInfoZedMiniHD720::cx) / CameraInfoZedMiniHD720::fx);
-
-=======
     float u_px = bboxCenterY(det);
     std::cout <<"center x pixel : "<< u_px << std::endl;
     std::cout <<"center dist x pixel norm : "<< (u_px - CameraInfoZedMiniHD720::cx)  << std::endl;
@@ -104,8 +74,6 @@ AlignResult computeAlignmentY(const AiDetection& det, bool alignement_by_transla
     float fx=(CameraInfoZedMiniHD720::width/2)/(tan(CameraInfoZedMiniHD720::fovx*M_PI/180/2));
     out.bearing_rad = atan((u_px - CameraInfoZedMiniHD720::cx) /(fx));
     std::cout <<"bearing rad : "<< out.bearing_rad << std::endl;
-
->>>>>>> modif-alignment
     // 4) metric lateral if distance is valid: x = Z * (u - cx) / fx
     if (std::isfinite(det.distance) && det.distance > 0.0f)
     {
