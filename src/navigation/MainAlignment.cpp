@@ -51,6 +51,8 @@ namespace navigation{
             return atan((u_py - CameraInfoZedMiniHD720::cx) /(fx));
         }
         
+    
+
         Trajectory ComputeTrajectory(const AlignResult res)
         {
             // int i;

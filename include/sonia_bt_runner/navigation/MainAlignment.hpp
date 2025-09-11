@@ -42,59 +42,60 @@ struct AlignResult
 namespace navigation{
     class MainAlignment{
 
-        /*
-        * Fonction bboxCenterX
-        *  Description  :  Use to compute the X center value of the detected image on the camera
-        * 
-        *  Input Param  :  det
-        *                      Detection array gather from the AI
-        * 
-        * OutPut Param :  The Y position value of the center of the detected image
-        */
-        float bboxCenterX(const AiDetection& det);
+        public:
+            /*
+            * Fonction bboxCenterX
+            *  Description  :  Use to compute the X center value of the detected image on the camera
+            * 
+            *  Input Param  :  det
+            *                      Detection array gather from the AI
+            * 
+            * OutPut Param :  The Y position value of the center of the detected image
+            */
+            float bboxCenterX(const AiDetection& det);
 
-        /*
-        * Fonction bboxCenterY
-        *  Description :  Use to compute the Y center value of the detected image on the camera
-        * 
-        *  Input Param :  det
-        *                      Detection array gather from the AI
-        * 
-        *  Return Value:  The Y position value of the center of the detected image
-        */
-        float bboxCenterY(const AiDetection& det);
+            /*
+            * Fonction bboxCenterY
+            *  Description :  Use to compute the Y center value of the detected image on the camera
+            * 
+            *  Input Param :  det
+            *                      Detection array gather from the AI
+            * 
+            *  Return Value:  The Y position value of the center of the detected image
+            */
+            float bboxCenterY(const AiDetection& det);
 
-        /*
-        * Fonction GetCenterImageAngleX
-        *  Description :  Use to compute the Y center value of the detected image on the camera
-        * 
-        *  Input Param :  det
-        *                      Detection array gather from the AI
-        * 
-        *  Return Value:  The Y position value of the center of the detected image
-        */
-        float GetCenterImageAngleX(const AiDetection& det);
+            /*
+            * Fonction GetCenterImageAngleX
+            *  Description :  Use to compute the Y center value of the detected image on the camera
+            * 
+            *  Input Param :  det
+            *                      Detection array gather from the AI
+            * 
+            *  Return Value:  The Y position value of the center of the detected image
+            */
+            float GetCenterImageAngleX(const AiDetection& det);
 
-        /*
-        * Fonction GetCenterImageAngleY
-        *  Description :  Use to compute the Y center value of the detected image on the camera
-        * 
-        *  Input Param :  det
-        *                      Detection array gather from the AI
-        * 
-        *  Return Value:  The Y position value of the center of the detected image
-        */
-        float GetCenterImageAngleY(const AiDetection& det);
+            /*
+            * Fonction GetCenterImageAngleY
+            *  Description :  Use to compute the Y center value of the detected image on the camera
+            * 
+            *  Input Param :  det
+            *                      Detection array gather from the AI
+            * 
+            *  Return Value:  The Y position value of the center of the detected image
+            */
+            float GetCenterImageAngleY(const AiDetection& det);
 
-        /*
-        * Fonction ComputeTrajectory
-        *  Description :  Use to compute the Y center value of the detected image on the camera
-        * 
-        *  Input Param :  d
-        *                      Detection array gather from the AI
-        * 
-        *  Return Value:  The Y position value of the center of the detected image
-        */
-        Trajectory ComputeTrajectory(const AlignResult res);
+            /*
+            * Fonction ComputeTrajectory
+            *  Description :  Use to compute the Y center value of the detected image on the camera
+            * 
+            *  Input Param :  d
+            *                      Detection array gather from the AI
+            * 
+            *  Return Value:  The Y position value of the center of the detected image
+            */
+            Trajectory ComputeTrajectory(const AlignResult res);
     }
 }

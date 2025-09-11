@@ -6,34 +6,19 @@
 
 namespace navigation
 {
-    class RotateToMission : public BT::StatefulActionNode, public MainAlignment
 
-        public:
-            RotateToMission(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node){}
-            ~RotateToMission()=default;
-            static BT::PortsList providedPorts()
-            {
-                return {
-                    // Inputs
-                    BT::InputPort<AiDetectionArray>("detections"),
+    RotateToMission::RotateToMission(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node){}
+    RotateToMission::~RotateToMission()=default;
+    static BT::PortsList providedPorts()
+    {
+        return {
+            // Inputs
+            BT::InputPort<AiDetectionArray>("detections"),
 
-                    // Outputs
-                    BT::BidirectionalPort<Trajectory>("traj"),
-                };
-            }
-
-            BT::NodeStatus onStart() override
-            {
-                
-            }
-            BT::NodeStatus onRunning() override
-            {
-
-            }
-            void onHalted()
-            {
-
-            }
+            // Outputs
+            BT::BidirectionalPort<Trajectory>("traj"),
+        };
+    }
 
     // BT::PortsList Alignment::providedPorts()frontres
     // {
@@ -60,22 +45,20 @@ namespace navigation
     //         OutputPort<int>("precision"),
     //         OutputPort<bool>("longRotationAlignResult"),
     //         // OutputPort<TrajectoryPose>("tp", output_state);
-
-
     //     };
     // }
 
-    void SearchMissionAlignment::onHalted()
+    void RotateToMission::onHalted()
     {
 
     }
 
-    BT::NodeStatus SearchMissionAlignment::onStart()
+    BT::NodeStatus RotateToMission::onStart()
     {
         return BT::NodeStatus::RUNNING;
     }
 
-    BT::NodeStatus SearchMissionAlignment::onRunning()
+    BT::NodeStatus RotateToMission::onRunning()
     {
         AiDetectionArray arr;
 
@@ -93,10 +76,16 @@ namespace navigation
         // Assumption: array is pre-filtered for the object of interest → use first detection
         const AiDetection& det = arr.detection_array.front(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
 
-        getInput("alignement_by_translation", mode);
-        AlignResult res = AlignmentToDetecedMission(det);
+        // getInput("alignement_by_translation", mode);
+        AlignResult alignres;
+        alignres.align_type = SEARCH_MISSION;
+        alignres.distance = det.distance;
+        alignres.rad_x = GetCenterImageAngleX(det);
+
         // AlignResult res_y = computeAlignmentY(det,mode);
-        std::cout <<"center x pixel norm : "<< res.bearing_rad << std::endl;
+        std::cout <<"AlignResult.align_type : "<< alignres.align_type << std::endl;
+        std::cout <<"AlignResult.distance : "<< alignres.distance << std::endl;
+        std::cout <<"AlignResult.rad_x : "<< alignres.rad_x << std::endl;
 
         // Publish outputs Je modifirais pour envoyer une trajectoire tout simplement. Ce que la fonction ferais tout simplement de calculer une trajectoire par rapport au donnee de l'IA
         // setOutput("bearing_rad", res.bearing_rad);
@@ -172,15 +161,15 @@ namespace navigation
             //     bool long_rotation;
             // };
 
-            t.positionX = 0.0;
-            t.positionY = 0.0;
-            t.positionZ = 0.0;
-            t.orientationX = 0.0;
-            t.orientationY = 0.0;
-            t.orientationZ = AlignResult.bearing_rad;
-            t.frame = 1.0;
-            t.speed = 2;
-            t.presision = 0;
+            t = ComputeTrajectory(alignres);
+            // t.positionY = 0.0;
+            // t.positionZ = 0.0;
+            // t.orientationX = 0.0;
+            // t.orientationY = 0.0;
+            // t.orientationZ = AlignResult.bearing_rad;
+            // t.frame = 1.0;
+            // t.speed = 2;
+            // t.presision = 0;
 
 
 
