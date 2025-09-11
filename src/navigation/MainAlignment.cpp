@@ -7,7 +7,7 @@
 
 namespace navigation{
 
-    class MainAlignement{
+    class MainAlignment{
 
         // ----------------- Helper implementations -----------------
 

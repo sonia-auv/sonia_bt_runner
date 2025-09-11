@@ -40,7 +40,7 @@ struct AlignResult
 };
 
 namespace navigation{
-    class MainAlignement{
+    class MainAlignment{
 
         /*
         * Fonction bboxCenterX
@@ -85,7 +85,7 @@ namespace navigation{
         *  Return Value:  The Y position value of the center of the detected image
         */
         float GetCenterImageAngleY(const AiDetection& det);
-        
+
         /*
         * Fonction ComputeTrajectory
         *  Description :  Use to compute the Y center value of the detected image on the camera

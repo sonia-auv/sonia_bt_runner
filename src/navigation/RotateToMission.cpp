@@ -6,13 +6,34 @@
 
 namespace navigation
 {
+    class RotateToMission : public BT::StatefulActionNode, public MainAlignment
 
-    // Alignment::Alignment(const std::string& name, const BT::NodeConfig& cfg) : BT::StatefulActionNode(name, cfg) {}
-    SearchMissionAlignment::SearchMissionAlignment(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    :BT::StatefulActionNode(name, config), ros_node(node)
-    {
-        
-    }
+        public:
+            RotateToMission(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node){}
+            ~RotateToMission()=default;
+            static BT::PortsList providedPorts()
+            {
+                return {
+                    // Inputs
+                    BT::InputPort<AiDetectionArray>("detections"),
+
+                    // Outputs
+                    BT::BidirectionalPort<Trajectory>("traj"),
+                };
+            }
+
+            BT::NodeStatus onStart() override
+            {
+                
+            }
+            BT::NodeStatus onRunning() override
+            {
+
+            }
+            void onHalted()
+            {
+
+            }
 
     // BT::PortsList Alignment::providedPorts()frontres
     // {

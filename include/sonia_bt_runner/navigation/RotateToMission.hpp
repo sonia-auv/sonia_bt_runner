@@ -5,11 +5,12 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
+#include "sonia_bt_runner/navigation/MainAlignment.hpp"
 
 namespace navigation
 {
 
-    class RotateToMission : public BT::StatefulActionNode
+    class RotateToMission : public BT::StatefulActionNode, public MainAlignment
     {
         public:
             RotateToMission(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node);
