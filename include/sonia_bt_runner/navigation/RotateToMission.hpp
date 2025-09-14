@@ -22,7 +22,7 @@ namespace navigation
                     BT::InputPort<AiDetectionArray>("detections"),
 
                     // Outputs
-                    BT::BidirectionalPort<Trajectory>("traj"),
+                    BT::BidirectionalPort<Trajectory>("trajectory"),
                 };
             }
 
@@ -32,8 +32,8 @@ namespace navigation
 
         private:
             std::shared_ptr<rclcpp::Node> ros_node;
-
-
+            int valid;
+            std::chrono::system_clock::time_point _time_launch;
             BT::Expected<AiDetectionArray> arr;
             BT::Expected<bool> mode;
             BT::Expected<bool>camera;

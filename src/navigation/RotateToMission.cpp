@@ -7,8 +7,11 @@
 namespace navigation
 {
 
-    RotateToMission::RotateToMission(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node){}
-    RotateToMission::~RotateToMission()=default;
+    RotateToMission::RotateToMission(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node)
+    : BT::StatefulActionNode(name, config), ros_node(node), valid(0), _time_launch(std::chrono::system_clock::now())
+    {
+
+    }
     static BT::PortsList providedPorts()
     {
         return {
@@ -104,8 +107,8 @@ namespace navigation
 
         // prev_normx_ = res.norm_x;
 
-        std::cout <<"res has metric : "<< res.has_metric << std::endl;
-        if (res.has_metric){
+        // std::cout <<"res has metric : "<< res.has_metric << std::endl;
+        if (alignres.align_type != NOT_CHOOSEN_YET){
             
             TrajectoryPose t;
 
@@ -183,16 +186,16 @@ namespace navigation
             std::cout << "speed: "<<t.speed<< std::endl;
             std::cout << "precision: "<<t.precision<< std::endl;
             std::cout << "long rotation: "<<t.long_rotation<< std::endl;
-            Trajectory traj = getInput<Trajectory>("traj").value();
+            Trajectory traj = getInput<Trajectory>("trajectory").value();
             traj.trajectory.push_back(t);
-            setOutput<Trajectory>("traj", traj);
+            setOutput<Trajectory>("trajectory", traj);
             // setOutput<float>("TranslationX_CamBottom",t.positionX);
             // setOutput<float>("TranslationY",t.positionY);
             // setOutput<float>("RotationZ",t.orientationZ);
         }
 
         // SUCCESS if metric lateral is available; otherwise RUNNING so parent can fall back to bearing-only logic
-        return res.has_metric ? BT::NodeStatus::SUCCESS : BT::NodeStatus::RUNNING;
+        return (alignres.align_type == NOT_CHOOSEN_YET) ? BT::NodeStatus::RUNNING : BT::NodeStatus::SUCCESS;
     }
 
 }  // namespace navigation

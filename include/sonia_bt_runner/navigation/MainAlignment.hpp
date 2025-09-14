@@ -21,13 +21,14 @@ struct CameraInfoZedMiniHD720
 
 // Struct to define the Align result type
 enum AlignmentType{
-    SEARCH_MISSION = 0,
-    TORPIDOES_DRIFTING = 1,
-    TORPIDOES_TARGET = 2,
-    BIN_FRONT = 3,
-    BIN_BOTTOM = 4,
-    TABLE_APPROACH = 5,
-    TABLE_GRAB = 6
+    NOT_CHOOSEN_YET = 0,
+    SEARCH_MISSION = 1,
+    TORPIDOES_DRIFTING = 2,
+    TORPIDOES_TARGET = 3,
+    BIN_FRONT = 4,
+    BIN_BOTTOM = 5,
+    TABLE_APPROACH = 6,
+    TABLE_GRAB = 7
 };
 
 // Results of alignment computation
@@ -41,7 +42,6 @@ struct AlignResult
 
 namespace navigation{
     class MainAlignment{
-
         public:
             /*
             * Fonction bboxCenterX
@@ -96,6 +96,6 @@ namespace navigation{
             * 
             *  Return Value:  The Y position value of the center of the detected image
             */
-            Trajectory ComputeTrajectory(const AlignResult res);
-    }
+            TrajectoryPose ComputeTrajectory(const AlignResult res);
+    };
 }
