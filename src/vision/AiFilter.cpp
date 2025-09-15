@@ -88,13 +88,13 @@ namespace vision{
             // std::vector<float> distances;
 
             std::vector<int> ids;
-            for (int n = 0; n < max_size_output.size(); n++){
+            for (int n = 0; n < max_size_output.value(); n++){
                 // distances.push_back(100000);
                 ids.push_back(0);
             }
 
             //We put a number on every detection related to the depth of them (>0 = far | 0 = closer)
-            for (int i = 0; i < max_size_output.value(); i++){
+            for (int i = 0; i < max_size_output.value(); i++)
             {
                 int min_index_pointer = 0;
                 float min_dist_found = 0.0;
@@ -180,8 +180,8 @@ namespace vision{
             }
 
             for (int index: ids){
-                if (index = 0)
-                RCLCPP_INFO(ros_node->get_logger(), "Reducing id = %d | dist = %f", index, distances[u]);
+                if (index == 0)
+                RCLCPP_INFO(ros_node->get_logger(), "Reducing id = %d | dist = %f", index, detected_object_array.detection_array[index].distance);
                 u++;
                 reduced_detected_object_array.detection_array.push_back(detected_object_array.detection_array[index]);
             }
