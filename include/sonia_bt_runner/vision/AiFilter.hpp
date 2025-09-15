@@ -22,7 +22,7 @@ namespace vision{
                     BT::InputPort<float>("Confidence", 0.6, "Ai confidence"),
                     // BT::InputPort<int>("Buffer_size", "Number of detection to average"),
                     BT::InputPort<int>("Min_detection", "minumum number of frames with at least one detection before sending results"),
-                    BT::InputPort<int>("Max_frame", "maximum allowed frames"),
+                    BT::InputPort<int>("Max_frame_before_exiting", "maximum allowed frames"),
                     BT::InputPort<float>("Max_depth", "Maximum allowed depth"),
                     BT::InputPort<int>("Max_size_output", "Max size of the output array"),
                     BT::OutputPort<AiDetectionArray>("detected_object_array")};
@@ -41,7 +41,7 @@ namespace vision{
             int nb_detection;
 
             BT::Expected<std::string> _object;
-            BT::Expected<int> max_frame;
+            BT::Expected<int> max_frame_before_exiting;
             BT::Expected<int> max_size_output;
             BT::Expected<float> confidence;
             BT::Expected<float> max_depth;

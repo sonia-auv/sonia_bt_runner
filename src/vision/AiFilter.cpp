@@ -13,7 +13,7 @@ namespace vision{
 
         // We go get the information in the behavior tree
         _object = getInput<std::string>("Object_class");
-        max_frame= getInput<int>("Max_frame");
+        max_frame_before_exiting= getInput<int>("Max_frame_before_exiting");
         max_size_output = getInput<int>("Max_size_output");
         confidence = getInput<float>("Confidence");
         max_depth = getInput<float>("Max_depth");
@@ -23,7 +23,7 @@ namespace vision{
 
         // We initialize some value
         counter = 0;
-        nb_detection = 0;
+        // nb_detection = 0;
 
         // We chose the right camera to capture the image
         if(cam.value())
@@ -35,170 +35,86 @@ namespace vision{
         return BT::NodeStatus::RUNNING;
     }
 
-    bool item_is_in_vector(std::vector<int> vec, int item)
-    {
-        return (std::find(vec.begin(), vec.end(), item) != vec.end());
-    }
-
     BT::NodeStatus AiFilter::onRunning(){
         
-        if(counter >= max_frame.value()){
+        if(counter >= max_frame_before_exiting.value()){
 
             // We took to much time to find the object
-            RCLCPP_INFO(ros_node->get_logger(), "counter %d : max frame = %d", counter, max_frame.value());
+            RCLCPP_INFO(ros_node->get_logger(), "counter %d : max frame = %d", counter, max_frame_before_exiting.value());
             return BT::NodeStatus::FAILURE;
         }
 
 
-        if(_detection_array.empty()){
+        if(_detection_array.size() < max_size_output.value()){
 
-            //Nothing has been captured
+            //No image or not enought image captured
             return BT::NodeStatus::RUNNING;
         }
+        // We need to make some selection in the image array
+        // std::vector<float> distances;
 
-        AiDetectionArray detected_object_array;
+        std::vector<int> ids;
+        for (int n = 0; n < max_size_output.value(); n++){
+            ids.push_back(-1);
+        } 
 
-        for (long unsigned int i = 0; i < _detection_array.size(); i++){
+        //We put a number on every detection related to the depth of them (>0 = far | 0 = closer)
+        for (int i = 0; i < max_size_output.value(); i++)
+        {
+            int min_index_pointer = -1;
+            float min_dist_found = 0.0;
+            bool object_already_choosen = false;
+
+            // We go get the closest object of the detected array not already choosen 
+            for (int j = 0; j < _detection_array.size();j++)
+            {
+                if(min_index_pointer == -1){
+                    min_index_pointer = j;
+                    min_dist_found = _detection_array[j].distance;
+                }
+                else if (min_dist_found > _detection_array[j].distance && !item_is_in_vector(ids, j))
+                {   
+                    min_index_pointer = j;
+                    min_dist_found = _detection_array[j].distance;
+                }
+            }
+            ids[i] = min_index_pointer;
+        }
+
+        AiDetectionArray reduced_detected_object_array;
+
+        for (int index: ids){
 
             // We fill the detected object 
             AiDetection detected_object;
-            detected_object.top_right_x = _detection_array[i].top_right_x;
-            detected_object.top_right_y = _detection_array[i].top_right_y;
-            detected_object.top_left_x = _detection_array[i].top_left_x;
-            detected_object.top_left_y = _detection_array[i].top_left_y;
+            detected_object.top_right_x = _detection_array[index].top_right_x;
+            detected_object.top_right_y = _detection_array[index].top_right_y;
+            detected_object.top_left_x = _detection_array[index].top_left_x;
+            detected_object.top_left_y = _detection_array[index].top_left_y;
             
-            detected_object.bottom_right_x = _detection_array[i].bottom_right_x;
-            detected_object.bottom_right_y = _detection_array[i].bottom_right_y;
-            detected_object.bottom_left_x = _detection_array[i].bottom_left_x;
-            detected_object.bottom_left_y = _detection_array[i].bottom_left_y;
+            detected_object.bottom_right_x = _detection_array[index].bottom_right_x;
+            detected_object.bottom_right_y = _detection_array[index].bottom_right_y;
+            detected_object.bottom_left_x = _detection_array[index].bottom_left_x;
+            detected_object.bottom_left_y = _detection_array[index].bottom_left_y;
 
-            detected_object.distance = _detection_array[i].distance;
-            detected_object.confidence = _detection_array[i].confidence;
-            detected_object.classification = _detection_array[i].class_name;
+            detected_object.distance = _detection_array[index].distance;
+            detected_object.confidence = _detection_array[index].confidence;
+            detected_object.classification = _detection_array[index].class_name;
 
             RCLCPP_INFO(ros_node->get_logger(), "Detection filtered %s : dist = %f | conf = %f", detected_object.classification.c_str(), detected_object.distance, detected_object.confidence);
 
             // We put the detected object in the detected array
-            detected_object_array.detection_array.push_back(detected_object);
-        } 
-
-        if(detected_object_array.detection_array.size() > max_size_output.value()){
-
-            // We need to make some selection in the image array
-            // std::vector<float> distances;
-
-            std::vector<int> ids;
-            for (int n = 0; n < max_size_output.value(); n++){
-                // distances.push_back(100000);
-                ids.push_back(0);
-            }
-
-            //We put a number on every detection related to the depth of them (>0 = far | 0 = closer)
-            for (int i = 0; i < max_size_output.value(); i++)
-            {
-                int min_index_pointer = 0;
-                float min_dist_found = 0.0;
-                bool object_already_choosen = false;
-                // We set the min index pointer to a detected object not already choosen
-                for (int j = 0; j < detected_object_array.detection_array.size();j++)
-                {
-                    if (!item_is_in_vector(ids, j))
-                    {
-                        min_index_pointer = j;
-                        min_dist_found = detected_object_array.detection_array[j].distance;
-                        break;
-                    }
-                }
-
-                // We go get the closest object of the detected array not already choosen 
-                for (int j = 0; j < detected_object_array.detection_array.size();j++)
-                {
-                    if (min_dist_found > detected_object_array.detection_array[j].distance && !item_is_in_vector(ids, j))
-                    {   
-                        min_index_pointer = j;
-                        min_dist_found = detected_object_array.detection_array[j].distance;
-                    }
-                }
-                ids[i] = min_index_pointer;
-            }
-
-            // We put a number on every detection related to the depth of them (>0 = far | 0 = closer)
-            // for (int i = 1; i <= max_size_output.value(); i++){
-            // {
-            //     int min_index_pointer = 0;
-            //     float min_dist_found = 0.0;
-            //     // We set the min index pointer to a detected object not already choosen
-            //     for (int j = 0; j < detected_object_array.detection_array.size();j++)
-            //     {
-            //         if (ids[j] == 0)
-            //         {
-            //             min_index_pointer = j;
-            //             min_dist_found = detected_object_array.detection_array[min_index_pointer].distance;
-            //             break;
-            //         }
-            //     }
-
-            //     // We go get the closest object of the detected array not already choosen 
-            //     for (int j = 0; j < detected_object_array.detection_array.size();j++)
-            //     {
-            //         if (min_dist_found > detected_object_array.detection_array[j].distance && ids[j] == 0)
-            //         {   
-            //             min_index_pointer = j;
-            //             min_dist_found = detected_object_array.detection_array[j].distance;
-            //         }
-            //     }
-            //     ids[min_index_pointer] = i;
-            // }
-
-            // int i = 0;
-            // for (AiDetection detected_object: detected_object_array.detection_array){
-            //     int k = 0;
-            //     float max_dist = 0;
-            //     int max_id = 0;
-            //     for (float d: distances){
-            //         if (max_dist < d){
-            //             max_dist = d;
-            //             max_id = k;
-            //         }
-            //         k++;
-            //     }
-
-            //     if (max_dist > detected_object.distance){
-            //         ids[max_id] = i;
-            //     }
-            //     i++;
-            // }
-
-            AiDetectionArray reduced_detected_object_array;
-            int u = 0;
-
-            for (AiDetection detected_object: detected_object_array.detection_array){
-
-                //We enumerate every detection by the camera
-                float center_x =(detected_object.top_left_x+detected_object.bottom_right_x)/2.0;
-                RCLCPP_INFO(ros_node->get_logger(), "Output : (IN FOR) class %s : center on x = %f | dist = %f", detected_object.classification.c_str(), center_x, detected_object.distance);
-            }
-
-            for (int index: ids){
-                RCLCPP_INFO(ros_node->get_logger(), "Reducing id = %d | dist = %f", index, detected_object_array.detection_array[index].distance);
-                // u++;
-                reduced_detected_object_array.detection_array.push_back(detected_object_array.detection_array[index]);
-            }
-            RCLCPP_INFO(ros_node->get_logger(), "Output is reduced");
-            float center_x =reduced_detected_object_array.detection_array[0].top_left_x+reduced_detected_object_array.detection_array[0].bottom_right_x;
-            RCLCPP_INFO(ros_node->get_logger(), "Output : (AFTER REDUCING) class %s : center on x = %f | dist = %f", reduced_detected_object_array.detection_array[0].classification.c_str(), center_x, reduced_detected_object_array.detection_array[0].distance);
-
-            setOutput("detected_object_array", reduced_detected_object_array);
+            reduced_detected_object_array.detection_array.push_back(detected_object);
+            RCLCPP_INFO(ros_node->get_logger(), "Reducing id = %d | dist = %f", index, detected_object_array.detection_array[index].distance);
         }
-        else{
-            RCLCPP_INFO(ros_node->get_logger(), "Output is not reduced");
-            float center_x =detected_object_array.detection_array[0].top_left_x+detected_object_array.detection_array[0].bottom_right_x;
-            RCLCPP_INFO(ros_node->get_logger(), "Output : (NOT REDUCING)class %s : center on x = %f | dist = %f", detected_object_array.detection_array[0].classification.c_str(), center_x, detected_object_array.detection_array[0].distance);
-            setOutput("detected_object_array", detected_object_array);
-        }
+
+        RCLCPP_INFO(ros_node->get_logger(), "Output is reduced");
+        float center_x =reduced_detected_object_array.detection_array[0].top_left_x+reduced_detected_object_array.detection_array[0].bottom_right_x;
+        RCLCPP_INFO(ros_node->get_logger(), "Output : (AFTER REDUCING) class %s : center on x = %f | dist = %f", reduced_detected_object_array.detection_array[0].classification.c_str(), center_x, reduced_detected_object_array.detection_array[0].distance);
+
+        setOutput("detected_object_array", reduced_detected_object_array);
 
         return BT::NodeStatus::SUCCESS;
-
     }
     void AiFilter::onHalted()
     {
@@ -214,7 +130,7 @@ namespace vision{
             // if(std::find(_object.value().begin(), _object.value().end(), msg_obj.class_name) != _object.value().end()){
             RCLCPP_INFO(ros_node->get_logger(), "Comparing %s and %s = %d", msg_obj.class_name.c_str(), _object.value().c_str(), msg_obj.class_name.compare(_object.value()));
 
-            if(msg_obj.class_name.compare(_object.value()) == 0){
+            if(msg_obj.class_name.compare(_object.value())){
 
                 // The searching object has been detected
                 RCLCPP_INFO(ros_node->get_logger(), "Class OK");
@@ -223,16 +139,8 @@ namespace vision{
                 {
 
                     //The detected object respect the confidence and the depth enter in the behavior tree
-                    RCLCPP_INFO(ros_node->get_logger(), "Confidence and depth OK");
-                    // nb_detection++;
-                    if(nb_detection < min_detection.value()){
-                        nb_detection++;
-                        RCLCPP_INFO(ros_node->get_logger(), "Detection on frame %d, nb_detection = %d", counter, nb_detection);
-                        continue;
-                    }
-                    else{
-                        _detection_array.push_back(msg_obj);
-                    }
+                    RCLCPP_INFO(ros_node->get_logger(), "Confidence and depth OK, a new object has been detected");
+                    _detection_array.push_back(msg_obj);
                 }
             }
         }     
