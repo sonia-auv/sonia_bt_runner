@@ -180,9 +180,8 @@ namespace vision{
             }
 
             for (int index: ids){
-                if (index == 0)
                 RCLCPP_INFO(ros_node->get_logger(), "Reducing id = %d | dist = %f", index, detected_object_array.detection_array[index].distance);
-                u++;
+                // u++;
                 reduced_detected_object_array.detection_array.push_back(detected_object_array.detection_array[index]);
             }
             RCLCPP_INFO(ros_node->get_logger(), "Output is reduced");
