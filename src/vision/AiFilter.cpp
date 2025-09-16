@@ -35,6 +35,11 @@ namespace vision{
         return BT::NodeStatus::RUNNING;
     }
 
+    bool item_is_in_vector(std::vector<int> vec, int index)
+    {
+        return std::find(vec.begin(), vec.end(), index) != vec.end();
+    }
+
     BT::NodeStatus AiFilter::onRunning(){
         
         if(counter >= max_frame_before_exiting.value()){
@@ -54,32 +59,71 @@ namespace vision{
         // std::vector<float> distances;
 
         std::vector<int> ids;
-        for (int n = 0; n < max_size_output.value(); n++){
-            ids.push_back(-1);
+        for (int i = 0; i < max_size_output.value(); i++){
+            ids.push_back(i);
         } 
 
-        //We put a number on every detection related to the depth of them (>0 = far | 0 = closer)
-        for (int i = 0; i < max_size_output.value(); i++)
+        // We sort all the id distance in the ids vector
+        if (_detection_array.size() > max_size_output.value())
         {
-            int min_index_pointer = -1;
-            float min_dist_found = 0.0;
-            bool object_already_choosen = false;
-
-            // We go get the closest object of the detected array not already choosen 
-            for (int j = 0; j < _detection_array.size();j++)
+            for (int i = 0;i < max_size_output.value();i++)
             {
-                if(min_index_pointer == -1){
-                    min_index_pointer = j;
-                    min_dist_found = _detection_array[j].distance;
+                float min_distance_found = 65.0;
+                int min_distance_index = -1;
+                int temp_id = 0;
+                for(int j = i;j < max_size_output.value();j++)
+                {
+                    if (min_distance_found > _detection_array[j].distance)
+                    {
+                        min_distance_found = _detection_array[j].distance;
+                        min_distance_index = j;
+                    }
                 }
-                else if (min_dist_found > _detection_array[j].distance && !item_is_in_vector(ids, j))
-                {   
-                    min_index_pointer = j;
-                    min_dist_found = _detection_array[j].distance;
+                if (min_distance_index != -1)
+                {
+                    temp_id = ids[i];
+                    ids[i] = ids[min_distance_index];
+                    ids[min_distance_index] = temp_id;
+                }
+                
+            }
+
+            // We put the object with a smaller distance in the ids vector
+            for (int i = max_size_output.value();i < _detection_array.size();i++)
+            {
+                if(_detection_array[i].distance < _detection_array[ids.back()].distance)
+                {
+
+                    // The object has a distance lower 
+                    int j = max_size_output.value() - 1;
+                    do
+                    {
+                        if (j == 0)
+                        {
+                            break;
+                        }
+                        j--;
+                    }while(_detection_array[ids[j - 1]].distance < _detection_array[i].distance);
+                    int temp1 = ids[j];
+                    int temp2;
+                    ids[j] = i;
+                    for(int k = j;k < max_size_output.value();k++)
+                    {
+                        if(k == max_size_output.value() - 1)
+                        {
+                            ids[k] = temp1;
+                        }
+                        else
+                        {
+                            temp2 = ids[k];
+                            ids[k] = temp1;
+                            temp1 = temp2;
+                        }
+                    }
                 }
             }
-            ids[i] = min_index_pointer;
         }
+        
 
         AiDetectionArray reduced_detected_object_array;
 
@@ -105,7 +149,7 @@ namespace vision{
 
             // We put the detected object in the detected array
             reduced_detected_object_array.detection_array.push_back(detected_object);
-            RCLCPP_INFO(ros_node->get_logger(), "Reducing id = %d | dist = %f", index, detected_object_array.detection_array[index].distance);
+            RCLCPP_INFO(ros_node->get_logger(), "Reducing id = %d | dist = %f", index, _detection_array[index].distance);
         }
 
         RCLCPP_INFO(ros_node->get_logger(), "Output is reduced");
