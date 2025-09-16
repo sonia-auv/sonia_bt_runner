@@ -106,7 +106,7 @@ namespace navigation{
         std::cout << "speed: "<<compute_trajectory.speed<< std::endl;
         std::cout << "precision: "<<compute_trajectory.precision<< std::endl;
         std::cout << "long rotation: "<<compute_trajectory.long_rotation<< std::endl;
-        return t;
+        return compute_trajectory;
     }
 
 }
