@@ -28,7 +28,9 @@ enum AlignmentType{
     BIN_FRONT = 4,
     BIN_BOTTOM = 5,
     TABLE_APPROACH = 6,
-    TABLE_GRAB = 7
+    TABLE_GRAB = 7,
+    GATE_ALIGN_TO_OBJECT = 8,
+    GATE_APPROACH = 9
 };
 
 // Results of alignment computation
