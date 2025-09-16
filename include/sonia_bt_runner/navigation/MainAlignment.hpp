@@ -23,14 +23,12 @@ struct CameraInfoZedMiniHD720
 enum AlignmentType{
     NOT_CHOOSEN_YET = 0,
     SEARCH_MISSION = 1,
-    TORPIDOES_DRIFTING = 2,
-    TORPIDOES_TARGET = 3,
-    BIN_FRONT = 4,
-    BIN_BOTTOM = 5,
-    TABLE_APPROACH = 6,
-    TABLE_GRAB = 7,
-    GATE_ALIGN_TO_OBJECT = 8,
-    GATE_APPROACH = 9
+    MOVE_TO_MISSION = 2
+    TORPIDOES_DRIFTING = 3,
+    TORPIDOES_TARGET = 4,
+    BIN_FRONT = 5,
+    BIN_BOTTOM = 6,
+    TABLE_GRAB = 7
 };
 
 // Results of alignment computation

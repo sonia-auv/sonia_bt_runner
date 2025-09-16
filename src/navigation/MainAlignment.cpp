@@ -72,11 +72,10 @@ namespace navigation{
                 return compute_trajectory; // Return an empty trajectory
                 break;
             case SEARCH_MISSION:
-            case GATE_ALIGN_TO_OBJECT:
                 compute_trajectory.orientationZ = res.rad_x;
                 break;
-            case GATE_APPROACH:
-                compute_trajectory.positionX = res.distance;
+            case MOVE_TO_MISSION:
+                compute_trajectory.PositionX = res.distance;
                 break;
             case TORPIDOES_DRIFTING:
                 break;
@@ -88,8 +87,6 @@ namespace navigation{
             case BIN_BOTTOM:
                 compute_trajectory.positionX = res.distance * sin(res.rad_x);
                 compute_trajectory.positionY = res.distance * sin(res.rad_y);
-                break;
-            case TABLE_APPROACH:
                 break;
             case TABLE_GRAB:
                 break;
