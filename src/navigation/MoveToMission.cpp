@@ -19,7 +19,7 @@ namespace navigation
             BT::InputPort<AiDetectionArray>("detections"),
 
             // Outputs
-            BT::BidirectionalPort<Trajectory>("traj"),
+            BT::BidirectionalPort<Trajectory>("trajectory"),
         };
     }
 

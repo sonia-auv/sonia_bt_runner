@@ -75,7 +75,7 @@ namespace navigation{
                 compute_trajectory.orientationZ = res.rad_x;
                 break;
             case MOVE_TO_MISSION:
-                compute_trajectory.PositionX = res.distance;
+                compute_trajectory.positionX = res.distance;
                 break;
             case TORPIDOES_DRIFTING:
                 break;
