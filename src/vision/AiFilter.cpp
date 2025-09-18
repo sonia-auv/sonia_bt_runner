@@ -17,7 +17,7 @@ namespace vision{
         max_size_output = getInput<int>("Max_size_output");
         confidence = getInput<float>("Confidence");
         max_depth = getInput<float>("Max_depth");
-        min_detection = getInput<int>("Min_detection");
+        min_size_output = getInput<int>("Min_size_output");
 
         BT::Expected<int> cam = getInput<int>("Camera");
 
@@ -45,12 +45,12 @@ namespace vision{
         if(counter >= max_frame_before_failling.value()){
 
             // We took to much time to find the object
-            RCLCPP_INFO(ros_node->get_logger(), "counter %d : max frame = %d", counter, max_frame_before_exiting.value());
+            RCLCPP_INFO(ros_node->get_logger(), "counter %d : max frame = %d", counter, max_frame_before_failling.value());
             return BT::NodeStatus::FAILURE;
         }
 
 
-        if(_detection_array.size() < max_size_output.value()){
+        if(_detection_array.size() < min_size_output.value()){
 
             //No image or not enought image captured
             return BT::NodeStatus::RUNNING;
@@ -125,7 +125,7 @@ namespace vision{
         }
         
 
-        AiDetectionArdetected_object_arrayray reduced_detected_object_array;
+        AiDetectionArray reduced_detected_object_array;
 
         for (int index: ids){
 
@@ -134,7 +134,7 @@ namespace vision{
             detected_object.top_right_x = _detection_array[index].top_right_x;
             detected_object.top_right_y = _detection_array[index].top_right_y;
             detected_object.top_left_x = _detection_array[index].top_left_x;
-            detected_detected_object_arrayobject.top_left_y = _detection_array[index].top_left_y;
+            detected_object.top_left_y = _detection_array[index].top_left_y;
             
             detected_object.bottom_right_x = _detection_array[index].bottom_right_x;
             detected_object.bottom_right_y = _detection_array[index].bottom_right_y;
@@ -143,14 +143,14 @@ namespace vision{
 
             detected_object.distance = _detection_array[index].distance;
             detected_object.confidence = _detection_array[index].confidence;
-            detected_odetected_object_arraybject.classification = _detection_array[index].class_name;
+            detected_object.classification = _detection_array[index].class_name;
 
             RCLCPP_INFO(ros_node->get_logger(), "Detection filtered %s : dist = %f | conf = %f", detected_object.classification.c_str(), detected_object.distance, detected_object.confidence);
 
             // We put the detected object in the detected array
             reduced_detected_object_array.detection_array.push_back(detected_object);
             RCLCPP_INFO(ros_node->get_logger(), "Reducing id = %d | dist = %f", index, _detection_array[index].distance);
-        }detected_object_array
+        }
         setOutput("Detected_object_array", reduced_detected_object_array);
 
         return BT::NodeStatus::SUCCESS;
