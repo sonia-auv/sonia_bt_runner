@@ -22,7 +22,7 @@ struct CameraInfoZedMiniHD720
 // Struct to define the Align result type
 enum AlignmentType{
     NOT_CHOOSEN_YET,
-    SEARCH_MISSION,
+    ROTATE_TO_MISSION,
     MOVE_TO_MISSION,
     TORPIDOES_DRIFTING,
     TORPIDOES_TARGET,

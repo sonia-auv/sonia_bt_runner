@@ -71,7 +71,7 @@ namespace navigation{
                 std::cout << "No alignment type chosen yet." << std::endl;
                 return compute_trajectory; // Return an empty trajectory
                 break;
-            case SEARCH_MISSION:
+            case ROTATE_TO_MISSION:
                 compute_trajectory.orientationZ = res.rad_x;
                 break;
             case MOVE_TO_MISSION:

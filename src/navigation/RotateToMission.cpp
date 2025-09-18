@@ -53,7 +53,7 @@ namespace navigation
 
         // getInput("alignement_by_translation", mode);
         AlignResult alignres;
-        alignres.align_type = SEARCH_MISSION;
+        alignres.align_type = ROTATE_TO_MISSION;
         alignres.distance = det.distance;
         alignres.rad_x = GetCenterImageAngleX(det);
 
