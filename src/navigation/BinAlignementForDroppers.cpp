@@ -49,13 +49,13 @@ namespace navigation
         }
 
         // Assumption: array is pre-filtered for the object of interest → use first detection
-        const AiDetection& det = arr.detection_array.bottom(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
+        const AiDetection& det = arr.detection_array.front(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
 
         // getInput("alignement_by_translation", mode);
         AlignResult alignres;
         alignres.align_type = BIN;
-        alignres.rad_x = GetCenterImageAngleX(arr);
-        alignres.rad_y = GetCenterImageAngleY(arr);
+        alignres.rad_x = GetCenterImageAngleX(det);
+        alignres.rad_y = GetCenterImageAngleY(det);
         alignres.distance = det.distance;
 
         // AlignResult res_y = computeAlignmentY(det,mode);
