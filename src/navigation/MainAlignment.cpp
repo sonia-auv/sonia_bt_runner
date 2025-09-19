@@ -78,6 +78,8 @@ namespace navigation{
                 compute_trajectory.positionX = res.distance;
                 break;
             case TORPIDOES_DRIFTING:
+                compute_trajectory.positionY = res.distance * res.rad_x * 2.0;
+                compute_trajectory.orientationZ = -res.rad_x;
                 break;
             case TORPIDOES_TARGET_PEPPER:
                 break;
