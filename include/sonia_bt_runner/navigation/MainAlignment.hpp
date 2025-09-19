@@ -6,6 +6,13 @@
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 
+// Constant list for droppers and torpidoes3
+const float CAMERA_TO_DROPPER_OFFSET_X = 0.12;
+const float CAMERA_TO_DROPPER_OFFSET_Y = 0.18;
+const float CAMERA_TO_TORPIDO_PEPPER_OFFSET_X = -0.072;
+const float CAMERA_TO_TORPIDO_SALT_OFFSET_X = 0.11;
+const float CAMERA_TO_TORPEDO_OFFSET_Y = -0.10;
+
 
 // Fixed intrinsics for ZED Mini @ HD720 (single-eye image: 1280x720)
 struct CameraInfoZedMiniHD720
@@ -25,19 +32,19 @@ enum AlignmentType{
     ROTATE_TO_MISSION,
     MOVE_TO_MISSION,
     TORPIDOES_DRIFTING,
-    TORPIDOES_TARGET,
-    BIN_FRONT,
-    BIN_BOTTOM,
+    TORPIDOES_TARGET_PEPPER,
+    TORPIDOES_TARGET_SALT,
+    BIN,
     TABLE_GRAB
 };
 
 // Results of alignment computation
 struct AlignResult
 {   
-    float rad_x = 0.0f;             // x angle
-    float rad_y = 0.0f;             // y angle
-    float distance = 0.0f;          // The distance of the object
-    AlignmentType align_type;       // The type of alignement
+    float rad_x = 0.0f;                             // x angle
+    float rad_y = 0.0f;                             // y angle
+    float distance = 0.0f;                          // The distance of the object
+    AlignmentType align_type = NOT_CHOOSEN_YET;     // The type of alignement
 };
 
 namespace navigation{

@@ -79,14 +79,13 @@ namespace navigation{
                 break;
             case TORPIDOES_DRIFTING:
                 break;
-            case TORPIDOES_TARGET:
+            case TORPIDOES_TARGET_PEPPER:
                 break;
-            case BIN_FRONT:
-                compute_trajectory.positionX = res.distance * cos(res.rad_y);
+            case TORPIDOES_TARGET_SALT:
                 break;
-            case BIN_BOTTOM:
-                compute_trajectory.positionX = res.distance * sin(res.rad_x);
-                compute_trajectory.positionY = res.distance * sin(res.rad_y);
+            case BIN:
+                compute_trajectory.positionX = res.distance * sin(res.rad_x) - CAMERA_TO_DROPPER_OFFSET_X;
+                compute_trajectory.positionY = res.distance * sin(res.rad_y) - CAMERA_TO_DROPPER_OFFSET_Y;
                 break;
             case TABLE_GRAB:
                 break;

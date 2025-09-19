@@ -75,7 +75,7 @@ namespace vision{
                 {
                     if (min_distance_found > _detection_array[j].distance)
                     {
-                        min_distance_found = _detection_array[j].distance;
+                        min_distance_foun_detection_arrayd = _detection_array[j].distance;
                         min_distance_index = j;
                     }
                 }
@@ -182,6 +182,6 @@ namespace vision{
                     _detection_array.push_back(msg_obj);
                 }
             }
-        }     
+        }
     }
 }  // namespace vision
