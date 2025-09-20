@@ -8,7 +8,7 @@ namespace navigation
 {
 
     TorpedoAimingAlignement::TorpedoAimingAlignement(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node)
-    : BT::TorpedoAimingAlignement(name, config), ros_node(node), valid(0), _time_launch(std::chrono::system_clock::now())
+    : BT::StatefulActionNode(name, config), ros_node(node), valid(0), _time_launch(std::chrono::system_clock::now())
     {
 
     }
