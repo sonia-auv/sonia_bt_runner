@@ -58,6 +58,7 @@ namespace vision{
         // We need to make some selection in the image array
         // std::vector<float> distances;
 
+        RCLCPP_INFO(ros_node->get_logger(), "Getting the information because enough detection have been made : %d detection(s)", _detection_array.size());
         std::vector<int> ids;
         for (int i = 0; i < max_size_output.value(); i++){
             ids.push_back(i);
@@ -66,6 +67,7 @@ namespace vision{
         // We sort all the id distance in the ids vector
         if (_detection_array.size() > max_size_output.value())
         {
+            RCLCPP_INFO(ros_node->get_logger(), "Detection number to High : %d detection(s)", _detection_array.size());
             for (int i = 0;i < max_size_output.value();i++)
             {
                 float min_distance_found = 65.0;
@@ -129,7 +131,8 @@ namespace vision{
 
         for (int index: ids){
 
-            // We fill the detected object 
+            // We fill the detected object
+            RCLCPP_INFO(ros_node->get_logger(), "Index retains : %d", index);
             AiDetection detected_object;
             detected_object.top_right_x = _detection_array[index].top_right_x;
             detected_object.top_right_y = _detection_array[index].top_right_y;
