@@ -7,10 +7,11 @@
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 #include "sonia_bt_runner/navigation/MainAlignment.hpp"
 
+
 namespace navigation
 {
 
-    class MoveToMission : public BT::StatefulActionNode, public MainAlignment
+    class MoveToMission : public BT::StatefulActionNode
     {
         public:
             MoveToMission(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node);
