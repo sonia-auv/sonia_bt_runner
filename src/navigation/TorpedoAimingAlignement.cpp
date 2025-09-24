@@ -17,6 +17,7 @@ namespace navigation
         return {
             // Inputs
             BT::InputPort<AiDetectionArray>("Detections"),
+            BT::InputPort<std::string>("LaunchingSide"),
 
             // Outputs
             BT::BidirectionalPort<Trajectory>("Trajectory"),
@@ -36,9 +37,11 @@ namespace navigation
     BT::NodeStatus TorpedoAimingAlignement::onRunning()
     {
         AiDetectionArray arr;
+        std::string launching_side;
 
         // We get the detected object by the AI
         getInput("Detections", arr);
+        getInput("LaunchingSide", launching_side);
 
         if (arr.detection_array.empty())
         {
@@ -50,22 +53,25 @@ namespace navigation
 
         // Assumption: array is pre-filtered for the object of interest → use first detection
         const AiDetection& det = arr.detection_array.front(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
-
-        // getInput("alignement_by_translation", mode);
-        AlignResult alignres;
-        alignres.align_type = TORPIDOES_DRIFTING;
-        alignres.rad_x = GetCenterImageAngleX(det);
-        alignres.rad_y = GetCenterImageAngleY(det);
-        alignres.distance = det.distance;
-
-        // AlignResult res_y = computeAlignmentY(det,mode);
-        std::cout <<"AlignResult.align_type : "<< alignres.align_type << std::endl;
-        std::cout <<"AlignResult.distance : "<< alignres.distance << std::endl;
-        std::cout <<"AlignResult.rad_x : "<< alignres.rad_x << std::endl;
-        std::cout <<"AlignResult.rad_y : "<< alignres.rad_y << std::endl;
         
         TrajectoryPose t;
-        t = ComputeTrajectory(alignres);
+        t.positionX = det.distance * 0.5; // We don't move on the x axis
+        if (launching_side = "portside")
+        {
+            t.positionY = det.distance * sin(det.angle_alpha * M_PI / 180.0) - CAMERA_TO_TORPIDO_PEPPER_OFFSET_X; // We move on the x axis
+        }
+        else
+        {
+            t.positionY = det.distance * sin(det.angle_alpha * M_PI / 180.0) - CAMERA_TO_TORPIDO_SALT_OFFSET_X; // We move on the x axis
+        }
+        // t.positionZ = det.distance * cos(det.angle_beta * M_PI / 180.0) - CAMERA_TO_TORPEDO_OFFSET_Y; // We move on the z axis
+        t.orientationX = 0.0;       // We don't rotate on the x axis
+        t.orientationY = 0.0;       // We don't rotate on the y axis
+        t.orientationZ = 0.0;       // We don't rotate on the z axis
+        t.frame = 1;                // We use the relative positionning
+        t.speed = 0;
+        t.precision = 0;            // We don't care about the precision
+        t.long_rotation = false;    // We don't care about the long rotation
 
         std::cout << "position en x: "<<t.positionX<< std::endl;
         std::cout<< "position en y: "<<t.positionY<< std::endl;
@@ -82,7 +88,7 @@ namespace navigation
         setOutput<Trajectory>("Trajectory", traj);
 
         // SUCCESS if metric lateral is available; otherwise RUNNING so parent can fall back to bearing-only logic
-        return (alignres.align_type == NOT_CHOOSEN_YET) ? BT::NodeStatus::RUNNING : BT::NodeStatus::SUCCESS;
+        return BT::NodeStatus::SUCCESS;
     }
 
 }  // namespace navigation

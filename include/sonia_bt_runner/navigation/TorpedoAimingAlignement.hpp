@@ -10,7 +10,7 @@
 namespace navigation
 {
 
-    class TorpedoAimingAlignement : public BT::StatefulActionNode, public MainAlignment
+    class TorpedoAimingAlignement : public BT::StatefulActionNode
     {
         public:
             TorpedoAimingAlignement(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node);
@@ -20,6 +20,8 @@ namespace navigation
                 return {
                     // Inputs
                     BT::InputPort<AiDetectionArray>("Detections"),
+                    BT::InputPort<std::string>("LaunchingSide"),
+
 
                     // Outputs
                     BT::BidirectionalPort<Trajectory>("Trajectory"),
