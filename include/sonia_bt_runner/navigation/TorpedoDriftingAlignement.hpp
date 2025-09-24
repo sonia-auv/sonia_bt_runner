@@ -30,7 +30,6 @@ namespace navigation
             void onHalted() override;
 
         private:
-            float ComputeDriftingAngle(const AiDetection& det);
             std::shared_ptr<rclcpp::Node> ros_node;
             int valid;
             std::chrono::system_clock::time_point _time_launch;
