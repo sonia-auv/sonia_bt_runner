@@ -37,7 +37,7 @@ MissionServer::MissionServer()
         while (!BT::isStatusCompleted(result_))
         {
             result_ = tree_.tickOnce();
-            tree_.sleep(std::chrono::milliseconds(100));         
+            tree_.sleep(std::chrono::milliseconds(66));         
         }
         RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(result_));
         RCLCPP_INFO(this->get_logger(), "----------------");
@@ -51,7 +51,6 @@ MissionServer::MissionServer()
     rclcpp_action::GoalResponse MissionServer::handleGoal(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const MissionControl::Goal> goal){
         RCLCPP_INFO(this->get_logger(), "Received goal request with mission %s", goal->mission.c_str());
         (void)uuid;
-
         name_ =goal->mission;
 
         using std::filesystem::directory_iterator;
@@ -94,9 +93,13 @@ MissionServer::MissionServer()
         std::thread{std::bind(&MissionServer::execute, this, _1), goal_handle}.detach();
     }
     void MissionServer::abort(){
+        result_ = NodeStatus::FAILURE;
+        
         tree_.haltTree();
         tree_.rootBlackboard().reset();
         factory_.clearRegisteredBehaviorTrees();
         tree_.~Tree();
+        std::this_thread::sleep_for(std::chrono::milliseconds(50)); 
+        
         RCLCPP_INFO(this->get_logger(), "Cancel request accepted: MISSION ABORTED");
     }

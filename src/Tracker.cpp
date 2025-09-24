@@ -16,7 +16,7 @@ Tracker::Tracker(BT::Tree& tree, const std::shared_ptr<GoalHandle> goal)
 
         gl->publish_feedback(feedback);
         
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));   
+        std::this_thread::sleep_for(std::chrono::milliseconds(66));   
     }
 
     void Tracker::flush(){
