@@ -17,7 +17,6 @@ namespace navigation
         return {
             // Inputs
             BT::InputPort<AiDetectionArray>("Detections"),
-            BT::InputPort<float>("RotationAngle"),
 
             // Outputs
             BT::BidirectionalPort<Trajectory>("Trajectory"),
@@ -51,20 +50,18 @@ namespace navigation
 
         // Assumption: array is pre-filtered for the object of interest → use first detection
         const AiDetection& det = arr.detection_array.front(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
-
-        // getInput("alignement_by_translation", mode);
-        AlignResult alignres;
-        alignres.align_type = TORPIDOES_DRIFTING;
-        alignres.rad_x = ComputeDriftingAngle(det);
-        alignres.distance = det.distance;
-
-        // AlignResult res_y = computeAlignmentY(det,mode);
-        std::cout <<"AlignResult.align_type : "<< alignres.align_type << std::endl;
-        std::cout <<"AlignResult.distance : "<< alignres.distance << std::endl;
-        std::cout <<"AlignResult.rad_x : "<< alignres.rad_x << std::endl;
         
         TrajectoryPose t;
-        t = ComputeTrajectory(alignres);
+        t.positionX = 0.0;
+        t.positionY = det.distance_teta;
+        t.positionZ = 0.0;
+        t.orientationX = 0.0;
+        t.orientationY = 0.0;
+        t.orientationZ = -det.angle_teta;
+        t.frame = 1;
+        t.speed = 0;
+        t.precision = 0;
+        t.long_rotation = false;
 
         std::cout << "position en x: "<<t.positionX<< std::endl;
         std::cout<< "position en y: "<<t.positionY<< std::endl;

@@ -20,7 +20,6 @@ namespace navigation
                 return {
                     // Inputs
                     BT::InputPort<AiDetectionArray>("Detections"),
-                    BT::InputPort<float>("RotationAngle"),
 
                     // Outputs
                     BT::BidirectionalPort<Trajectory>("Trajectory"),
