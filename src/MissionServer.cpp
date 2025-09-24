@@ -34,11 +34,14 @@ MissionServer::MissionServer()
         Tracker trac(tree_, goal); 
        
         RCLCPP_INFO(this->get_logger(), "Begin tree");     
-        while (!BT::isStatusCompleted(result_))
+        while (!BT::isStatusCompleted(result_)&& !goal.get()->is_canceling())
         {
             result_ = tree_.tickOnce();
             tree_.sleep(std::chrono::milliseconds(66));         
         }
+
+        if(goal.get()->is_canceling())
+            return;
         RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(result_));
         RCLCPP_INFO(this->get_logger(), "----------------");
         
@@ -93,13 +96,11 @@ MissionServer::MissionServer()
         std::thread{std::bind(&MissionServer::execute, this, _1), goal_handle}.detach();
     }
     void MissionServer::abort(){
-        result_ = NodeStatus::FAILURE;
         
         tree_.haltTree();
         tree_.rootBlackboard().reset();
         factory_.clearRegisteredBehaviorTrees();
         tree_.~Tree();
-        std::this_thread::sleep_for(std::chrono::milliseconds(50)); 
         
         RCLCPP_INFO(this->get_logger(), "Cancel request accepted: MISSION ABORTED");
     }
