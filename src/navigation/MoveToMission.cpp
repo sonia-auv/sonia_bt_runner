@@ -60,7 +60,10 @@ namespace navigation
         t.orientationY = 0.0; // We don't rotate on the Y axes
         t.orientationZ = det.angle_teta; // We rotate on the Z axes to face
         t.frame = 1.0; // We use the frame in meter
-        t.speed = 0;
+        t.speed = 0; // We use the default speed of the motion controller
+        t.precision = 0; // We use the default precision of the motion controller
+        t.long_rotation = false; // We don't use long rotation
+
 
         std::cout << "position en x: "<<t.positionX<< std::endl;
         std::cout<< "position en y: "<<t.positionY<< std::endl;
