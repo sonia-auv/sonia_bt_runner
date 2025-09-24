@@ -35,17 +35,12 @@ namespace vision{
         return BT::NodeStatus::RUNNING;
     }
 
-    bool item_is_in_vector(std::vector<int> vec, int index)
-    {
-        return std::find(vec.begin(), vec.end(), index) != vec.end();
-    }
-
     BT::NodeStatus AiFilter::onRunning(){
         
         if(counter >= max_frame_before_failling.value()){
 
             // We took to much time to find the object
-            RCLCPP_INFO(ros_node->get_logger(), "counter %d : max frame = %d", counter, max_frame_before_failling.value());
+            RCLCPP_INFO(ros_node->get_logger(), "counter %d : max frame = %d, We don't find what we are looking for.", counter, max_frame_before_failling.value());
             return BT::NodeStatus::FAILURE;
         }
 
@@ -145,6 +140,9 @@ namespace vision{
             detected_object.bottom_left_y = _detection_array[index].bottom_left_y;
 
             detected_object.distance = _detection_array[index].distance;
+            detected_object.angle_alpha = _detection_array[index].angle_alpha;
+            detected_object.angle_teta = _detection_array[index].angle_teta;
+            detected_object.distance_teta = _detection_array[index].distance_teta;
             detected_object.confidence = _detection_array[index].confidence;
             detected_object.classification = _detection_array[index].class_name;
 
