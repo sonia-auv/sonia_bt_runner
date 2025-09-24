@@ -14,7 +14,7 @@ MissionServer::MissionServer()
                     this,
                     "MissionControl",
                     std::bind(&MissionServer::handleGoal, this, _1,_2),
-                    std::bind(&MissionServer::handleCancel, this, _1),
+                    std::bind(&MissionServer::handleCancel, this),
                     std::bind(&MissionServer::handleAccept, this, _1));
         
         RCLCPP_INFO(this->get_logger(), "Mission Server up running");
@@ -80,9 +80,9 @@ MissionServer::MissionServer()
         }
           
     }
-    rclcpp_action::CancelResponse MissionServer::handleCancel(const std::shared_ptr<GoalHandle> goal_handle){
+    rclcpp_action::CancelResponse MissionServer::handleCancel(){
         RCLCPP_INFO(this->get_logger(), "Received request to cancel goal");
-        (void)goal_handle;
+        //(void)goal_handle;
         if (result_ != NodeStatus::RUNNING){
             RCLCPP_INFO(this->get_logger(), "Cancel request rejected: NO MISSION RUNNING");
             return rclcpp_action::CancelResponse::REJECT;
