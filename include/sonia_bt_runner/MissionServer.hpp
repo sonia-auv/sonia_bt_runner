@@ -32,7 +32,7 @@ class MissionServer : public rclcpp::Node{
         void abort();
 
         rclcpp_action::GoalResponse handleGoal(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const MissionControl::Goal> goal);
-        rclcpp_action::CancelResponse handleCancel();
+        rclcpp_action::CancelResponse handleCancel(const std::shared_ptr<GoalHandle> goalhandle);
         void handleAccept(const std::shared_ptr<GoalHandle> goal_handle);
 
         std::string name_;
