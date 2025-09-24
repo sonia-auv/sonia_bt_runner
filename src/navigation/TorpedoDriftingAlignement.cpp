@@ -78,7 +78,7 @@ namespace navigation
         setOutput<Trajectory>("Trajectory", traj);
 
         // SUCCESS if metric lateral is available; otherwise RUNNING so parent can fall back to bearing-only logic
-        return (alignres.align_type == NOT_CHOOSEN_YET) ? BT::NodeStatus::RUNNING : BT::NodeStatus::SUCCESS;
+        return BT::NodeStatus::SUCCESS;
     }
 
 }  // namespace navigation
