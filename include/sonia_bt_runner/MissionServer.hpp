@@ -26,9 +26,11 @@ class MissionServer : public rclcpp::Node{
         ~MissionServer();
 
         void init();
-        void execute(const std::shared_ptr<GoalHandle> goal);
     private:
-    
+
+        void execute(const std::shared_ptr<GoalHandle> goal);
+        void abort();
+
         rclcpp_action::GoalResponse handleGoal(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const MissionControl::Goal> goal);
         rclcpp_action::CancelResponse handleCancel(const std::shared_ptr<GoalHandle> goalhandle);
         void handleAccept(const std::shared_ptr<GoalHandle> goal_handle);
@@ -38,5 +40,6 @@ class MissionServer : public rclcpp::Node{
         rclcpp_action::Server<MissionControl>::SharedPtr server_;
         Tree tree_;
         std::string search_directory;
+        NodeStatus result_;
         
 };

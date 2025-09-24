@@ -8,10 +8,10 @@
 
 int main(int argc, char *argv[])
 {
-    if (argc < 2)
-    {
-        return EXIT_FAILURE;
-    }
+    const char *ws = std::getenv("SONIA_WS");
+    std::string search_directory(ws);
+    search_directory.append("/src/sonia_bt_missions/models/SoniaNodes.xml");
+
     BT::BehaviorTreeFactory factory;
     registerNodes(factory, nullptr);
 

@@ -14,7 +14,6 @@ Tracker::Tracker(BT::Tree& tree, const std::shared_ptr<GoalHandle> goal)
         feedback->node_name= node.name();
         feedback->uid = node.UID();
 
-        //std::cout << "status: "<<BT::toStr(status)<<" name: "<<node.name()<<" UID: "<<node.UID()<<std::endl;
         gl->publish_feedback(feedback);
         
         std::this_thread::sleep_for(std::chrono::milliseconds(100));   

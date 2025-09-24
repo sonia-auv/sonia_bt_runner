@@ -4,7 +4,7 @@
 #include "sonia_bt_runner/navigation/SoniaNavigation.hpp"
 #include "sonia_bt_runner/init/SoniaInit.hpp"
 #include "sonia_bt_runner/actuator/SoniaActuator.hpp"
-#include "sonia_bt_runner/sensors/DepthCheck.hpp"
+#include "sonia_bt_runner/sensors/SoniaSensor.hpp"
 
 using namespace BT;
 template <typename T>
