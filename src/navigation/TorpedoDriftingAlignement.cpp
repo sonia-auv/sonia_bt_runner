@@ -81,11 +81,4 @@ namespace navigation
         return (alignres.align_type == NOT_CHOOSEN_YET) ? BT::NodeStatus::RUNNING : BT::NodeStatus::SUCCESS;
     }
 
-    float TorpedoDriftingAlignement::ComputeDriftingAngle(const AiDetection& det)
-    {
-        float drifting_angle = 0.0;
-
-        return drifting_angle;
-    }
-
 }  // namespace navigation
