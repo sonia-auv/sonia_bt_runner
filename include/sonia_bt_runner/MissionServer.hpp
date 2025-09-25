@@ -40,6 +40,7 @@ class MissionServer : public rclcpp::Node{
         rclcpp_action::Server<MissionControl>::SharedPtr server_;
         Tree tree_;
         std::string search_directory;
+        bool isRunning;
         NodeStatus result_;
         
 };

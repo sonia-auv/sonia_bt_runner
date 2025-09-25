@@ -34,13 +34,13 @@ MissionServer::MissionServer()
         Tracker trac(tree_, goal); 
        
         RCLCPP_INFO(this->get_logger(), "Begin tree");     
-        while (!BT::isStatusCompleted(result_)&& !goal.get()->is_canceling())
+        while (!BT::isStatusCompleted(result_)&& isRunning)
         {
             result_ = tree_.tickOnce();
             tree_.sleep(std::chrono::milliseconds(66));         
         }
 
-        if(goal.get()->is_canceling()){
+        if(!isRunning){
             trac.~Tracker();
             return;
         }
@@ -73,6 +73,7 @@ MissionServer::MissionServer()
         {
             std::filesystem::path fullFilePath(name_);
             tree_ = factory_.createTree(fullFilePath);
+            isRunning=true;
             return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
         }
         catch(const std::exception& e)
@@ -99,11 +100,10 @@ MissionServer::MissionServer()
         std::thread{std::bind(&MissionServer::execute, this, _1), goal_handle}.detach();
     }
     void MissionServer::abort(){
-        
-        tree_.haltTree();
+        isRunning = false;
+        tree_.rootNode()->haltNode();
         tree_.rootBlackboard().reset();
         factory_.clearRegisteredBehaviorTrees();
-        tree_.~Tree();
         
         RCLCPP_INFO(this->get_logger(), "Cancel request accepted: MISSION ABORTED");
     }
