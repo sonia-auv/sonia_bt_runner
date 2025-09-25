@@ -37,13 +37,11 @@ MissionServer::MissionServer()
         while (!BT::isStatusCompleted(result_)&& isRunning)
         {
             result_ = tree_.tickOnce();
-            tree_.sleep(std::chrono::milliseconds(66));         
+            tree_.sleep(std::chrono::milliseconds(66));  
+            if(!isRunning)
+                break;       
         }
-
-        if(!isRunning){
-            return;
-        }
-            
+ 
         RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(result_));
         RCLCPP_INFO(this->get_logger(), "----------------");
         
@@ -99,10 +97,8 @@ MissionServer::MissionServer()
         std::thread{std::bind(&MissionServer::execute, this, _1), goal_handle}.detach();
     }
     void MissionServer::abort(){
-        result_ = NodeStatus::FAILURE;
         isRunning = false;
         tree_.rootNode()->haltNode();
-        tree_.rootBlackboard().reset();
         factory_.clearRegisteredBehaviorTrees();
         
         RCLCPP_INFO(this->get_logger(), "Cancel request accepted: MISSION ABORTED");
