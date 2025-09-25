@@ -40,8 +40,11 @@ MissionServer::MissionServer()
             tree_.sleep(std::chrono::milliseconds(66));         
         }
 
-        if(goal.get()->is_canceling())
+        if(goal.get()->is_canceling()){
+            trac.~Tracker();
             return;
+        }
+            
         RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(result_));
         RCLCPP_INFO(this->get_logger(), "----------------");
         

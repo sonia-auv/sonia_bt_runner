@@ -20,5 +20,5 @@ Tracker::Tracker(BT::Tree& tree, const std::shared_ptr<GoalHandle> goal)
     }
 
     void Tracker::flush(){
-
+        
     }
