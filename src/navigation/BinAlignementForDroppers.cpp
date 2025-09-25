@@ -50,22 +50,9 @@ namespace navigation
 
         // Assumption: array is pre-filtered for the object of interest → use first detection
         const AiDetection& det = arr.detection_array.front(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
-
-        // getInput("alignement_by_translation", mode);
-        AlignResult alignres;
-        alignres.align_type = BIN;
-        alignres.rad_x = GetCenterImageAngleX(det);
-        alignres.rad_y = GetCenterImageAngleY(det);
-        alignres.distance = det.distance;
-
-        // AlignResult res_y = computeAlignmentY(det,mode);
-        std::cout <<"AlignResult.align_type : "<< alignres.align_type << std::endl;
-        std::cout <<"AlignResult.distance : "<< alignres.distance << std::endl;
-        std::cout <<"AlignResult.rad_x : "<< alignres.rad_x << std::endl;
-        std::cout <<"AlignResult.rad_y : "<< alignres.rad_y << std::endl;
         
         TrajectoryPose t;
-        t = ComputeTrajectory(alignres);
+        // Partie manquante ici
 
         std::cout << "position en x: "<<t.positionX<< std::endl;
         std::cout<< "position en y: "<<t.positionY<< std::endl;
@@ -82,7 +69,7 @@ namespace navigation
         setOutput<Trajectory>("Trajectory", traj);
 
         // SUCCESS if metric lateral is available; otherwise RUNNING so parent can fall back to bearing-only logic
-        return (alignres.align_type == NOT_CHOOSEN_YET) ? BT::NodeStatus::RUNNING : BT::NodeStatus::SUCCESS;
+        return BT::NodeStatus::SUCCESS;
     }
 
 }  // namespace navigation

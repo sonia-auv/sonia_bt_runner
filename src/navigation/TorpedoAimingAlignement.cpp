@@ -56,7 +56,7 @@ namespace navigation
         
         TrajectoryPose t;
         t.positionX = det.distance * 0.5; // We don't move on the x axis
-        if (launching_side = "portside")
+        if (launching_side == "portside")
         {
             t.positionY = det.distance * sin(det.angle_alpha * M_PI / 180.0) - CAMERA_TO_TORPIDO_PEPPER_OFFSET_X; // We move on the x axis
         }

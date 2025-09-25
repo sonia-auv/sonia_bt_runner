@@ -10,7 +10,7 @@
 namespace navigation
 {
 
-    class TorpedoDriftingAlignement : public BT::StatefulActionNode, public MainAlignment
+    class TorpedoDriftingAlignement : public BT::StatefulActionNode
     {
         public:
             TorpedoDriftingAlignement(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node);

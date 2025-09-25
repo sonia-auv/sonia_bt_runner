@@ -10,6 +10,9 @@ struct AiDetection
     float angle_teta;
     float angle_alpha;
     float distance_teta;
+    float top_left_x;
+    float top_left_y;
+    float top_right_x;
     float top_right_y;
     float bottom_left_x;
     float bottom_left_y;

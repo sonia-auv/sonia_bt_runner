@@ -10,7 +10,7 @@
 namespace navigation
 {
 
-    class BinAlignementForDroppers : public BT::StatefulActionNode, public MainAlignment
+    class BinAlignementForDroppers : public BT::StatefulActionNode
     {
         public:
             BinAlignementForDroppers(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node);

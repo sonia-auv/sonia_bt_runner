@@ -45,9 +45,6 @@ namespace vision{
             BT::Expected<int> max_size_output;
             BT::Expected<float> confidence;
             BT::Expected<float> max_depth;
-            BT::Expected<int> min_size_output;
-
-            
+            BT::Expected<int> min_size_output;      
     };
-
 }
