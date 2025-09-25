@@ -41,7 +41,6 @@ MissionServer::MissionServer()
         }
 
         if(!isRunning){
-            trac.~Tracker();
             return;
         }
             
@@ -100,6 +99,7 @@ MissionServer::MissionServer()
         std::thread{std::bind(&MissionServer::execute, this, _1), goal_handle}.detach();
     }
     void MissionServer::abort(){
+        result_ = NodeStatus::FAILURE;
         isRunning = false;
         tree_.rootNode()->haltNode();
         tree_.rootBlackboard().reset();
