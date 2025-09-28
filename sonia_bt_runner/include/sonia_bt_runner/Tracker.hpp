@@ -18,8 +18,7 @@ class Tracker : public BT::StatusChangeLogger
         void flush() override;
          
     private:
-       
-        std::shared_ptr<MissionControl::Feedback> feedback;
         std::shared_ptr<GoalHandle> gl;
+        std::shared_ptr<MissionControl::Feedback> feedback;
     
 };

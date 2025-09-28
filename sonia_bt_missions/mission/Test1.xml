@@ -206,8 +206,6 @@
                    alpha="0.5"
                    normalized_coords="0"
                    detections="{detect_array}"/>
-        <CheckDistance TranslationX="{translationX}"
-                       Object="{detect_array}"/>
         <SubTree ID="MoveSinglePose"
                  positionX="translationX"
                  positionY="0.0"

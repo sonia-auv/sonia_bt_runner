@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4" project_name="Sonia">
-    <include path="Dead25_2.xml"/>
-    <include path="HereWeGoAgain.xml"/>
     <include path="Kanye.xml"/>
     <include path="Test1.xml"/>
-    <include path="robosub25.xml"/>
     <!-- Description of Node Models (used by Groot) -->
     <TreeNodesModel>
         <Action ID="AiActivation">
@@ -35,10 +32,6 @@
             <input_port name="alpha" type="float"/>
             <input_port name="normalized_coords" type="bool"/>
             <input_port name="detections" type="AiDetectionArray"/>
-        </Action>
-        <Action ID="CheckDistance">
-            <output_port name="TranslationX" type="float"/>
-            <input_port name="Object" type="sonia_common_ros2::msg::Detection_&lt;std::allocator&lt;void&gt; &gt;"/>
         </Action>
         <Action ID="ControlSetMode">
             <input_port name="set_mode" default="false" type="bool"/>

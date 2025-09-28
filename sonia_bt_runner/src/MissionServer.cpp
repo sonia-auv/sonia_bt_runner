@@ -35,25 +35,26 @@ MissionServer::MissionServer()
         Tracker trac(tree_, goal); 
        
         RCLCPP_INFO(this->get_logger(), "Begin tree");     
-        while (!BT::isStatusCompleted(result_)&& isRunning)
+        while (!BT::isStatusCompleted(result_))
         {
             result_ = tree_.tickOnce();
-            tree_.sleep(std::chrono::milliseconds(66));  
-            if(!isRunning)
-                break;       
+            tree_.sleep(std::chrono::milliseconds(66));         
         }
  
         RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(result_));
         RCLCPP_INFO(this->get_logger(), "----------------");
         
-        res->success=true;
+        if(result_ == NodeStatus::SUCCESS)
+            res->success=true;
+        else
+            res->success=false;
         goal->succeed(res);
 
         RCLCPP_INFO(this->get_logger(), "completed the tree");
     }
 
     rclcpp_action::GoalResponse MissionServer::handleGoal(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const MissionControl::Goal> goal){
-        RCLCPP_INFO(this->get_logger(), "Received goal request with mission %s", goal->mission.c_str());
+        RCLCPP_INFO(this->get_logger(), "Received goal request with mission : %s", goal->mission.c_str());
         (void)uuid;
         name_ =goal->mission;
 
@@ -69,9 +70,8 @@ MissionServer::MissionServer()
         }
         try
         {
-            std::file :filesystem::path fullFilePath(name_);
+            std::filesystem::path fullFilePath(name_);
             tree_ = factory_.createTree(fullFilePath);
-            isRunning=true;
             return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
         }
         catch(const std::exception& e)
@@ -87,10 +87,10 @@ MissionServer::MissionServer()
     rclcpp_action::CancelResponse MissionServer::handleCancel(const std::shared_ptr<GoalHandle> goal_handle){
         RCLCPP_INFO(this->get_logger(), "Received request to cancel goal");
         (void)goal_handle;
-        if (result_ != NodeStatus::RUNNING){
+        /*if (result_ != NodeStatus::RUNNING){
             RCLCPP_INFO(this->get_logger(), "Cancel request rejected: NO MISSION RUNNING");
             return rclcpp_action::CancelResponse::REJECT;
-        }
+        }*/
         abort();
         return rclcpp_action::CancelResponse::ACCEPT;
     }
@@ -98,9 +98,5 @@ MissionServer::MissionServer()
         std::thread{std::bind(&MissionServer::execute, this, _1), goal_handle}.detach();
     }
     void MissionServer::abort(){
-        isRunning = false;
-        tree_.rootNode()->haltNode();
-        factory_.clearRegisteredBehaviorTrees();
-        
         RCLCPP_INFO(this->get_logger(), "Cancel request accepted: MISSION ABORTED");
     }

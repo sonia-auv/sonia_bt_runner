@@ -9,13 +9,13 @@ Tracker::Tracker(BT::Tree& tree, const std::shared_ptr<GoalHandle> goal)
     Tracker::~Tracker(){}
     void Tracker::callback(BT::Duration timestamp, const BT::TreeNode& node, BT::NodeStatus prev_status, BT::NodeStatus status) 
     {
-        
-        feedback->status = BT::toStr(status);
-        feedback->node_name= node.name();
-        feedback->uid = node.UID();
-
-        gl->publish_feedback(feedback);
-        
+        try{
+            feedback->status = BT::toStr(status);
+            feedback->node_name= node.name();
+            feedback->uid = node.UID();
+            gl->publish_feedback(feedback);
+        }catch(const rclcpp::exceptions::RCLError &e){ } //catching for no goal instance warning after process ends
+                
         std::this_thread::sleep_for(std::chrono::milliseconds(66));   
     }
 
