@@ -7,7 +7,9 @@ namespace init{
     MissionSwitchStatus::MissionSwitchStatus(const std::string &name, std::shared_ptr<rclcpp::Node> node)
     : BT::ConditionNode(name, {}), ros_node(node), _mission_status{false}
     {
-        mission_sub= ros_node->create_subscription<sonia_common_ros2::msg::MissionStatus>("/provider_rs485/mission_status",10, std::bind(&MissionSwitchStatus::update_status,this, _1));
+        rclcpp::QoS qos(10);
+        qos.reliability(rclcpp::ReliabilityPolicy::Reliable);
+        mission_sub= ros_node->create_subscription<sonia_common_ros2::msg::MissionStatus>("/provider_rs485/mission_status", qos, std::bind(&MissionSwitchStatus::update_status,this, _1));
     }
 
     MissionSwitchStatus::~MissionSwitchStatus(){}
