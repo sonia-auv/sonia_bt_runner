@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4"
+      main_tree_to_execute="root">
+  <BehaviorTree ID="Denise1.0">
+    <Sequence>
+      <SubTree ID="boot_sequence"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="2"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="0.0"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="root">
+    <Sequence>
+      <RetryUntilSuccessful num_attempts="-1">
+        <MissionSwitchStatus/>
+      </RetryUntilSuccessful>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.5"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="5"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="90"
+               frame="1"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="5"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="90"
+               frame="1"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="5"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="90"
+               frame="1"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="5"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1"/>
+      <Torpedo side="port_side"/>
+      <Torpedo side="port"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="square">
+    <Sequence>
+      <RetryUntilSuccessful num_attempts="-1">
+        <MissionSwitchStatus/>
+      </RetryUntilSuccessful>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.5"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="2"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="90"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="2"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="90"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="2"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="90"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="2"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="90"
+               frame="1.0"/>
+      <Delay delay_msec="2000">
+        <Torpedo side="port_side"/>
+      </Delay>
+      <Delay delay_msec="2000">
+        <Torpedo side="starboard"/>
+      </Delay>
+      <Delay delay_msec="2000">
+        <ControlSetMode set_mode="false"/>
+      </Delay>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="test_drift">
+    <Repeat num_cycles="12">
+      <Sequence>
+        <SubTree ID="MoveSinglePose"
+                 positionX="0.0"
+                 positionY="1.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="-30"
+                 frame="1.0"/>
+        <AiFilter detected_object_array="{detect_array}"
+                  Max_frame="20"
+                  Max_depth="200"
+                  Min_detection="1"
+                  Confidence="0.4"
+                  Object_class="{object_class}"
+                  Max_size_output="1"
+                  Camera="1"/>
+        <Alignment has_metric="{has_metric}"
+                   norm_x="{norm_x}"
+                   bearing_rad="{bearing_rad}"
+                   traj="{traj}"
+                   lateral_m="{lateral_m}"
+                   alignement_by_translation="{choix_translation}"
+                   alpha="0.5"
+                   normalized_coords="0"
+                   detections="{detect_array}"/>
+        <CheckDistance TranslationX="{translationX}"
+                       Object="{detect_array}"/>
+        <SubTree ID="MoveSinglePose"
+                 positionX="translationX"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 frame="1.0"/>
+      </Sequence>
+    </Repeat>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Action ID="AiFilter">
+      <output_port name="detected_object_array"
+                   type="AiDetectionArray"/>
+      <input_port name="Max_frame"
+                  type="int">maximum allowed frames</input_port>
+      <input_port name="Max_depth"
+                  type="float">Maximum allowed depth</input_port>
+      <input_port name="Min_detection"
+                  type="int">minumum number of frames with at least one detection before sending results</input_port>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Ai confidence</input_port>
+      <input_port name="Object_class"
+                  type="std::string">Searched object</input_port>
+      <input_port name="Max_size_output"
+                  type="int">Max size of the output array</input_port>
+      <input_port name="Camera"
+                  default="1"
+                  type="int">0: Front, 1: Bottom</input_port>
+    </Action>
+    <Action ID="Alignment">
+      <output_port name="has_metric"
+                   type="int"/>
+      <output_port name="norm_x"
+                   type="float"/>
+      <output_port name="bearing_rad"
+                   type="float"/>
+      <inout_port name="traj"
+                  type="Trajectory"/>
+      <output_port name="lateral_m"
+                   type="float"/>
+      <input_port name="alignement_by_translation"
+                  type="bool"/>
+      <input_port name="alpha"
+                  type="float"/>
+      <input_port name="normalized_coords"
+                  type="bool"/>
+      <input_port name="detections"
+                  type="AiDetectionArray"/>
+    </Action>
+    <Action ID="CheckDistance">
+      <output_port name="TranslationX"
+                   type="float"/>
+      <input_port name="Object"
+                  type="sonia_common_ros2::msg::Detection_&lt;std::allocator&lt;void&gt; &gt;"/>
+    </Action>
+    <Action ID="ControlSetMode">
+      <input_port name="set_mode"
+                  default="false"
+                  type="bool"/>
+    </Action>
+    <Condition ID="MissionSwitchStatus"/>
+    <SubTree ID="MoveSinglePose"
+             editable="true">
+      <input_port name="positionX"
+                  default="0.0"/>
+      <input_port name="positionY"
+                  default="0.0"/>
+      <input_port name="positionZ"
+                  default="0.0"/>
+      <input_port name="orientationX"
+                  default="0.0"/>
+      <input_port name="orientationY"
+                  default="0.0"/>
+      <input_port name="orientationZ"
+                  default="0.0"/>
+      <input_port name="frame"
+                  default="1.0"/>
+    </SubTree>
+    <Action ID="Torpedo">
+      <input_port name="side"
+                  type="std::string">port_side or starboard</input_port>
+    </Action>
+  </TreeNodesModel>
+
+</root>

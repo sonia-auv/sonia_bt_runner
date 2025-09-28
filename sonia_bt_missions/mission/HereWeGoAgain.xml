@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4"
+      main_tree_to_execute="StartThisShit">
+  <BehaviorTree ID="AlignSlalom">
+    <Sequence>
+      <InitializeTrajectory trajectory="{slalom_traj}"/>
+      <AiFilter detected_object_array="{slalom_det_arr}"
+                Min_detection="3"
+                Confidence="0.500000"
+                Max_size_output="1"
+                Max_depth="10"
+                Object_class="red-slalom"
+                Max_frame="15"
+                Camera="1"/>
+      <Alignment lateral_m="{lat_trans}"
+                 alignement_by_translation="true"
+                 has_metric=""
+                 alpha="0.5"
+                 normalized_coords="0"
+                 norm_x=""
+                 bearing_rad=""
+                 traj="{slalom_traj}"
+                 detections="{slalom_det_arr}"/>
+      <SendTrajectory trajectory="{slalom_traj}"
+                      interpolation="0"/>
+      <WaitTargetReached timeout="5"/>
+      <IfThenElse>
+        <ScriptCondition code="direction==&apos;left&apos;"/>
+        <SubTree ID="MoveSinglePose"
+                 positionX="0.0"
+                 positionY="-0.6"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 frame="1.0"/>
+        <SubTree ID="MoveSinglePose"
+                 positionX="0.0"
+                 positionY="0.6"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 frame="1.0"/>
+      </IfThenElse>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="DeadGate">
+    <Sequence>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="-0.762"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="4.27"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="DeadHome">
+    <Sequence>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="-41"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="15.5"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="DeadSlalom">
+    <Sequence>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="2.68"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="2.55"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="-15"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="1.92"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="-22"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="1.91"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="DeadTable">
+    <Sequence>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="76"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="7.17"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="180"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="-0.7"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <Sleep msec="4000"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.7"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="DeadTorp">
+    <Sequence>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="-59"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="3.39"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="-36"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="3.58"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="59"
+               frame="1.0"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="StartThisShit">
+    <Sequence>
+      <RetryUntilSuccessful num_attempts="-1">
+        <MissionSwitchStatus/>
+      </RetryUntilSuccessful>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.7"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="2.0"/>
+      <SubTree ID="DeadGate"/>
+      <SubTree ID="StyleShot"
+               _autoremap="false"/>
+      <SubTree ID="DeadSlalom"/>
+      <SubTree ID="DeadTorp"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.4"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <Torpedo side="port_side"/>
+      <Torpedo side="port_side"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="-0.4"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="DeadTable"/>
+      <SubTree ID="DeadHome"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="StyleShot">
+    <Sequence>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.3"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="90"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="180"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="180"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="90"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="180"
+               orientationZ="0.0"
+               frame="1.0"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="-0.3"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1.0"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Action ID="AiFilter">
+      <output_port name="detected_object_array"
+                   type="AiDetectionArray"/>
+      <input_port name="Min_detection"
+                  type="int">minumum number of frames with at least one detection before sending results</input_port>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Ai confidence</input_port>
+      <input_port name="Max_size_output"
+                  type="int">Max size of the output array</input_port>
+      <input_port name="Max_depth"
+                  type="float">Maximum allowed depth</input_port>
+      <input_port name="Object_class"
+                  type="std::string">Searched object</input_port>
+      <input_port name="Max_frame"
+                  type="int">maximum allowed frames</input_port>
+      <input_port name="Camera"
+                  default="1"
+                  type="int">1: Front, 0: Bottom</input_port>
+    </Action>
+    <Action ID="Alignment">
+      <output_port name="lateral_m"
+                   type="float"/>
+      <input_port name="alignement_by_translation"
+                  type="bool"/>
+      <output_port name="has_metric"
+                   type="int"/>
+      <input_port name="alpha"
+                  type="float"/>
+      <input_port name="normalized_coords"
+                  type="bool"/>
+      <output_port name="norm_x"
+                   type="float"/>
+      <output_port name="bearing_rad"
+                   type="float"/>
+      <inout_port name="traj"
+                  type="Trajectory"/>
+      <input_port name="detections"
+                  type="AiDetectionArray"/>
+    </Action>
+    <Action ID="InitializeTrajectory">
+      <output_port name="trajectory"
+                   type="Trajectory"/>
+    </Action>
+    <Condition ID="MissionSwitchStatus"/>
+    <SubTree ID="MoveSinglePose"
+             editable="true">
+      <input_port name="positionX"
+                  default="0.0"/>
+      <input_port name="positionY"
+                  default="0.0"/>
+      <input_port name="positionZ"
+                  default="0.0"/>
+      <input_port name="orientationX"
+                  default="0.0"/>
+      <input_port name="orientationY"
+                  default="0.0"/>
+      <input_port name="orientationZ"
+                  default="0.0"/>
+      <input_port name="frame"
+                  default="1.0"/>
+    </SubTree>
+    <Action ID="SendTrajectory">
+      <input_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="interpolation"
+                  default="0"
+                  type="int"/>
+    </Action>
+    <Action ID="Torpedo">
+      <input_port name="side"
+                  type="std::string">port_side or starboard</input_port>
+    </Action>
+    <Action ID="WaitTargetReached">
+      <input_port name="timeout"
+                  default="5"
+                  type="int"/>
+    </Action>
+  </TreeNodesModel>
+
+</root>

@@ -8,7 +8,7 @@ MissionServer::MissionServer()
     {
         const char *ws = std::getenv("SONIA_WS");
         search_directory.assign(ws);
-        search_directory.append("/src/sonia_bt_missions/mission/");
+        search_directory.append("/src/sonia_bt_runner/sonia_bt_missions/mission/");
 
         server_ = rclcpp_action::create_server<MissionControl>(
                     this,
