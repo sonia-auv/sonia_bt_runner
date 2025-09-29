@@ -1,5 +1,4 @@
 #include "sonia_bt_runner/MissionServer.hpp"
-#include "sonia_bt_runner/Tracker.hpp"
 #include <functional>
 
 using namespace std::placeholders;
@@ -24,9 +23,9 @@ MissionServer::MissionServer()
     MissionServer::~MissionServer()
     {}
     void MissionServer::init(){
-        registerNodes(factory_, this->shared_from_this());
-        
+        registerNodes(factory_, this->shared_from_this());    
     }
+
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal)
     {
         auto res = std::make_shared<MissionControl::Result>();
@@ -38,7 +37,7 @@ MissionServer::MissionServer()
         while (!BT::isStatusCompleted(result_))
         {
             result_ = tree_.tickOnce();
-            tree_.sleep(std::chrono::milliseconds(66));         
+            tree_.sleep(std::chrono::milliseconds(_TICK_SLEEP_TIME));         
         }
  
         RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(result_));

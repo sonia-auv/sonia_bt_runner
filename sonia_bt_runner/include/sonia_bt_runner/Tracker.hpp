@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <rclcpp_action/rclcpp_action.hpp>
 #include "behaviortree_cpp/behavior_tree.h"
 #include <behaviortree_cpp/loggers/abstract_logger.h>
@@ -16,6 +17,8 @@ class Tracker : public BT::StatusChangeLogger
 
         void callback(BT::Duration timestamp, const BT::TreeNode& node, BT::NodeStatus prev_status, BT::NodeStatus status) override;
         void flush() override;
+
+        const uint8_t _THREAD_SLEEP_TIME = 66;
          
     private:
         std::shared_ptr<GoalHandle> gl;

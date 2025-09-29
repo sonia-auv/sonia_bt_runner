@@ -16,7 +16,7 @@ Tracker::Tracker(BT::Tree& tree, const std::shared_ptr<GoalHandle> goal)
             gl->publish_feedback(feedback);
         }catch(const rclcpp::exceptions::RCLError &e){ } //catching for no goal instance warning after process ends
                 
-        std::this_thread::sleep_for(std::chrono::milliseconds(66));   
+        std::this_thread::sleep_for(std::chrono::milliseconds(_THREAD_SLEEP_TIME));   
     }
 
     void Tracker::flush(){

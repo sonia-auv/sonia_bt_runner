@@ -14,6 +14,7 @@
 #include "behaviortree_cpp/loggers/groot2_publisher.h"
 
 #include "sonia_bt_runner/SoniaNodes.hpp"
+#include "sonia_bt_runner/Tracker.hpp"
 #include "sonia_common_ros2/action/mission_control.hpp"
 
 using namespace BT;
@@ -26,6 +27,8 @@ class MissionServer : public rclcpp::Node{
         ~MissionServer();
 
         void init();
+
+        const uint64_t _TICK_SLEEP_TIME = 66;
     private:
 
         void execute(const std::shared_ptr<GoalHandle> goal);
