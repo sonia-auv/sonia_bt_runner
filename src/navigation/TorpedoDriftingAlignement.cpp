@@ -51,30 +51,57 @@ namespace navigation
         // Assumption: array is pre-filtered for the object of interest → use first detection
         const AiDetection& det = arr.detection_array.front(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
         
-        TrajectoryPose t;
-        t.positionX = 0.0;
-        t.positionY = det.distance_teta;
-        t.positionZ = 0.0;
-        t.orientationX = 0.0;
-        t.orientationY = 0.0;
-        t.orientationZ = -det.angle_teta;
-        t.frame = 1;
-        t.speed = 0;
-        t.precision = 0;
-        t.long_rotation = false;
+        // We compute a rotation to make the sub rotate at 90 degrees to the target
+        TrajectoryPose t1;
+        t1.positionX = 0.0;
+        t1.positionY =0.0;
+        t1.positionZ = 0.0;
+        t1.orientationX = 0.0;
+        t1.orientationY = 0.0;
+        t1.orientationZ = -det.angle_teta;
+        t1.frame = 1;
+        t1.speed = 0;
+        t1.precision = 0;
+        t1.long_rotation = false;
 
-        std::cout << "position en x: "<<t.positionX<< std::endl;
-        std::cout<< "position en y: "<<t.positionY<< std::endl;
-        std::cout << "position en z: "<<t.positionZ<< std::endl;
-        std::cout << "Orientation en x: "<<t.orientationX<< std::endl;
-        std::cout << "Orientation en y: "<<t.orientationY<< std::endl;
-        std::cout << "Orientation en z: "<<t.orientationZ<< std::endl;
-        std::cout << "frame: "<<t.frame<< std::endl;
-        std::cout << "speed: "<<t.speed<< std::endl;
-        std::cout << "precision: "<<t.precision<< std::endl;
-        std::cout << "long rotation: "<<t.long_rotation<< std::endl;
+        std::cout << "position en x: "<<t1.positionX<< std::endl;
+        std::cout<< "position en y: "<<t1.positionY<< std::endl;
+        std::cout << "position en z: "<<t1.positionZ<< std::endl;
+        std::cout << "Orientation en x: "<<t1.orientationX<< std::endl;
+        std::cout << "Orientation en y: "<<t1.orientationY<< std::endl;
+        std::cout << "Orientation en z: "<<t1.orientationZ<< std::endl;
+        std::cout << "frame: "<<t1.frame<< std::endl;
+        std::cout << "speed: "<<t1.speed<< std::endl;
+        std::cout << "precision: "<<t1.precision<< std::endl;
+        std::cout << "long rotation: "<<t1.long_rotation<< std::endl;
+
+        // We compute a translation in Y to go in front of the target
+        TrajectoryPose t2;
+        t2.positionX = 0.0;
+        t2.positionY = det.distance_teta;
+        t2.positionZ = 0.0;
+        t2.orientationX = 0.0;
+        t2.orientationY = 0.0;
+        t2.orientationZ = 0.0;
+        t2.frame = 1;
+        t2.speed = 0;
+        t2.precision = 0;
+        t2.long_rotation = false;
+
+        std::cout << "position en x: "<<t2.positionX<< std::endl;
+        std::cout<< "position en y: "<<t2.positionY<< std::endl;
+        std::cout << "position en z: "<<t2.positionZ<< std::endl;
+        std::cout << "Orientation en x: "<<t2.orientationX<< std::endl;
+        std::cout << "Orientation en y: "<<t2.orientationY<< std::endl;
+        std::cout << "Orientation en z: "<<t2.orientationZ<< std::endl;
+        std::cout << "frame: "<<t2.frame<< std::endl;
+        std::cout << "speed: "<<t2.speed<< std::endl;
+        std::cout << "precision: "<<t2.precision<< std::endl;
+        std::cout << "long rotation: "<<t2.long_rotation<< std::endl;
+
         Trajectory traj = getInput<Trajectory>("Trajectory").value();
-        traj.trajectory.push_back(t);
+        traj.trajectory.push_back(t1);
+        traj.trajectory.push_back(t2);
         setOutput<Trajectory>("Trajectory", traj);
 
         // SUCCESS if metric lateral is available; otherwise RUNNING so parent can fall back to bearing-only logic
