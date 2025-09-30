@@ -54,17 +54,17 @@ namespace navigation
         // Assumption: array is pre-filtered for the object of interest → use first detection
         const AiDetection& det = arr.detection_array.front(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
         
-        TrajectoryPose t;
-        t.positionX = det.distance * 0.5; // We don't move on the x axis
+        TrajectoryPose t1;
+        t.positionX = 0.0; // We don't move on the x axis
         if (launching_side == "portside")
         {
-            t.positionY = det.distance * sin(det.angle_alpha * M_PI / 180.0) - CAMERA_TO_TORPIDO_PEPPER_OFFSET_X; // We move on the x axis
+            t.positionY = det.distance_teta - CAMERA_TO_TORPIDO_PEPPER_OFFSET_X; // We move on the x axis
         }
         else
         {
-            t.positionY = det.distance * sin(det.angle_alpha * M_PI / 180.0) - CAMERA_TO_TORPIDO_SALT_OFFSET_X; // We move on the x axis
+            t.positionY = det.distance_teta - CAMERA_TO_TORPIDO_SALT_OFFSET_X; // We move on the x axis
         }
-        // t.positionZ = det.distance * cos(det.angle_beta * M_PI / 180.0) - CAMERA_TO_TORPEDO_OFFSET_Y; // We move on the z axis
+        // t.positionZ = det.distance_beta - CAMERA_TO_TORPEDO_OFFSET_Y; // We move on the z axis
         t.orientationX = 0.0;       // We don't rotate on the x axis
         t.orientationY = 0.0;       // We don't rotate on the y axis
         t.orientationZ = 0.0;       // We don't rotate on the z axis
