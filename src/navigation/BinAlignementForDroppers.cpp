@@ -10,7 +10,7 @@ namespace navigation
     BinAlignementForDroppers::BinAlignementForDroppers(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node)
     : BT::StatefulActionNode(name, config), ros_node(node), valid(0), _time_launch(std::chrono::system_clock::now())
     {
-
+        
     }
     static BT::PortsList providedPorts()
     {
@@ -53,9 +53,9 @@ namespace navigation
         
         // We compute the trajectory to do
         TrajectoryPose t;
-        // t.positionX = -det.distance * sin(det.angle_beta) - CAMERA_TO_DROPPER_OFFSET_X;
-        t.positionX = -det.distance_beta - CAMERA_TO_DROPPER_OFFSET_X;
-        // t.posisionY = det.distance_teta - CAMERA_TO_DROPPER_OFFSET_Y;
+
+        // t.positionX = -det.distance_beta - CAMERA_TO_DROPPER_OFFSET_X;
+        t.posisionY = det.distance_teta - CAMERA_TO_DROPPER_OFFSET_Y;
         t.positionZ = 0.0;
         t.orientationX = 0.0;
         t.orientationY = 0.0;
