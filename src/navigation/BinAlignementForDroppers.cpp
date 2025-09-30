@@ -51,8 +51,18 @@ namespace navigation
         // Assumption: array is pre-filtered for the object of interest → use first detection
         const AiDetection& det = arr.detection_array.front(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
         
+        // We compute the trajectory to do
         TrajectoryPose t;
-        // Partie manquante ici
+        // t.positionX = -det.distance * sin(det.angle_beta) - CAMERA_TO_DROPPER_OFFSET_X;
+        t.positionX = -det.distance_beta - CAMERA_TO_DROPPER_OFFSET_X;
+        // t.posisionY = det.distance_teta - CAMERA_TO_DROPPER_OFFSET_Y;
+        t.positionZ = 0.0;
+        t.orientationX = 0.0;
+        t.orientationY = 0.0;
+        t.orientationZ = 0.0;
+        t.frame = 1;
+        t.speed = 0;
+        t.long_rotation = false;
 
         std::cout << "position en x: "<<t.positionX<< std::endl;
         std::cout<< "position en y: "<<t.positionY<< std::endl;
@@ -64,6 +74,7 @@ namespace navigation
         std::cout << "speed: "<<t.speed<< std::endl;
         std::cout << "precision: "<<t.precision<< std::endl;
         std::cout << "long rotation: "<<t.long_rotation<< std::endl;
+
         Trajectory traj = getInput<Trajectory>("Trajectory").value();
         traj.trajectory.push_back(t);
         setOutput<Trajectory>("Trajectory", traj);
