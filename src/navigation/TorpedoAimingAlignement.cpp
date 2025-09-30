@@ -54,7 +54,7 @@ namespace navigation
         // Assumption: array is pre-filtered for the object of interest → use first detection
         const AiDetection& det = arr.detection_array.front(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
         
-        TrajectoryPose t1;
+        TrajectoryPose t;
         t.positionX = 0.0; // We don't move on the x axis
         if (launching_side == "portside")
         {

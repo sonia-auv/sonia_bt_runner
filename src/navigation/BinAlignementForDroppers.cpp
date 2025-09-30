@@ -55,7 +55,7 @@ namespace navigation
         TrajectoryPose t;
 
         // t.positionX = -det.distance_beta - CAMERA_TO_DROPPER_OFFSET_X;
-        t.posisionY = det.distance_teta - CAMERA_TO_DROPPER_OFFSET_Y;
+        t.positionY = det.distance_teta - CAMERA_TO_DROPPER_OFFSET_Y;
         t.positionZ = 0.0;
         t.orientationX = 0.0;
         t.orientationY = 0.0;
