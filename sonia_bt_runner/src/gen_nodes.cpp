@@ -8,17 +8,17 @@
 
 int main(int argc, char *argv[])
 {
-    if (argc < 2)
-    {
-        return EXIT_FAILURE;
-    }
+    const char *ws = std::getenv("SONIA_WS");
+    std::string search_directory(ws);
+    search_directory.append("/src/sonia_bt_runner/sonia_bt_missions/SoniaNodes.xml");
+
     BT::BehaviorTreeFactory factory;
     registerNodes(factory, nullptr);
 
     std::string xml_models = BT::writeTreeNodesModelXML(factory, false);
     printf("%s\n", xml_models.c_str());
     std::ofstream myfile;
-    myfile.open(argv[1]);
+    myfile.open(search_directory);
     myfile << xml_models.c_str();
     myfile.close();
     return EXIT_SUCCESS;

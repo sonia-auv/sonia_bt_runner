@@ -21,9 +21,9 @@ namespace vision{
         nb_detection = 0;
         //chose camera
         if(cam.value())
-            ai_filter_sub = ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/front/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
+            ai_filter_sub = ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/front/classif", 10, std::bind(&AiFilter::ai_filter_callback, this, _1));
         else
-            ai_filter_sub = ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/bottom/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));    
+            ai_filter_sub = ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/bottom/classif", 10, std::bind(&AiFilter::ai_filter_callback, this, _1));    
         
         return BT::NodeStatus::RUNNING;
     }
