@@ -19,6 +19,4 @@ Tracker::Tracker(BT::Tree& tree, const std::shared_ptr<GoalHandle> goal)
         std::this_thread::sleep_for(std::chrono::milliseconds(_THREAD_SLEEP_TIME));   
     }
 
-    void Tracker::flush(){
-        
-    }
+    void Tracker::flush(){}

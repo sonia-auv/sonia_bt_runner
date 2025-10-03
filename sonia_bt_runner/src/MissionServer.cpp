@@ -29,33 +29,29 @@ MissionServer::MissionServer()
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal)
     {
         auto res = std::make_shared<MissionControl::Result>();
-
         result_=NodeStatus::RUNNING;
         Tracker trac(tree_, goal); 
-        rclcpp::Rate loop(1);
        
-        RCLCPP_INFO(this->get_logger(), "Begin tree");     
+        RCLCPP_INFO(this->get_logger(), "Begin tree");   
         while (!BT::isStatusCompleted(result_))
         { 
-            result_ = tree_.tickOnce();
-            tree_.sleep(std::chrono::milliseconds(_TICK_SLEEP_TIME));
-
+            result_ = tree_.tickExactlyOnce(); 
+          
             if(goal->is_canceling()){
-                RCLCPP_INFO(this->get_logger(), "Canceling mission");
                 res->success = false;
                 goal->canceled(res);
+                factory_.clearRegisteredBehaviorTrees();
+                RCLCPP_INFO(this->get_logger(), "Canceling mission");
                 return;
             }
-            loop.sleep();
+            tree_.sleep(std::chrono::milliseconds(_TICK_SLEEP_TIME));
         }
 
         RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(result_).c_str());
         RCLCPP_INFO(this->get_logger(), "----------------");
-        
-        if(result_ == NodeStatus::SUCCESS)
-            res->success=true;
-        else
-            res->success=false;
+
+        res->success = (result_ == NodeStatus::SUCCESS) ? true: false;
+  
         goal->succeed(res);
 
         RCLCPP_INFO(this->get_logger(), "completed the tree");
@@ -97,6 +93,7 @@ MissionServer::MissionServer()
             RCLCPP_INFO(this->get_logger(), "Cancel request rejected: NO MISSION RUNNING");
             return rclcpp_action::CancelResponse::REJECT;
         }
+        RCLCPP_INFO(this->get_logger(), "Cancel request accepted: MISSION ABORT");
         return rclcpp_action::CancelResponse::ACCEPT;
     }
     void MissionServer::handleAccept(const std::shared_ptr<GoalHandle> goal_handle){
