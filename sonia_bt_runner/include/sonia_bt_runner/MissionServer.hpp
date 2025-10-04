@@ -28,9 +28,9 @@ class MissionServer : public rclcpp::Node{
 
         void init();
 
-        const uint64_t _TICK_SLEEP_TIME = 100;
+        const uint64_t _TICK_SLEEP_TIME = 66;
     private:
-
+        rclcpp_action::GoalResponse handleException(std::string s);
         void execute(const std::shared_ptr<GoalHandle> goal);
 
         rclcpp_action::GoalResponse handleGoal(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const MissionControl::Goal> goal);
