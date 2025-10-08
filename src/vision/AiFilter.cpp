@@ -174,10 +174,6 @@ namespace vision{
 
                 // The searching object has been detected
                 RCLCPP_INFO(ros_node->get_logger(), "Class OK");
-                RCLCPP_INFO(ros_node->get_logger(), "%f >= ", msg_obj.confidence);
-                RCLCPP_INFO(ros_node->get_logger(), "%f >= ", confidence.value());
-                RCLCPP_INFO(ros_node->get_logger(), "%f >= ", msg_obj.distance);
-                RCLCPP_INFO(ros_node->get_logger(), "%f >= ", max_depth.value());
                 if(msg_obj.confidence >= confidence.value() && msg_obj.distance <= max_depth.value())
                 {
                     //The detected object respect the confidence and the depth enter in the behavior tree
