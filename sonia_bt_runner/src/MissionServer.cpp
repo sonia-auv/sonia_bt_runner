@@ -73,19 +73,18 @@ MissionServer::MissionServer()
             }
             
             std::filesystem::path fullFilePath(name_);
+            tree_.rootBlackboard().reset();
             tree_ = factory_.createTree(fullFilePath);
             return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
         }
         catch(const BT::RuntimeError e)
         {
-            std::string err = e.what();
-            clearFactory("File : "+temp_file+" contains error : "+ err);
+            clearFactory("File : "+temp_file+" contains : "+ e.what());
             return rclcpp_action::GoalResponse::REJECT;
         }
         catch(const std::exception& e)
         {
-            std::string err = e.what();
-            clearFactory("Loaded mission Error : "+ err);
+            clearFactory("Loaded mission Error : "+ e.what());
             return rclcpp_action::GoalResponse::REJECT;
         }  
         catch (...) {
@@ -109,6 +108,5 @@ MissionServer::MissionServer()
     }
     void MissionServer::clearFactory(const std::string log){
         RCLCPP_INFO(this->get_logger(), "%s", log.c_str());
-        tree_.rootBlackboard()->clear();
         factory_.clearRegisteredBehaviorTrees();
     }
