@@ -95,7 +95,7 @@ namespace navigation
             BT::Expected<AiDetectionArray> arr;
             BT::Expected<bool> normalized;
             BT::Expected<float> alpha;
-            BT::Expected<bool> mode;
+            BT::Expected<bool> mode;{AiDetection}
             // Previous outputs for optional temporal smoothing
             float prev_lateral_ = std::numeric_limits<float>::quiet_NaN();
             float prev_bearing_ = std::numeric_limits<float>::quiet_NaN();

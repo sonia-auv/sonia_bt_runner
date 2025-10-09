@@ -7,6 +7,9 @@ struct AiDetection
     std::string classification;
     float confidence;
     float distance;
+    float angle_teta;
+    float angle_alpha;
+    float distance_teta;
     float top_left_x;
     float top_left_y;
     float top_right_x;

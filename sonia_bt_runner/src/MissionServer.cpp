@@ -37,7 +37,7 @@ MissionServer::MissionServer()
         while (!BT::isStatusCompleted(result_))
         {
             result_ = tree_.tickOnce();
-            tree_.sleep(std::chrono::milliseconds(_TICK_SLEEP_TIME));         
+            tree_.sleep(std::chrono::milliseconds(66));         
         }
  
         RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(result_));
