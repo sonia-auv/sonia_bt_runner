@@ -1,5 +1,4 @@
 #include "sonia_bt_runner/MissionServer.hpp"
-#include <functional>
 
 using namespace std::placeholders;
 
@@ -26,8 +25,7 @@ MissionServer::MissionServer()
         registerNodes(factory_, this->shared_from_this());    
     }
 
-    void MissionServer::execute(const std::shared_ptr<GoalHandle> goal)
-    {
+    void MissionServer::execute(const std::shared_ptr<GoalHandle> goal){
         auto res = std::make_shared<MissionControl::Result>();
         result_=NodeStatus::RUNNING;
         Tracker trac(tree_, goal); 
@@ -40,8 +38,7 @@ MissionServer::MissionServer()
             if(goal->is_canceling()){
                 res->success = false;
                 goal->canceled(res);
-                factory_.clearRegisteredBehaviorTrees();
-                RCLCPP_INFO(this->get_logger(), "Mission Canceled");
+                clearFactory("Mission Cancelled");
                 return;
             }
             tree_.sleep(std::chrono::milliseconds(_TICK_SLEEP_TIME));
@@ -79,8 +76,14 @@ MissionServer::MissionServer()
         }
         catch(const std::exception& e)
         {
-            return handleException(e.what());
-        }      
+            std::string err = e.what();
+            clearFactory("Loaded mission Error : "+ err);
+            return rclcpp_action::GoalResponse::REJECT;
+        }  
+        catch (...) {
+            clearFactory("Caught an unknown exception from goal handling");
+            return rclcpp_action::GoalResponse::REJECT;
+        }    
     }
     
     rclcpp_action::CancelResponse MissionServer::handleCancel(const std::shared_ptr<GoalHandle> goal_handle){
@@ -92,11 +95,12 @@ MissionServer::MissionServer()
         RCLCPP_INFO(this->get_logger(), "Cancel request accepted: MISSION CANCELLED");
         return rclcpp_action::CancelResponse::ACCEPT;
     }
+
     void MissionServer::handleAccept(const std::shared_ptr<GoalHandle> goal_handle){
         std::thread{std::bind(&MissionServer::execute, this, _1), goal_handle}.detach();
     }
-    rclcpp_action::GoalResponse MissionServer::handleException(std::string s){
-        RCLCPP_INFO(this->get_logger(), "Loaded mission Error: %s", s);
+    void MissionServer::clearFactory(const std::string log){
+        RCLCPP_INFO(this->get_logger(), "%s", log);
+        tree_.rootBlackboard()->clear();
         factory_.clearRegisteredBehaviorTrees();
-        return rclcpp_action::GoalResponse::REJECT;
     }
