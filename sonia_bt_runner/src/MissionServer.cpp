@@ -57,22 +57,30 @@ MissionServer::MissionServer()
         (void)uuid;
         RCLCPP_INFO(this->get_logger(), "Received goal request with mission : %s", goal->mission.c_str());
         name_ =goal->mission;
+        std::string temp_file="";
 
         using std::filesystem::directory_iterator;
-    
-        for (auto const &entry : directory_iterator(search_directory))
-        {
-            if (entry.path().extension() == ".xml")
-            {
-                factory_.registerBehaviorTreeFromFile(entry.path().string());
-                std::cout << "file: "<<entry.path()<<std::endl;
-            }
-        }
         try
         {
+            for (auto const &entry : directory_iterator(search_directory))
+            {
+                if (entry.path().extension() == ".xml")
+                {
+                    temp_file = entry.path().string();
+                    factory_.registerBehaviorTreeFromFile(temp_file);
+                    std::cout << "file: "<<entry.path()<<std::endl;
+                }
+            }
+            
             std::filesystem::path fullFilePath(name_);
             tree_ = factory_.createTree(fullFilePath);
             return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
+        }
+        catch(const BT::RuntimeError e)
+        {
+            std::string err = e.what();
+            clearFactory("File : "+temp_file+" contains error : "+ err);
+            return rclcpp_action::GoalResponse::REJECT;
         }
         catch(const std::exception& e)
         {
