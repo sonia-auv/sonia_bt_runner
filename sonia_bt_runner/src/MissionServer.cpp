@@ -73,9 +73,17 @@ MissionServer::MissionServer()
             }
             
             std::filesystem::path fullFilePath(name_);
+            if(!std::filesystem::exists(fullFilePath))
+                throw std::runtime_error("Mission : " + name_ +"not found");
             tree_.rootBlackboard().reset();
             tree_ = factory_.createTree(fullFilePath);
             return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
+        }
+        catch(const std::runtime_error e)
+        {
+            std::string err= e.what();
+            clearFactory(err);
+            return rclcpp_action::GoalResponse::REJECT;
         }
         catch(const BT::RuntimeError e)
         {
@@ -88,11 +96,7 @@ MissionServer::MissionServer()
             std::string err= e.what();
             clearFactory("Loaded mission Error : "+ err);
             return rclcpp_action::GoalResponse::REJECT;
-        }  
-        catch (...) {
-            clearFactory("Caught an unknown exception from goal handling");
-            return rclcpp_action::GoalResponse::REJECT;
-        }    
+        }   
     }
     
     rclcpp_action::CancelResponse MissionServer::handleCancel(const std::shared_ptr<GoalHandle> goal_handle){
