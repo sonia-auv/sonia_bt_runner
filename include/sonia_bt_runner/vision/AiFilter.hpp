@@ -22,9 +22,9 @@ namespace vision{
                     BT::InputPort<float>("Confidence", 0.6, "Ai confidence"),
                     // BT::InputPort<int>("Buffer_size", "Number of detection to average"),
                     BT::InputPort<int>("Min_size_output", "minumum number of frames with at least one detection before sending results"),
+                    BT::InputPort<int>("Max_size_output", "Max size of the output array"),
                     BT::InputPort<int>("Max_frame_before_failling", "maximum allowed frames"),
                     BT::InputPort<float>("Max_depth", "Maximum allowed depth"),
-                    BT::InputPort<int>("Max_size_output", "Max size of the output array"),
                     BT::OutputPort<AiDetectionArray>("Detected_object_array")};
             }
 
