@@ -79,12 +79,14 @@ MissionServer::MissionServer()
         }
         catch(const BT::RuntimeError e)
         {
-            clearFactory("File : "+temp_file+" contains : "+ e.what());
+            std::string err= e.what();
+            clearFactory("File : "+temp_file+" contains : "+ err);
             return rclcpp_action::GoalResponse::REJECT;
         }
         catch(const std::exception& e)
         {
-            clearFactory("Loaded mission Error : "+ e.what());
+            std::string err= e.what();
+            clearFactory("Loaded mission Error : "+ err);
             return rclcpp_action::GoalResponse::REJECT;
         }  
         catch (...) {
