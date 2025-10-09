@@ -100,7 +100,7 @@ MissionServer::MissionServer()
         std::thread{std::bind(&MissionServer::execute, this, _1), goal_handle}.detach();
     }
     void MissionServer::clearFactory(const std::string log){
-        RCLCPP_INFO(this->get_logger(), "%s", log);
+        RCLCPP_INFO(this->get_logger(), "%s", log.c_str());
         tree_.rootBlackboard()->clear();
         factory_.clearRegisteredBehaviorTrees();
     }
