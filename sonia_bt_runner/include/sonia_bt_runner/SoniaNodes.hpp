@@ -27,11 +27,7 @@ static void registerActuatorNodes(BT::BehaviorTreeFactory &factory, std::shared_
 }
 static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
-    factory.registerBuilder<navigation::RotateToMission>("RotateToMission", configBuilder<navigation::RotateToMission>(node));
-    factory.registerBuilder<navigation::MoveToMission>("MoveToMission", configBuilder<navigation::MoveToMission>(node));
-    factory.registerBuilder<navigation::BinAlignementForDroppers>("BinAlignementForDroppers", configBuilder<navigation::BinAlignementForDroppers>(node));
-    factory.registerBuilder<navigation::TorpedoDriftingAlignement>("TorpedoDriftingAlignement", configBuilder<navigation::TorpedoDriftingAlignement>(node));
-    factory.registerBuilder<navigation::TorpedoAimingAlignement>("TorpedoAimingAlignement", configBuilder<navigation::TorpedoAimingAlignement>(node));
+    factory.registerBuilder<navigation::Alignment>("Alignment", configBuilder<navigation::Alignment>(node));
     factory.registerNodeType<navigation::InitializeTrajectory>("InitializeTrajectory");
     factory.registerNodeType<navigation::TrajectoryAppendPose>("TrajectoryAppendPose");
     factory.registerBuilder<navigation::SendTrajectory>("SendTrajectory", configBuilder<navigation::SendTrajectory>(node));
@@ -40,8 +36,6 @@ static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::share
 
 static void registerVisionNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
-    factory.registerBuilder<vision::CheckDistance>("CheckDistance", configBuilder<vision::CheckDistance>(node));
-    factory.registerBuilder<vision::CheckBoundingBox>("CheckBoundingBox", configBuilder<vision::CheckBoundingBox>(node));
     factory.registerBuilder<vision::AiActivation>("AiActivation", configBuilder<vision::AiActivation>(node));
     factory.registerBuilder<vision::AiFilter>("AiFilter", configBuilder<vision::AiFilter>(node));
 }

@@ -9,8 +9,7 @@ namespace navigation{
         InitializeTrajectory(const std::string &name, const BT::NodeConfig &config);
         static BT::PortsList providedPorts()
         {
-            return
-            {
+            return {
                 BT::OutputPort<Trajectory>("trajectory"),
             };
         }
