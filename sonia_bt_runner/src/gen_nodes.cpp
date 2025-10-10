@@ -9,6 +9,12 @@
 int main(int argc, char *argv[])
 {
     const char *ws = std::getenv("SONIA_WS");
+
+    if(ws == NULL){
+        std::cerr << "env var SONIA_WS not set" << std::endl;
+        return EXIT_FAILURE;
+    }
+
     std::string search_directory(ws);
     search_directory.append("/src/sonia_bt_runner/sonia_bt_missions/SoniaNodes.xml");
 

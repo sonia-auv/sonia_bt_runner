@@ -18,9 +18,7 @@ namespace vision{
                 return {
                     BT::InputPort<int>("Camera", 1, "1: Front, 0: Bottom"),
                     BT::InputPort<std::string>("Object_class", "Searched object"),
-                    // BT::InputPort<int>("Object_class", "Searched object"),
                     BT::InputPort<float>("Confidence", 0.6, "Ai confidence"),
-                    // BT::InputPort<int>("Buffer_size", "Number of detection to average"),
                     BT::InputPort<int>("Min_detection", "minumum number of frames with at least one detection before sending results"),
                     BT::InputPort<int>("Max_frame", "maximum allowed frames"),
                     BT::InputPort<float>("Max_depth", "Maximum allowed depth"),
@@ -46,7 +44,7 @@ namespace vision{
             BT::Expected<float> confidence;
             BT::Expected<float> max_depth;
             BT::Expected<int> min_detection;
-
+            BT::Expected<int> cam;
             
     };
 

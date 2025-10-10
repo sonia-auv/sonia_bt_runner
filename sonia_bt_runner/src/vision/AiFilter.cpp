@@ -15,8 +15,8 @@ namespace vision{
         confidence = getInput<float>("Confidence");
         max_depth = getInput<float>("Max_depth");
         min_detection = getInput<int>("Min_detection");
+        cam = getInput<int>("Camera");
 
-        BT::Expected<int> cam = getInput<int>("Camera");
         counter = 0;
         nb_detection = 0;
         //chose camera
@@ -72,7 +72,6 @@ namespace vision{
                 ids.push_back(0);
             }
 
-
             int i = 0;
             for (AiDetection detected_object: detected_object_array.detection_array){
                 int k = 0;
@@ -98,7 +97,6 @@ namespace vision{
             for (AiDetection detected_object: detected_object_array.detection_array){
                 float center_x =detected_object.top_left_x+detected_object.bottom_right_x;
                 RCLCPP_INFO(ros_node->get_logger(), "Output : (IN FOR) class %s : center on x = %f | dist = %f", detected_object.classification.c_str(), center_x, detected_object.distance);
-
             }
 
             for (int index: ids){
