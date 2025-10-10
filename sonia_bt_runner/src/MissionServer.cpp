@@ -53,7 +53,7 @@ MissionServer::MissionServer()
         RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(result_).c_str());
         RCLCPP_INFO(this->get_logger(), "----------------");
 
-        res->success = (result_ == NodeStatus::SUCCESS) ? true: false;
+        res->success = (result_ == NodeStatus::SUCCESS);
         goal->succeed(res);
 
         RCLCPP_INFO(this->get_logger(), "Mission completed");
