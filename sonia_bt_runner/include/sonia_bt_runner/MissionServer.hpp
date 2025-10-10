@@ -13,6 +13,7 @@
 #include "behaviortree_cpp/loggers/bt_observer.h"
 #include "behaviortree_cpp/loggers/groot2_publisher.h"
 
+#include <std_msgs/msg/string.hpp>
 #include "sonia_bt_runner/SoniaNodes.hpp"
 #include "sonia_bt_runner/Tracker.hpp"
 #include "sonia_common_ros2/action/mission_control.hpp"
@@ -40,6 +41,7 @@ class MissionServer : public rclcpp::Node{
         std::string name_;
         BehaviorTreeFactory factory_;
         rclcpp_action::Server<MissionControl>::SharedPtr server_;
+        rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pub_status_;
         Tree tree_;
         std::string search_directory;
         NodeStatus result_;

@@ -9,6 +9,8 @@ MissionServer::MissionServer()
         search_directory.assign(ws);
         search_directory.append("/src/sonia_bt_runner/sonia_bt_missions/mission/");
 
+        pub_status_ = this->create_publisher<std_msgs::msg::String>("/mission_server/status_report",1);
+
         server_ = rclcpp_action::create_server<MissionControl>(
                     this,
                     "MissionControl",
@@ -27,10 +29,14 @@ MissionServer::MissionServer()
 
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal){
         auto res = std::make_shared<MissionControl::Result>();
+        std_msgs::msg::String rep;
         result_=NodeStatus::RUNNING;
         Tracker trac(tree_, goal); 
        
-        RCLCPP_INFO(this->get_logger(), "Mission launched");   
+        RCLCPP_INFO(this->get_logger(), "Mission launched"); 
+        rep.data= "Mission launched....";
+        pub_status_->publish(rep);  
+        
         while (!BT::isStatusCompleted(result_))
         { 
             result_ = tree_.tickExactlyOnce(); 
@@ -51,6 +57,8 @@ MissionServer::MissionServer()
         goal->succeed(res);
 
         RCLCPP_INFO(this->get_logger(), "Mission completed");
+        rep.data= "Mission completed....";
+        pub_status_->publish(rep);
     }
 
     rclcpp_action::GoalResponse MissionServer::handleGoal(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const MissionControl::Goal> goal){
@@ -73,10 +81,8 @@ MissionServer::MissionServer()
             }
             
             std::filesystem::path fullFilePath(name_);
-            tree_.rootBlackboard().reset();
             tree_ = factory_.createTree(fullFilePath);
             tree_.initialize();
-            //tree_.rootNode();
             return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
         }
         catch(const BT::RuntimeError e)
@@ -107,6 +113,9 @@ MissionServer::MissionServer()
         std::thread{std::bind(&MissionServer::execute, this, _1), goal_handle}.detach();
     }
     void MissionServer::clearFactory(const std::string log){
+        std_msgs::msg::String rep;
+        rep.data=log;
+        pub_status_->publish(rep);
         RCLCPP_INFO(this->get_logger(), "%s", log.c_str());
         factory_.clearRegisteredBehaviorTrees();
     }
