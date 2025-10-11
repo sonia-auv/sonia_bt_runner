@@ -99,12 +99,12 @@ namespace navigation
         std::cout << "precision: "<<t2.precision<< std::endl;
         std::cout << "long rotation: "<<t2.long_rotation<< std::endl;
 
+        // We append the two new trajectory points to the sending trajectory
         Trajectory traj = getInput<Trajectory>("Trajectory").value();
         traj.trajectory.push_back(t1);
         traj.trajectory.push_back(t2);
         setOutput<Trajectory>("Trajectory", traj);
 
-        // SUCCESS if metric lateral is available; otherwise RUNNING so parent can fall back to bearing-only logic
         return BT::NodeStatus::SUCCESS;
     }
 

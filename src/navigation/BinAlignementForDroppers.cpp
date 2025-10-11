@@ -75,6 +75,7 @@ namespace navigation
         std::cout << "precision: "<<t.precision<< std::endl;
         std::cout << "long rotation: "<<t.long_rotation<< std::endl;
 
+        // We append the new trajectory point to the sending trajectory
         Trajectory traj = getInput<Trajectory>("Trajectory").value();
         traj.trajectory.push_back(t);
         setOutput<Trajectory>("Trajectory", traj);
