@@ -1,0 +1,73 @@
+<root BTCPP_format="4">
+    <TreeNodesModel>
+        <Action ID="AiActivation">
+            <input_port name="Bottom" type="bool" default="false">true: ON, talse: OFF</input_port>
+            <input_port name="Model" type="int" default="0">model choice, default = 0</input_port>
+            <input_port name="Front" type="bool" default="false">true: ON, talse: OFF</input_port>
+        </Action>
+        <Action ID="AiFilter">
+            <output_port name="detected_object_array" type="AiDetectionArray"/>
+            <input_port name="Max_frame" type="int">maximum allowed frames</input_port>
+            <input_port name="Max_depth" type="float">Maximum allowed depth</input_port>
+            <input_port name="Min_detection" type="int">minumum number of frames with at least one detection before sending results</input_port>
+            <input_port name="Confidence" type="float" default="0.600000">Ai confidence</input_port>
+            <input_port name="Object_class" type="std::string">Searched object</input_port>
+            <input_port name="Max_size_output" type="int">Max size of the output array</input_port>
+            <input_port name="Camera" type="int" default="1">1: Front, 0: Bottom</input_port>
+        </Action>
+        <Action ID="Alignment">
+            <output_port name="has_metric" type="int"/>
+            <output_port name="norm_x" type="float"/>
+            <output_port name="bearing_rad" type="float"/>
+            <inout_port name="traj" type="Trajectory"/>
+            <output_port name="lateral_m" type="float"/>
+            <input_port name="alignement_by_translation" type="bool"/>
+            <input_port name="alpha" type="float"/>
+            <input_port name="normalized_coords" type="bool"/>
+            <input_port name="detections" type="AiDetectionArray"/>
+        </Action>
+        <Action ID="ControlSetMode">
+            <input_port name="set_mode" type="bool" default="false"/>
+        </Action>
+        <Condition ID="DepthCheck">
+            <input_port name="IsSmaller" type="bool" default="false">true: ON, talse: OFF</input_port>
+            <input_port name="Target" type="float" default="0.100000">true: ON, talse: OFF</input_port>
+        </Condition>
+        <Action ID="Dropper">
+            <input_port name="side" type="std::string">port_side or starboard</input_port>
+        </Action>
+        <Action ID="EnableDisableDVL">
+            <input_port name="dvl_input" type="bool" default="false">true: start, false: stop</input_port>
+        </Action>
+        <Action ID="InitializeTrajectory">
+            <output_port name="trajectory" type="Trajectory"/>
+        </Action>
+        <Condition ID="MissionSwitchStatus"/>
+        <Action ID="SendTrajectory">
+            <input_port name="trajectory" type="Trajectory"/>
+            <input_port name="interpolation" type="int" default="0"/>
+        </Action>
+        <Action ID="Tare">
+            <input_port name="sensor" type="std::string">imu or depth</input_port>
+        </Action>
+        <Action ID="Torpedo">
+            <input_port name="side" type="std::string">port_side or starboard</input_port>
+        </Action>
+        <Action ID="TrajectoryAppendPose">
+            <input_port name="precision" type="int" default="0"/>
+            <input_port name="speed" type="int" default="0"/>
+            <input_port name="orientationZ" type="float" default="0.000000"/>
+            <input_port name="orientationY" type="float" default="0.000000"/>
+            <input_port name="orientationX" type="float" default="0.000000"/>
+            <input_port name="frame" type="int" default="1"/>
+            <input_port name="positionZ" type="float" default="0.000000"/>
+            <inout_port name="trajectory" type="Trajectory"/>
+            <input_port name="longRotation" type="bool" default="false"/>
+            <input_port name="positionY" type="float" default="0.000000"/>
+            <input_port name="positionX" type="float" default="0.000000"/>
+        </Action>
+        <Action ID="WaitTargetReached">
+            <input_port name="timeout" type="int" default="5"/>
+        </Action>
+    </TreeNodesModel>
+</root>
