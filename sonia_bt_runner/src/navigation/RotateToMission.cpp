@@ -74,11 +74,12 @@ namespace navigation
         std::cout << "speed: "<<t.speed<< std::endl;
         std::cout << "precision: "<<t.precision<< std::endl;
         std::cout << "long rotation: "<<t.long_rotation<< std::endl;
+
+        // We append the new pose to the trajectory
         Trajectory traj = getInput<Trajectory>("trajectory").value();
         traj.trajectory.push_back(t);
         setOutput<Trajectory>("trajectory", traj);
 
-        // SUCCESS if metric lateral is available; otherwise RUNNING so parent can fall back to bearing-only logic
         return BT::NodeStatus::SUCCESS;
     }
 

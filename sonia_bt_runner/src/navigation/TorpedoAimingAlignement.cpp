@@ -64,7 +64,7 @@ namespace navigation
         {
             t.positionY = det.distance_teta - CAMERA_TO_TORPIDO_SALT_OFFSET_X; // We move on the x axis
         }
-        // t.positionZ = det.distance_beta - CAMERA_TO_TORPEDO_OFFSET_Y; // We move on the z axis
+        t.positionZ = det.distance_beta - CAMERA_TO_TORPEDO_OFFSET_Y; // We move on the z axis
         t.orientationX = 0.0;       // We don't rotate on the x axis
         t.orientationY = 0.0;       // We don't rotate on the y axis
         t.orientationZ = 0.0;       // We don't rotate on the z axis
@@ -83,11 +83,12 @@ namespace navigation
         std::cout << "speed: "<<t.speed<< std::endl;
         std::cout << "precision: "<<t.precision<< std::endl;
         std::cout << "long rotation: "<<t.long_rotation<< std::endl;
+
+        // We append the new pose to the trajectory
         Trajectory traj = getInput<Trajectory>("Trajectory").value();
         traj.trajectory.push_back(t);
         setOutput<Trajectory>("Trajectory", traj);
 
-        // SUCCESS if metric lateral is available; otherwise RUNNING so parent can fall back to bearing-only logic
         return BT::NodeStatus::SUCCESS;
     }
 

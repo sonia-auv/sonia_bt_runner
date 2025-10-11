@@ -23,7 +23,6 @@ namespace vision{
 
         // We initialize some value
         counter = 0;
-        // nb_detection = 0;
 
         // We chose the right camera to capture the image
         if(cam.value())
@@ -51,7 +50,6 @@ namespace vision{
             return BT::NodeStatus::RUNNING;
         }
         // We need to make some selection in the image array
-        // std::vector<float> distances;
 
         RCLCPP_INFO(ros_node->get_logger(), "Getting the information because enough detection have been made : %d detection(s)", _detection_array.size());
         std::vector<int> ids;
@@ -121,9 +119,8 @@ namespace vision{
             }
         }
         
-
+        // We fill the output array of the selected image
         AiDetectionArray reduced_detected_object_array;
-
         for (int index: ids){
 
             // We fill the detected object
@@ -165,15 +162,15 @@ namespace vision{
         counter++;
         for (auto msg_obj: msg.detected_object){
             
-            RCLCPP_INFO(ros_node->get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name.c_str(), msg_obj.distance, msg_obj.confidence);
-            RCLCPP_INFO(ros_node->get_logger(), "Comparing %s and %s = %d", msg_obj.class_name.c_str(), _object.value().c_str(), msg_obj.class_name.compare(_object.value()));
             if(msg_obj.class_name.compare(_object.value()) == 0){
 
                 // The searching object has been detected
                 RCLCPP_INFO(ros_node->get_logger(), "Class OK");
+                RCLCPP_INFO(ros_node->get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name.c_str(), msg_obj.distance, msg_obj.confidence);
+                RCLCPP_INFO(ros_node->get_logger(), "Comparing %s and %s = %d", msg_obj.class_name.c_str(), _object.value().c_str(), msg_obj.class_name.compare(_object.value()));
                 if(msg_obj.confidence >= confidence.value() && msg_obj.distance <= max_depth.value())
                 {
-                    //The detected object respect the confidence and the depth enter in the behavior tree
+                    //The detected object respect the confidence and the depth. We can put it in the filter array
                     RCLCPP_INFO(ros_node->get_logger(), "Confidence and depth OK, a new object has been detected");
                     _detection_array.push_back(msg_obj);
                 }

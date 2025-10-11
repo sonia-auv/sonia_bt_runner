@@ -16,15 +16,16 @@ namespace vision{
             static BT::PortsList providedPorts()
             {
                 return {
+                    // Inputs
                     BT::InputPort<int>("Camera", 1, "1: Front, 0: Bottom"),
                     BT::InputPort<std::string>("Object_class", "Searched object"),
-                    // BT::InputPort<int>("Object_class", "Searched object"),
                     BT::InputPort<float>("Confidence", 0.6, "Ai confidence"),
-                    // BT::InputPort<int>("Buffer_size", "Number of detection to average"),
                     BT::InputPort<int>("Min_size_output", "minumum number of frames with at least one detection before sending results"),
                     BT::InputPort<int>("Max_size_output", "Max size of the output array"),
                     BT::InputPort<int>("Max_frame_before_failling", "maximum allowed frames"),
                     BT::InputPort<float>("Max_depth", "Maximum allowed depth"),
+
+                    // Outputs
                     BT::OutputPort<AiDetectionArray>("Detected_object_array")};
             }
 

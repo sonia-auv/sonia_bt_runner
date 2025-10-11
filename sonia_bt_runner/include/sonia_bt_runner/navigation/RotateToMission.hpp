@@ -37,10 +37,6 @@ namespace navigation
             BT::Expected<AiDetectionArray> arr;
             BT::Expected<bool> mode;
             BT::Expected<bool>camera;
-            // Previous outputs for optional temporal smoothing
-            // float prev_lateral_ = std::numeric_limits<float>::quiet_NaN();   ???
-            // float prev_bearing_ = std::numeric_limits<float>::quiet_NaN();   ???
-            // float prev_normx_ = std::numeric_limits<float>::quiet_NaN();     ???
 
 
     };

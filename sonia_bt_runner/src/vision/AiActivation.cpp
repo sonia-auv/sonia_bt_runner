@@ -14,6 +14,7 @@ namespace vision{
         BT::Expected<bool> bottom = getInput<bool>("Bottom");
         BT::Expected<int> model = getInput<int>("Model");
 
+        // We activate the selected AI on the requested camera(s)
         if(front.value()&&bottom.value()){
             request->camera_choice=3;
             request->model_choice=model.value();
