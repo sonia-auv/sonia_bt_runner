@@ -4,6 +4,7 @@
 #include "sonia_bt_runner/navigation/SoniaNavigation.hpp"
 #include "sonia_bt_runner/init/SoniaInit.hpp"
 #include "sonia_bt_runner/actuator/SoniaActuator.hpp"
+#include "sonia_bt_runner/sensors/SoniaSensor.hpp"
 
 using namespace BT;
 template <typename T>
@@ -35,6 +36,11 @@ static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::share
     factory.registerNodeType<navigation::TrajectoryAppendPose>("TrajectoryAppendPose");
     factory.registerBuilder<navigation::SendTrajectory>("SendTrajectory", configBuilder<navigation::SendTrajectory>(node));
     factory.registerBuilder<navigation::WaitTargetReached>("WaitTargetReached", configBuilder<navigation::WaitTargetReached>(node));
+}
+
+static void registerSensorNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
+{
+    factory.registerBuilder<sensors::DepthCheck>("DepthCheck", simpleBuilder<sensors::DepthCheck>(node));
 }
 
 static void registerVisionNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
