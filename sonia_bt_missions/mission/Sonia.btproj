@@ -1,41 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root BTCPP_format="4" project_name="Sonia">
-    <include path="Kanye.xml"/>
-    <include path="Test1.xml"/>
+<root BTCPP_format="4" project_name="Project">
+    <include path="AirTest.xml"/>
+    <include path="PoolTest.xml"/>
+    <include path="Template.xml"/>
+    <include path="robosub26mission.xml"/>
     <!-- Description of Node Models (used by Groot) -->
     <TreeNodesModel>
         <Action ID="AiActivation">
-            <input_port name="Bottom" default="false" type="bool">true: ON, talse: OFF</input_port>
             <input_port name="Model" default="0" type="int">model choice, default = 0</input_port>
+            <input_port name="Bottom" default="false" type="bool">true: ON, talse: OFF</input_port>
             <input_port name="Front" default="false" type="bool">true: ON, talse: OFF</input_port>
         </Action>
         <Action ID="AiFilter">
-            <output_port name="detected_object_array" type="AiDetectionArray"/>
-            <input_port name="Max_frame" type="int">maximum allowed frames</input_port>
-            <input_port name="Max_depth" type="float">Maximum allowed depth</input_port>
-            <input_port name="Min_detection" type="int">minumum number of frames with at least one detection before sending results</input_port>
+            <output_port name="Detected_object_array" type="AiDetectionArray"/>
+            <input_port name="Max_frame_before_failling" type="int">maximum allowed frames</input_port>
+            <input_port name="Min_size_output" type="int">minumum number of frames with at least one detection before sending results</input_port>
             <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
-            <input_port name="Object_class" type="std::string">Searched object</input_port>
+            <input_port name="Max_depth" type="float">Maximum allowed depth</input_port>
             <input_port name="Max_size_output" type="int">Max size of the output array</input_port>
-            <input_port name="Camera" default="1" type="int">0: Front, 1: Bottom</input_port>
+            <input_port name="Object_class" type="std::string">Searched object</input_port>
+            <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
         </Action>
-        <SubTree ID="AlignSlalom" editable="true">
-            <input_port name="direction" default="left">Side of slalom to move</input_port>
-        </SubTree>
         <Action ID="Alignment">
-            <output_port name="has_metric" type="int"/>
-            <output_port name="norm_x" type="float"/>
-            <output_port name="bearing_rad" type="float"/>
+            <output_port name="TranslationY" type="float"/>
+            <output_port name="RotationZ" type="float"/>
             <inout_port name="traj" type="Trajectory"/>
-            <output_port name="lateral_m" type="float"/>
+            <input_port name="Camera_front" type="bool"/>
             <input_port name="alignement_by_translation" type="bool"/>
-            <input_port name="alpha" type="float"/>
-            <input_port name="normalized_coords" type="bool"/>
+            <output_port name="TranslationX_CamBottom" type="float"/>
             <input_port name="detections" type="AiDetectionArray"/>
+        </Action>
+        <SubTree ID="Bin" editable="true">
+            <input_port name="HintAngle" default="0">The approximation of the angle where the mission is.</input_port>
+        </SubTree>
+        <Action ID="BinAlignementForDroppers">
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="Detections" type="AiDetectionArray"/>
+        </Action>
+        <Action ID="CheckBoundingBox">
+            <input_port name="Object" type="AiDetectionArray"/>
+            <output_port name="New_width" type="int"/>
+            <output_port name="New_width_growth" type="int"/>
+            <input_port name="Width_growing" type="int"/>
+            <input_port name="Previous_width" type="int"/>
         </Action>
         <Action ID="CheckDistance">
             <output_port name="TranslationX" type="float"/>
-            <input_port name="Object" type="sonia_common_ros2::msg::Detection_&lt;std::allocator&lt;void&gt; &gt;"/>
+            <input_port name="Object" type="AiDetectionArray"/>
         </Action>
         <Action ID="ControlSetMode">
             <input_port name="set_mode" default="false" type="bool"/>
@@ -50,71 +61,82 @@
         <Action ID="EnableDisableDVL">
             <input_port name="dvl_input" default="false" type="bool">true: start, false: stop</input_port>
         </Action>
+        <SubTree ID="Gate" editable="true">
+            <input_port name="DetectedObject">The type of object that the sub will working to</input_port>
+        </SubTree>
+        <SubTree ID="InitialSubmerge" editable="true">
+            <input_port name="Depth" default="1">The depth that the sub will be in the water</input_port>
+        </SubTree>
         <Action ID="InitializeTrajectory">
             <output_port name="trajectory" type="Trajectory"/>
         </Action>
         <Condition ID="MissionSwitchStatus"/>
         <SubTree ID="MoveSinglePose" editable="true">
-            <input_port name="positionX" default="0.0"/>
-            <input_port name="positionY" default="0.0"/>
-            <input_port name="positionZ" default="0.0"/>
-            <input_port name="orientationX" default="0.0"/>
-            <input_port name="orientationY" default="0.0"/>
-            <input_port name="orientationZ" default="0.0"/>
-            <input_port name="frame" default="1.0"/>
+            <input_port name="frame" default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
+            <input_port name="positionX" default="0.0">x value to go</input_port>
+            <input_port name="positionY" default="0.0">y value to go</input_port>
+            <input_port name="positionZ" default="0.0">z value to go</input_port>
+            <input_port name="orientationX" default="0.0">z orientation to go</input_port>
+            <input_port name="orientationY" default="0.0">y orientation to go</input_port>
+            <input_port name="orientationZ" default="0.0">x orientation to go</input_port>
         </SubTree>
-        <SubTree ID="PositionAbsolutAngle" editable="true">
-            <input_port name="angle"/>
+        <Action ID="MoveToMission">
+            <inout_port name="trajectory" type="Trajectory"/>
+            <input_port name="detections" type="AiDetectionArray"/>
+        </Action>
+        <SubTree ID="RotateToAbsoluteAngle" editable="true">
+            <input_port name="Angle" default="0">Angle to position the sub with the pool</input_port>
+        </SubTree>
+        <Action ID="RotateToMission">
+            <inout_port name="trajectory" type="Trajectory"/>
+            <input_port name="detections" type="AiDetectionArray"/>
+        </Action>
+        <SubTree ID="SearchObjectByRotation" editable="true">
+            <input_port name="StartingAngle" default="0">Angle to give to the sub at the begining of the searching procedure</input_port>
+            <input_port name="Object">The name of the object to search</input_port>
+            <output_port name="FoundAiDetection">The detection of the ai if he found the object</output_port>
         </SubTree>
         <Action ID="SendTrajectory">
             <input_port name="trajectory" type="Trajectory"/>
             <input_port name="interpolation" default="0" type="int"/>
         </Action>
+        <SubTree ID="SendTrajectoryOnly" editable="true">
+            <input_port name="Trajectory">The trajectory to do to the sub</input_port>
+            <input_port name="TimeBeforeFailling" default="5">The time before the sub movement fail</input_port>
+        </SubTree>
         <Action ID="Tare">
             <input_port name="sensor" type="std::string">imu or depth</input_port>
         </Action>
         <Action ID="Torpedo">
             <input_port name="side" type="std::string">port_side or starboard</input_port>
         </Action>
+        <Action ID="TorpedoAimingAlignement">
+            <input_port name="LaunchingSide" type="std::string"/>
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="Detections" type="AiDetectionArray"/>
+        </Action>
+        <Action ID="TorpedoDriftingAlignement">
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="Detections" type="AiDetectionArray"/>
+        </Action>
+        <SubTree ID="Torpedos" editable="true">
+            <input_port name="HintAngle" default="0">The approximation of the angle where the torpideos is.</input_port>
+        </SubTree>
         <Action ID="TrajectoryAppendPose">
+            <inout_port name="trajectory" type="Trajectory"/>
             <input_port name="precision" default="0" type="int"/>
             <input_port name="speed" default="0" type="int"/>
+            <input_port name="frame" default="1" type="int"/>
             <input_port name="orientationZ" default="0.000000" type="float"/>
+            <input_port name="longRotation" default="false" type="bool"/>
+            <input_port name="positionZ" default="0.000000" type="float"/>
+            <input_port name="positionY" default="0.000000" type="float"/>
             <input_port name="orientationY" default="0.000000" type="float"/>
             <input_port name="orientationX" default="0.000000" type="float"/>
-            <input_port name="frame" default="1" type="int"/>
-            <input_port name="positionZ" default="0.000000" type="float"/>
-            <inout_port name="trajectory" type="Trajectory"/>
-            <input_port name="longRotation" default="false" type="bool"/>
-            <input_port name="positionY" default="0.000000" type="float"/>
             <input_port name="positionX" default="0.000000" type="float"/>
         </Action>
         <Action ID="WaitTargetReached">
             <input_port name="timeout" default="5" type="int"/>
         </Action>
-        <SubTree ID="bin_position_bottom" editable="true">
-            <input_port name="object_class"/>
-            <output_port name="y_found"/>
-            <output_port name="x_found"/>
-        </SubTree>
-        <SubTree ID="bin_position_front" editable="true">
-            <input_port name="object_class"/>
-            <output_port name="object_distance"/>
-        </SubTree>
-        <SubTree ID="bin_search_bottom" editable="true">
-            <input_port name="object_class"/>
-            <output_port name="y_found"/>
-            <output_port name="x_found"/>
-        </SubTree>
-        <SubTree ID="bin_search_front" editable="true">
-            <input_port name="object_class"/>
-            <output_port name="object_distance"/>
-        </SubTree>
-        <SubTree ID="gate_solo" editable="true">
-            <input_port name="choix_translation" default="true"/>
-        </SubTree>
-        <SubTree ID="search_rot" editable="true">
-            <input_port name="object_class"/>
-        </SubTree>
     </TreeNodesModel>
 </root>
