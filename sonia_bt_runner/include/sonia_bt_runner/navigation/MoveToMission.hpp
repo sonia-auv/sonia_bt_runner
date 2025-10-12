@@ -27,13 +27,7 @@ namespace navigation
                 };
             }
 
-            BT::NodeStatus executeTick() override;
-
-
-        private:
-            std::shared_ptr<rclcpp::Node> ros_node;
-            int valid;
-            BT::Expected<AiDetectionArray> arr;
+            BT::NodeStatus tick() override;
 
     };
 

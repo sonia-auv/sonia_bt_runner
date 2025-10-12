@@ -10,10 +10,10 @@
 namespace navigation
 {
 
-    class TorpedoAimingAlignement : public BT::AsyncActionNode
+    class TorpedoAimingAlignement : public BT::SyncActionNode
     {
         public:
-            TorpedoAimingAlignement(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node);
+            TorpedoAimingAlignement(const std::string &name, const BT::NodeConfig &config);
             ~TorpedoAimingAlignement()=default;
             static BT::PortsList providedPorts()
             {
@@ -27,15 +27,7 @@ namespace navigation
                     BT::BidirectionalPort<Trajectory>("Trajectory"),
                 };
             }
-            BT::NodeStatus onStart() override;
-            BT::NodeStatus onRunning() override;
-            void onHalted() override;
-
-        private:
-            std::shared_ptr<rclcpp::Node> ros_node;
-            int valid;
-            BT::Expected<AiDetectionArray> arr;
-            BT::Expected<std::string> launching_side;
+            BT::NodeStatus tick() override;
     };
 
 }  // namespace navigation

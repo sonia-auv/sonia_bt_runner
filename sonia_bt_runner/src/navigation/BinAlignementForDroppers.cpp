@@ -7,25 +7,15 @@
 namespace navigation
 {
 
-    BinAlignementForDroppers::BinAlignementForDroppers(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node)
-    : BT::StatefulActionNode(name, config), ros_node(node), valid(0), _time_launch(std::chrono::system_clock::now())
+    BinAlignementForDroppers::BinAlignementForDroppers(const std::string &name, const BT::NodeConfig &config)
+    : BT::SyncActionNode(name, config)
     {
         
     }
 
-    void BinAlignementForDroppers::onHalted()
+    BT::NodeStatus BinAlignementForDroppers::tick()
     {
-
-    }
-
-    BT::NodeStatus BinAlignementForDroppers::onStart()
-    {
-        return BT::NodeStatus::RUNNING;
-    }
-
-    BT::NodeStatus BinAlignementForDroppers::onRunning()
-    {
-        // AiDetectionArray arr;
+        AiDetectionArray arr;
 
         // We get the detected object by the AI
         getInput("Detections", arr);

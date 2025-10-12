@@ -8,12 +8,13 @@ namespace navigation
 {
 
     MoveToMission::MoveToMission(const std::string &name, const BT::NodeConfig &config)
+       : BT::SyncActionNode(name, config)
     {
 
     }
-    BT::NodeStatus MoveToMission::executeTick()
+    BT::NodeStatus MoveToMission::tick()
     {
-        // AiDetectionArray arr;
+        AiDetectionArray arr;
 
         // We get the detected object by the AI
         getInput("Detections", arr);

@@ -27,11 +27,11 @@ static void registerActuatorNodes(BT::BehaviorTreeFactory &factory, std::shared_
 }
 static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
-    factory.registerBuilder<navigation::RotateToMission>("RotateToMission", configBuilder<navigation::RotateToMission>(node));
-    factory.registerBuilder<navigation::MoveToMission>("MoveToMission", configBuilder<navigation::MoveToMission>(node));
-    factory.registerBuilder<navigation::BinAlignementForDroppers>("BinAlignementForDroppers", configBuilder<navigation::BinAlignementForDroppers>(node));
-    factory.registerBuilder<navigation::TorpedoDriftingAlignement>("TorpedoDriftingAlignement", configBuilder<navigation::TorpedoDriftingAlignement>(node));
-    factory.registerBuilder<navigation::TorpedoAimingAlignement>("TorpedoAimingAlignement", configBuilder<navigation::TorpedoAimingAlignement>(node));
+    factory.registerNodeType<navigation::RotateToMission>("RotateToMission");
+    factory.registerNodeType<navigation::MoveToMission>("MoveToMission");
+    factory.registerNodeType<navigation::BinAlignementForDroppers>("BinAlignementForDroppers");
+    factory.registerNodeType<navigation::TorpedoDriftingAlignement>("TorpedoDriftingAlignement");
+    factory.registerNodeType<navigation::TorpedoAimingAlignement>("TorpedoAimingAlignement");
     factory.registerNodeType<navigation::InitializeTrajectory>("InitializeTrajectory");
     factory.registerNodeType<navigation::TrajectoryAppendPose>("TrajectoryAppendPose");
     factory.registerBuilder<navigation::SendTrajectory>("SendTrajectory", configBuilder<navigation::SendTrajectory>(node));

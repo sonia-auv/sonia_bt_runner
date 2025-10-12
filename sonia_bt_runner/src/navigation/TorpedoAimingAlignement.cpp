@@ -7,26 +7,16 @@
 namespace navigation
 {
 
-    TorpedoAimingAlignement::TorpedoAimingAlignement(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node)
-    : BT::StatefulActionNode(name, config), ros_node(node), valid(0), _time_launch(std::chrono::system_clock::now())
+    TorpedoAimingAlignement::TorpedoAimingAlignement(const std::string &name, const BT::NodeConfig &config)
+    : BT::SyncActionNode(name, config)
     {
 
     }
 
-    void TorpedoAimingAlignement::onHalted()
+    BT::NodeStatus TorpedoAimingAlignement::tick()
     {
-
-    }
-
-    BT::NodeStatus TorpedoAimingAlignement::onStart()
-    {
-        return BT::NodeStatus::RUNNING;
-    }
-
-    BT::NodeStatus TorpedoAimingAlignement::onRunning()
-    {
-        // AiDetectionArray arr;
-        // std::string launching_side;
+        AiDetectionArray arr;
+        std::string launching_side;
 
         // We get the detected object by the AI
         getInput("Detections", arr);
@@ -45,7 +35,7 @@ namespace navigation
         
         TrajectoryPose t;
         t.positionX = 0.0; // We don't move on the x axis
-        if (launching_side.value == "portside")
+        if (launching_side == "portside")
         {
             t.positionY = det.distance_teta - CAMERA_TO_TORPIDO_PEPPER_OFFSET_X; // We move on the x axis
         }

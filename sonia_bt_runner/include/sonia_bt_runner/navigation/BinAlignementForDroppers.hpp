@@ -10,10 +10,10 @@
 namespace navigation
 {
 
-    class BinAlignementForDroppers : public BT::AsyncActionNode
+    class BinAlignementForDroppers : public BT::SyncActionNode
     {
         public:
-            BinAlignementForDroppers(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node);
+            BinAlignementForDroppers(const std::string &name, const BT::NodeConfig &config);
             ~BinAlignementForDroppers()=default;
             static BT::PortsList providedPorts()
             {
@@ -26,14 +26,7 @@ namespace navigation
                 };
             }
 
-            BT::NodeStatus onStart() override;
-            BT::NodeStatus onRunning() override;
-            void onHalted() override;
-
-        private:
-            std::shared_ptr<rclcpp::Node> ros_node;
-            int valid;
-            BT::Expected<AiDetectionArray> arr;
+            BT::NodeStatus tick() override;
             
     };
 
