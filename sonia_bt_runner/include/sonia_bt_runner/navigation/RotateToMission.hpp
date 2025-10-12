@@ -5,12 +5,12 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
-#include "sonia_bt_runner/navigation/MainAlignment.hpp"
+#include "sonia_bt_runner/utils/MainAlignment.hpp"
 
 namespace navigation
 {
 
-    class RotateToMission : public BT::StatefulActionNode
+    class RotateToMission : public BT::SyncActionNode
     {
         public:
             RotateToMission(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node);
@@ -19,10 +19,10 @@ namespace navigation
             {
                 return {
                     // Inputs
-                    BT::InputPort<AiDetectionArray>("detections"),
+                    BT::InputPort<AiDetectionArray>("Detections"),
 
                     // Outputs
-                    BT::BidirectionalPort<Trajectory>("trajectory"),
+                    BT::BidirectionalPort<Trajectory>("Trajectory"),
                 };
             }
 
@@ -33,10 +33,7 @@ namespace navigation
         private:
             std::shared_ptr<rclcpp::Node> ros_node;
             int valid;
-            std::chrono::system_clock::time_point _time_launch;
             BT::Expected<AiDetectionArray> arr;
-            BT::Expected<bool> mode;
-            BT::Expected<bool>camera;
 
 
     };

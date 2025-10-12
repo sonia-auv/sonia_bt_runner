@@ -5,12 +5,12 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
-#include "sonia_bt_runner/navigation/MainAlignment.hpp"
+#include "sonia_bt_runner/utils/MainAlignment.hpp"
 
 namespace navigation
 {
 
-    class TorpedoDriftingAlignement : public BT::StatefulActionNode
+    class TorpedoDriftingAlignement : public BT::AsyncActionNode
     {
         public:
             TorpedoDriftingAlignement(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node);
@@ -32,10 +32,7 @@ namespace navigation
         private:
             std::shared_ptr<rclcpp::Node> ros_node;
             int valid;
-            std::chrono::system_clock::time_point _time_launch;
             BT::Expected<AiDetectionArray> arr;
-            BT::Expected<bool> mode;
-            BT::Expected<bool>camera;
 
     };
 

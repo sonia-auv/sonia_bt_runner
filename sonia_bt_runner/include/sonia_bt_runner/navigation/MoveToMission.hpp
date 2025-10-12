@@ -5,39 +5,35 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
-#include "sonia_bt_runner/navigation/MainAlignment.hpp"
+#include "sonia_bt_runner/utils/MainAlignment.hpp"
 
 
 namespace navigation
 {
 
-    class MoveToMission : public BT::StatefulActionNode
+    class MoveToMission : public BT::SyncActionNode
     {
         public:
-            MoveToMission(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node);
+            MoveToMission(const std::string &name, const BT::NodeConfig &config);
             ~MoveToMission()=default;
             static BT::PortsList providedPorts()
             {
                 return {
                     // Inputs
-                    BT::InputPort<AiDetectionArray>("detections"),
+                    BT::InputPort<AiDetectionArray>("Detections"),
 
                     // Outputs
-                    BT::BidirectionalPort<Trajectory>("trajectory"),
+                    BT::BidirectionalPort<Trajectory>("Trajectory"),
                 };
             }
 
-            BT::NodeStatus onStart() override;
-            BT::NodeStatus onRunning() override;
-            void onHalted() override;
+            BT::NodeStatus executeTick() override;
+
 
         private:
             std::shared_ptr<rclcpp::Node> ros_node;
             int valid;
-            std::chrono::system_clock::time_point _time_launch;
             BT::Expected<AiDetectionArray> arr;
-            BT::Expected<bool> mode;
-            BT::Expected<bool>camera;
 
     };
 
