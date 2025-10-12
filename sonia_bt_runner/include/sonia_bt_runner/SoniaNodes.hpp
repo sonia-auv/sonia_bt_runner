@@ -27,7 +27,6 @@ static void registerActuatorNodes(BT::BehaviorTreeFactory &factory, std::shared_
 }
 static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
-    factory.registerNodeType<navigation::RotateToMission>("RotateToMission");
     factory.registerNodeType<navigation::MoveToMission>("MoveToMission");
     factory.registerNodeType<navigation::BinAlignementForDroppers>("BinAlignementForDroppers");
     factory.registerNodeType<navigation::TorpedoDriftingAlignement>("TorpedoDriftingAlignement");
