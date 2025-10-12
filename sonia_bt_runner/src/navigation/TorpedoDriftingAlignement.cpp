@@ -12,17 +12,7 @@ namespace navigation
     {
 
     }
-    static BT::PortsList providedPorts()
-    {
-        return {
-            // Inputs
-            BT::InputPort<AiDetectionArray>("Detections"),
-
-            // Outputs
-            BT::BidirectionalPort<Trajectory>("Trajectory"),
-        };
-    }
-
+    
     void TorpedoDriftingAlignement::onHalted()
     {
 
@@ -35,7 +25,7 @@ namespace navigation
 
     BT::NodeStatus TorpedoDriftingAlignement::onRunning()
     {
-        AiDetectionArray arr;
+        // AiDetectionArray arr;
 
         // We get the detected object by the AI
         getInput("Detections", arr);
@@ -49,7 +39,7 @@ namespace navigation
         }
 
         // Assumption: array is pre-filtered for the object of interest → use first detection
-        const AiDetection& det = arr.detection_array.front(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
+        const AiDetection& det = arr.detection_array.front(); 
         
         // We compute a rotation to make the sub rotate at 90 degrees to the target
         TrajectoryPose t1;

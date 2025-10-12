@@ -12,16 +12,6 @@ namespace navigation
     {
 
     }
-    static BT::PortsList providedPorts()
-    {
-        return {
-            // Inputs
-            BT::InputPort<AiDetectionArray>("detections"),
-
-            // Outputs
-            BT::BidirectionalPort<Trajectory>("trajectory"),
-        };
-    }
 
     void RotateToMission::onHalted()
     {
@@ -35,10 +25,10 @@ namespace navigation
 
     BT::NodeStatus RotateToMission::onRunning()
     {
-        AiDetectionArray arr;
+        // AiDetectionArray arr;
 
         // We get the detected object by the AI
-        getInput("detections", arr);
+        getInput("Detections", arr);
 
         if (arr.detection_array.empty())
         {
@@ -76,9 +66,9 @@ namespace navigation
         std::cout << "long rotation: "<<t.long_rotation<< std::endl;
 
         // We append the new pose to the trajectory
-        Trajectory traj = getInput<Trajectory>("trajectory").value();
+        Trajectory traj = getInput<Trajectory>("Trajectory").value();
         traj.trajectory.push_back(t);
-        setOutput<Trajectory>("trajectory", traj);
+        setOutput<Trajectory>("Trajectory", traj);
 
         return BT::NodeStatus::SUCCESS;
     }

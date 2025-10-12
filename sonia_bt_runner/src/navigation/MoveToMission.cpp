@@ -7,38 +7,16 @@
 namespace navigation
 {
 
-    MoveToMission::MoveToMission(const std::string &name, const BT::NodeConfig &config,std::shared_ptr<rclcpp::Node> node)
-    : BT::StatefulActionNode(name, config), ros_node(node), valid(0), _time_launch(std::chrono::system_clock::now())
+    MoveToMission::MoveToMission(const std::string &name, const BT::NodeConfig &config)
     {
 
     }
-    static BT::PortsList providedPorts()
+    BT::NodeStatus MoveToMission::executeTick()
     {
-        return {
-            // Inputs
-            BT::InputPort<AiDetectionArray>("detections"),
-
-            // Outputs
-            BT::BidirectionalPort<Trajectory>("trajectory"),
-        };
-    }
-
-    void MoveToMission::onHalted()
-    {
-
-    }
-
-    BT::NodeStatus MoveToMission::onStart()
-    {
-        return BT::NodeStatus::RUNNING;
-    }
-
-    BT::NodeStatus MoveToMission::onRunning()
-    {
-        AiDetectionArray arr;
+        // AiDetectionArray arr;
 
         // We get the detected object by the AI
-        getInput("detections", arr);
+        getInput("Detections", arr);
 
         if (arr.detection_array.empty())
         {
@@ -76,9 +54,9 @@ namespace navigation
         std::cout << "long rotation: "<<t.long_rotation<< std::endl;
 
         // We append the new pose to the trajectory
-        Trajectory traj = getInput<Trajectory>("trajectory").value();
+        Trajectory traj = getInput<Trajectory>("Trajectory").value();
         traj.trajectory.push_back(t);
-        setOutput<Trajectory>("trajectory", traj);
+        setOutput<Trajectory>("Trajectory", traj);
 
         return BT::NodeStatus::SUCCESS;
     }

@@ -12,16 +12,6 @@ namespace navigation
     {
         
     }
-    static BT::PortsList providedPorts()
-    {
-        return {
-            // Inputs
-            BT::InputPort<AiDetectionArray>("Detections"),
-
-            // Outputs
-            BT::BidirectionalPort<Trajectory>("Trajectory"),
-        };
-    }
 
     void BinAlignementForDroppers::onHalted()
     {
@@ -35,7 +25,7 @@ namespace navigation
 
     BT::NodeStatus BinAlignementForDroppers::onRunning()
     {
-        AiDetectionArray arr;
+        // AiDetectionArray arr;
 
         // We get the detected object by the AI
         getInput("Detections", arr);
@@ -54,7 +44,7 @@ namespace navigation
         // We compute the trajectory to do
         TrajectoryPose t;
 
-        // t.positionX = -det.distance_beta - CAMERA_TO_DROPPER_OFFSET_X;
+        t.positionX = -det.distance_beta - CAMERA_TO_DROPPER_OFFSET_X;
         t.positionY = det.distance_teta - CAMERA_TO_DROPPER_OFFSET_Y;
         t.positionZ = 0.0;
         t.orientationX = 0.0;
@@ -80,7 +70,6 @@ namespace navigation
         traj.trajectory.push_back(t);
         setOutput<Trajectory>("Trajectory", traj);
 
-        // SUCCESS if metric lateral is available; otherwise RUNNING so parent can fall back to bearing-only logic
         return BT::NodeStatus::SUCCESS;
     }
 

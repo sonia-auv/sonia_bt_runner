@@ -12,17 +12,6 @@ namespace navigation
     {
 
     }
-    static BT::PortsList providedPorts()
-    {
-        return {
-            // Inputs
-            BT::InputPort<AiDetectionArray>("Detections"),
-            BT::InputPort<std::string>("LaunchingSide"),
-
-            // Outputs
-            BT::BidirectionalPort<Trajectory>("Trajectory"),
-        };
-    }
 
     void TorpedoAimingAlignement::onHalted()
     {
@@ -36,8 +25,8 @@ namespace navigation
 
     BT::NodeStatus TorpedoAimingAlignement::onRunning()
     {
-        AiDetectionArray arr;
-        std::string launching_side;
+        // AiDetectionArray arr;
+        // std::string launching_side;
 
         // We get the detected object by the AI
         getInput("Detections", arr);
@@ -56,7 +45,7 @@ namespace navigation
         
         TrajectoryPose t;
         t.positionX = 0.0; // We don't move on the x axis
-        if (launching_side == "portside")
+        if (launching_side.value == "portside")
         {
             t.positionY = det.distance_teta - CAMERA_TO_TORPIDO_PEPPER_OFFSET_X; // We move on the x axis
         }
