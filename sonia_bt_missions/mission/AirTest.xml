@@ -16,8 +16,6 @@
                 Max_depth="25"
                 Object_class="gate"
                 Camera="1"/>
-      <RotateToMission trajectory="{Trajectory}"
-                       detections="{AiDetection}"/>
       <AiActivation Model="0"
                     Bottom="true"
                     Front="false"/>
@@ -48,12 +46,6 @@
         <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
     </Action>
     <Condition ID="MissionSwitchStatus"/>
-    <Action ID="RotateToMission">
-      <inout_port name="trajectory"
-                  type="Trajectory"/>
-      <input_port name="detections"
-                  type="AiDetectionArray"/>
-    </Action>
   </TreeNodesModel>
 
 </root>

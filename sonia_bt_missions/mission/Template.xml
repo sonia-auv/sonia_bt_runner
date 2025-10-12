@@ -29,14 +29,6 @@
 
   <BehaviorTree ID="MissionFailed">
     <Sequence>
-      <SubTree ID="MoveSinglePose"
-               frame="1.0"
-               positionX="0.0"
-               positionY="0.0"
-               positionZ="0.0"
-               orientationX="90.0"
-               orientationY="0.0"
-               orientationZ="0.0"/>
       <ControlSetMode set_mode="false"/>
       <AlwaysFailure/>
     </Sequence>
@@ -60,7 +52,6 @@
                orientationX="0.0"
                orientationY="0.0"
                orientationZ="-90.0"/>
-      <ControlSetMode set_mode="false"/>
     </Sequence>
   </BehaviorTree>
 
@@ -102,9 +93,9 @@
       <Fallback>
         <AiFilter Detected_object_array="{FoundAiDetection}"
                   Max_frame_before_failling="5"
-                  Max_depth="25"
                   Min_size_output="1"
                   Confidence="0.600000"
+                  Max_depth="25"
                   Max_size_output="1"
                   Object_class="{Object}"
                   Camera="1"/>
@@ -120,9 +111,9 @@
           <Fallback>
             <AiFilter Detected_object_array="{FoundAiDetection}"
                       Max_frame_before_failling="5"
-                      Max_depth="25"
                       Min_size_output="1"
                       Confidence="0.600000"
+                      Max_depth="25"
                       Max_size_output="1"
                       Object_class="{Object}"
                       Camera="1"/>
@@ -138,9 +129,9 @@
               <Fallback>
                 <AiFilter Detected_object_array="{FoundAiDetection}"
                           Max_frame_before_failling="5"
-                          Max_depth="25"
                           Min_size_output="1"
                           Confidence="0.600000"
+                          Max_depth="25"
                           Max_size_output="1"
                           Object_class="{Object}"
                           Camera="1"/>
@@ -156,9 +147,9 @@
                   <Fallback>
                     <AiFilter Detected_object_array="{FoundAiDetection}"
                               Max_frame_before_failling="5"
-                              Max_depth="25"
                               Min_size_output="1"
                               Confidence="0.600000"
+                              Max_depth="25"
                               Max_size_output="1"
                               Object_class="{Object}"
                               Camera="1"/>
@@ -174,9 +165,9 @@
                       <IfThenElse>
                         <AiFilter Detected_object_array="{FoundAiDetection}"
                                   Max_frame_before_failling="5"
-                                  Max_depth="25"
                                   Min_size_output="1"
                                   Confidence="0.600000"
+                                  Max_depth="25"
                                   Max_size_output="1"
                                   Object_class="{Object}"
                                   Camera="1"/>
@@ -204,20 +195,30 @@
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
     <Action ID="AiFilter">
-        <output_port name="Detected_object_array" type="AiDetectionArray"/>
-        <input_port name="Max_frame_before_failling" type="int">maximum allowed frames</input_port>
-        <input_port name="Min_size_output" type="int">minumum number of frames with at least one detection before sending results</input_port>
-        <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
-        <input_port name="Max_depth" type="float">Maximum allowed depth</input_port>
-        <input_port name="Max_size_output" type="int">Max size of the output array</input_port>
-        <input_port name="Object_class" type="std::string">Searched object</input_port>
-        <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
+      <output_port name="Detected_object_array"
+                   type="AiDetectionArray"/>
+      <input_port name="Max_frame_before_failling"
+                  type="int">maximum allowed frames</input_port>
+      <input_port name="Min_size_output"
+                  type="int">minumum number of frames with at least one detection before sending results</input_port>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Ai confidence</input_port>
+      <input_port name="Max_depth"
+                  type="float">Maximum allowed depth</input_port>
+      <input_port name="Max_size_output"
+                  type="int">Max size of the output array</input_port>
+      <input_port name="Object_class"
+                  type="std::string">Searched object</input_port>
+      <input_port name="Camera"
+                  default="1"
+                  type="int">1: Front, 0: Bottom</input_port>
     </Action>
     <Action ID="ControlSetMode">
       <input_port name="set_mode"
                   default="false"
                   type="bool"/>
-    </Action>m
+    </Action>
     <Action ID="EnableDisableDVL">
       <input_port name="dvl_input"
                   default="false"

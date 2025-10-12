@@ -81,16 +81,12 @@
             <input_port name="orientationZ" default="0.0">x orientation to go</input_port>
         </SubTree>
         <Action ID="MoveToMission">
-            <inout_port name="trajectory" type="Trajectory"/>
-            <input_port name="detections" type="AiDetectionArray"/>
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="Detections" type="AiDetectionArray"/>
         </Action>
         <SubTree ID="RotateToAbsoluteAngle" editable="true">
             <input_port name="Angle" default="0">Angle to position the sub with the pool</input_port>
         </SubTree>
-        <Action ID="RotateToMission">
-            <inout_port name="trajectory" type="Trajectory"/>
-            <input_port name="detections" type="AiDetectionArray"/>
-        </Action>
         <SubTree ID="SearchObjectByRotation" editable="true">
             <input_port name="StartingAngle" default="0">Angle to give to the sub at the begining of the searching procedure</input_port>
             <input_port name="Object">The name of the object to search</input_port>

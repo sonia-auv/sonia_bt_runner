@@ -37,12 +37,8 @@
         </Action>
         <Condition ID="MissionSwitchStatus"/>
         <Action ID="MoveToMission">
-            <inout_port name="trajectory" type="Trajectory"/>
-            <input_port name="detections" type="AiDetectionArray"/>
-        </Action>
-        <Action ID="RotateToMission">
-            <inout_port name="trajectory" type="Trajectory"/>
-            <input_port name="detections" type="AiDetectionArray"/>
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="Detections" type="AiDetectionArray"/>
         </Action>
         <Action ID="SendTrajectory">
             <input_port name="trajectory" type="Trajectory"/>
