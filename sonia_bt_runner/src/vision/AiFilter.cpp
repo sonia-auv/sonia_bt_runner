@@ -18,7 +18,6 @@ namespace vision{
         confidence = getInput<float>("Confidence");
         max_depth = getInput<float>("Max_depth");
         min_size_output = getInput<int>("Min_size_output");
-
         BT::Expected<int> cam = getInput<int>("Camera");
 
         // We initialize some value
@@ -168,6 +167,11 @@ namespace vision{
                 RCLCPP_INFO(ros_node->get_logger(), "Class OK");
                 RCLCPP_INFO(ros_node->get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name.c_str(), msg_obj.distance, msg_obj.confidence);
                 RCLCPP_INFO(ros_node->get_logger(), "Comparing %s and %s = %d", msg_obj.class_name.c_str(), _object.value().c_str(), msg_obj.class_name.compare(_object.value()));
+                RCLCPP_INFO(ros_node->get_logger(), "msg_obj.confidence : %d", msg_obj.confidence);
+                RCLCPP_INFO(ros_node->get_logger(), "confidence.value() : %d", confidence.value());
+                RCLCPP_INFO(ros_node->get_logger(), "msg_obj.distance : %d", msg_obj.distance);
+                RCLCPP_INFO(ros_node->get_logger(), "max_depth.value() : %d", max_depth.value());
+                
                 if(msg_obj.confidence >= confidence.value() && msg_obj.distance <= max_depth.value())
                 {
                     //The detected object respect the confidence and the depth. We can put it in the filter array
