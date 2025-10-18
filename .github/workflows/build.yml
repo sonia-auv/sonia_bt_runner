@@ -18,6 +18,5 @@ jobs:
           # TODO: Should be changed to develop
           ref: build_sonia_bt_runner_and_common
       - name: Running
-        working-directory: ./docker_ci
         run: |
-          ./docker_ci/scripts/ci.sh sonia_bt_runner $BRANCH_NAME
+          ./scripts/ci.sh sonia_bt_runner $BRANCH_NAME
