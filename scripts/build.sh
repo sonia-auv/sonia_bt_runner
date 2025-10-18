@@ -7,7 +7,8 @@ set -o pipefail
 
 DOCKER_CI_DIR=$1
 
-$DOCKER_CI_DIR/scripts/build.sh sonia_common_ros2
+# TODO: Let the branch name empty
+$DOCKER_CI_DIR/scripts/build.sh sonia_common_ros2 add-ci-cd
 $DOCKER_CI_DIR/scripts/build/BehaviorTree.CPP.sh
 
 cd sonia_bt_runner
