@@ -16,8 +16,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: sonia-auv/docker_ci 
-          # TODO: Should be changed to develop
-          ref: build_sonia_bt_runner_and_common
+          ref: develop
       - name: Running
         run: |
           ./scripts/ci.sh sonia_bt_runner $BRANCH_NAME
