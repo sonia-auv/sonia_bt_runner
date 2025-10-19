@@ -35,7 +35,7 @@ namespace navigation{
             rclcpp::Subscription<std_msgs::msg::Int8>::SharedPtr planner_sub;
 
             rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr depth_sub;
-            void update_depth(const std_msgs::msg::Float32::ConstPtr &msg);
+            void update_depth(const std_msgs::msg::Float32::ConstSharedPtr &msg);
 
 
             

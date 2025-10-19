@@ -66,7 +66,7 @@ namespace navigation{
     void SendTrajectory::isWaypointValid(const std_msgs::msg::Int8 &msg){
         valid= msg.data;
     }
-    void SendTrajectory::update_depth(const std_msgs::msg::Float32::ConstPtr &msg)
+    void SendTrajectory::update_depth(const std_msgs::msg::Float32::ConstSharedPtr &msg)
     {
         _depth_val = msg->data;
     }

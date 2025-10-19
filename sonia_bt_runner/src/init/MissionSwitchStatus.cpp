@@ -23,7 +23,7 @@ namespace init{
         return BT::NodeStatus::FAILURE;
         
     }
-    void MissionSwitchStatus::update_status(const sonia_common_ros2::msg::MissionStatus::ConstPtr &msg)
+    void MissionSwitchStatus::update_status(const sonia_common_ros2::msg::MissionStatus::ConstSharedPtr &msg)
     {
         _mission_status = msg->status;
     }

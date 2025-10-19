@@ -15,7 +15,7 @@ namespace init{
             
         private:
 
-            void update_status(const sonia_common_ros2::msg::MissionStatus::ConstPtr &msg);
+            void update_status(const sonia_common_ros2::msg::MissionStatus::ConstSharedPtr &msg);
             std::shared_ptr<rclcpp::Node> ros_node;
             rclcpp::Subscription<sonia_common_ros2::msg::MissionStatus>::SharedPtr mission_sub;
             bool _mission_status;

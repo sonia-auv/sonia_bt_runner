@@ -85,7 +85,7 @@ MissionServer::MissionServer()
             tree_.initialize();
             return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
         }
-        catch(const BT::RuntimeError e)
+        catch(const BT::RuntimeError& e)
         {
             std::string err= e.what();
             clearFactory("File : "+temp_file+" contains : "+ err);

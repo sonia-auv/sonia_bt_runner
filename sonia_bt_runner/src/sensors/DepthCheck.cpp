@@ -34,7 +34,7 @@ namespace sensors
         }
     }
 
-    void DepthCheck::update_status(const std_msgs::msg::Float32::ConstPtr &msg)
+    void DepthCheck::update_status(const std_msgs::msg::Float32::ConstSharedPtr &msg)
     {
         _depth_val = msg->data;
     }
