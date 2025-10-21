@@ -8,7 +8,7 @@ namespace actuator{
     class Dropper: public BT::StatefulActionNode{
         public:
             Dropper(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~Dropper();
+            ~Dropper() = default;
             static BT::PortsList providedPorts()
             {
                 // Options for 'side' are 'port_side' or 'starboard'

@@ -21,8 +21,6 @@ MissionServer::MissionServer()
         RCLCPP_INFO(this->get_logger(), "Mission Server up running");
     } 
     
-    MissionServer::~MissionServer()
-    {}
     void MissionServer::init(){
         registerNodes(factory_, this->shared_from_this());    
     }

@@ -7,7 +7,7 @@ namespace vision{
     {
         
     }
-    AiFilter::~AiFilter(){}
+
     BT::NodeStatus AiFilter::onStart(){
         _object = getInput<std::string>("Object_class");
         max_frame= getInput<int>("Max_frame");

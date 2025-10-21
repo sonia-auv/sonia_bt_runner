@@ -13,7 +13,7 @@ class Tracker : public BT::StatusChangeLogger
 {
     public:
         Tracker(BT::Tree& tree, const std::shared_ptr<GoalHandle> goal);
-        ~Tracker();
+        ~Tracker() = default;
 
         void callback(BT::Duration timestamp, const BT::TreeNode& node, BT::NodeStatus prev_status, BT::NodeStatus status) override;
         void flush() override;

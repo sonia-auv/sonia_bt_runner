@@ -9,7 +9,7 @@ namespace init{
         imu_client = ros_node->create_client<std_srvs::srv::Trigger>("provider_imu/tare");
         depth_client = ros_node->create_client<std_srvs::srv::Trigger>("provider_depth/tare");
     }
-    Tare::~Tare(){}
+
     BT::NodeStatus Tare::onStart(){
         BT::Expected<std::string> sensor = getInput<std::string>("sensor");
         if(sensor.value()=="imu"){
@@ -23,7 +23,7 @@ namespace init{
     BT::NodeStatus Tare::onRunning(){
         
         if(response->success){
-            RCLCPP_INFO(ros_node->get_logger(),"%s", response->message);
+            RCLCPP_INFO(ros_node->get_logger(),"%s", response->message.c_str());
             return BT::NodeStatus::SUCCESS;
         }
         return BT::NodeStatus::RUNNING;

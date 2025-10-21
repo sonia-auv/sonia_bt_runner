@@ -6,7 +6,6 @@ namespace actuator{
     {
         torpedo_client = ros_node->create_client<sonia_common_ros2::srv::ActuatorService>("/provider_actuator/do_action");
     }
-    Torpedo::~Torpedo(){}
 
     BT::NodeStatus Torpedo::onStart(){
         request = std::make_shared<sonia_common_ros2::srv::ActuatorService::Request>();

@@ -12,8 +12,6 @@ namespace init{
         mission_sub= ros_node->create_subscription<sonia_common_ros2::msg::MissionStatus>("/provider_rs485/mission_status", qos, std::bind(&MissionSwitchStatus::update_status,this, _1));
     }
 
-    MissionSwitchStatus::~MissionSwitchStatus(){}
-
     BT::NodeStatus MissionSwitchStatus::tick()
     {
         if(_mission_status)

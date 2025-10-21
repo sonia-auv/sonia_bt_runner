@@ -10,7 +10,6 @@ namespace init{
 
         dvl_pub= ros_node->create_publisher<std_msgs::msg::Bool>("/provider_dvl/enable_disable_dvl", qos);    
     }
-    EnableDisableDVL::~EnableDisableDVL() {}
     BT::NodeStatus EnableDisableDVL::tick(){
         std_msgs::msg::Bool dvl_state;
         BT::Expected<bool> data = getInput<bool>("dvl_input");

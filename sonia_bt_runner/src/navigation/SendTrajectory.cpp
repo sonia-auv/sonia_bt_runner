@@ -9,7 +9,6 @@ namespace navigation{
         depth_sub = ros_node->create_subscription<std_msgs::msg::Float32>("/provider_depth/depth", 10, std::bind(&SendTrajectory::update_depth, this, _1));
 
     }
-    SendTrajectory::~SendTrajectory(){}
 
     BT::NodeStatus SendTrajectory::onStart(){
         Trajectory t;
