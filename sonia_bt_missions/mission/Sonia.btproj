@@ -120,16 +120,16 @@
         </SubTree>
         <Action ID="TrajectoryAppendPose">
             <inout_port name="trajectory" type="Trajectory"/>
-            <input_port name="precision" default="0" type="int"/>
-            <input_port name="speed" default="0" type="int"/>
-            <input_port name="frame" default="1" type="int"/>
-            <input_port name="orientationZ" default="0.000000" type="float"/>
-            <input_port name="longRotation" default="false" type="bool"/>
-            <input_port name="positionZ" default="0.000000" type="float"/>
-            <input_port name="positionY" default="0.000000" type="float"/>
-            <input_port name="orientationY" default="0.000000" type="float"/>
-            <input_port name="orientationX" default="0.000000" type="float"/>
-            <input_port name="positionX" default="0.000000" type="float"/>
+            <input_port name="positionX" type="float" default="0.000000"/>
+            <input_port name="positionY" type="float" default="0.000000"/>
+            <input_port name="positionZ" type="float" default="0.000000"/>
+            <input_port name="orientationX" type="float" default="0.000000"/>
+            <input_port name="orientationY" type="float" default="0.000000"/>
+            <input_port name="orientationZ" type="float" default="0.000000"/>
+            <input_port name="frame" type="int" default="1"/>
+            <input_port name="speed" type="int" default="0"/>
+            <input_port name="precision" type="int" default="0"/>
+            <input_port name="longRotation" type="bool" default="false"/>
         </Action>
         <Action ID="WaitTargetReached">
             <input_port name="timeout" default="5" type="int"/>

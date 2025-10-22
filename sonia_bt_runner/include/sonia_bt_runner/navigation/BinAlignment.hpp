@@ -5,16 +5,16 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
-#include "sonia_bt_runner/utils/MainAlignment.hpp"
+#include "sonia_bt_runner/utils/AlignmentConstant.hpp"
 
 namespace navigation
 {
 
-    class BinAlignementForDroppers : public BT::SyncActionNode
+    class BinAlignment : public BT::SyncActionNode
     {
         public:
-            BinAlignementForDroppers(const std::string &name, const BT::NodeConfig &config);
-            ~BinAlignementForDroppers()=default;
+            BinAlignment(const std::string &name, const BT::NodeConfig &config);
+            ~BinAlignment()=default;
             static BT::PortsList providedPorts()
             {
                 return {

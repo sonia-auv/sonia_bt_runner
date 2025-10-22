@@ -11,11 +11,11 @@
 namespace navigation
 {
 
-    class MoveToMission : public BT::SyncActionNode
+    class MoveToObject : public BT::SyncActionNode
     {
         public:
-            MoveToMission(const std::string &name, const BT::NodeConfig &config);
-            ~MoveToMission()=default;
+        MoveToObject(const std::string &name, const BT::NodeConfig &config);
+            ~MoveToObject()=default;
             static BT::PortsList providedPorts()
             {
                 return {

@@ -1,4 +1,4 @@
-#include "sonia_bt_runner/navigation/MoveToMission.hpp"
+#include "sonia_bt_runner/navigation/MoveToObject.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -7,12 +7,12 @@
 namespace navigation
 {
 
-    MoveToMission::MoveToMission(const std::string &name, const BT::NodeConfig &config)
+    MoveToObject::MoveToObject(const std::string &name, const BT::NodeConfig &config)
        : BT::SyncActionNode(name, config)
     {
 
     }
-    BT::NodeStatus MoveToMission::tick()
+    BT::NodeStatus MoveToObject::tick()
     {
         AiDetectionArray arr;
 

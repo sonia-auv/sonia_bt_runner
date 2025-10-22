@@ -1,4 +1,4 @@
-#include "sonia_bt_runner/navigation/BinAlignementForDroppers.hpp"
+#include "sonia_bt_runner/navigation/BinAlignment.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -7,13 +7,13 @@
 namespace navigation
 {
 
-    BinAlignementForDroppers::BinAlignementForDroppers(const std::string &name, const BT::NodeConfig &config)
+    BinAlignment::BinAlignment(const std::string &name, const BT::NodeConfig &config)
     : BT::SyncActionNode(name, config)
     {
         
     }
 
-    BT::NodeStatus BinAlignementForDroppers::tick()
+    BT::NodeStatus BinAlignment::tick()
     {
         AiDetectionArray arr;
 

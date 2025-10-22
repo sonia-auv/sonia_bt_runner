@@ -5,7 +5,7 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetectionArray.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
-#include "sonia_bt_runner/utils/MainAlignment.hpp"
+#include "sonia_bt_runner/utils/AlignmentConstant.hpp"
 
 namespace navigation
 {
