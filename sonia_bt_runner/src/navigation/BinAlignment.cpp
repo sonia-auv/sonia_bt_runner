@@ -7,8 +7,8 @@
 namespace navigation
 {
 
-    BinAlignment::BinAlignment(const std::string &name, const BT::NodeConfig &config)
-    : BT::SyncActionNode(name, config)
+    BinAlignment::BinAlignment(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
+    : BT::SyncActionNode(name, config), ros_node(node)
     {
         
     }
@@ -42,18 +42,19 @@ namespace navigation
         t.orientationZ = 0.0;
         t.frame = 1;
         t.speed = 0;
+        t.precision = 0;
         t.long_rotation = false;
 
-        std::cout << "position en x: "<<t.positionX<< std::endl;
-        std::cout<< "position en y: "<<t.positionY<< std::endl;
-        std::cout << "position en z: "<<t.positionZ<< std::endl;
-        std::cout << "Orientation en x: "<<t.orientationX<< std::endl;
-        std::cout << "Orientation en y: "<<t.orientationY<< std::endl;
-        std::cout << "Orientation en z: "<<t.orientationZ<< std::endl;
-        std::cout << "frame: "<<t.frame<< std::endl;
-        std::cout << "speed: "<<t.speed<< std::endl;
-        std::cout << "precision: "<<t.precision<< std::endl;
-        std::cout << "long rotation: "<<t.long_rotation<< std::endl;
+        RCLCPP_INFO(ros_node->get_logger(), "position en x: %f", t.positionX);
+        RCLCPP_INFO(ros_node->get_logger(), "position en y: %f", t.positionY);
+        RCLCPP_INFO(ros_node->get_logger(), "position en z: %f", t.positionZ);
+        RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t.orientationX);
+        RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t.orientationY);
+        RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t.orientationZ);
+        RCLCPP_INFO(ros_node->get_logger(), "frame: %d", t.frame);
+        RCLCPP_INFO(ros_node->get_logger(), "speed: %d", t.speed);
+        RCLCPP_INFO(ros_node->get_logger(), "precision: %d", t.precision);
+        RCLCPP_INFO(ros_node->get_logger(), "long rotation: %d", t.long_rotation);
 
         // We append the new trajectory point to the sending trajectory
         Trajectory traj = getInput<Trajectory>("Trajectory").value();

@@ -14,7 +14,7 @@ namespace navigation
     class MoveToObject : public BT::SyncActionNode
     {
         public:
-        MoveToObject(const std::string &name, const BT::NodeConfig &config);
+        MoveToObject(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
             ~MoveToObject()=default;
             static BT::PortsList providedPorts()
             {
@@ -28,7 +28,9 @@ namespace navigation
             }
 
             BT::NodeStatus tick() override;
-
+        
+        private:
+            std::shared_ptr<rclcpp::Node> ros_node;
     };
 
 }  // namespace navigation

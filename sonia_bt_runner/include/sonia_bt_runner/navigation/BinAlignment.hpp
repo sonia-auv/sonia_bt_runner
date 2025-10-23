@@ -13,7 +13,7 @@ namespace navigation
     class BinAlignment : public BT::SyncActionNode
     {
         public:
-            BinAlignment(const std::string &name, const BT::NodeConfig &config);
+            BinAlignment(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
             ~BinAlignment()=default;
             static BT::PortsList providedPorts()
             {
@@ -28,6 +28,8 @@ namespace navigation
 
             BT::NodeStatus tick() override;
             
+        private:
+            std::shared_ptr<rclcpp::Node> ros_node;
     };
 
 }  // namespace navigation

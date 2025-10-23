@@ -7,8 +7,8 @@
 namespace navigation
 {
 
-    TorpedoDriftingAlignement::TorpedoDriftingAlignement(const std::string &name, const BT::NodeConfig &config)
-    : BT::SyncActionNode(name, config)
+    TorpedoDriftingAlignement::TorpedoDriftingAlignement(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
+    : BT::SyncActionNode(name, config), ros_node(node)
     {
 
     }
@@ -44,16 +44,16 @@ namespace navigation
         t1.precision = 0;
         t1.long_rotation = false;
 
-        std::cout << "position en x: "<<t1.positionX<< std::endl;
-        std::cout<< "position en y: "<<t1.positionY<< std::endl;
-        std::cout << "position en z: "<<t1.positionZ<< std::endl;
-        std::cout << "Orientation en x: "<<t1.orientationX<< std::endl;
-        std::cout << "Orientation en y: "<<t1.orientationY<< std::endl;
-        std::cout << "Orientation en z: "<<t1.orientationZ<< std::endl;
-        std::cout << "frame: "<<t1.frame<< std::endl;
-        std::cout << "speed: "<<t1.speed<< std::endl;
-        std::cout << "precision: "<<t1.precision<< std::endl;
-        std::cout << "long rotation: "<<t1.long_rotation<< std::endl;
+        RCLCPP_INFO(ros_node->get_logger(), "position en x: %f", t1.positionX);
+        RCLCPP_INFO(ros_node->get_logger(), "position en y: %f", t1.positionY);
+        RCLCPP_INFO(ros_node->get_logger(), "position en z: %f", t1.positionZ);
+        RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t1.orientationX);
+        RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t1.orientationY);
+        RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t1.orientationZ);
+        RCLCPP_INFO(ros_node->get_logger(), "frame: %d", t1.frame);
+        RCLCPP_INFO(ros_node->get_logger(), "speed: %d", t1.speed);
+        RCLCPP_INFO(ros_node->get_logger(), "precision: %d", t1.precision);
+        RCLCPP_INFO(ros_node->get_logger(), "long rotation: %d", t1.long_rotation);
 
         // We compute a translation in Y to go in front of the target
         TrajectoryPose t2;
@@ -68,16 +68,16 @@ namespace navigation
         t2.precision = 0;
         t2.long_rotation = false;
 
-        std::cout << "position en x: "<<t2.positionX<< std::endl;
-        std::cout<< "position en y: "<<t2.positionY<< std::endl;
-        std::cout << "position en z: "<<t2.positionZ<< std::endl;
-        std::cout << "Orientation en x: "<<t2.orientationX<< std::endl;
-        std::cout << "Orientation en y: "<<t2.orientationY<< std::endl;
-        std::cout << "Orientation en z: "<<t2.orientationZ<< std::endl;
-        std::cout << "frame: "<<t2.frame<< std::endl;
-        std::cout << "speed: "<<t2.speed<< std::endl;
-        std::cout << "precision: "<<t2.precision<< std::endl;
-        std::cout << "long rotation: "<<t2.long_rotation<< std::endl;
+        RCLCPP_INFO(ros_node->get_logger(), "position en x: %f", t2.positionX);
+        RCLCPP_INFO(ros_node->get_logger(), "position en y: %f", t2.positionY);
+        RCLCPP_INFO(ros_node->get_logger(), "position en z: %f", t2.positionZ);
+        RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t2.orientationX);
+        RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t2.orientationY);
+        RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t2.orientationZ);
+        RCLCPP_INFO(ros_node->get_logger(), "frame: %d", t2.frame);
+        RCLCPP_INFO(ros_node->get_logger(), "speed: %d", t2.speed);
+        RCLCPP_INFO(ros_node->get_logger(), "precision: %d", t2.precision);
+        RCLCPP_INFO(ros_node->get_logger(), "long rotation: %d", t2.long_rotation);
 
         // We append the two new trajectory points to the sending trajectory
         Trajectory traj = getInput<Trajectory>("Trajectory").value();

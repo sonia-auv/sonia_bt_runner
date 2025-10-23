@@ -13,7 +13,7 @@ namespace navigation
     class TorpedoAimingAlignement : public BT::SyncActionNode
     {
         public:
-            TorpedoAimingAlignement(const std::string &name, const BT::NodeConfig &config);
+            TorpedoAimingAlignement(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
             ~TorpedoAimingAlignement()=default;
             static BT::PortsList providedPorts()
             {
@@ -28,6 +28,9 @@ namespace navigation
                 };
             }
             BT::NodeStatus tick() override;
+        
+        private:
+            std::shared_ptr<rclcpp::Node> ros_node;
     };
 
 }  // namespace navigation
