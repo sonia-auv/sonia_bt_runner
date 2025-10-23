@@ -76,6 +76,7 @@ namespace navigation
         traj.trajectory.push_back(t1);
         traj.trajectory.push_back(t2);
         setOutput<Trajectory>("Trajectory", traj);
+        RCLCPP_INFO(ros_node->get_logger(), "Trajectory computed!");
 
         return BT::NodeStatus::SUCCESS;
     }
