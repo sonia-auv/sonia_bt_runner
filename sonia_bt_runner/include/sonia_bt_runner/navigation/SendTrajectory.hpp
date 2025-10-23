@@ -14,7 +14,7 @@ namespace navigation{
     class SendTrajectory: public BT::StatefulActionNode{
         public:
             SendTrajectory(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~SendTrajectory();
+            ~SendTrajectory() = default;
             static BT::PortsList providedPorts()
             {
                 const int def_inter = 0;
@@ -35,7 +35,7 @@ namespace navigation{
             rclcpp::Subscription<std_msgs::msg::Int8>::SharedPtr planner_sub;
 
             rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr depth_sub;
-            void update_depth(const std_msgs::msg::Float32::ConstPtr &msg);
+            void update_depth(const std_msgs::msg::Float32::ConstSharedPtr &msg);
 
 
             

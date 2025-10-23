@@ -6,7 +6,6 @@ namespace init{
     {
         mode_pub = ros_node->create_publisher<std_msgs::msg::UInt8>("/proc_control/set_mode",100);
     }
-    ControlSetMode::~ControlSetMode(){}
 
     BT::NodeStatus ControlSetMode::onStart(){
 

@@ -12,7 +12,7 @@ namespace vision{
     class AiFilter: public BT::StatefulActionNode{
         public:
             AiFilter(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~AiFilter();
+            ~AiFilter() = default;
             static BT::PortsList providedPorts()
             {
                 return {

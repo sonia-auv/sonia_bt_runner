@@ -9,7 +9,7 @@ namespace init{
     class ControlSetMode: public BT::StatefulActionNode{
         public:
             ControlSetMode(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~ControlSetMode();
+            ~ControlSetMode()  = default;
             static BT::PortsList providedPorts(){
                 return {BT::InputPort<bool>("set_mode", false,"")};
             }

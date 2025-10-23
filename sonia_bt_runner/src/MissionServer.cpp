@@ -21,8 +21,6 @@ MissionServer::MissionServer()
         RCLCPP_INFO(this->get_logger(), "Mission Server up running");
     } 
     
-    MissionServer::~MissionServer()
-    {}
     void MissionServer::init(){
         registerNodes(factory_, this->shared_from_this());    
     }
@@ -85,7 +83,7 @@ MissionServer::MissionServer()
             tree_.initialize();
             return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
         }
-        catch(const BT::RuntimeError e)
+        catch(const BT::RuntimeError& e)
         {
             std::string err= e.what();
             clearFactory("File : "+temp_file+" contains : "+ err);

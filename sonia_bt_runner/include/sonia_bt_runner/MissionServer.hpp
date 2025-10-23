@@ -25,7 +25,7 @@ using GoalHandle = rclcpp_action::ServerGoalHandle<MissionControl>;
 class MissionServer : public rclcpp::Node{
     public:
         MissionServer();
-        ~MissionServer();
+        ~MissionServer() = default;
 
         void init();
 
