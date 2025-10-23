@@ -14,7 +14,7 @@
                 Confidence="0.300000"
                 Max_depth="25"
                 Max_size_output="1"
-                Object_class="path"
+                Object_class="torpedo-poster"
                 Camera="1"/>
       <AiActivation Model="0"
                     Bottom="true"
