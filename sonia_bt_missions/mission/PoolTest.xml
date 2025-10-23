@@ -1,26 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
-  <BehaviorTree ID="AiFront">
-    <Sequence>
-      <RetryUntilSuccessful num_attempts="-1">
-        <MissionSwitchStatus/>
-      </RetryUntilSuccessful>
-      <AiActivation Model="0"
-                    Bottom="false"
-                    Front="true"/>
-      <AiFilter Detected_object_array="{AiDetections}"
-                Max_frame_before_failling="4000"
-                Min_size_output="1"
-                Confidence="0.3000"
-                Max_depth="25"
-                Max_size_output="1"
-                Object_class="torpedo-poster"
-                Camera="1"/>
-      <MoveToObject Trajectory="{Trajectory}"
-                    Detections="{AiDetections}"/>
-    </Sequence>
-  </BehaviorTree>
-
   <BehaviorTree ID="PoolAiBottom">
     <Sequence>
       <SubTree ID="InitialSubmerge"
@@ -262,12 +241,6 @@
       <input_port name="orientationZ"
                   default="0.0">x orientation to go</input_port>
     </SubTree>
-    <Action ID="MoveToObject">
-      <inout_port name="Trajectory"
-                  type="Trajectory"/>
-      <input_port name="Detections"
-                  type="AiDetectionArray"/>
-    </Action>
     <SubTree ID="SearchObjectByRotation"
              editable="true">
       <input_port name="StartingAngle"

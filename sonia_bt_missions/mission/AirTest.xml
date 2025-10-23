@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
-  <BehaviorTree ID="AirAiRotateToMission">
+  <BehaviorTree ID="AirAiAiming">
     <Sequence>
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
@@ -8,17 +8,59 @@
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"/>
-      <AiFilter Detected_object_array="{AiDetection}"
-                Max_frame_before_failling="300"
+      <AiFilter Detected_object_array="{AiDetections}"
+                Max_frame_before_failling="4000"
                 Min_size_output="1"
-                Confidence="0.300000"
+                Confidence="0.3000"
                 Max_depth="25"
                 Max_size_output="1"
                 Object_class="torpedo-poster"
                 Camera="1"/>
+      <TorpedoAimingAlignement LaunchingSide="port_side"
+                               Trajectory="{Trajectory}"
+                               Detections="{AiDetections}"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="AirAiDrifting">
+    <Sequence>
+      <RetryUntilSuccessful num_attempts="-1">
+        <MissionSwitchStatus/>
+      </RetryUntilSuccessful>
       <AiActivation Model="0"
-                    Bottom="true"
-                    Front="false"/>
+                    Bottom="false"
+                    Front="true"/>
+      <AiFilter Detected_object_array="{AiDetections}"
+                Max_frame_before_failling="4000"
+                Min_size_output="1"
+                Confidence="0.3000"
+                Max_depth="25"
+                Max_size_output="1"
+                Object_class="torpedo-poster"
+                Camera="1"/>
+      <TorpedoDriftingAlignement Trajectory="{Trajectory}"
+                                 Detections="{AiDetections}"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="AirAiMoveToObject">
+    <Sequence>
+      <RetryUntilSuccessful num_attempts="-1">
+        <MissionSwitchStatus/>
+      </RetryUntilSuccessful>
+      <AiActivation Model="0"
+                    Bottom="false"
+                    Front="true"/>
+      <AiFilter Detected_object_array="{AiDetections}"
+                Max_frame_before_failling="4000"
+                Min_size_output="1"
+                Confidence="0.3000"
+                Max_depth="25"
+                Max_size_output="1"
+                Object_class="torpedo-poster"
+                Camera="1"/>
+      <MoveToObject Trajectory="{Trajectory}"
+                    Detections="{AiDetections}"/>
     </Sequence>
   </BehaviorTree>
 
@@ -56,6 +98,26 @@
                   type="int">1: Front, 0: Bottom</input_port>
     </Action>
     <Condition ID="MissionSwitchStatus"/>
+    <Action ID="MoveToObject">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detections"
+                  type="AiDetectionArray"/>
+    </Action>
+    <Action ID="TorpedoAimingAlignement">
+      <input_port name="LaunchingSide"
+                  type="std::string"/>
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detections"
+                  type="AiDetectionArray"/>
+    </Action>
+    <Action ID="TorpedoDriftingAlignement">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detections"
+                  type="AiDetectionArray"/>
+    </Action>
   </TreeNodesModel>
 
 </root>
