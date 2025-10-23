@@ -30,6 +30,7 @@ namespace navigation
             return BT::NodeStatus::FAILURE;
         }
 
+        RCLCPP_INFO(ros_node->get_logger(), "Computing TorpedoAimingAlignment trajectory");
         // Assumption: array is pre-filtered for the object of interest → use first detection
         const AiDetection& det = arr.detection_array.front(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
         

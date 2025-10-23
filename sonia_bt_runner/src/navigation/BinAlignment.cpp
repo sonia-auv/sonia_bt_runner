@@ -28,6 +28,7 @@ namespace navigation
             return BT::NodeStatus::FAILURE;
         }
 
+        RCLCPP_INFO(ros_node->get_logger(), "Computing BinAlignment trajectory");
         // Assumption: array is pre-filtered for the object of interest → use first detection
         const AiDetection& det = arr.detection_array.front(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
         
@@ -51,10 +52,6 @@ namespace navigation
         RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t.orientationX);
         RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t.orientationY);
         RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t.orientationZ);
-        RCLCPP_INFO(ros_node->get_logger(), "frame: %d", t.frame);
-        RCLCPP_INFO(ros_node->get_logger(), "speed: %d", t.speed);
-        RCLCPP_INFO(ros_node->get_logger(), "precision: %d", t.precision);
-        RCLCPP_INFO(ros_node->get_logger(), "long rotation: %d", t.long_rotation);
 
         // We append the new trajectory point to the sending trajectory
         Trajectory traj = getInput<Trajectory>("Trajectory").value();

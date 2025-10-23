@@ -27,6 +27,7 @@ namespace navigation
             return BT::NodeStatus::FAILURE;
         }
 
+        RCLCPP_INFO(ros_node->get_logger(), "Computing MoveToObject trajectory");
         // Assumption: array is pre-filtered for the object of interest → use first detection
         const AiDetection& det = arr.detection_array.front(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
 
@@ -49,10 +50,6 @@ namespace navigation
         RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t1.orientationX);
         RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t1.orientationY);
         RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t1.orientationZ);
-        RCLCPP_INFO(ros_node->get_logger(), "frame: %d", t1.frame);
-        RCLCPP_INFO(ros_node->get_logger(), "speed: %d", t1.speed);
-        RCLCPP_INFO(ros_node->get_logger(), "precision: %d", t1.precision);
-        RCLCPP_INFO(ros_node->get_logger(), "long rotation: %d", t1.long_rotation);
 
         // We move forward to go to the object
         TrajectoryPose t2;
@@ -73,10 +70,6 @@ namespace navigation
         RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t2.orientationX);
         RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t2.orientationY);
         RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t2.orientationZ);
-        RCLCPP_INFO(ros_node->get_logger(), "frame: %d", t2.frame);
-        RCLCPP_INFO(ros_node->get_logger(), "speed: %d", t2.speed);
-        RCLCPP_INFO(ros_node->get_logger(), "precision: %d", t2.precision);
-        RCLCPP_INFO(ros_node->get_logger(), "long rotation: %d", t2.long_rotation);
 
         // We append the new pose to the trajectory
         Trajectory traj = getInput<Trajectory>("Trajectory").value();
