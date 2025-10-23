@@ -9,7 +9,7 @@
                     Bottom="false"
                     Front="true"/>
       <AiFilter Detected_object_array="{AiDetections}"
-                Max_frame_before_failling="5"
+                Max_frame_before_failling="4000"
                 Min_size_output="1"
                 Confidence="0.3000"
                 Max_depth="25"
