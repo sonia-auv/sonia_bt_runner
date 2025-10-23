@@ -51,10 +51,6 @@ namespace navigation
         RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t1.orientationX);
         RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t1.orientationY);
         RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t1.orientationZ);
-        RCLCPP_INFO(ros_node->get_logger(), "frame: %d", t1.frame);
-        RCLCPP_INFO(ros_node->get_logger(), "speed: %d", t1.speed);
-        RCLCPP_INFO(ros_node->get_logger(), "precision: %d", t1.precision);
-        RCLCPP_INFO(ros_node->get_logger(), "long rotation: %d", t1.long_rotation);
 
         // We compute a translation in Y to go in front of the target
         TrajectoryPose t2;
@@ -75,10 +71,6 @@ namespace navigation
         RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t2.orientationX);
         RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t2.orientationY);
         RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t2.orientationZ);
-        RCLCPP_INFO(ros_node->get_logger(), "frame: %d", t2.frame);
-        RCLCPP_INFO(ros_node->get_logger(), "speed: %d", t2.speed);
-        RCLCPP_INFO(ros_node->get_logger(), "precision: %d", t2.precision);
-        RCLCPP_INFO(ros_node->get_logger(), "long rotation: %d", t2.long_rotation);
 
         // We append the two new trajectory points to the sending trajectory
         Trajectory traj = getInput<Trajectory>("Trajectory").value();

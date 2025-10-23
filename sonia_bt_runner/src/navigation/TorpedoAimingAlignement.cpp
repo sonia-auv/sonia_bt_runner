@@ -59,10 +59,6 @@ namespace navigation
         RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t.orientationX);
         RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t.orientationY);
         RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t.orientationZ);
-        RCLCPP_INFO(ros_node->get_logger(), "frame: %d", t.frame);
-        RCLCPP_INFO(ros_node->get_logger(), "speed: %d", t.speed);
-        RCLCPP_INFO(ros_node->get_logger(), "precision: %d", t.precision);
-        RCLCPP_INFO(ros_node->get_logger(), "long rotation: %d", t.long_rotation);
 
         // We append the new pose to the trajectory
         Trajectory traj = getInput<Trajectory>("Trajectory").value();
