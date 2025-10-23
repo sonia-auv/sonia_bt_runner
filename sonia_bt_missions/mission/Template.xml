@@ -195,24 +195,14 @@
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
     <Action ID="AiFilter">
-      <output_port name="Detected_object_array"
-                   type="AiDetectionArray"/>
-      <input_port name="Max_frame_before_failling"
-                  type="int">maximum allowed frames</input_port>
-      <input_port name="Min_size_output"
-                  type="int">minumum number of frames with at least one detection before sending results</input_port>
-      <input_port name="Confidence"
-                  default="0.600000"
-                  type="float">Ai confidence</input_port>
-      <input_port name="Max_depth"
-                  type="float">Maximum allowed depth</input_port>
-      <input_port name="Max_size_output"
-                  type="int">Max size of the output array</input_port>
-      <input_port name="Object_class"
-                  type="std::string">Searched object</input_port>
-      <input_port name="Camera"
-                  default="1"
-                  type="int">1: Front, 0: Bottom</input_port>
+        <output_port name="Detected_object_array" type="AiDetectionArray"/>
+        <input_port name="Max_frame_before_failling" type="int">maximum allowed frames</input_port>
+        <input_port name="Min_size_output" type="int">minumum number of frames with at least one detection before sending results</input_port>
+        <input_port name="Confidence" type="float" default="0.600000">Ai confidence</input_port>
+        <input_port name="Max_depth" type="float">Maximum allowed depth</input_port>
+        <input_port name="Max_size_output" type="int">Max size of the output array</input_port>
+        <input_port name="Object_class" type="std::string">Searched object</input_port>
+        <input_port name="Camera" type="int" default="1">1: Front, 0: Bottom</input_port>
     </Action>
     <Action ID="ControlSetMode">
       <input_port name="set_mode"
@@ -261,40 +251,18 @@
     <Action ID="Tare">
       <input_port name="sensor"
                   type="std::string">imu or depth</input_port>
-    </Action>
-    <Action ID="TrajectoryAppendPose">
-      <inout_port name="trajectory"
-                  type="Trajectory"/>
-      <input_port name="precision"
-                  default="0"
-                  type="int"/>
-      <input_port name="speed"
-                  default="0"
-                  type="int"/>
-      <input_port name="frame"
-                  default="1"
-                  type="int"/>
-      <input_port name="orientationZ"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="longRotation"
-                  default="false"
-                  type="bool"/>
-      <input_port name="positionZ"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="positionY"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="orientationY"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="orientationX"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="positionX"
-                  default="0.000000"
-                  type="float"/>
+    </Action><Action ID="TrajectoryAppendPose">
+        <inout_port name="trajectory" type="Trajectory"/>
+        <input_port name="positionX" type="float" default="0.000000"/>
+        <input_port name="positionY" type="float" default="0.000000"/>
+        <input_port name="positionZ" type="float" default="0.000000"/>
+        <input_port name="orientationX" type="float" default="0.000000"/>
+        <input_port name="orientationY" type="float" default="0.000000"/>
+        <input_port name="orientationZ" type="float" default="0.000000"/>
+        <input_port name="frame" type="int" default="1"/>
+        <input_port name="speed" type="int" default="0"/>
+        <input_port name="precision" type="int" default="0"/>
+        <input_port name="longRotation" type="bool" default="false"/>
     </Action>
     <Action ID="WaitTargetReached">
       <input_port name="timeout"

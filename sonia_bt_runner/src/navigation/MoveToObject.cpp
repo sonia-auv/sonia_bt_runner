@@ -61,7 +61,7 @@ namespace navigation
         t2.positionZ = 0.0; // We don't move up or down
         t2.orientationX = 0.0; // We don't rotate on the X axes
         t2.orientationY = 0.0; // We don't rotate on the Y axes
-        t2.orientationZ = det.angle_teta; // We rotate on the Z axes to face
+        t2.orientationZ = 0.0; // We rotate on the Z axes to face
         t2.frame = 1.0; // We use the frame in meter
         t2.speed = 0; // We use the default speed of the motion controller
         t2.precision = 0; // We use the default precision of the motion controller

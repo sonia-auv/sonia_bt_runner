@@ -15,7 +15,7 @@
             <input_port name="Object_class" type="std::string">Searched object</input_port>
             <input_port name="Camera" type="int" default="1">1: Front, 0: Bottom</input_port>
         </Action>
-        <Action ID="BinAlignementForDroppers">
+        <Action ID="BinAlignment">
             <inout_port name="Trajectory" type="Trajectory"/>
             <input_port name="Detections" type="AiDetectionArray"/>
         </Action>
@@ -36,7 +36,7 @@
             <output_port name="trajectory" type="Trajectory"/>
         </Action>
         <Condition ID="MissionSwitchStatus"/>
-        <Action ID="MoveToMission">
+        <Action ID="MoveToObject">
             <inout_port name="Trajectory" type="Trajectory"/>
             <input_port name="Detections" type="AiDetectionArray"/>
         </Action>
