@@ -73,7 +73,7 @@ namespace navigation
 
         // We append the new pose to the trajectory
         RCLCPP_INFO(ros_node->get_logger(), "Trajectory computed!1");
-        Trajectory traj = getInput<Trajectory>("Trajectory").value();
+        Trajectory traj = getInput<Trajectory>("Trajectory");
         RCLCPP_INFO(ros_node->get_logger(), "Trajectory computed!2");
         traj.trajectory.push_back(t1);
         traj.trajectory.push_back(t2);
