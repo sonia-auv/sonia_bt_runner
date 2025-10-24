@@ -72,7 +72,7 @@ namespace navigation
         RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t2.orientationZ);
 
         // We append the new pose to the trajectory
-        Trajectory traj = getInput<Trajectory>("Trajectory");
+        Trajectory traj = getInput<Trajectory>("Trajectory").value();
         traj.trajectory.push_back(t1);
         traj.trajectory.push_back(t2);
         setOutput<Trajectory>("Trajectory", traj);
