@@ -5,6 +5,7 @@
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
       </RetryUntilSuccessful>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"/>
@@ -27,6 +28,7 @@
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
       </RetryUntilSuccessful>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"/>
@@ -48,6 +50,7 @@
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
       </RetryUntilSuccessful>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"/>
@@ -96,6 +99,10 @@
       <input_port name="Camera"
                   default="1"
                   type="int">1: Front, 0: Bottom</input_port>
+    </Action>
+    <Action ID="InitializeTrajectory">
+      <output_port name="trajectory"
+                   type="Trajectory"/>
     </Action>
     <Condition ID="MissionSwitchStatus"/>
     <Action ID="MoveToObject">
