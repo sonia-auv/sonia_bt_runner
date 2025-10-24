@@ -15,7 +15,7 @@
                 Confidence="0.3000"
                 Max_depth="25"
                 Max_size_output="1"
-                Object_class="torpedo-poster"
+                Object_class="bin-inner"
                 Camera="1"/>
       <TorpedoAimingAlignement LaunchingSide="port_side"
                                Trajectory="{Trajectory}"
@@ -38,7 +38,7 @@
                 Confidence="0.3000"
                 Max_depth="25"
                 Max_size_output="1"
-                Object_class="torpedo-poster"
+                Object_class="bin-inner"
                 Camera="1"/>
       <TorpedoDriftingAlignement Trajectory="{Trajectory}"
                                  Detections="{AiDetections}"/>
@@ -60,7 +60,7 @@
                 Confidence="0.3000"
                 Max_depth="25"
                 Max_size_output="1"
-                Object_class="torpedo-poster"
+                Object_class="bin-inner"
                 Camera="1"/>
       <MoveToObject Trajectory="{Trajectory}"
                     Detections="{AiDetections}"/>
