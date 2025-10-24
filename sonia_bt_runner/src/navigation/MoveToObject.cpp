@@ -72,11 +72,14 @@ namespace navigation
         RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t2.orientationZ);
 
         // We append the new pose to the trajectory
+        RCLCPP_INFO(ros_node->get_logger(), "Trajectory computed!1");
         Trajectory traj = getInput<Trajectory>("Trajectory").value();
+        RCLCPP_INFO(ros_node->get_logger(), "Trajectory computed!2");
         traj.trajectory.push_back(t1);
         traj.trajectory.push_back(t2);
+        RCLCPP_INFO(ros_node->get_logger(), "Trajectory computed!3");
         setOutput<Trajectory>("Trajectory", traj);
-        RCLCPP_INFO(ros_node->get_logger(), "Trajectory computed!");
+        RCLCPP_INFO(ros_node->get_logger(), "Trajectory computed!4");
 
         return BT::NodeStatus::SUCCESS;
     }
