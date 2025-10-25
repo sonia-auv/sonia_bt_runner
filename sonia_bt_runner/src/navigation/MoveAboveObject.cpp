@@ -1,4 +1,4 @@
-#include "sonia_bt_runner/navigation/BinAlignment.hpp"
+#include "sonia_bt_runner/navigation/MoveAboveObject.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -7,13 +7,13 @@
 namespace navigation
 {
 
-    BinAlignment::BinAlignment(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
+    MoveAboveObject::MoveAboveObject(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
     : BT::SyncActionNode(name, config), ros_node(node)
     {
         
     }
 
-    BT::NodeStatus BinAlignment::tick()
+    BT::NodeStatus MoveAboveObject::tick()
     {
         AiDetectionArray arr;
 

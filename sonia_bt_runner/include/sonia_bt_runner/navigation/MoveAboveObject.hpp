@@ -10,11 +10,11 @@
 namespace navigation
 {
 
-    class BinAlignment : public BT::SyncActionNode
+    class MoveAboveObject : public BT::SyncActionNode
     {
         public:
-            BinAlignment(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~BinAlignment()=default;
+            MoveAboveObject(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
+            ~MoveAboveObject()=default;
             static BT::PortsList providedPorts()
             {
                 return {
