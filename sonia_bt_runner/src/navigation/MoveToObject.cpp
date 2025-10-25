@@ -24,7 +24,7 @@ namespace navigation
         if (arr.detection_array.empty())
         {
             // publish safe defaults
-            RCLCPP_INFO(ros_node->get_logger(), "In Alignement Detection array empty");
+            RCLCPP_INFO(ros_node->get_logger(), "Detection array empty");
 
             return BT::NodeStatus::FAILURE;
         }

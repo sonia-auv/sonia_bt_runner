@@ -23,12 +23,12 @@ namespace navigation
         if (arr.detection_array.empty())
         {
             // publish safe defaults
-            std::cout <<"In Alignement Detection array empty"<< std::endl;
+            RCLCPP_INFO(ros_node->get_logger(), "Detection array empty");
 
             return BT::NodeStatus::FAILURE;
         }
 
-        RCLCPP_INFO(ros_node->get_logger(), "Computing TorpedoDriftingAlignment trajectory");
+        RCLCPP_INFO(ros_node->get_logger(), "Computing ObjectDrifting trajectory");
         // Assumption: array is pre-filtered for the object of interest → use first detection
         const AiDetection& det = arr.detection_array.front(); 
         
