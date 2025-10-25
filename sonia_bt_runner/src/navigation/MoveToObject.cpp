@@ -15,9 +15,11 @@ namespace navigation
     BT::NodeStatus MoveToObject::tick()
     {
         AiDetectionArray arr;
+        float offset;
 
         // We get the detected object by the AI
         getInput("Detections", arr);
+        getInput("Offset", offset);
 
         if (arr.detection_array.empty())
         {
@@ -53,7 +55,7 @@ namespace navigation
 
         // We move forward to go to the object
         TrajectoryPose t2;
-        t2.positionX = det.distance; // We go to the object
+        t2.positionX = det.distance + offset; // We go to the object
         t2.positionY = 0.0; // We don't move lateraly
         t2.positionZ = 0.0; // We don't move up or down
         t2.orientationX = 0.0; // We don't rotate on the X axes
