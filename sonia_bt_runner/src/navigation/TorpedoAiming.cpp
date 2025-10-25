@@ -1,4 +1,4 @@
-#include "sonia_bt_runner/navigation/TorpedoAimingAlignement.hpp"
+#include "sonia_bt_runner/navigation/TorpedoAiming.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -7,13 +7,13 @@
 namespace navigation
 {
 
-    TorpedoAimingAlignement::TorpedoAimingAlignement(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
+    TorpedoAiming::TorpedoAiming(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
     : BT::SyncActionNode(name, config), ros_node(node)
     {
 
     }
 
-    BT::NodeStatus TorpedoAimingAlignement::tick()
+    BT::NodeStatus TorpedoAiming::tick()
     {
         AiDetectionArray arr;
         std::string launching_side;
@@ -36,11 +36,12 @@ namespace navigation
         
         TrajectoryPose t;
         t.positionX = 0.0; // We don't move on the x axis
+        t.positionY = det.distance_teta; // We move on the y axis
         if (launching_side == "portside")
         {
             t.positionY = det.distance_teta - CAMERA_TO_TORPIDO_PEPPER_OFFSET_X; // We move on the x axis
         }
-        else
+        else if(launching_side == "starboard")
         {
             t.positionY = det.distance_teta - CAMERA_TO_TORPIDO_SALT_OFFSET_X; // We move on the x axis
         }

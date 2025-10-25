@@ -30,7 +30,7 @@ static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::share
     factory.registerBuilder<navigation::MoveToObject>("MoveToObject", configBuilder<navigation::MoveToObject>(node));
     factory.registerBuilder<navigation::MoveAboveObject>("MoveAboveObject", configBuilder<navigation::MoveAboveObject>(node));
     factory.registerBuilder<navigation::TorpedoDriftingAlignement>("TorpedoDriftingAlignement", configBuilder<navigation::TorpedoDriftingAlignement>(node));
-    factory.registerBuilder<navigation::TorpedoAimingAlignement>("TorpedoAimingAlignement",  configBuilder<navigation::TorpedoAimingAlignement>(node));
+    factory.registerBuilder<navigation::TorpedoAiming>("TorpedoAiming",  configBuilder<navigation::TorpedoAiming>(node));
     factory.registerNodeType<navigation::InitializeTrajectory>("InitializeTrajectory");
     factory.registerNodeType<navigation::TrajectoryAppendPose>("TrajectoryAppendPose");
     factory.registerBuilder<navigation::SendTrajectory>("SendTrajectory", configBuilder<navigation::SendTrajectory>(node));
