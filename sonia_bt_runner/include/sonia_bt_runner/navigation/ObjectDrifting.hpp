@@ -10,11 +10,11 @@
 namespace navigation
 {
 
-    class TorpedoDriftingAlignement : public BT::SyncActionNode
+    class ObjectDrifting : public BT::SyncActionNode
     {
         public:
-            TorpedoDriftingAlignement(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~TorpedoDriftingAlignement()=default;
+            ObjectDrifting(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
+            ~ObjectDrifting()=default;
             static BT::PortsList providedPorts()
             {
                 return {

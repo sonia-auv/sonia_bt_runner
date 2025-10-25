@@ -1,4 +1,4 @@
-#include "sonia_bt_runner/navigation/TorpedoDriftingAlignement.hpp"
+#include "sonia_bt_runner/navigation/ObjectDrifting.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -7,13 +7,13 @@
 namespace navigation
 {
 
-    TorpedoDriftingAlignement::TorpedoDriftingAlignement(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
+    ObjectDrifting::ObjectDrifting(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
     : BT::SyncActionNode(name, config), ros_node(node)
     {
 
     }
 
-    BT::NodeStatus TorpedoDriftingAlignement::tick()
+    BT::NodeStatus ObjectDrifting::tick()
     {
         AiDetectionArray arr;
 
