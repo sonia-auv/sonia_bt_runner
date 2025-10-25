@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sonia_bt_runner/navigation/MoveToObject.hpp"
+#include "sonia_bt_runner/navigation/FaceTheObject.hpp"
 #include "sonia_bt_runner/navigation/MoveAboveObject.hpp"
 #include "sonia_bt_runner/navigation/ObjectDrifting.hpp"
 #include "sonia_bt_runner/navigation/TorpedoAiming.hpp"
