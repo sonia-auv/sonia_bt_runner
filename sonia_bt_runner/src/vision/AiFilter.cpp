@@ -1,5 +1,4 @@
 #include "sonia_bt_runner/vision/AiFilter.hpp"
-#include <algorithm>
 
 using std::placeholders::_1;
 namespace vision{

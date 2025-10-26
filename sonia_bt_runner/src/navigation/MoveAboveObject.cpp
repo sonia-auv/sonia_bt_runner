@@ -1,9 +1,5 @@
 #include "sonia_bt_runner/navigation/MoveAboveObject.hpp"
 
-#include <algorithm>
-#include <cmath>
-#include <math.h>
-
 namespace navigation
 {
 
