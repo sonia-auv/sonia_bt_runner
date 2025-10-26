@@ -50,7 +50,7 @@ namespace vision{
         }
         // We need to make some selection in the image array
 
-        RCLCPP_INFO(ros_node->get_logger(), "Getting the information because enough detection have been made : %d detection(s)", _detection_array.size());
+        RCLCPP_INFO(ros_node->get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
         std::vector<int> ids;
         for (int i = 0; i < max_size_output.value(); i++){
             ids.push_back(i);
@@ -59,7 +59,7 @@ namespace vision{
         // We sort all the id distance in the ids vector
         if (_detection_array.size() > max_size_output.value())
         {
-            RCLCPP_INFO(ros_node->get_logger(), "Detection number to High : %d detection(s)", _detection_array.size());
+            RCLCPP_INFO(ros_node->get_logger(), "Detection number to High : %ld detection(s)", _detection_array.size());
             for (int i = 0;i < max_size_output.value();i++)
             {
                 float min_distance_found = 65.0;
