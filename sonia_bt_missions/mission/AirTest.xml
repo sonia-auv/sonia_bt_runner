@@ -17,9 +17,9 @@
                 Max_size_output="1"
                 Object_class="bin-inner"
                 Camera="1"/>
-      <TorpedoAimingAlignement LaunchingSide="port_side"
-                               Trajectory="{Trajectory}"
-                               Detections="{AiDetections}"/>
+      <TorpedoAiming LaunchingSide="Sub"
+                     Trajectory="{Trajectory}"
+                     Detections="{AiDetections}"/>
     </Sequence>
   </BehaviorTree>
 
@@ -40,8 +40,8 @@
                 Max_size_output="1"
                 Object_class="bin-inner"
                 Camera="1"/>
-      <TorpedoDriftingAlignement Trajectory="{Trajectory}"
-                                 Detections="{AiDetections}"/>
+      <ObjectDrifting Trajectory="{Trajectory}"
+                      Detections="{AiDetections}"/>
     </Sequence>
   </BehaviorTree>
 
@@ -62,7 +62,8 @@
                 Max_size_output="1"
                 Object_class="bin-inner"
                 Camera="1"/>
-      <MoveToObject Trajectory="{Trajectory}"
+      <MoveToObject Offset=""
+                    Trajectory="{Trajectory}"
                     Detections="{AiDetections}"/>
     </Sequence>
   </BehaviorTree>
@@ -106,20 +107,22 @@
     </Action>
     <Condition ID="MissionSwitchStatus"/>
     <Action ID="MoveToObject">
+      <input_port name="Offset"
+                  type="float"/>
       <inout_port name="Trajectory"
                   type="Trajectory"/>
       <input_port name="Detections"
                   type="AiDetectionArray"/>
     </Action>
-    <Action ID="TorpedoAimingAlignement">
+    <Action ID="ObjectDrifting">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detections"
+                  type="AiDetectionArray"/>
+    </Action>
+    <Action ID="TorpedoAiming">
       <input_port name="LaunchingSide"
                   type="std::string"/>
-      <inout_port name="Trajectory"
-                  type="Trajectory"/>
-      <input_port name="Detections"
-                  type="AiDetectionArray"/>
-    </Action>
-    <Action ID="TorpedoDriftingAlignement">
       <inout_port name="Trajectory"
                   type="Trajectory"/>
       <input_port name="Detections"

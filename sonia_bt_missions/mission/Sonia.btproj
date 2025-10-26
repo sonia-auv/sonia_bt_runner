@@ -24,18 +24,22 @@
         <SubTree ID="Bin" editable="true">
             <input_port name="HintAngle" default="0">The approximation of the angle where the mission is.</input_port>
         </SubTree>
-        <Action ID="BinAlignment">
-            <inout_port name="Trajectory" type="Trajectory"/>
-            <input_port name="Detections" type="AiDetectionArray"/>
-        </Action>
         <Action ID="ControlSetMode">
             <input_port name="set_mode" default="false" type="bool"/>
         </Action>
+        <Condition ID="DepthCheck">
+            <input_port name="IsSmaller" default="false" type="bool">true: ON, talse: OFF</input_port>
+            <input_port name="Target" default="0.100000" type="float">true: ON, talse: OFF</input_port>
+        </Condition>
         <Action ID="Dropper">
             <input_port name="side" type="std::string">port_side or starboard</input_port>
         </Action>
         <Action ID="EnableDisableDVL">
             <input_port name="dvl_input" default="false" type="bool">true: start, false: stop</input_port>
+        </Action>
+        <Action ID="FaceTheObject">
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="Detections" type="AiDetectionArray"/>
         </Action>
         <SubTree ID="Gate" editable="true">
             <input_port name="DetectedObject">The type of object that the sub will working to</input_port>
@@ -47,6 +51,10 @@
             <output_port name="trajectory" type="Trajectory"/>
         </Action>
         <Condition ID="MissionSwitchStatus"/>
+        <Action ID="MoveAboveObject">
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="Detections" type="AiDetectionArray"/>
+        </Action>
         <SubTree ID="MoveSinglePose" editable="true">
             <input_port name="frame" default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
             <input_port name="positionX" default="0.0">x value to go</input_port>
@@ -57,6 +65,11 @@
             <input_port name="orientationZ" default="0.0">x orientation to go</input_port>
         </SubTree>
         <Action ID="MoveToObject">
+            <input_port name="Offset" type="float"/>
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="Detections" type="AiDetectionArray"/>
+        </Action>
+        <Action ID="ObjectDrifting">
             <inout_port name="Trajectory" type="Trajectory"/>
             <input_port name="Detections" type="AiDetectionArray"/>
         </Action>
@@ -82,12 +95,8 @@
         <Action ID="Torpedo">
             <input_port name="side" type="std::string">port_side or starboard</input_port>
         </Action>
-        <Action ID="TorpedoAimingAlignement">
+        <Action ID="TorpedoAiming">
             <input_port name="LaunchingSide" type="std::string"/>
-            <inout_port name="Trajectory" type="Trajectory"/>
-            <input_port name="Detections" type="AiDetectionArray"/>
-        </Action>
-        <Action ID="TorpedoDriftingAlignement">
             <inout_port name="Trajectory" type="Trajectory"/>
             <input_port name="Detections" type="AiDetectionArray"/>
         </Action>
@@ -96,16 +105,16 @@
         </SubTree>
         <Action ID="TrajectoryAppendPose">
             <inout_port name="trajectory" type="Trajectory"/>
-            <input_port name="positionX" default="0.000000" type="float"/>
-            <input_port name="positionY" default="0.000000" type="float"/>
-            <input_port name="positionZ" default="0.000000" type="float"/>
-            <input_port name="orientationX" default="0.000000" type="float"/>
-            <input_port name="orientationY" default="0.000000" type="float"/>
-            <input_port name="orientationZ" default="0.000000" type="float"/>
-            <input_port name="frame" default="1" type="int"/>
-            <input_port name="speed" default="0" type="int"/>
             <input_port name="precision" default="0" type="int"/>
+            <input_port name="speed" default="0" type="int"/>
+            <input_port name="frame" default="1" type="int"/>
+            <input_port name="orientationZ" default="0.000000" type="float"/>
             <input_port name="longRotation" default="false" type="bool"/>
+            <input_port name="positionZ" default="0.000000" type="float"/>
+            <input_port name="positionY" default="0.000000" type="float"/>
+            <input_port name="orientationY" default="0.000000" type="float"/>
+            <input_port name="orientationX" default="0.000000" type="float"/>
+            <input_port name="positionX" default="0.000000" type="float"/>
         </Action>
         <Action ID="WaitTargetReached">
             <input_port name="timeout" default="5" type="int"/>
