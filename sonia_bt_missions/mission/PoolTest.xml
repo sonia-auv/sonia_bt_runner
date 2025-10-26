@@ -254,40 +254,6 @@
       <input_port name="TimeBeforeFailling"
                   default="5">The time before the sub movement fail</input_port>
     </SubTree>
-    <Action ID="TrajectoryAppendPose">
-      <inout_port name="trajectory"
-                  type="Trajectory"/>
-      <input_port name="positionX"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="positionY"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="positionZ"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="orientationX"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="orientationY"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="orientationZ"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="frame"
-                  default="1"
-                  type="int"/>
-      <input_port name="speed"
-                  default="0"
-                  type="int"/>
-      <input_port name="precision"
-                  default="0"
-                  type="int"/>
-      <input_port name="longRotation"
-                  default="false"
-                  type="bool"/>
-    </Action>
   </TreeNodesModel>
 
 </root>
