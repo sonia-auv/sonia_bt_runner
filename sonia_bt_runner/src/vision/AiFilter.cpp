@@ -18,14 +18,14 @@ namespace vision{
         two_objects_possible = getInput<int>("Two_objects_possible");
 
         // I put those two parameter to do the test of witch one we're gonna use.
-        max_frame_before_failling= getInput<int>("Max_frame_before_failing");
-        max_time_before_failling = getInput<float>("Max_time_before_failing_ms");
+        max_frame_before_failing = getInput<int>("Max_frame_before_failing");
+        max_time_before_failing = getInput<float>("Max_time_before_failing_ms");
 
         max_depth = getInput<float>("Max_depth");
 
         if (min_detections_before_success.value() <= 1)
         {
-            RCLCPP_INFO(ros_node->get_logger(), "You have to set the Min_detections_before_success parameter to more than 1.", diff.count(), max_time_before_failling.value());
+            RCLCPP_INFO(ros_node->get_logger(), "You have to set the Min_detections_before_success parameter to more than 1.", time_diff.count(), max_time_before_failing.value());
             return BT::NodeStatus::FAILURE;
         }
 
@@ -45,14 +45,14 @@ namespace vision{
 
     BT::NodeStatus AiFilter::onRunning(){
 
-        std::chrono::duration<double> diff = std::chrono::system_clock::now() - _launch_time;
-        if(max_frame_before_failling.value() != 0 && counter >= max_frame_before_failling.value() || max_time_before_failling.value() != 0.0 && diff.count() >= max_time_before_failling.value())
+        time_diff = std::chrono::system_clock::now() - _launch_time;
+        if(max_frame_before_failing.value() != 0 && counter >= max_frame_before_failing.value() || max_time_before_failing.value() != 0.0 && time_diff.count() >= max_time_before_failing.value())
         {
             // We took to much time or count too many frame to fond the object
-            if (max_frame_before_failling.value() != 0)
-                RCLCPP_INFO(ros_node->get_logger(), "counter %d : max frame = %d, We don't find what we are looking for.", counter, max_frame_before_failling.value());
+            if (max_frame_before_failing.value() != 0)
+                RCLCPP_INFO(ros_node->get_logger(), "counter %d : max frame = %d, We don't find what we are looking for.", counter, max_frame_before_failing.value());
             else
-                RCLCPP_INFO(ros_node->get_logger(), "node time %f : max time = %f, We don't find what we are looking for.", diff.count(), max_time_before_failling.value());
+                RCLCPP_INFO(ros_node->get_logger(), "node time %f : max time = %f, We don't find what we are looking for.", time_diff.count(), max_time_before_failing.value());
             
             return BT::NodeStatus::FAILURE;
         }
@@ -109,7 +109,7 @@ namespace vision{
             float highest_error = 0.0;
 
             // We compute a teta and beta average of the detection
-            for (int i = 0; i < _detection_array; i++)
+            for (int i = 0; i < _detection_array.size(); i++)
             {
                 teta_average += _detection_array[i].distance_teta/_detection_array.size();
                 beta_average += _detection_array[i].distance_beta/_detection_array.size();
@@ -129,13 +129,13 @@ namespace vision{
             }
             for (int i = 0; i < _detection_array.size(); i++)
             {
-                if (i != higest_index)
+                if (i != highest_index)
                 {
-                    choosen_index.pushback(i);
+                    choosen_index.push_back(i);
                 }
             }
         }
-        
+
         // We compute the new average of every parameter of the detection that we keep.
         AiDetection output_detection;
         output_detection.classification = _object.value();
