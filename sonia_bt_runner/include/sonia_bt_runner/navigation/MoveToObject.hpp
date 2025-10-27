@@ -19,7 +19,7 @@ namespace navigation
             {
                 return {
                     // Inputs
-                    BT::InputPort<AiDetectionArray>("Detections"),
+                    BT::InputPort<AiDetection>("Detection"),
                     BT::InputPort<float>("Offset"),
 
                     // Outputs

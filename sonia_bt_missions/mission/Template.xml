@@ -69,9 +69,9 @@
                             orientationY="{orientationY}"
                             orientationX="{orientationX}"
                             positionX="{positionX}"/>
-      <SendTrajectory trajectory="{traj}"
-                      interpolation="0"/>
-      <WaitTargetReached timeout="5"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{traj}"
+               TimeBeforeFailing="5"/>
     </Sequence>
   </BehaviorTree>
 
@@ -87,101 +87,102 @@
   </BehaviorTree>
 
   <BehaviorTree ID="SearchObjectByRotation">
-    <Sequence>
-      <SubTree ID="RotateToAbsoluteAngle"
-               Angle="{StartingAngle}"/>
-      <Fallback>
-        <AiFilter Detected_object_array="{FoundAiDetection}"
-                  Max_frame_before_failling="5"
-                  Min_size_output="1"
-                  Confidence="0.600000"
-                  Max_depth="25"
-                  Max_size_output="1"
-                  Object_class="{Object}"
-                  Camera="1"/>
-        <Sequence>
-          <SubTree ID="MoveSinglePose"
-                   frame="1.0"
-                   positionX="0.0"
-                   positionY="0.0"
-                   positionZ="0.0"
-                   orientationX="0.0"
-                   orientationY="0.0"
-                   orientationZ="30"/>
-          <Fallback>
-            <AiFilter Detected_object_array="{FoundAiDetection}"
-                      Max_frame_before_failling="5"
-                      Min_size_output="1"
-                      Confidence="0.600000"
-                      Max_depth="25"
-                      Max_size_output="1"
-                      Object_class="{Object}"
-                      Camera="1"/>
-            <Sequence>
-              <SubTree ID="MoveSinglePose"
-                       frame="1.0"
-                       positionX="0.0"
-                       positionY="0.0"
-                       positionZ="0.0"
-                       orientationX="0.0"
-                       orientationY="0.0"
-                       orientationZ="-60"/>
-              <Fallback>
-                <AiFilter Detected_object_array="{FoundAiDetection}"
-                          Max_frame_before_failling="5"
-                          Min_size_output="1"
-                          Confidence="0.600000"
-                          Max_depth="25"
-                          Max_size_output="1"
-                          Object_class="{Object}"
-                          Camera="1"/>
-                <Sequence>
-                  <SubTree ID="MoveSinglePose"
-                           frame="1.0"
-                           positionX="0.0"
-                           positionY="0.0"
-                           positionZ="0.0"
-                           orientationX="0.0"
-                           orientationY="0.0"
-                           orientationZ="-30"/>
-                  <Fallback>
-                    <AiFilter Detected_object_array="{FoundAiDetection}"
-                              Max_frame_before_failling="5"
-                              Min_size_output="1"
-                              Confidence="0.600000"
-                              Max_depth="25"
-                              Max_size_output="1"
-                              Object_class="{Object}"
-                              Camera="1"/>
-                    <Sequence>
-                      <SubTree ID="MoveSinglePose"
-                               frame="1.0"
-                               positionX="0.0"
-                               positionY="0.0"
-                               positionZ="0.0"
-                               orientationX="0.0"
-                               orientationY="0.0"
-                               orientationZ="120"/>
-                      <IfThenElse>
-                        <AiFilter Detected_object_array="{FoundAiDetection}"
-                                  Max_frame_before_failling="5"
-                                  Min_size_output="1"
-                                  Confidence="0.600000"
-                                  Max_depth="25"
-                                  Max_size_output="1"
-                                  Object_class="{Object}"
-                                  Camera="1"/>
-                        <SubTree ID="MissionFailed"/>
-                      </IfThenElse>
-                    </Sequence>
-                  </Fallback>
-                </Sequence>
-              </Fallback>
-            </Sequence>
-          </Fallback>
-        </Sequence>
-      </Fallback>
-    </Sequence>
+    <Fallback>
+      <AiFilter Detected_object="{FoundAiDetection}"
+                Max_time_before_failing_ms="0.000000"
+                Max_frame_before_failing="300"
+                Two_objects_possible="0"
+                Min_detections_before_success="5"
+                Confidence="0.600000"
+                Max_depth="25"
+                Object_class="{Object}"
+                Camera="1"/>
+      <Sequence>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="30"/>
+        <Fallback>
+          <AiFilter Detected_object="{FoundAiDetection}"
+                    Max_time_before_failing_ms="0.000000"
+                    Max_frame_before_failing="300"
+                    Two_objects_possible="0"
+                    Min_detections_before_success="5"
+                    Confidence="0.600000"
+                    Max_depth="25"
+                    Object_class="{Object}"
+                    Camera="1"/>
+          <Sequence>
+            <SubTree ID="MoveSinglePose"
+                     frame="1.0"
+                     positionX="0.0"
+                     positionY="0.0"
+                     positionZ="0.0"
+                     orientationX="0.0"
+                     orientationY="0.0"
+                     orientationZ="-60"/>
+            <Fallback>
+              <AiFilter Detected_object="{FoundAiDetection}"
+                        Max_time_before_failing_ms="0.000000"
+                        Max_frame_before_failing="300"
+                        Two_objects_possible="0"
+                        Min_detections_before_success="5"
+                        Confidence="0.600000"
+                        Max_depth="25"
+                        Object_class="{Object}"
+                        Camera="1"/>
+              <Sequence>
+                <SubTree ID="MoveSinglePose"
+                         frame="1.0"
+                         positionX="0.0"
+                         positionY="0.0"
+                         positionZ="0.0"
+                         orientationX="0.0"
+                         orientationY="0.0"
+                         orientationZ="-30"/>
+                <Fallback>
+                  <AiFilter Detected_object="{FoundAiDetection}"
+                            Max_time_before_failing_ms="0.000000"
+                            Max_frame_before_failing="300"
+                            Two_objects_possible="0"
+                            Min_detections_before_success="5"
+                            Confidence="0.600000"
+                            Max_depth="25"
+                            Object_class="{Object}"
+                            Camera="1"/>
+                  <Sequence>
+                    <SubTree ID="MoveSinglePose"
+                             frame="1.0"
+                             positionX="0.0"
+                             positionY="0.0"
+                             positionZ="0.0"
+                             orientationX="0.0"
+                             orientationY="0.0"
+                             orientationZ="120"/>
+                    <IfThenElse>
+                      <AiFilter Detected_object="{FoundAiDetection}"
+                                Max_time_before_failing_ms="0.000000"
+                                Max_frame_before_failing="300"
+                                Two_objects_possible="0"
+                                Min_detections_before_success="5"
+                                Confidence="0.600000"
+                                Max_depth="25"
+                                Object_class="{Object}"
+                                Camera="1"/>
+                      <SubTree ID="MissionFailed"/>
+                    </IfThenElse>
+                  </Sequence>
+                </Fallback>
+              </Sequence>
+            </Fallback>
+          </Sequence>
+        </Fallback>
+      </Sequence>
+    </Fallback>
   </BehaviorTree>
 
   <BehaviorTree ID="SendTrajectoryOnly">
@@ -195,14 +196,31 @@
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
     <Action ID="AiFilter">
-        <output_port name="Detected_object_array" type="AiDetectionArray"/>
-        <input_port name="Max_frame_before_failling" type="int">maximum allowed frames</input_port>
-        <input_port name="Min_size_output" type="int">minumum number of frames with at least one detection before sending results</input_port>
-        <input_port name="Confidence" type="float" default="0.600000">Ai confidence</input_port>
-        <input_port name="Max_depth" type="float">Maximum allowed depth</input_port>
-        <input_port name="Max_size_output" type="int">Max size of the output array</input_port>
-        <input_port name="Object_class" type="std::string">Searched object</input_port>
-        <input_port name="Camera" type="int" default="1">1: Front, 0: Bottom</input_port>
+      <output_port name="Detected_object"
+                   type="AiDetection"/>
+      <input_port name="Max_time_before_failing_ms"
+                  default="0.000000"
+                  type="float">Maximum allowed time in ms before failing the object research</input_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0"
+                  type="int">Maximum allowed frames before failing the object research</input_port>
+      <input_port name="Two_objects_possible"
+                  default="0"
+                  type="int">0: Only one object can be detected, 1: Two or more object of the same class can be detected</input_port>
+      <input_port name="Min_detections_before_success"
+                  default="2"
+                  type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Ai confidence</input_port>
+      <input_port name="Max_depth"
+                  default="25.000000"
+                  type="float">Maximum allowed depth</input_port>
+      <input_port name="Object_class"
+                  type="std::string">Searched object</input_port>
+      <input_port name="Camera"
+                  default="1"
+                  type="int">1: Front, 0: Bottom</input_port>
     </Action>
     <Action ID="ControlSetMode">
       <input_port name="set_mode"
@@ -219,27 +237,14 @@
                    type="Trajectory"/>
     </Action>
     <Condition ID="MissionSwitchStatus"/>
-    <SubTree ID="MoveSinglePose"
-             editable="true">
-      <input_port name="frame"
-                  default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
-      <input_port name="positionX"
-                  default="0.0">x value to go</input_port>
-      <input_port name="positionY"
-                  default="0.0">y value to go</input_port>
-      <input_port name="positionZ"
-                  default="0.0">z value to go</input_port>
-      <input_port name="orientationX"
-                  default="0.0">z orientation to go</input_port>
-      <input_port name="orientationY"
-                  default="0.0">y orientation to go</input_port>
-      <input_port name="orientationZ"
-                  default="0.0">x orientation to go</input_port>
-    </SubTree>
-    <SubTree ID="RotateToAbsoluteAngle"
-             editable="true">
-      <input_port name="Angle"
-                  default="0">Angle to position the sub with the pool</input_port>
+    <SubTree ID="MoveSinglePose" editable="true">
+        <input_port name="frame" default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
+        <input_port name="positionX" default="0.0">x value to go</input_port>
+        <input_port name="positionY" default="0.0">y value to go</input_port>
+        <input_port name="positionZ" default="0.0">z value to go</input_port>
+        <input_port name="orientationX" default="0.0">z orientation to go</input_port>
+        <input_port name="orientationY" default="0.0">y orientation to go</input_port>
+        <input_port name="orientationZ" default="0.0">rotation in Z to give to the sub</input_port>
     </SubTree>
     <Action ID="SendTrajectory">
       <input_port name="trajectory"
@@ -248,9 +253,49 @@
                   default="0"
                   type="int"/>
     </Action>
+    <SubTree ID="SendTrajectoryOnly"
+             editable="true">
+      <input_port name="Trajectory"/>
+      <input_port name="TimeBeforeFailing"
+                  default="5">Time before the movement of the sub is abort</input_port>
+    </SubTree>
     <Action ID="Tare">
       <input_port name="sensor"
                   type="std::string">imu or depth</input_port>
+    </Action>
+    <Action ID="TrajectoryAppendPose">
+      <inout_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="precision"
+                  default="0"
+                  type="int"/>
+      <input_port name="speed"
+                  default="0"
+                  type="int"/>
+      <input_port name="frame"
+                  default="1"
+                  type="int"/>
+      <input_port name="orientationZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="longRotation"
+                  default="false"
+                  type="bool"/>
+      <input_port name="positionZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationX"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionX"
+                  default="0.000000"
+                  type="float"/>
     </Action>
     <Action ID="WaitTargetReached">
       <input_port name="timeout"

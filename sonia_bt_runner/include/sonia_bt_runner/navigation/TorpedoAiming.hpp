@@ -19,9 +19,8 @@ namespace navigation
             {
                 return {
                     // Inputs
-                    BT::InputPort<AiDetectionArray>("Detections"),
+                    BT::InputPort<AiDetection>("Detection"),
                     BT::InputPort<std::string>("LaunchingSide"),
-
 
                     // Outputs
                     BT::BidirectionalPort<Trajectory>("Trajectory"),

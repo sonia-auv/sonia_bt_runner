@@ -11,37 +11,39 @@ namespace navigation
 
     BT::NodeStatus TorpedoAiming::tick()
     {
-        AiDetectionArray arr;
+        AiDetection det;
         std::string launching_side;
 
         // We get the detected object by the AI
-        getInput("Detections", arr);
+        getInput("Detection", det);
         getInput("LaunchingSide", launching_side);
 
-        if (arr.detection_array.empty())
-        {
-            // publish safe defaults
-            RCLCPP_INFO(ros_node->get_logger(), "Detection array empty");
+        // if (arr.detection_array.empty())
+        // {
+        //     // publish safe defaults
+        //     RCLCPP_INFO(ros_node->get_logger(), "Detection array empty");
 
-            return BT::NodeStatus::FAILURE;
-        }
+        //     return BT::NodeStatus::FAILURE;
+        // }
 
         RCLCPP_INFO(ros_node->get_logger(), "Computing TorpedoAiming trajectory");
-        // Assumption: array is pre-filtered for the object of interest → use first detection
-        const AiDetection& det = arr.detection_array.front(); // A verifier si on peux renvoyer le plus proche a la place et non la premiere detection
         
         TrajectoryPose t;
         t.positionX = 0.0; // We don't move on the x axis
         t.positionY = det.distance_teta; // We move on the y axis
         if (launching_side == "portside")
         {
-            t.positionY = det.distance_teta - CAMERA_TO_TORPIDO_PEPPER_OFFSET_X; // We move on the x axis
+            t.positionY -= CAMERA_TO_TORPIDO_PEPPER_OFFSET_X; // We move on the x axis
         }
         else if(launching_side == "starboard")
         {
-            t.positionY = det.distance_teta - CAMERA_TO_TORPIDO_SALT_OFFSET_X; // We move on the x axis
+            t.positionY -= CAMERA_TO_TORPIDO_SALT_OFFSET_X; // We move on the x axis
         }
-        t.positionZ = det.distance_beta - CAMERA_TO_TORPEDO_OFFSET_Y; // We move on the z axis
+        t.positionZ = det.distance_beta; // We move on the z axis
+        if (launching_side == "portside" || launching_side == "starboard")
+        {
+            t.positionZ -= CAMERA_TO_TORPEDO_OFFSET_Y;
+        }
         t.orientationX = 0.0;       // We don't rotate on the x axis
         t.orientationY = 0.0;       // We don't rotate on the y axis
         t.orientationZ = 0.0;       // We don't rotate on the z axis
