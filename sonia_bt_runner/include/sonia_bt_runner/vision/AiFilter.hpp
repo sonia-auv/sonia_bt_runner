@@ -20,13 +20,15 @@ namespace vision{
                     BT::InputPort<int>("Camera", 1, "1: Front, 0: Bottom"),
                     BT::InputPort<std::string>("Object_class", "Searched object"),
                     BT::InputPort<float>("Confidence", 0.6, "Ai confidence"),
-                    BT::InputPort<int>("Min_size_output", "minumum number of frames with at least one detection before sending results"),
-                    BT::InputPort<int>("Max_size_output", "Max size of the output array"),
-                    BT::InputPort<int>("Max_frame_before_failling", "maximum allowed frames"),
-                    BT::InputPort<float>("Max_depth", "Maximum allowed depth"),
+                    BT::InputPort<int>("Min_detections_before_success", 2, "Minumum number of frames with at least one detection before sending results. Need to be heigher than 2"),
+                    BT::InputPort<int>("Two_objects_possible", 0, "0: Only one object can be detected, 1: Two or more object of the same class can be detected"),
+                    BT::InputPort<int>("Max_frame_before_failing", 0, "Maximum allowed frames before failing the object research"),
+                    BT::InputPort<float>("Max_time_before_failing_ms", 0.0, "Maximum allowed time in ms before failing the object research"),
+                    BT::InputPort<float>("Max_depth", 25.0, "Maximum allowed depth"),
 
                     // Outputs
-                    BT::OutputPort<AiDetectionArray>("Detected_object_array")};
+                    BT::OutputPort<AiDetection>("Detected_object")
+                };
             }
 
             BT::NodeStatus onStart() override;
@@ -38,14 +40,16 @@ namespace vision{
             rclcpp::Subscription<sonia_common_ros2::msg::DetectionArray>::SharedPtr ai_filter_sub;
 
             std::vector<sonia_common_ros2::msg::Detection> _detection_array;
+            std::chrono::_V2::system_clock::time_point _launch_time;
             int counter;
-            int nb_detection;
-
+            
+            BT::Expected<int> cam;
             BT::Expected<std::string> _object;
-            BT::Expected<int> max_frame_before_failling;
-            BT::Expected<int> max_size_output;
             BT::Expected<float> confidence;
+            BT::Expected<int> min_detections_before_success;
+            BT::Expected<int> two_objects_possible;
+            BT::Expected<int> max_frame_before_failing;
+            BT::Expected<float> max_time_before_failing;
             BT::Expected<float> max_depth;
-            BT::Expected<int> min_size_output;      
     };
 }

@@ -11,16 +11,27 @@ namespace vision{
     BT::NodeStatus AiFilter::onStart(){
 
         // We go get the information in the behavior tree
+        cam = getInput<int>("Camera");
         _object = getInput<std::string>("Object_class");
-        max_frame_before_failling= getInput<int>("Max_frame_before_failling");
-        max_size_output = getInput<int>("Max_size_output");
         confidence = getInput<float>("Confidence");
+        min_detections_before_success = getInput<int>("Min_detections_before_success");
+        two_objects_possible = getInput<int>("Two_objects_possible");
+
+        // I put those two parameter to do the test of witch one we're gonna use.
+        max_frame_before_failling= getInput<int>("Max_frame_before_failing");
+        max_time_before_failling = getInput<float>("Max_time_before_failing_ms");
+
         max_depth = getInput<float>("Max_depth");
-        min_size_output = getInput<int>("Min_size_output");
-        BT::Expected<int> cam = getInput<int>("Camera");
+
+        if (min_detections_before_success.value() <= 1)
+        {
+            RCLCPP_INFO(ros_node->get_logger(), "You have to set the Min_detections_before_success parameter to more than 1.", diff.count(), max_time_before_failling.value());
+            return BT::NodeStatus::FAILURE;
+        }
 
         // We initialize some value
         counter = 0;
+        _launch_time = std::chrono::system_clock::now();
 
         // We chose the right camera to capture the image
         if(cam.value())
@@ -33,121 +44,118 @@ namespace vision{
     }
 
     BT::NodeStatus AiFilter::onRunning(){
-        
-        if(counter >= max_frame_before_failling.value()){
 
-            // We took to much time to find the object
-            RCLCPP_INFO(ros_node->get_logger(), "counter %d : max frame = %d, We don't find what we are looking for.", counter, max_frame_before_failling.value());
+        std::chrono::duration<double> diff = std::chrono::system_clock::now() - _launch_time;
+        if(max_frame_before_failling.value() != 0 && counter >= max_frame_before_failling.value() || max_time_before_failling.value() != 0.0 && diff.count() >= max_time_before_failling.value())
+        {
+            // We took to much time or count too many frame to fond the object
+            if (max_frame_before_failling.value() != 0)
+                RCLCPP_INFO(ros_node->get_logger(), "counter %d : max frame = %d, We don't find what we are looking for.", counter, max_frame_before_failling.value());
+            else
+                RCLCPP_INFO(ros_node->get_logger(), "node time %f : max time = %f, We don't find what we are looking for.", diff.count(), max_time_before_failling.value());
+            
             return BT::NodeStatus::FAILURE;
         }
 
-
-        if(_detection_array.size() < min_size_output.value()){
+        if(_detection_array.size() < min_detections_before_success.value()){
 
             //No image or not enought image captured
             return BT::NodeStatus::RUNNING;
         }
+
+        // We kill the subscriber because we don't need more detection
+        ai_filter_sub.reset();
+
         // We need to make some selection in the image array
-
         RCLCPP_INFO(ros_node->get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
-        std::vector<int> ids;
-        for (int i = 0; i < max_size_output.value(); i++){
-            ids.push_back(i);
-        } 
 
-        // We sort all the id distance in the ids vector
-        if (_detection_array.size() > max_size_output.value())
+        // We compute the detection that we use to compute the output
+        std::vector<int> choosen_index;
+
+        if (two_objects_possible.value())
         {
-            RCLCPP_INFO(ros_node->get_logger(), "Detection number to High : %ld detection(s)", _detection_array.size());
-            for (int i = 0;i < max_size_output.value();i++)
+            float smallest_distance = pow(_detection_array[0].distance_teta, 2) + pow(_detection_array[0].distance_beta, 2);
+            float index_of_smallest_distance = 0;
+            
+            // We compute the closest detection to the center of the camera
+            for (int i = 1; i < _detection_array.size(); i++)
             {
-                float min_distance_found = 65.0;
-                int min_distance_index = -1;
-                int temp_id = 0;
-                for(int j = i;j < max_size_output.value();j++)
+                float centered_distance = pow(_detection_array[i].distance_teta, 2) + pow(_detection_array[i].distance_beta, 2);
+                if (centered_distance < smallest_distance)
                 {
-                    if (min_distance_found > _detection_array[j].distance)
-                    {
-                        min_distance_found = _detection_array[j].distance;
-                        min_distance_index = j;
-                    }
+                    smallest_distance = centered_distance;
+                    index_of_smallest_distance = i;
                 }
-                if (min_distance_index != -1)
-                {
-                    temp_id = ids[i];
-                    ids[i] = ids[min_distance_index];
-                    ids[min_distance_index] = temp_id;
-                }
-                
             }
 
-            // We put the object with a smaller distance in the ids vector
-            for (int i = max_size_output.value();i < _detection_array.size();i++)
+            // We choose the detection on a distance of 10 cm with the closest one.
+            choosen_index.push_back(index_of_smallest_distance);
+            for (int i = 0;i < _detection_array.size(); i++)
             {
-                if(_detection_array[i].distance < _detection_array[ids.back()].distance)
+                if (i != index_of_smallest_distance)
                 {
-
-                    // The object has a distance lower 
-                    int j = max_size_output.value() - 1;
-                    do
+                    if (0.1 >= sqrt(pow(_detection_array[i].distance_beta - _detection_array[index_of_smallest_distance].distance_beta, 2) + pow(_detection_array[i].distance_teta - _detection_array[index_of_smallest_distance].distance_teta, 2)))
                     {
-                        if (j == 0)
-                        {
-                            break;
-                        }
-                        j--;
-                    }while(_detection_array[ids[j - 1]].distance < _detection_array[i].distance);
-                    int temp1 = ids[j];
-                    int temp2;
-                    ids[j] = i;
-                    for(int k = j;k < max_size_output.value();k++)
-                    {
-                        if(k == max_size_output.value() - 1)
-                        {
-                            ids[k] = temp1;
-                        }
-                        else
-                        {
-                            temp2 = ids[k];
-                            ids[k] = temp1;
-                            temp1 = temp2;
-                        }
+                        choosen_index.push_back(i);
                     }
+                }
+            }
+        }
+        else
+        {
+            float teta_average;
+            float beta_average;
+            int highest_index = 0;
+            float highest_error = 0.0;
+
+            // We compute a teta and beta average of the detection
+            for (int i = 0; i < _detection_array; i++)
+            {
+                teta_average += _detection_array[i].distance_teta/_detection_array.size();
+                beta_average += _detection_array[i].distance_beta/_detection_array.size();
+            }
+
+            // We flush the higest and the lowest error between the average and detection value
+            for (int i = 0; i < _detection_array.size(); i++)
+            {
+                float teta_error = _detection_array[i].distance_teta - teta_average;
+                float beta_error = _detection_array[i].distance_beta - beta_average;
+                float error = pow(teta_error,2) + pow(beta_error,2);
+                if (error > highest_error)
+                {
+                    highest_index = i;
+                    highest_error = error;
+                }
+            }
+            for (int i = 0; i < _detection_array.size(); i++)
+            {
+                if (i != higest_index)
+                {
+                    choosen_index.pushback(i);
                 }
             }
         }
         
-        // We fill the output array of the selected image
-        AiDetectionArray reduced_detected_object_array;
-        for (int index: ids){
-
-            // We fill the detected object
-            RCLCPP_INFO(ros_node->get_logger(), "Index retains : %d", index);
-            AiDetection detected_object;
-            detected_object.top_right_x = _detection_array[index].top_right_x;
-            detected_object.top_right_y = _detection_array[index].top_right_y;
-            detected_object.top_left_x = _detection_array[index].top_left_x;
-            detected_object.top_left_y = _detection_array[index].top_left_y;
-            
-            detected_object.bottom_right_x = _detection_array[index].bottom_right_x;
-            detected_object.bottom_right_y = _detection_array[index].bottom_right_y;
-            detected_object.bottom_left_x = _detection_array[index].bottom_left_x;
-            detected_object.bottom_left_y = _detection_array[index].bottom_left_y;
-
-            detected_object.distance = _detection_array[index].distance;
-            detected_object.angle_alpha = _detection_array[index].angle_alpha;
-            detected_object.angle_teta = _detection_array[index].angle_teta;
-            detected_object.distance_teta = _detection_array[index].distance_teta;
-            detected_object.confidence = _detection_array[index].confidence;
-            detected_object.classification = _detection_array[index].class_name;
-
-            RCLCPP_INFO(ros_node->get_logger(), "Detection filtered %s : dist = %f | conf = %f", detected_object.classification.c_str(), detected_object.distance, detected_object.confidence);
-
-            // We put the detected object in the detected array
-            reduced_detected_object_array.detection_array.push_back(detected_object);
-            RCLCPP_INFO(ros_node->get_logger(), "Reducing id = %d | dist = %f", index, _detection_array[index].distance);
+        // We compute the new average of every parameter of the detection that we keep.
+        AiDetection output_detection;
+        output_detection.classification = _object.value();
+        output_detection.distance = 0.0;
+        output_detection.confidence = 0.0;
+        output_detection.angle_teta = 0.0;
+        output_detection.angle_alpha = 0.0;
+        output_detection.distance_teta = 0.0;
+        output_detection.distance_beta = 0.0;
+        for(int i : choosen_index)
+        {
+            output_detection.distance += _detection_array[i].distance/choosen_index.size();
+            output_detection.confidence += _detection_array[i].confidence/choosen_index.size();
+            output_detection.angle_teta += _detection_array[i].angle_teta/choosen_index.size();
+            output_detection.angle_alpha += _detection_array[i].angle_alpha/choosen_index.size();
+            output_detection.distance_teta += _detection_array[i].distance_teta/choosen_index.size();
+            output_detection.distance_beta += _detection_array[i].distance_beta/choosen_index.size();
         }
-        setOutput("Detected_object_array", reduced_detected_object_array);
+
+        setOutput("Detected_object", output_detection);
 
         return BT::NodeStatus::SUCCESS;
     }
