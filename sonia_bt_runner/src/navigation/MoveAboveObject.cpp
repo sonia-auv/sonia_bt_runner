@@ -16,13 +16,12 @@ namespace navigation
         // We get the detected object by the AI
         getInput("Detection", det);
 
-        // if (arr.detection_array.empty())
-        // {
-        //     // publish safe defaults
-        //     RCLCPP_INFO(ros_node->get_logger(), "Detection array empty");
+        if(!getInput<Trajectory>("Trajectory"))
+        {
+            RCLCPP_INFO(ros_node->get_logger(), "The Trajectory is not initialize");
 
-        //     return BT::NodeStatus::FAILURE;
-        // }
+            return BT::NodeStatus::FAILURE;
+        }
 
         RCLCPP_INFO(ros_node->get_logger(), "Computing MoveAboveObject trajectory");
         

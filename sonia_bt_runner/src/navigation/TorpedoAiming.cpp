@@ -18,13 +18,12 @@ namespace navigation
         getInput("Detection", det);
         getInput("LaunchingSide", launching_side);
 
-        // if (arr.detection_array.empty())
-        // {
-        //     // publish safe defaults
-        //     RCLCPP_INFO(ros_node->get_logger(), "Detection array empty");
+        if(!getInput<Trajectory>("Trajectory"))
+        {
+            RCLCPP_INFO(ros_node->get_logger(), "The Trajectory is not initialize");
 
-        //     return BT::NodeStatus::FAILURE;
-        // }
+            return BT::NodeStatus::FAILURE;
+        }
 
         RCLCPP_INFO(ros_node->get_logger(), "Computing TorpedoAiming trajectory");
         
