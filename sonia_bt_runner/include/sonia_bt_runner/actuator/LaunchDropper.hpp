@@ -5,10 +5,10 @@
 #include "sonia_common_ros2/srv/actuator_service.hpp"
 
 namespace actuator{
-    class Torpedo: public BT::StatefulActionNode{
+    class LaunchDropper: public BT::StatefulActionNode{
         public:
-            Torpedo(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~Torpedo();
+            LaunchDropper(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
+            ~LaunchDropper();
             static BT::PortsList providedPorts()
             {
                 // Options for 'side' are 'port_side' or 'starboard'
@@ -21,6 +21,6 @@ namespace actuator{
         private:
             std::shared_ptr<rclcpp::Node> ros_node;
             std::shared_ptr<sonia_common_ros2::srv::ActuatorService::Request> request;
-            rclcpp::Client<sonia_common_ros2::srv::ActuatorService>::SharedPtr torpedo_client;        
+            rclcpp::Client<sonia_common_ros2::srv::ActuatorService>::SharedPtr dropper_client;     
     };
 }

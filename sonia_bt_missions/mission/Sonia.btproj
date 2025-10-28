@@ -29,9 +29,6 @@
             <input_port name="IsSmaller" default="false" type="bool">true: ON, talse: OFF</input_port>
             <input_port name="Target" default="0.100000" type="float">true: ON, talse: OFF</input_port>
         </Condition>
-        <Action ID="Dropper">
-            <input_port name="side" type="std::string">port_side or starboard</input_port>
-        </Action>
         <Action ID="EnableDisableDVL">
             <input_port name="dvl_input" default="false" type="bool">true: start, false: stop</input_port>
         </Action>
@@ -47,6 +44,9 @@
         </SubTree>
         <Action ID="InitializeTrajectory">
             <output_port name="trajectory" type="Trajectory"/>
+        </Action>
+        <Action ID="LaunchDropper">
+            <input_port name="side" type="std::string">port_side or starboard</input_port>
         </Action>
         <Condition ID="MissionSwitchStatus"/>
         <Action ID="MoveAboveObject">
@@ -65,7 +65,7 @@
         <Action ID="MoveToObject">
             <input_port name="Offset" type="float"/>
             <inout_port name="Trajectory" type="Trajectory"/>
-            <input_port name="Detection" type="AiDetectionArray"/>
+            <input_port name="Detection" type="AiDetection"/>
         </Action>
         <Action ID="ObjectDrifting">
             <inout_port name="Trajectory" type="Trajectory"/>
@@ -91,11 +91,11 @@
             <input_port name="Trajectory">The trajectory to do to the sub</input_port>
             <input_port name="TimeBeforeFailing" default="5">The time before the sub movement fail</input_port>
         </SubTree>
+        <Action ID="ShootTorpedo">
+            <input_port name="side" type="std::string">port_side or starboard</input_port>
+        </Action>
         <Action ID="Tare">
             <input_port name="sensor" type="std::string">imu or depth</input_port>
-        </Action>
-        <Action ID="Torpedo">
-            <input_port name="side" type="std::string">port_side or starboard</input_port>
         </Action>
         <Action ID="TorpedoAiming">
             <input_port name="LaunchingSide" type="std::string"/>

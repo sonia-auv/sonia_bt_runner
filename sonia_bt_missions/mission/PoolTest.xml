@@ -235,11 +235,15 @@
         <input_port name="orientationY" default="0.0">y orientation to go</input_port>
         <input_port name="orientationZ" default="0.0">rotation in Z to give to the sub</input_port>
     </SubTree>
-    <SubTree ID="SearchObjectByRotation"
-             editable="true">
-      <input_port name="Object">Object we are looking for</input_port>
-      <input_port name="FoundAiDetection">The AiDetection found during the research</input_port>
-    </SubTree>
+    <SubTree ID="SearchObjectByRotation" editable="true">
+            <input_port name="Object">Object we are looking for</input_port>
+            <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
+            <input_port name="Max_time_before_failing_ms" default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
+            <input_port name="Max_frame_before_failing" default="0">Number of frame that the sub will take to every 30 degree position to find the object</input_port>
+            <input_port name="Min_detection_before_success" default="5">Nombre of detected frame to call a found status</input_port>
+            <input_port name="Confidence" default="0.60000">Minimum confidence of the Ai</input_port>
+            <input_port name="Max_depth" default="25">Max distance to detect an object</input_port>
+        </SubTree>
     <SubTree ID="SendTrajectoryOnly"
              editable="true">
       <input_port name="Trajectory"/>
