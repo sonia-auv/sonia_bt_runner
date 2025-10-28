@@ -10,15 +10,18 @@
       <SubTree ID="SearchObjectByRotation"
                Object="bin"
                FoundAiDetection="{FrontAidetection}"
-               StartingAngle="0"/>
+               Max_time_before_failing_ms="0.0"
+               Max_frame_before_failing="300"
+               Min_detection_before_success="5"
+               Confidence="0.60000"
+               Max_depth="25"/>
       <MoveToObject Offset="0"
                     Trajectory="{Trajectory}"
                     Detection="{FrontAidetection}"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
-               TimeBeforeFailing="5"
-               TimeBeforeFailling="5"/>
-      <AiActivation Model="0"
+               TimeBeforeFailing="5"/>
+      <AiActivation Model="0.5"
                     Bottom="true"
                     Front="false"/>
       <InitializeTrajectory trajectory="{Trajectory}"/>
@@ -27,9 +30,9 @@
           <InitializeTrajectory trajectory="{Trajectory}"/>
           <AiFilter Detected_object="{AiDetection}"
                     Max_time_before_failing_ms="0.000000"
-                    Max_frame_before_failing="0"
+                    Max_frame_before_failing="300"
                     Two_objects_possible="0"
-                    Min_detections_before_success="2"
+                    Min_detections_before_success="5"
                     Confidence="0.600000"
                     Max_depth="25"
                     Object_class="shark"
@@ -38,8 +41,7 @@
                            Detection="{AiDetection}"/>
           <SubTree ID="SendTrajectoryOnly"
                    Trajectory="{Trajectory}"
-                   TimeBeforeFailing="5"
-                   TimeBeforeFailling="5"/>
+                   TimeBeforeFailing="5"/>
         </Sequence>
       </Repeat>
       <Dropper side="port_side"/>
@@ -62,43 +64,55 @@
 
   <BehaviorTree ID="Gate">
     <Sequence>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"/>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
       <Fallback>
         <Sequence>
           <SubTree ID="SearchObjectByRotation"
                    Object="gate-shark"
                    FoundAiDetection="{Aidetection}"
-                   StartingAngle="0"/>
+                   Max_time_before_failing_ms="0.00"
+                   Max_frame_before_failing="300"
+                   Min_detection_before_success="5"
+                   Confidence="0.60000"
+                   Max_depth="25"/>
           <Script code="DetectedObject:=gate_shark"/>
         </Sequence>
         <Sequence>
           <SubTree ID="SearchObjectByRotation"
                    Object="gate-sawfish"
                    FoundAiDetection="{Aidetection}"
-                   StartingAngle="0"/>
+                   Max_time_before_failing_ms="0.00"
+                   Max_frame_before_failing="300"
+                   Min_detection_before_success="5"
+                   Confidence="0.60000"
+                   Max_depth="25"/>
           <Script code="DetectedObject:=gate_sawfish"/>
         </Sequence>
       </Fallback>
-      <MoveToObject Offset="0"
-                    Trajectory="{Trajectory}"
-                    Detection="{AiDetection}"/>
+      <ObjectDrifting Trajectory="{Trajectory}"
+                      Detection="{Aidetection}"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
-               TimeBeforeFailing="5"
-               TimeBeforeFailling="7"/>
-      <SubTree ID="RotateToAbsoluteAngle"
-               Angle="0"/>
-      <SubTree ID="MoveSinglePose"
-               frame="1.0"
-               positionX="0.5"
-               positionY="0.0"
-               positionZ="0.0"
-               orientationX="0.0"
-               orientationY="0.0"
-               orientationZ="0.0"/>
+               TimeBeforeFailing="5"/>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <AiFilter Detected_object="{Aidetection}"
+                Max_time_before_failing_ms="0.000000"
+                Max_frame_before_failing="300"
+                Two_objects_possible="0"
+                Min_detections_before_success="5"
+                Confidence="0.600000"
+                Max_depth="25.000000"
+                Object_class="{DetectedObject}"
+                Camera="1"/>
+      <MoveToObject Offset="1.5"
+                    Trajectory="{Trajectory}"
+                    Detection="{Trajectory}"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="5"/>
     </Sequence>
   </BehaviorTree>
 
@@ -138,26 +152,62 @@
       <SubTree ID="SearchObjectByRotation"
                Object="torpedo-poster"
                FoundAiDetection="{AiDetection}"
-               StartingAngle="0"/>
+               Max_time_before_failing_ms="0.0"
+               Max_frame_before_failing="0"
+               Min_detection_before_success="5"
+               Confidence="0.60000"
+               Max_depth="25"/>
+      <MoveToObject Offset="-2"
+                    Trajectory="{Trajectory}"
+                    Detection="{AiDetection}"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="5"/>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <SubTree ID="SearchObjectByRotation"
+               Object="torpedo-poster"
+               FoundAiDetection="{AiDetection}"
+               Max_time_before_failing_ms="0.0"
+               Max_frame_before_failing="0"
+               Min_detection_before_success="5"
+               Confidence="0.60000"
+               Max_depth="25"/>
+      <FaceTheObject Trajectory="{Trajectory}"
+                     Detection="{AiDetection}"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="5"/>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <AiFilter Detected_object="{AiDetection}"
+                Max_time_before_failing_ms="0.000000"
+                Max_frame_before_failing="300"
+                Two_objects_possible="0"
+                Min_detections_before_success="5"
+                Confidence="0.600000"
+                Max_depth="25.000000"
+                Object_class="torpedo-poster"
+                Camera="1"/>
       <ObjectDrifting Trajectory="{Trajectory}"
                       Detection="{AiDetection}"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
-               TimeBeforeFailing="5"
-               TimeBeforeFailling="5"/>
+               TimeBeforeFailing="5"/>
       <InitializeTrajectory trajectory="{Trajectory}"/>
       <AiFilter Detected_object="{AiDetection}"
                 Max_time_before_failing_ms="0.000000"
-                Max_frame_before_failing="0"
+                Max_frame_before_failing="300"
                 Two_objects_possible="0"
-                Min_detections_before_success="2"
+                Min_detections_before_success="5"
                 Confidence="0.600000"
-                Max_depth="25"
+                Max_depth="25.000000"
                 Object_class="torpedo-poster"
                 Camera="1"/>
-      <TorpedoAiming LaunchingSide="port-side"
-                     Trajectory="{Trajectory}"
-                     Detection="{AiDetection}"/>
+      <MoveToObject Offset="1"
+                    Trajectory="{Trajectory}"
+                    Detection="{AiDetection}"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="5"/>
     </Sequence>
   </BehaviorTree>
 
@@ -363,9 +413,15 @@
       <input_port name="side"
                   type="std::string">port_side or starboard</input_port>
     </Action>
+    <Action ID="FaceTheObject">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
     <SubTree ID="Gate"
              editable="true">
-      <input_port name="DetectedObject"/>
+      <input_port name="DetectedObject">The type of object that the sub will working to</input_port>
     </SubTree>
     <SubTree ID="InitialSubmerge"
              editable="true">
@@ -383,14 +439,22 @@
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
-    <SubTree ID="MoveSinglePose" editable="true">
-        <input_port name="frame" default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
-        <input_port name="positionX" default="0.0">x value to go</input_port>
-        <input_port name="positionY" default="0.0">y value to go</input_port>
-        <input_port name="positionZ" default="0.0">z value to go</input_port>
-        <input_port name="orientationX" default="0.0">z orientation to go</input_port>
-        <input_port name="orientationY" default="0.0">y orientation to go</input_port>
-        <input_port name="orientationZ" default="0.0">rotation in Z to give to the sub</input_port>
+    <SubTree ID="MoveSinglePose"
+             editable="true">
+      <input_port name="frame"
+                  default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
+      <input_port name="positionX"
+                  default="0.0">x value to go</input_port>
+      <input_port name="positionY"
+                  default="0.0">y value to go</input_port>
+      <input_port name="positionZ"
+                  default="0.0">z value to go</input_port>
+      <input_port name="orientationX"
+                  default="0.0">z orientation to go</input_port>
+      <input_port name="orientationY"
+                  default="0.0">y orientation to go</input_port>
+      <input_port name="orientationZ"
+                  default="0.0">rotation in Z to give to the sub</input_port>
     </SubTree>
     <Action ID="MoveToObject">
       <input_port name="Offset"
@@ -406,29 +470,27 @@
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
-    <SubTree ID="RotateToAbsoluteAngle"
-             editable="true">
-      <input_port name="Angle">Angle to put to the sub</input_port>
-    </SubTree>
     <SubTree ID="SearchObjectByRotation"
              editable="true">
       <input_port name="Object">Object we are looking for</input_port>
-      <input_port name="FoundAiDetection">The AiDetection found during the research</input_port>
+      <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
+      <input_port name="Max_time_before_failing_ms"
+                  default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0">Number of frame that the sub will take to every 30 degree position to find the object</input_port>
+      <input_port name="Min_detection_before_success"
+                  default="5">Nombre of detected frame to call a found status</input_port>
+      <input_port name="Confidence"
+                  default="0.60000">Minimum confidence of the Ai</input_port>
+      <input_port name="Max_depth"
+                  default="25">Max distance to detect an object</input_port>
     </SubTree>
     <SubTree ID="SendTrajectoryOnly"
              editable="true">
-      <input_port name="Trajectory"/>
+      <input_port name="Trajectory">The trajectory to do to the sub</input_port>
       <input_port name="TimeBeforeFailing"
-                  default="5">Time before the movement of the sub is abort</input_port>
+                  default="5">The time before the sub movement fail</input_port>
     </SubTree>
-    <Action ID="TorpedoAiming">
-      <input_port name="LaunchingSide"
-                  type="std::string"/>
-      <inout_port name="Trajectory"
-                  type="Trajectory"/>
-      <input_port name="Detection"
-                  type="AiDetection"/>
-    </Action>
     <Action ID="TrajectoryAppendPose">
       <inout_port name="trajectory"
                   type="Trajectory"/>

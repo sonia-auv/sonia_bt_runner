@@ -89,12 +89,12 @@
   <BehaviorTree ID="SearchObjectByRotation">
     <Fallback>
       <AiFilter Detected_object="{FoundAiDetection}"
-                Max_time_before_failing_ms="0.000000"
-                Max_frame_before_failing="300"
+                Max_time_before_failing_ms="{Max_time_before_failing_ms}"
+                Max_frame_before_failing="{Max_frame_before_failing}"
                 Two_objects_possible="0"
-                Min_detections_before_success="5"
-                Confidence="0.600000"
-                Max_depth="25"
+                Min_detections_before_success="{Min_detection_before_success}"
+                Confidence="{Confidence}"
+                Max_depth="{Max_depth}"
                 Object_class="{Object}"
                 Camera="1"/>
       <Sequence>
@@ -108,12 +108,12 @@
                  orientationZ="30"/>
         <Fallback>
           <AiFilter Detected_object="{FoundAiDetection}"
-                    Max_time_before_failing_ms="0.000000"
-                    Max_frame_before_failing="300"
+                    Max_time_before_failing_ms="{Max_time_before_failing_ms}"
+                    Max_frame_before_failing="{Max_frame_before_failing}"
                     Two_objects_possible="0"
-                    Min_detections_before_success="5"
-                    Confidence="0.600000"
-                    Max_depth="25"
+                    Min_detections_before_success="{Min_detection_before_success}"
+                    Confidence="{Confidence}"
+                    Max_depth="{Max_depth}"
                     Object_class="{Object}"
                     Camera="1"/>
           <Sequence>
@@ -124,15 +124,15 @@
                      positionZ="0.0"
                      orientationX="0.0"
                      orientationY="0.0"
-                     orientationZ="-60"/>
+                     orientationZ="30"/>
             <Fallback>
               <AiFilter Detected_object="{FoundAiDetection}"
-                        Max_time_before_failing_ms="0.000000"
-                        Max_frame_before_failing="300"
+                        Max_time_before_failing_ms="{Max_time_before_failing_ms}"
+                        Max_frame_before_failing="{Max_frame_before_failing}"
                         Two_objects_possible="0"
-                        Min_detections_before_success="5"
-                        Confidence="0.600000"
-                        Max_depth="25"
+                        Min_detections_before_success="{Min_detection_before_success}"
+                        Confidence="{Confidence}"
+                        Max_depth="{Max_depth}"
                         Object_class="{Object}"
                         Camera="1"/>
               <Sequence>
@@ -143,15 +143,15 @@
                          positionZ="0.0"
                          orientationX="0.0"
                          orientationY="0.0"
-                         orientationZ="-30"/>
+                         orientationZ="30"/>
                 <Fallback>
                   <AiFilter Detected_object="{FoundAiDetection}"
-                            Max_time_before_failing_ms="0.000000"
-                            Max_frame_before_failing="300"
+                            Max_time_before_failing_ms="{Max_time_before_failing_ms}"
+                            Max_frame_before_failing="{Max_frame_before_failing}"
                             Two_objects_possible="0"
-                            Min_detections_before_success="5"
-                            Confidence="0.600000"
-                            Max_depth="25"
+                            Min_detections_before_success="{Min_detection_before_success}"
+                            Confidence="{Confidence}"
+                            Max_depth="{Max_depth}"
                             Object_class="{Object}"
                             Camera="1"/>
                   <Sequence>
@@ -162,19 +162,166 @@
                              positionZ="0.0"
                              orientationX="0.0"
                              orientationY="0.0"
-                             orientationZ="120"/>
-                    <IfThenElse>
+                             orientationZ="30"/>
+                    <Fallback>
                       <AiFilter Detected_object="{FoundAiDetection}"
-                                Max_time_before_failing_ms="0.000000"
-                                Max_frame_before_failing="300"
+                                Max_time_before_failing_ms="{Max_time_before_failing_ms}"
+                                Max_frame_before_failing="{Max_frame_before_failing}"
                                 Two_objects_possible="0"
-                                Min_detections_before_success="5"
-                                Confidence="0.600000"
-                                Max_depth="25"
+                                Min_detections_before_success="{Min_detection_before_success}"
+                                Confidence="{Confidence}"
+                                Max_depth="{Max_depth}"
                                 Object_class="{Object}"
                                 Camera="1"/>
-                      <SubTree ID="MissionFailed"/>
-                    </IfThenElse>
+                      <Sequence>
+                        <SubTree ID="MoveSinglePose"
+                                 frame="1.0"
+                                 positionX="0.0"
+                                 positionY="0.0"
+                                 positionZ="0.0"
+                                 orientationX="0.0"
+                                 orientationY="0.0"
+                                 orientationZ="30"/>
+                        <Fallback>
+                          <AiFilter Detected_object="{FoundAiDetection}"
+                                    Max_time_before_failing_ms="{Max_time_before_failing_ms}"
+                                    Max_frame_before_failing="{Max_frame_before_failing}"
+                                    Two_objects_possible="0"
+                                    Min_detections_before_success="{Min_detection_before_success}"
+                                    Confidence="{Confidence}"
+                                    Max_depth="{Max_depth}"
+                                    Object_class="{Object}"
+                                    Camera="1"/>
+                          <Sequence>
+                            <SubTree ID="MoveSinglePose"
+                                     frame="1.0"
+                                     positionX="0.0"
+                                     positionY="0.0"
+                                     positionZ="0.0"
+                                     orientationX="0.0"
+                                     orientationY="0.0"
+                                     orientationZ="30"/>
+                            <Fallback>
+                              <AiFilter Detected_object="{FoundAiDetection}"
+                                        Max_time_before_failing_ms="{Max_time_before_failing_ms}"
+                                        Max_frame_before_failing="{Max_frame_before_failing}"
+                                        Two_objects_possible="0"
+                                        Min_detections_before_success="{Min_detection_before_success}"
+                                        Confidence="{Confidence}"
+                                        Max_depth="{Max_depth}"
+                                        Object_class="{Object}"
+                                        Camera="1"/>
+                              <Sequence>
+                                <SubTree ID="MoveSinglePose"
+                                         frame="1.0"
+                                         positionX="0.0"
+                                         positionY="0.0"
+                                         positionZ="0.0"
+                                         orientationX="0.0"
+                                         orientationY="0.0"
+                                         orientationZ="30"/>
+                                <Fallback>
+                                  <AiFilter Detected_object="{FoundAiDetection}"
+                                            Max_time_before_failing_ms="{Max_time_before_failing_ms}"
+                                            Max_frame_before_failing="{Max_frame_before_failing}"
+                                            Two_objects_possible="0"
+                                            Min_detections_before_success="{Min_detection_before_success}"
+                                            Confidence="{Confidence}"
+                                            Max_depth="{Max_depth}"
+                                            Object_class="{Object}"
+                                            Camera="1"/>
+                                  <Sequence>
+                                    <SubTree ID="MoveSinglePose"
+                                             frame="1.0"
+                                             positionX="0.0"
+                                             positionY="0.0"
+                                             positionZ="0.0"
+                                             orientationX="0.0"
+                                             orientationY="0.0"
+                                             orientationZ="30"/>
+                                    <Fallback>
+                                      <AiFilter Detected_object="{FoundAiDetection}"
+                                                Max_time_before_failing_ms="{Max_time_before_failing_ms}"
+                                                Max_frame_before_failing="{Max_frame_before_failing}"
+                                                Two_objects_possible="0"
+                                                Min_detections_before_success="{Min_detection_before_success}"
+                                                Confidence="{Confidence}"
+                                                Max_depth="{Max_depth}"
+                                                Object_class="{Object}"
+                                                Camera="1"/>
+                                      <Sequence>
+                                        <SubTree ID="MoveSinglePose"
+                                                 frame="1.0"
+                                                 positionX="0.0"
+                                                 positionY="0.0"
+                                                 positionZ="0.0"
+                                                 orientationX="0.0"
+                                                 orientationY="0.0"
+                                                 orientationZ="30"/>
+                                        <Fallback>
+                                          <AiFilter Detected_object="{FoundAiDetection}"
+                                                    Max_time_before_failing_ms="{Max_time_before_failing_ms}"
+                                                    Max_frame_before_failing="{Max_frame_before_failing}"
+                                                    Two_objects_possible="0"
+                                                    Min_detections_before_success="{Min_detection_before_success}"
+                                                    Confidence="{Confidence}"
+                                                    Max_depth="{Max_depth}"
+                                                    Object_class="{Object}"
+                                                    Camera="1"/>
+                                          <Sequence>
+                                            <SubTree ID="MoveSinglePose"
+                                                     frame="1.0"
+                                                     positionX="0.0"
+                                                     positionY="0.0"
+                                                     positionZ="0.0"
+                                                     orientationX="0.0"
+                                                     orientationY="0.0"
+                                                     orientationZ="30"/>
+                                            <Fallback>
+                                              <AiFilter Detected_object="{FoundAiDetection}"
+                                                        Max_time_before_failing_ms="{Max_time_before_failing_ms}"
+                                                        Max_frame_before_failing="{Max_frame_before_failing}"
+                                                        Two_objects_possible="0"
+                                                        Min_detections_before_success="{Min_detection_before_success}"
+                                                        Confidence="{Confidence}"
+                                                        Max_depth="{Max_depth}"
+                                                        Object_class="{Object}"
+                                                        Camera="1"/>
+                                              <Sequence>
+                                                <SubTree ID="MoveSinglePose"
+                                                         frame="1.0"
+                                                         positionX="0.0"
+                                                         positionY="0.0"
+                                                         positionZ="0.0"
+                                                         orientationX="0.0"
+                                                         orientationY="0.0"
+                                                         orientationZ="30"/>
+                                                <IfThenElse>
+                                                  <AiFilter Detected_object="{FoundAiDetection}"
+                                                            Max_time_before_failing_ms="{Max_time_before_failing_ms}"
+                                                            Max_frame_before_failing="{Max_frame_before_failing}"
+                                                            Two_objects_possible="0"
+                                                            Min_detections_before_success="{Min_detection_before_success}"
+                                                            Confidence="{Confidence}"
+                                                            Max_depth="{Max_depth}"
+                                                            Object_class="{Object}"
+                                                            Camera="1"/>
+                                                  <AlwaysFailure/>
+                                                </IfThenElse>
+                                              </Sequence>
+                                            </Fallback>
+                                          </Sequence>
+                                        </Fallback>
+                                      </Sequence>
+                                    </Fallback>
+                                  </Sequence>
+                                </Fallback>
+                              </Sequence>
+                            </Fallback>
+                          </Sequence>
+                        </Fallback>
+                      </Sequence>
+                    </Fallback>
                   </Sequence>
                 </Fallback>
               </Sequence>
@@ -237,14 +384,22 @@
                    type="Trajectory"/>
     </Action>
     <Condition ID="MissionSwitchStatus"/>
-    <SubTree ID="MoveSinglePose" editable="true">
-        <input_port name="frame" default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
-        <input_port name="positionX" default="0.0">x value to go</input_port>
-        <input_port name="positionY" default="0.0">y value to go</input_port>
-        <input_port name="positionZ" default="0.0">z value to go</input_port>
-        <input_port name="orientationX" default="0.0">z orientation to go</input_port>
-        <input_port name="orientationY" default="0.0">y orientation to go</input_port>
-        <input_port name="orientationZ" default="0.0">rotation in Z to give to the sub</input_port>
+    <SubTree ID="MoveSinglePose"
+             editable="true">
+      <input_port name="frame"
+                  default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
+      <input_port name="positionX"
+                  default="0.0">x value to go</input_port>
+      <input_port name="positionY"
+                  default="0.0">y value to go</input_port>
+      <input_port name="positionZ"
+                  default="0.0">z value to go</input_port>
+      <input_port name="orientationX"
+                  default="0.0">z orientation to go</input_port>
+      <input_port name="orientationY"
+                  default="0.0">y orientation to go</input_port>
+      <input_port name="orientationZ"
+                  default="0.0">rotation in Z to give to the sub</input_port>
     </SubTree>
     <Action ID="SendTrajectory">
       <input_port name="trajectory"
@@ -255,9 +410,9 @@
     </Action>
     <SubTree ID="SendTrajectoryOnly"
              editable="true">
-      <input_port name="Trajectory"/>
+      <input_port name="Trajectory">The trajectory to do to the sub</input_port>
       <input_port name="TimeBeforeFailing"
-                  default="5">Time before the movement of the sub is abort</input_port>
+                  default="5">The time before the sub movement fail</input_port>
     </SubTree>
     <Action ID="Tare">
       <input_port name="sensor"
