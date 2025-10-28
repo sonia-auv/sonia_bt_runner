@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
-  <BehaviorTree ID="PoolAiBottom">
+  <BehaviorTree ID="Pool1AiBottom">
     <Sequence>
       <SubTree ID="InitialSubmerge"
                Depth="0.5"/>
@@ -12,10 +12,10 @@
                   Max_time_before_failing_ms="0.000000"
                   Max_frame_before_failing="300"
                   Two_objects_possible="0"
-                  Min_detections_before_success="2"
+                  Min_detections_before_success="5"
                   Confidence="0.600000"
                   Max_depth="25"
-                  Object_class="gate-shark"
+                  Object_class="shark"
                   Camera="0"/>
         <SubTree ID="MissionSuccess"/>
         <SubTree ID="MissionFailed"/>
@@ -23,39 +23,43 @@
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="PoolAiFront">
+  <BehaviorTree ID="Pool2AiFront">
     <Sequence>
-      <RetryUntilSuccessful num_attempts="-1">
-        <MissionSwitchStatus/>
-      </RetryUntilSuccessful>
+      <SubTree ID="InitialSubmerge"
+               Depth="0.2"/>
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"/>
-      <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_ms="0.000000"
-                Max_frame_before_failing="0"
-                Two_objects_possible="0"
-                Min_detections_before_success="2"
-                Confidence="0.3000"
-                Max_depth="25"
-                Object_class="torpedo-poster"
-                Camera="1"/>
-    </Sequence>
-  </BehaviorTree>
-
-  <BehaviorTree ID="PoolBin">
-    <Sequence>
-      <SubTree ID="InitialSubmerge"
-               Depth="0.5"/>
       <IfThenElse>
-        <SubTree ID="Bin"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_ms="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.60000"
+                  Max_depth="25"
+                  Object_class="gate-shark"
+                  Camera="1"/>
         <SubTree ID="MissionSuccess"/>
         <SubTree ID="MissionFailed"/>
       </IfThenElse>
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="PoolGate">
+  <BehaviorTree ID="Pool3Bin">
+    <Sequence>
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+      <IfThenElse>
+        <SubTree ID="Bin"
+                 ObjectToAim=""/>
+        <SubTree ID="MissionSuccess"/>
+        <SubTree ID="MissionFailed"/>
+      </IfThenElse>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool4Gate">
     <Sequence>
       <SubTree ID="InitialSubmerge"
                Depth="0.5"/>
@@ -69,99 +73,22 @@
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="PoolMissionFailed">
-    <Sequence>
-      <SubTree ID="InitialSubmerge"
-               Depth="0.5"/>
-      <SubTree ID="MissionFailed"/>
-    </Sequence>
-  </BehaviorTree>
-
-  <BehaviorTree ID="PoolMissionSuccess">
-    <Sequence>
-      <SubTree ID="InitialSubmerge"
-               Depth="0.5"/>
-      <SubTree ID="MissionSuccess"/>
-    </Sequence>
-  </BehaviorTree>
-
-  <BehaviorTree ID="PoolSearch">
+  <BehaviorTree ID="Pool5Search">
     <Sequence>
       <SubTree ID="InitialSubmerge"
                Depth="0.5"/>
       <IfThenElse>
         <SubTree ID="SearchObjectByRotation"
                  Object="gate-shark"
-                 FoundAiDetection="{AiDetection}"/>
+                 FoundAiDetection="{AiDetection}"
+                 Max_time_before_failing_ms="0.0"
+                 Max_frame_before_failing="0"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"/>
         <SubTree ID="MissionSuccess"/>
         <SubTree ID="MissionFailed"/>
       </IfThenElse>
-    </Sequence>
-  </BehaviorTree>
-
-  <BehaviorTree ID="PoolSendFrontBack">
-    <Sequence>
-      <SubTree ID="InitialSubmerge"
-               Depth="0.5"/>
-      <IfThenElse>
-        <Sequence>
-          <InitializeTrajectory trajectory="{Trajectory}"/>
-          <TrajectoryAppendPose trajectory="{Trajectory}"
-                                precision="0"
-                                speed="0"
-                                frame="1.0"
-                                orientationZ="0.000000"
-                                longRotation="false"
-                                positionZ="0.000000"
-                                positionY="0.000000"
-                                orientationY="0.000000"
-                                orientationX="0.000000"
-                                positionX="1.0"/>
-          <TrajectoryAppendPose trajectory="{Trajectory}"
-                                precision="0"
-                                speed="0"
-                                frame="1.0"
-                                orientationZ="0.000000"
-                                longRotation="false"
-                                positionZ="0.000000"
-                                positionY="0.000000"
-                                orientationY="0.000000"
-                                orientationX="0.000000"
-                                positionX="-1.0"/>
-          <SubTree ID="SendTrajectoryOnly"
-                   Trajectory="{Trajectory}"
-                   TimeBeforeFailing="5"/>
-        </Sequence>
-        <SubTree ID="MissionSuccess"/>
-        <SubTree ID="MissionFailed"/>
-      </IfThenElse>
-    </Sequence>
-  </BehaviorTree>
-
-  <BehaviorTree ID="PoolSquare">
-    <Sequence>
-      <SubTree ID="InitialSubmerge"
-               Depth="0.5"/>
-      <Repeat num_cycles="4">
-        <Sequence>
-          <SubTree ID="MoveSinglePose"
-                   frame="1.0"
-                   positionX="0.2"
-                   positionY="0.0"
-                   positionZ="0.0"
-                   orientationX="0.0"
-                   orientationY="0.0"
-                   orientationZ="0.0"/>
-          <SubTree ID="MoveSinglePose"
-                   frame="1.0"
-                   positionX="0.0"
-                   positionY="0.0"
-                   positionZ="0.0"
-                   orientationX="0.0"
-                   orientationY="0.0"
-                   orientationZ="90.0"/>
-        </Sequence>
-      </Repeat>
     </Sequence>
   </BehaviorTree>
 
@@ -212,78 +139,34 @@
                   default="1"
                   type="int">1: Front, 0: Bottom</input_port>
     </Action>
+    <SubTree ID="Bin"
+             editable="true">
+      <input_port name="ObjectToAim">The object in the bin that the sub needs to aim</input_port>
+    </SubTree>
     <SubTree ID="Gate"
              editable="true">
-      <input_port name="DetectedObject"/>
+      <input_port name="DetectedObject">The type of object that the sub will working to</input_port>
     </SubTree>
     <SubTree ID="InitialSubmerge"
              editable="true">
       <input_port name="Depth"
                   default="0.5"/>
     </SubTree>
-    <Action ID="InitializeTrajectory">
-      <output_port name="trajectory"
-                   type="Trajectory"/>
-    </Action>
-    <Condition ID="MissionSwitchStatus"/>
-    <SubTree ID="MoveSinglePose" editable="true">
-        <input_port name="frame" default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
-        <input_port name="positionX" default="0.0">x value to go</input_port>
-        <input_port name="positionY" default="0.0">y value to go</input_port>
-        <input_port name="positionZ" default="0.0">z value to go</input_port>
-        <input_port name="orientationX" default="0.0">z orientation to go</input_port>
-        <input_port name="orientationY" default="0.0">y orientation to go</input_port>
-        <input_port name="orientationZ" default="0.0">rotation in Z to give to the sub</input_port>
-    </SubTree>
-    <SubTree ID="SearchObjectByRotation" editable="true">
-            <input_port name="Object">Object we are looking for</input_port>
-            <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
-            <input_port name="Max_time_before_failing_ms" default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
-            <input_port name="Max_frame_before_failing" default="0">Number of frame that the sub will take to every 30 degree position to find the object</input_port>
-            <input_port name="Min_detection_before_success" default="5">Nombre of detected frame to call a found status</input_port>
-            <input_port name="Confidence" default="0.60000">Minimum confidence of the Ai</input_port>
-            <input_port name="Max_depth" default="25">Max distance to detect an object</input_port>
-        </SubTree>
-    <SubTree ID="SendTrajectoryOnly"
+    <SubTree ID="SearchObjectByRotation"
              editable="true">
-      <input_port name="Trajectory"/>
-      <input_port name="TimeBeforeFailing"
-                  default="5">Time before the movement of the sub is abort</input_port>
+      <input_port name="Object">Object we are looking for</input_port>
+      <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
+      <input_port name="Max_time_before_failing_ms"
+                  default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0">Number of frame that the sub will take to every 30 degree position to find the object</input_port>
+      <input_port name="Min_detection_before_success"
+                  default="5">Nombre of detected frame to call a found status</input_port>
+      <input_port name="Confidence"
+                  default="0.60000">Minimum confidence of the Ai</input_port>
+      <input_port name="Max_depth"
+                  default="25">Max distance to detect an object</input_port>
     </SubTree>
-    <Action ID="TrajectoryAppendPose">
-      <inout_port name="trajectory"
-                  type="Trajectory"/>
-      <input_port name="precision"
-                  default="0"
-                  type="int"/>
-      <input_port name="speed"
-                  default="0"
-                  type="int"/>
-      <input_port name="frame"
-                  default="1"
-                  type="int"/>
-      <input_port name="orientationZ"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="longRotation"
-                  default="false"
-                  type="bool"/>
-      <input_port name="positionZ"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="positionY"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="orientationY"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="orientationX"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="positionX"
-                  default="0.000000"
-                  type="float"/>
-    </Action>
   </TreeNodesModel>
 
 </root>

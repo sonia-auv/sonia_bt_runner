@@ -124,7 +124,7 @@
                      positionZ="0.0"
                      orientationX="0.0"
                      orientationY="0.0"
-                     orientationZ="30"/>
+                     orientationZ="-60"/>
             <Fallback>
               <AiFilter Detected_object="{FoundAiDetection}"
                         Max_time_before_failing_ms="{Max_time_before_failing_ms}"
@@ -143,7 +143,7 @@
                          positionZ="0.0"
                          orientationX="0.0"
                          orientationY="0.0"
-                         orientationZ="30"/>
+                         orientationZ="-30"/>
                 <Fallback>
                   <AiFilter Detected_object="{FoundAiDetection}"
                             Max_time_before_failing_ms="{Max_time_before_failing_ms}"
@@ -162,7 +162,7 @@
                              positionZ="0.0"
                              orientationX="0.0"
                              orientationY="0.0"
-                             orientationZ="30"/>
+                             orientationZ="120"/>
                     <Fallback>
                       <AiFilter Detected_object="{FoundAiDetection}"
                                 Max_time_before_failing_ms="{Max_time_before_failing_ms}"

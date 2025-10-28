@@ -18,8 +18,9 @@
                 Max_depth="25"
                 Object_class="bin-inner"
                 Camera="1"/>
-      <TorpedoAiming LaunchingSide="Sub"
-                     Trajectory="{Trajectory}"
+      <TorpedoAiming Trajectory="{Trajectory}"
+                     TargetOffset=""
+                     LaunchingSide="Sub"
                      Detection="{AiDetection}"/>
     </Sequence>
   </BehaviorTree>
@@ -71,6 +72,26 @@
     </Sequence>
   </BehaviorTree>
 
+  <BehaviorTree ID="AirUninitializedTrajectory">
+    <Sequence>
+      <RetryUntilSuccessful num_attempts="-1">
+        <MissionSwitchStatus/>
+      </RetryUntilSuccessful>
+      <AiActivation Model="0"
+                    Bottom="false"
+                    Front="true"/>
+      <AiFilter Detected_object=""
+                Max_time_before_failing_ms="0.000000"
+                Max_frame_before_failing="0"
+                Two_objects_possible="0"
+                Min_detections_before_success="2"
+                Confidence="0.600000"
+                Max_depth="25.000000"
+                Object_class=""
+                Camera="1"/>
+    </Sequence>
+  </BehaviorTree>
+
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
     <Action ID="AiActivation">
@@ -117,9 +138,12 @@
     </Action>
     <Condition ID="MissionSwitchStatus"/>
     <Action ID="MoveToObject">
-        <input_port name="Offset" type="float"/>
-        <inout_port name="Trajectory" type="Trajectory"/>
-        <input_port name="Detection" type="AiDetection"/>
+      <input_port name="Offset"
+                  type="float"/>
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
     </Action>
     <Action ID="ObjectDrifting">
       <inout_port name="Trajectory"
@@ -128,10 +152,12 @@
                   type="AiDetection"/>
     </Action>
     <Action ID="TorpedoAiming">
-      <input_port name="LaunchingSide"
-                  type="std::string"/>
       <inout_port name="Trajectory"
                   type="Trajectory"/>
+      <input_port name="TargetOffset"
+                  type="float"/>
+      <input_port name="LaunchingSide"
+                  type="std::string"/>
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
