@@ -340,6 +340,122 @@
     </Sequence>
   </BehaviorTree>
 
+  <BehaviorTree ID="TorpedoApproachSequence">
+    <Sequence>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <SubTree ID="SearchObjectByRotation"
+               Object="torpedo-poster"
+               FoundAiDetection="{AiDetection}"
+               Max_time_before_failing_ms="0.0"
+               Max_frame_before_failing="0"
+               Min_detection_before_success="5"
+               Confidence="0.60000"
+               Max_depth="25"/>
+      <FaceTheObject Trajectory="{Trajectory}"
+                     Detection="{AiDetection}"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="5"/>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <AiFilter Detected_object="{AiDetection}"
+                Max_time_before_failing_ms="0.000000"
+                Max_frame_before_failing="300"
+                Two_objects_possible="0"
+                Min_detections_before_success="5"
+                Confidence="0.600000"
+                Max_depth="25.000000"
+                Object_class="torpedo-poster"
+                Camera="1"/>
+      <ObjectDrifting Trajectory="{Trajectory}"
+                      Detection="{AiDetection}"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="5"/>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <AiFilter Detected_object="{AiDetection}"
+                Max_time_before_failing_ms="0.000000"
+                Max_frame_before_failing="300"
+                Two_objects_possible="0"
+                Min_detections_before_success="5"
+                Confidence="0.600000"
+                Max_depth="25.000000"
+                Object_class="torpedo-poster"
+                Camera="1"/>
+      <TorpedoAiming Trajectory="{Trajectory}"
+                     TargetOffset="1.2"
+                     LaunchingSide="sub"
+                     Detection="{AiDetection}"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="5"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="TorpedoShootingSequence">
+    <Sequence>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <AiFilter Detected_object="{AiDetection}"
+                Max_time_before_failing_ms="0.000000"
+                Max_frame_before_failing="300"
+                Two_objects_possible="0"
+                Min_detections_before_success="5"
+                Confidence="0.600000"
+                Max_depth="25.000000"
+                Object_class="{ObjectToAim}"
+                Camera="1"/>
+      <TorpedoAiming Trajectory="{Trajectory}"
+                     TargetOffset="1"
+                     LaunchingSide="Sub"
+                     Detection="{AiDetection}"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="5"/>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <AiFilter Detected_object="{AiDetection}"
+                Max_time_before_failing_ms="0.000000"
+                Max_frame_before_failing="300"
+                Two_objects_possible="1"
+                Min_detections_before_success="5"
+                Confidence="0.600000"
+                Max_depth="25.000000"
+                Object_class="torpedo-target"
+                Camera="1"/>
+      <TorpedoAiming Trajectory="{Trajectory}"
+                     TargetOffset="0.3"
+                     LaunchingSide="{TorpedoSide}"
+                     Detection="{AiDetection}"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="5"/>
+      <ShootTorpedo side="{TorpedoSide}"/>
+      <SubTree ID="MoveSinglePose"
+               frame="1.0"
+               positionX="-0.9"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"/>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <AiFilter Detected_object="{AiDetection}"
+                Max_time_before_failing_ms="0.000000"
+                Max_frame_before_failing="300"
+                Two_objects_possible="0"
+                Min_detections_before_success="5"
+                Confidence="0.600000"
+                Max_depth="25.000000"
+                Object_class="torpedo-poster"
+                Camera="1"/>
+      <TorpedoAiming Trajectory="{Trajectory}"
+                     TargetOffset="1.2"
+                     LaunchingSide="Sub"
+                     Detection="{AiDetection}"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="5"/>
+    </Sequence>
+  </BehaviorTree>
+
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
     <Action ID="AiFilter">
@@ -379,6 +495,12 @@
                   default="false"
                   type="bool">true: start, false: stop</input_port>
     </Action>
+    <Action ID="FaceTheObject">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
     <Action ID="InitializeTrajectory">
       <output_port name="trajectory"
                    type="Trajectory"/>
@@ -401,6 +523,27 @@
       <input_port name="orientationZ"
                   default="0.0">rotation in Z to give to the sub</input_port>
     </SubTree>
+    <Action ID="ObjectDrifting">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
+    <SubTree ID="SearchObjectByRotation"
+             editable="true">
+      <input_port name="Object">Object we are looking for</input_port>
+      <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
+      <input_port name="Max_time_before_failing_ms"
+                  default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0">Number of frame that the sub will take to every 30 degree position to find the object</input_port>
+      <input_port name="Min_detection_before_success"
+                  default="5">Nombre of detected frame to call a found status</input_port>
+      <input_port name="Confidence"
+                  default="0.60000">Minimum confidence of the Ai</input_port>
+      <input_port name="Max_depth"
+                  default="25">Max distance to detect an object</input_port>
+    </SubTree>
     <Action ID="SendTrajectory">
       <input_port name="trajectory"
                   type="Trajectory"/>
@@ -414,9 +557,23 @@
       <input_port name="TimeBeforeFailing"
                   default="5">The time before the sub movement fail</input_port>
     </SubTree>
+    <Action ID="ShootTorpedo">
+      <input_port name="side"
+                  type="std::string">port_side or starboard</input_port>
+    </Action>
     <Action ID="Tare">
       <input_port name="sensor"
                   type="std::string">imu or depth</input_port>
+    </Action>
+    <Action ID="TorpedoAiming">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="TargetOffset"
+                  type="float"/>
+      <input_port name="LaunchingSide"
+                  type="std::string"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
     </Action>
     <Action ID="TrajectoryAppendPose">
       <inout_port name="trajectory"

@@ -117,12 +117,9 @@
     </Action>
     <Condition ID="MissionSwitchStatus"/>
     <Action ID="MoveToObject">
-      <input_port name="Offset"
-                  type="float"/>
-      <inout_port name="Trajectory"
-                  type="Trajectory"/>
-      <input_port name="Detection"
-                  type="AiDetectionArray"/>
+        <input_port name="Offset" type="float"/>
+        <inout_port name="Trajectory" type="Trajectory"/>
+        <input_port name="Detection" type="AiDetection"/>
     </Action>
     <Action ID="ObjectDrifting">
       <inout_port name="Trajectory"

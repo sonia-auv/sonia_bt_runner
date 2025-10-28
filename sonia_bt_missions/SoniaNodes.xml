@@ -61,8 +61,9 @@
             <input_port name="sensor" type="std::string">imu or depth</input_port>
         </Action>
         <Action ID="TorpedoAiming">
-            <input_port name="LaunchingSide" type="std::string"/>
             <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="TargetOffset" type="float"/>
+            <input_port name="LaunchingSide" type="std::string"/>
             <input_port name="Detection" type="AiDetection"/>
         </Action>
         <Action ID="TrajectoryAppendPose">

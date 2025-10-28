@@ -22,6 +22,9 @@
             <input_port name="Object_class" type="std::string">Searched object</input_port>
             <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
         </Action>
+        <SubTree ID="Bin" editable="true">
+            <input_port name="ObjectToAim">The object in the bin that the sub needs to aim</input_port>
+        </SubTree>
         <Action ID="ControlSetMode">
             <input_port name="set_mode" default="false" type="bool"/>
         </Action>
@@ -98,10 +101,18 @@
             <input_port name="sensor" type="std::string">imu or depth</input_port>
         </Action>
         <Action ID="TorpedoAiming">
-            <input_port name="LaunchingSide" type="std::string"/>
             <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="TargetOffset" type="float"/>
+            <input_port name="LaunchingSide" type="std::string"/>
             <input_port name="Detection" type="AiDetection"/>
         </Action>
+        <SubTree ID="TorpedoShootingSequence" editable="true">
+            <input_port name="TorpedoSide">The torpedo side to launch</input_port>
+            <input_port name="ObjectToAim">The object closest to the torpedo target</input_port>
+        </SubTree>
+        <SubTree ID="Torpedos" editable="true">
+            <input_port name="ObjectToAim">The object that the sub needs to aim first</input_port>
+        </SubTree>
         <Action ID="TrajectoryAppendPose">
             <inout_port name="trajectory" type="Trajectory"/>
             <input_port name="precision" default="0" type="int"/>

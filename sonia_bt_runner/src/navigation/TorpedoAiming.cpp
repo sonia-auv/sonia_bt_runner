@@ -13,10 +13,12 @@ namespace navigation
     {
         AiDetection det;
         std::string launching_side;
+        float target_offset;
 
         // We get the detected object by the AI
         getInput("Detection", det);
         getInput("LaunchingSide", launching_side);
+        getInput("TargetOffset", target_offset);
 
         if(!getInput<Trajectory>("Trajectory"))
         {
@@ -28,7 +30,7 @@ namespace navigation
         RCLCPP_INFO(ros_node->get_logger(), "Computing TorpedoAiming trajectory");
         
         TrajectoryPose t;
-        t.positionX = 0.0; // We don't move on the x axis
+        t.positionX = det.distance - target_offset; // We take an offset with the target poster
         t.positionY = det.distance_teta; // We move on the y axis
         if (launching_side == "portside")
         {

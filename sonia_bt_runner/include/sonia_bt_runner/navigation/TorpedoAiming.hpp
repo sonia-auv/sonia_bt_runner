@@ -21,6 +21,7 @@ namespace navigation
                     // Inputs
                     BT::InputPort<AiDetection>("Detection"),
                     BT::InputPort<std::string>("LaunchingSide"),
+                    BT::InputPort<float>("TargetOffset"),
 
                     // Outputs
                     BT::BidirectionalPort<Trajectory>("Trajectory"),
