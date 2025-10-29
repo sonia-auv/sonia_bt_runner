@@ -111,7 +111,7 @@
                 Min_detections_before_success="2"
                 Confidence="0.3000"
                 Max_depth="25"
-                Object_class="torpedo-poster"
+                Object_class="path"
                 Camera="1"/>
       <TorpedoAiming Trajectory="{Trajectory}"
                      TargetOffset="0"
@@ -136,7 +136,7 @@
                 Min_detections_before_success="2"
                 Confidence="0.3000"
                 Max_depth="25"
-                Object_class="torpedo-poster"
+                Object_class="path"
                 Camera="1"/>
       <TorpedoAiming Trajectory="{Trajectory}"
                      TargetOffset="0"
@@ -161,7 +161,7 @@
                 Min_detections_before_success="2"
                 Confidence="0.3000"
                 Max_depth="25"
-                Object_class="torpedo-poster"
+                Object_class="path"
                 Camera="1"/>
       <TorpedoAiming Trajectory="{Trajectory}"
                      TargetOffset="0"
@@ -186,7 +186,7 @@
                 Min_detections_before_success="2"
                 Confidence="0.3000"
                 Max_depth="25"
-                Object_class="torpedo-poster"
+                Object_class="path"
                 Camera="1"/>
       <TorpedoAiming Trajectory="{Trajectory}"
                      TargetOffset="2"
@@ -211,7 +211,7 @@
                 Min_detections_before_success="2"
                 Confidence="0.3000"
                 Max_depth="25"
-                Object_class="bin-inner"
+                Object_class="path"
                 Camera="torpedo-poster"/>
       <ObjectDrifting Trajectory="{Trajectory}"
                       Detection="{AiDetection}"/>
@@ -234,7 +234,7 @@
                 Min_detections_before_success="5"
                 Confidence="0.3000"
                 Max_depth="25"
-                Object_class="torpedo-poster"
+                Object_class="path"
                 Camera="1"/>
       <MoveToObject Offset="0"
                     Trajectory="{Trajectory}"
@@ -247,7 +247,7 @@
                 Min_detections_before_success="5"
                 Confidence="0.3000"
                 Max_depth="25"
-                Object_class="torpedo-poster"
+                Object_class="path"
                 Camera="1"/>
       <MoveToObject Offset="0"
                     Trajectory="{Trajectory}"
@@ -271,7 +271,7 @@
                 Min_detections_before_success="5"
                 Confidence="0.3000"
                 Max_depth="25"
-                Object_class="torpedo-poster"
+                Object_class="path"
                 Camera="1"/>
       <FaceTheObject Trajectory="{Trajectory}"
                      Detection="{AiDetection}"/>
