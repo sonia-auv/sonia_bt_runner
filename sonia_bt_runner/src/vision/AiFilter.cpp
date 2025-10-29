@@ -45,17 +45,18 @@ namespace vision{
 
     BT::NodeStatus AiFilter::onRunning(){
 
-        time_diff = std::chrono::system_clock::now() - _launch_time;
+        std::chrono::duration<double> diff = std::chrono::system_clock::now() - _launch_time;
+        time_diff = diff.count();
 
-        RCLCPP_INFO(ros_node->get_logger(), "time_dif : %d  launch_time : %d now : %d", time_diff.count(), _launch_time, std::chrono::system_clock::now());
+        RCLCPP_INFO(ros_node->get_logger(), "time_dif : %lf  launch_time : %lf", time_diff, _launch_time);
 
-        if(max_frame_before_failing.value() != 0 && counter >= max_frame_before_failing.value() || max_time_before_failing.value() != 0.0 && time_diff.count() >= max_time_before_failing.value())
+        if(max_frame_before_failing.value() != 0 && counter >= max_frame_before_failing.value() || max_time_before_failing.value() != 0.0 && time_diff >= max_time_before_failing.value())
         {
             // We took to much time or count too many frame to fond the object
             if (max_frame_before_failing.value() != 0)
                 RCLCPP_INFO(ros_node->get_logger(), "counter %d : max frame = %d, We don't find what we are looking for.", counter, max_frame_before_failing.value());
             else
-                RCLCPP_INFO(ros_node->get_logger(), "node time %f : max time = %f, We don't find what we are looking for.", time_diff.count(), max_time_before_failing.value());
+                RCLCPP_INFO(ros_node->get_logger(), "node time %f : max time = %f, We don't find what we are looking for.", time_diff, max_time_before_failing.value());
             
             return BT::NodeStatus::FAILURE;
         }

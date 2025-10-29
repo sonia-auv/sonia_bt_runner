@@ -41,7 +41,7 @@ namespace vision{
 
             std::vector<sonia_common_ros2::msg::Detection> _detection_array;
             std::chrono::_V2::system_clock::time_point _launch_time;
-            std::chrono::duration<double> time_diff;
+            float time_diff;
             int counter;
             
             BT::Expected<int> cam;
