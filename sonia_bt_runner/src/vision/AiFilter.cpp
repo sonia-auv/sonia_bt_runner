@@ -45,9 +45,9 @@ namespace vision{
 
     BT::NodeStatus AiFilter::onRunning(){
 
-        std::chrono::duration<double> time_diff;
         time_diff = std::chrono::system_clock::now() - _launch_time;
-        RCLCPP_INFO(ros_node->get_logger(), "%d", time_diff.count());
+
+        RCLCPP_INFO(ros_node->get_logger(), "time_dif : %d  launch_time : %d now : %d", time_diff.count(), _launch_time, std::chrono::system_clock::now());
 
         if(max_frame_before_failing.value() != 0 && counter >= max_frame_before_failing.value() || max_time_before_failing.value() != 0.0 && time_diff.count() >= max_time_before_failing.value())
         {
