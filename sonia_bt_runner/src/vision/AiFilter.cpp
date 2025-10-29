@@ -48,8 +48,6 @@ namespace vision{
         std::chrono::duration<double> diff = std::chrono::system_clock::now() - _launch_time;
         time_diff = diff.count();
 
-        RCLCPP_INFO(ros_node->get_logger(), "time_dif : %lf  launch_time : %lf", time_diff, _launch_time);
-
         if(max_frame_before_failing.value() != 0 && counter >= max_frame_before_failing.value() || max_time_before_failing.value() != 0.0 && time_diff >= max_time_before_failing.value())
         {
             // We took to much time or count too many frame to fond the object
