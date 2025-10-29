@@ -19,7 +19,7 @@ namespace vision{
 
         // I put those two parameter to do the test of witch one we're gonna use.
         max_frame_before_failing = getInput<int>("Max_frame_before_failing");
-        max_time_before_failing = getInput<float>("Max_time_before_failing_ms");
+        max_time_before_failing = getInput<float>("Max_time_before_failing_sec");
 
         max_depth = getInput<float>("Max_depth");
 

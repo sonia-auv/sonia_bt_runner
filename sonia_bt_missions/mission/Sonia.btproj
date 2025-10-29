@@ -13,7 +13,7 @@
         </Action>
         <Action ID="AiFilter">
             <output_port name="Detected_object" type="AiDetection"/>
-            <input_port name="Max_time_before_failing_ms" default="0.000000" type="float">Maximum allowed time in ms before failing the object research</input_port>
+            <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Maximum allowed time in ms before failing the object research</input_port>
             <input_port name="Max_frame_before_failing" default="0" type="int">Maximum allowed frames before failing the object research</input_port>
             <input_port name="Two_objects_possible" default="0" type="int">0: Only one object can be detected, 1: Two or more object of the same class can be detected</input_port>
             <input_port name="Min_detections_before_success" default="2" type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
@@ -80,7 +80,7 @@
         <SubTree ID="SearchObjectByRotation" editable="true">
             <input_port name="Object">Object we are looking for</input_port>
             <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
-            <input_port name="Max_time_before_failing_ms" default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
+            <input_port name="Max_time_before_failing_sec" default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
             <input_port name="Max_frame_before_failing" default="0">Number of frame that the sub will take to every 30 degree position to find the object</input_port>
             <input_port name="Min_detection_before_success" default="5">Nombre of detected frame to call a found status</input_port>
             <input_port name="Confidence" default="0.60000">Minimum confidence of the Ai</input_port>

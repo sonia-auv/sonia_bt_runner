@@ -10,7 +10,7 @@
       <SubTree ID="SearchObjectByRotation"
                Object="bin"
                FoundAiDetection="{FrontAidetection}"
-               Max_time_before_failing_ms="0.0"
+               Max_time_before_failing_sec="0.0"
                Max_frame_before_failing="300"
                Min_detection_before_success="5"
                Confidence="0.60000"
@@ -29,7 +29,7 @@
         <Sequence>
           <InitializeTrajectory trajectory="{Trajectory}"/>
           <AiFilter Detected_object="{AiDetection}"
-                    Max_time_before_failing_ms="0.000000"
+                    Max_time_before_failing_sec="0.000000"
                     Max_frame_before_failing="300"
                     Two_objects_possible="0"
                     Min_detections_before_success="5"
@@ -73,7 +73,7 @@
           <SubTree ID="SearchObjectByRotation"
                    Object="gate-shark"
                    FoundAiDetection="{Aidetection}"
-                   Max_time_before_failing_ms="0.00"
+                   Max_time_before_failing_sec="0.00"
                    Max_frame_before_failing="300"
                    Min_detection_before_success="5"
                    Confidence="0.60000"
@@ -84,7 +84,7 @@
           <SubTree ID="SearchObjectByRotation"
                    Object="gate-sawfish"
                    FoundAiDetection="{Aidetection}"
-                   Max_time_before_failing_ms="0.00"
+                   Max_time_before_failing_sec="0.00"
                    Max_frame_before_failing="300"
                    Min_detection_before_success="5"
                    Confidence="0.60000"
@@ -99,7 +99,7 @@
                TimeBeforeFailing="5"/>
       <InitializeTrajectory trajectory="{Trajectory}"/>
       <AiFilter Detected_object="{Aidetection}"
-                Max_time_before_failing_ms="0.000000"
+                Max_time_before_failing_sec="0.000000"
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
@@ -154,7 +154,7 @@
       <SubTree ID="SearchObjectByRotation"
                Object="torpedo-poster"
                FoundAiDetection="{AiDetection}"
-               Max_time_before_failing_ms="0.0"
+               Max_time_before_failing_sec="0.0"
                Max_frame_before_failing="300"
                Min_detection_before_success="5"
                Confidence="0.60000"
@@ -360,31 +360,15 @@
                   type="bool">true: ON, talse: OFF</input_port>
     </Action>
     <Action ID="AiFilter">
-      <output_port name="Detected_object"
-                   type="AiDetection"/>
-      <input_port name="Max_time_before_failing_ms"
-                  default="0.000000"
-                  type="float">Maximum allowed time in ms before failing the object research</input_port>
-      <input_port name="Max_frame_before_failing"
-                  default="0"
-                  type="int">Maximum allowed frames before failing the object research</input_port>
-      <input_port name="Two_objects_possible"
-                  default="0"
-                  type="int">0: Only one object can be detected, 1: Two or more object of the same class can be detected</input_port>
-      <input_port name="Min_detections_before_success"
-                  default="2"
-                  type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
-      <input_port name="Confidence"
-                  default="0.600000"
-                  type="float">Ai confidence</input_port>
-      <input_port name="Max_depth"
-                  default="25.000000"
-                  type="float">Maximum allowed depth</input_port>
-      <input_port name="Object_class"
-                  type="std::string">Searched object</input_port>
-      <input_port name="Camera"
-                  default="1"
-                  type="int">1: Front, 0: Bottom</input_port>
+        <output_port name="Detected_object" type="AiDetection"/>
+        <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Maximum allowed time in ms before failing the object research</input_port>
+        <input_port name="Max_frame_before_failing" default="0" type="int">Maximum allowed frames before failing the object research</input_port>
+        <input_port name="Two_objects_possible" default="0" type="int">0: Only one object can be detected, 1: Two or more object of the same class can be detected</input_port>
+        <input_port name="Min_detections_before_success" default="2" type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+        <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
+        <input_port name="Max_depth" default="25.000000" type="float">Maximum allowed depth</input_port>
+        <input_port name="Object_class" type="std::string">Searched object</input_port>
+        <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
     </Action>
     <SubTree ID="Bin"
              editable="true">
@@ -449,7 +433,7 @@
              editable="true">
       <input_port name="Object">Object we are looking for</input_port>
       <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
-      <input_port name="Max_time_before_failing_ms"
+      <input_port name="Max_time_before_failing_sec"
                   default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
       <input_port name="Max_frame_before_failing"
                   default="0">Number of frame that the sub will take to every 30 degree position to find the object</input_port>

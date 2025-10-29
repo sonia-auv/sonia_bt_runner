@@ -23,7 +23,7 @@ namespace vision{
                     BT::InputPort<int>("Min_detections_before_success", 2, "Minumum number of frames with at least one detection before sending results. Need to be heigher than 2"),
                     BT::InputPort<int>("Two_objects_possible", 0, "0: Only one object can be detected, 1: Two or more object of the same class can be detected"),
                     BT::InputPort<int>("Max_frame_before_failing", 0, "Maximum allowed frames before failing the object research"),
-                    BT::InputPort<float>("Max_time_before_failing_ms", 0.0, "Maximum allowed time in ms before failing the object research"),
+                    BT::InputPort<float>("Max_time_before_failing_sec", 0.0, "Maximum allowed time in ms before failing the object research"),
                     BT::InputPort<float>("Max_depth", 25.0, "Maximum allowed depth"),
 
                     // Outputs

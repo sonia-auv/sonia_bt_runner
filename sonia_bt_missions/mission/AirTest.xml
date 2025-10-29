@@ -10,7 +10,7 @@
                     Bottom="false"
                     Front="true"/>
       <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_ms="0.000000"
+                Max_time_before_failing_sec="0.000000"
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
@@ -33,7 +33,7 @@
                     Bottom="false"
                     Front="true"/>
       <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_ms="0.000000"
+                Max_time_before_failing_sec="0.000000"
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="2"
@@ -57,7 +57,7 @@
                     Bottom="false"
                     Front="true"/>
       <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_ms="5000"
+                Max_time_before_failing_sec="5000"
                 Max_frame_before_failing="0"
                 Two_objects_possible="0"
                 Min_detections_before_success="2"
@@ -81,7 +81,7 @@
                     Bottom="false"
                     Front="true"/>
       <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_ms="0"
+                Max_time_before_failing_sec="0"
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="1"
@@ -105,7 +105,7 @@
                     Bottom="false"
                     Front="true"/>
       <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_ms="0.000000"
+                Max_time_before_failing_sec="0.000000"
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="2"
@@ -130,7 +130,7 @@
                     Bottom="false"
                     Front="true"/>
       <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_ms="0.000000"
+                Max_time_before_failing_sec="0.000000"
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="2"
@@ -155,7 +155,7 @@
                     Bottom="false"
                     Front="true"/>
       <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_ms="0.000000"
+                Max_time_before_failing_sec="0.000000"
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="2"
@@ -180,7 +180,7 @@
                     Bottom="false"
                     Front="true"/>
       <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_ms="0.000000"
+                Max_time_before_failing_sec="0.000000"
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="2"
@@ -205,7 +205,7 @@
                     Bottom="false"
                     Front="true"/>
       <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_ms="0.000000"
+                Max_time_before_failing_sec="0.000000"
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="2"
@@ -228,7 +228,7 @@
                     Bottom="false"
                     Front="true"/>
       <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_ms="0.000000"
+                Max_time_before_failing_sec="0.000000"
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
@@ -241,7 +241,7 @@
                     Detection="{AiDetection}"/>
       <InitializeTrajectory trajectory="{Trajectory}"/>
       <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_ms="0.000000"
+                Max_time_before_failing_sec="0.000000"
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
@@ -265,7 +265,7 @@
                     Bottom="false"
                     Front="true"/>
       <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_ms="0.000000"
+                Max_time_before_failing_sec="0.000000"
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
@@ -292,31 +292,15 @@
                   type="bool">true: ON, talse: OFF</input_port>
     </Action>
     <Action ID="AiFilter">
-      <output_port name="Detected_object"
-                   type="AiDetection"/>
-      <input_port name="Max_time_before_failing_ms"
-                  default="0.000000"
-                  type="float">Maximum allowed time in ms before failing the object research</input_port>
-      <input_port name="Max_frame_before_failing"
-                  default="0"
-                  type="int">Maximum allowed frames before failing the object research</input_port>
-      <input_port name="Two_objects_possible"
-                  default="0"
-                  type="int">0: Only one object can be detected, 1: Two or more object of the same class can be detected</input_port>
-      <input_port name="Min_detections_before_success"
-                  default="2"
-                  type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
-      <input_port name="Confidence"
-                  default="0.600000"
-                  type="float">Ai confidence</input_port>
-      <input_port name="Max_depth"
-                  default="25.000000"
-                  type="float">Maximum allowed depth</input_port>
-      <input_port name="Object_class"
-                  type="std::string">Searched object</input_port>
-      <input_port name="Camera"
-                  default="1"
-                  type="int">1: Front, 0: Bottom</input_port>
+        <output_port name="Detected_object" type="AiDetection"/>
+        <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Maximum allowed time in ms before failing the object research</input_port>
+        <input_port name="Max_frame_before_failing" default="0" type="int">Maximum allowed frames before failing the object research</input_port>
+        <input_port name="Two_objects_possible" default="0" type="int">0: Only one object can be detected, 1: Two or more object of the same class can be detected</input_port>
+        <input_port name="Min_detections_before_success" default="2" type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+        <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
+        <input_port name="Max_depth" default="25.000000" type="float">Maximum allowed depth</input_port>
+        <input_port name="Object_class" type="std::string">Searched object</input_port>
+        <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
     </Action>
     <Action ID="FaceTheObject">
       <inout_port name="Trajectory"
