@@ -109,7 +109,7 @@
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
-                Confidence="0.3000"
+                Confidence="0.7000"
                 Max_depth="25"
                 Object_class="path"
                 Camera="1"/>
@@ -134,7 +134,7 @@
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
-                Confidence="0.3000"
+                Confidence="0.7000"
                 Max_depth="25"
                 Object_class="path"
                 Camera="1"/>
@@ -159,7 +159,7 @@
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
-                Confidence="0.3000"
+                Confidence="0.7000"
                 Max_depth="25"
                 Object_class="path"
                 Camera="1"/>
@@ -184,7 +184,7 @@
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
-                Confidence="0.3000"
+                Confidence="0.7000"
                 Max_depth="25"
                 Object_class="path"
                 Camera="1"/>
@@ -209,7 +209,7 @@
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
-                Confidence="0.3000"
+                Confidence="0.7000"
                 Max_depth="25"
                 Object_class="path"
                 Camera="1"/>
@@ -232,7 +232,7 @@
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
-                Confidence="0.3000"
+                Confidence="0.700"
                 Max_depth="25"
                 Object_class="path"
                 Camera="1"/>
@@ -245,7 +245,7 @@
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
-                Confidence="0.3000"
+                Confidence="0.7000"
                 Max_depth="25"
                 Object_class="path"
                 Camera="1"/>
@@ -269,7 +269,7 @@
                 Max_frame_before_failing="300"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
-                Confidence="0.3000"
+                Confidence="0.7000"
                 Max_depth="25"
                 Object_class="path"
                 Camera="1"/>
