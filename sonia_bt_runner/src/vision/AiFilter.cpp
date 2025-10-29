@@ -56,6 +56,7 @@ namespace vision{
             else
                 RCLCPP_INFO(ros_node->get_logger(), "node time %f : max time = %f, We don't find what we are looking for.", time_diff, max_time_before_failing.value());
             
+            ai_filter_sub.reset();
             return BT::NodeStatus::FAILURE;
         }
 
