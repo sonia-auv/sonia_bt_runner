@@ -212,7 +212,7 @@
                 Confidence="0.3000"
                 Max_depth="25"
                 Object_class="path"
-                Camera="torpedo-poster"/>
+                Camera="1"/>
       <ObjectDrifting Trajectory="{Trajectory}"
                       Detection="{AiDetection}"/>
     </Sequence>
