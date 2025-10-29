@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
-  <BehaviorTree ID="Air1MoveToObject">
+  <BehaviorTree ID="Air01MoveToObject">
     <Sequence>
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
@@ -24,7 +24,7 @@
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="Air2UninitializedTrajectory">
+  <BehaviorTree ID="Air02UninitializedTrajectory">
     <Sequence>
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
@@ -34,6 +34,30 @@
                     Front="true"/>
       <AiFilter Detected_object="{AiDetection}"
                 Max_time_before_failing_ms="0.000000"
+                Max_frame_before_failing="300"
+                Two_objects_possible="0"
+                Min_detections_before_success="2"
+                Confidence="0.3000"
+                Max_depth="25"
+                Object_class="torpedo-poster"
+                Camera="1"/>
+      <MoveToObject Offset="0"
+                    Trajectory="{Trajectory}"
+                    Detection="{AiDetection}"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Air03TimerAiFilter">
+    <Sequence>
+      <RetryUntilSuccessful num_attempts="-1">
+        <MissionSwitchStatus/>
+      </RetryUntilSuccessful>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <AiActivation Model="0"
+                    Bottom="false"
+                    Front="true"/>
+      <AiFilter Detected_object="{AiDetection}"
+                Max_time_before_failing_ms="5000"
                 Max_frame_before_failing="0"
                 Two_objects_possible="0"
                 Min_detections_before_success="2"
@@ -47,7 +71,31 @@
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="Air3AimingPortSide">
+  <BehaviorTree ID="Air04MinDetectionFault">
+    <Sequence>
+      <RetryUntilSuccessful num_attempts="-1">
+        <MissionSwitchStatus/>
+      </RetryUntilSuccessful>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <AiActivation Model="0"
+                    Bottom="false"
+                    Front="true"/>
+      <AiFilter Detected_object="{AiDetection}"
+                Max_time_before_failing_ms="0"
+                Max_frame_before_failing="300"
+                Two_objects_possible="0"
+                Min_detections_before_success="1"
+                Confidence="0.3000"
+                Max_depth="25"
+                Object_class="torpedo-poster"
+                Camera="1"/>
+      <MoveToObject Offset="0"
+                    Trajectory="{Trajectory}"
+                    Detection="{AiDetection}"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Air05AimingPortSide">
     <Sequence>
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
@@ -72,7 +120,7 @@
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="Air4AimingStarboard">
+  <BehaviorTree ID="Air06AimingStarboard">
     <Sequence>
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
@@ -97,7 +145,7 @@
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="Air5AimingSub">
+  <BehaviorTree ID="Air07AimingSub">
     <Sequence>
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
@@ -122,7 +170,7 @@
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="Air6AimingSubOffset2">
+  <BehaviorTree ID="Air08AimingSubOffset2">
     <Sequence>
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
@@ -147,7 +195,7 @@
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="Air7Drifting">
+  <BehaviorTree ID="Air09Drifting">
     <Sequence>
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
@@ -164,9 +212,69 @@
                 Confidence="0.3000"
                 Max_depth="25"
                 Object_class="bin-inner"
-                Camera="1"/>
+                Camera="torpedo-poster"/>
       <ObjectDrifting Trajectory="{Trajectory}"
                       Detection="{AiDetection}"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Air10IdenticalParameter">
+    <Sequence>
+      <RetryUntilSuccessful num_attempts="-1">
+        <MissionSwitchStatus/>
+      </RetryUntilSuccessful>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <AiActivation Model="0"
+                    Bottom="false"
+                    Front="true"/>
+      <AiFilter Detected_object="{AiDetection}"
+                Max_time_before_failing_ms="0.000000"
+                Max_frame_before_failing="300"
+                Two_objects_possible="0"
+                Min_detections_before_success="5"
+                Confidence="0.3000"
+                Max_depth="25"
+                Object_class="torpedo-poster"
+                Camera="1"/>
+      <MoveToObject Offset="0"
+                    Trajectory="{Trajectory}"
+                    Detection="{AiDetection}"/>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <AiFilter Detected_object="{AiDetection}"
+                Max_time_before_failing_ms="0.000000"
+                Max_frame_before_failing="300"
+                Two_objects_possible="0"
+                Min_detections_before_success="5"
+                Confidence="0.3000"
+                Max_depth="25"
+                Object_class="torpedo-poster"
+                Camera="1"/>
+      <MoveToObject Offset="0"
+                    Trajectory="{Trajectory}"
+                    Detection="{AiDetection}"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Air11FaceTheObject">
+    <Sequence>
+      <RetryUntilSuccessful num_attempts="-1">
+        <MissionSwitchStatus/>
+      </RetryUntilSuccessful>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <AiActivation Model="0"
+                    Bottom="false"
+                    Front="true"/>
+      <AiFilter Detected_object="{AiDetection}"
+                Max_time_before_failing_ms="0.000000"
+                Max_frame_before_failing="300"
+                Two_objects_possible="0"
+                Min_detections_before_success="5"
+                Confidence="0.3000"
+                Max_depth="25"
+                Object_class="torpedo-poster"
+                Camera="1"/>
+      <FaceTheObject Trajectory="{Trajectory}"
+                     Detection="{AiDetection}"/>
     </Sequence>
   </BehaviorTree>
 
@@ -209,6 +317,12 @@
       <input_port name="Camera"
                   default="1"
                   type="int">1: Front, 0: Bottom</input_port>
+    </Action>
+    <Action ID="FaceTheObject">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
     </Action>
     <Action ID="InitializeTrajectory">
       <output_port name="trajectory"
