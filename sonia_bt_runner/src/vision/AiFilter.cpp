@@ -25,7 +25,7 @@ namespace vision{
 
         if (min_detections_before_success.value() <= 1)
         {
-            RCLCPP_INFO(ros_node->get_logger(), "You have to set the Min_detections_before_success parameter to more than 1.", time_diff.count(), max_time_before_failing.value());
+            RCLCPP_INFO(ros_node->get_logger(), "You have to set the Min_detections_before_success parameter to more than 1.");
             return BT::NodeStatus::FAILURE;
         }
 
@@ -45,6 +45,7 @@ namespace vision{
 
     BT::NodeStatus AiFilter::onRunning(){
 
+        std::chrono::duration<double> time_diff;
         time_diff = std::chrono::system_clock::now() - _launch_time;
         RCLCPP_INFO(ros_node->get_logger(), "%d", time_diff.count());
 
