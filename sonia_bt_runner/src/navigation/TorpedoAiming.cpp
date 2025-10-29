@@ -34,15 +34,18 @@ namespace navigation
         t.positionY = det.distance_teta; // We move on the y axis
         if (launching_side == "port_side")
         {
+            RCLCPP_INFO(ros_node->get_logger(), "port_side");
             t.positionY -= CAMERA_TO_TORPIDO_PEPPER_OFFSET_X; // We move on the x axis
         }
         else if(launching_side == "starboard")
         {
+            RCLCPP_INFO(ros_node->get_logger(), "starboard selected");
             t.positionY -= CAMERA_TO_TORPIDO_SALT_OFFSET_X; // We move on the x axis
         }
         t.positionZ = det.distance_beta; // We move on the z axis
         if (launching_side == "port_side" || launching_side == "starboard")
         {
+            RCLCPP_INFO(ros_node->get_logger(), "port_side or starboard selected");
             t.positionZ -= CAMERA_TO_TORPEDO_OFFSET_Y;
         }
         t.orientationX = 0.0;       // We don't rotate on the x axis
