@@ -32,7 +32,7 @@ namespace navigation
         TrajectoryPose t;
         t.positionX = det.distance - target_offset; // We take an offset with the target poster
         t.positionY = det.distance_teta; // We move on the y axis
-        if (launching_side == "portside")
+        if (launching_side == "port_side")
         {
             t.positionY -= CAMERA_TO_TORPIDO_PEPPER_OFFSET_X; // We move on the x axis
         }
@@ -41,7 +41,7 @@ namespace navigation
             t.positionY -= CAMERA_TO_TORPIDO_SALT_OFFSET_X; // We move on the x axis
         }
         t.positionZ = det.distance_beta; // We move on the z axis
-        if (launching_side == "portside" || launching_side == "starboard")
+        if (launching_side == "port_side" || launching_side == "starboard")
         {
             t.positionZ -= CAMERA_TO_TORPEDO_OFFSET_Y;
         }
