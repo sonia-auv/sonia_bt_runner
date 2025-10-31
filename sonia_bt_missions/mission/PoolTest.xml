@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
-  <BehaviorTree ID="Pool1AiBottom">
+  <BehaviorTree ID="Pool01AiBottom">
     <Sequence>
       <SubTree ID="InitialSubmerge"
                Depth="0.5"/>
@@ -23,7 +23,7 @@
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="Pool2AiFront">
+  <BehaviorTree ID="Pool02AiFront">
     <Sequence>
       <SubTree ID="InitialSubmerge"
                Depth="0.2"/>
@@ -46,33 +46,7 @@
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="Pool3Bin">
-    <Sequence>
-      <SubTree ID="InitialSubmerge"
-               Depth="0.5"/>
-      <IfThenElse>
-        <SubTree ID="Bin"
-                 ObjectToAim="shark"/>
-        <SubTree ID="MissionSuccess"/>
-        <SubTree ID="MissionFailed"/>
-      </IfThenElse>
-    </Sequence>
-  </BehaviorTree>
-
-  <BehaviorTree ID="Pool4Gate">
-    <Sequence>
-      <SubTree ID="InitialSubmerge"
-               Depth="0.5"/>
-      <IfThenElse>
-        <SubTree ID="Gate"
-                 DetectedObject="{FishDetection}"/>
-        <SubTree ID="MissionSuccess"/>
-        <SubTree ID="MissionFailed"/>
-      </IfThenElse>
-    </Sequence>
-  </BehaviorTree>
-
-  <BehaviorTree ID="Pool5Search">
+  <BehaviorTree ID="Pool20Search">
     <Sequence>
       <SubTree ID="InitialSubmerge"
                Depth="0.5"/>
@@ -85,6 +59,32 @@
                  Min_detection_before_success="5"
                  Confidence="0.60000"
                  Max_depth="25"/>
+        <SubTree ID="MissionSuccess"/>
+        <SubTree ID="MissionFailed"/>
+      </IfThenElse>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool21Gate">
+    <Sequence>
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+      <IfThenElse>
+        <SubTree ID="Gate"
+                 DetectedObject="{FishDetection}"/>
+        <SubTree ID="MissionSuccess"/>
+        <SubTree ID="MissionFailed"/>
+      </IfThenElse>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool22Bin">
+    <Sequence>
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+      <IfThenElse>
+        <SubTree ID="Bin"
+                 ObjectToAim="shark"/>
         <SubTree ID="MissionSuccess"/>
         <SubTree ID="MissionFailed"/>
       </IfThenElse>
