@@ -5,7 +5,7 @@
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
       </RetryUntilSuccessful>
-      <Script code="fish:=gate-shark"/>
+      <Script code="fish:=&quot;gate-shark&quot;"/>
       <InitializeTrajectory trajectory="{Trajectory}"/>
       <AiFilter Detected_object="{AiDetection}"
                 Max_time_before_failing_sec="0.000000"
