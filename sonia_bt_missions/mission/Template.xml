@@ -36,22 +36,58 @@
 
   <BehaviorTree ID="MissionSuccess">
     <Sequence>
-      <SubTree ID="MoveSinglePose"
-               frame="1.0"
-               positionX="0.0"
-               positionY="0.0"
-               positionZ="0.0"
-               orientationX="0.0"
-               orientationY="0.0"
-               orientationZ="90.0"/>
-      <SubTree ID="MoveSinglePose"
-               frame="1.0"
-               positionX="0.0"
-               positionY="0.0"
-               positionZ="0.0"
-               orientationX="0.0"
-               orientationY="0.0"
-               orientationZ="-90.0"/>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <TrajectoryAppendPose trajectory="{Trajectory}"
+                            precision="0"
+                            speed="0"
+                            frame="1"
+                            orientationZ="-15"
+                            longRotation="false"
+                            positionZ="0.000000"
+                            positionY="0.000000"
+                            orientationY="0.000000"
+                            orientationX="0.000000"
+                            positionX="0.000000"/>
+      <Repeat num_cycles="2">
+        <Sequence>
+          <TrajectoryAppendPose trajectory="{Trajectory}"
+                                precision="0"
+                                speed="0"
+                                frame="1"
+                                orientationZ="30"
+                                longRotation="false"
+                                positionZ="0.000000"
+                                positionY="0.000000"
+                                orientationY="0.000000"
+                                orientationX="0.000000"
+                                positionX="0.000000"/>
+          <TrajectoryAppendPose trajectory="{Trajectory}"
+                                precision="0"
+                                speed="0"
+                                frame="1"
+                                orientationZ="-30"
+                                longRotation="false"
+                                positionZ="0.000000"
+                                positionY="0.000000"
+                                orientationY="0.000000"
+                                orientationX="0.000000"
+                                positionX="0.000000"/>
+        </Sequence>
+      </Repeat>
+      <TrajectoryAppendPose trajectory="{Trajectory}"
+                            precision="0"
+                            speed="0"
+                            frame="1"
+                            orientationZ="15"
+                            longRotation="false"
+                            positionZ="0.000000"
+                            positionY="0.000000"
+                            orientationY="0.000000"
+                            orientationX="0.000000"
+                            positionX="0.000000"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="10"/>
     </Sequence>
   </BehaviorTree>
 
@@ -524,17 +560,6 @@
                   default="0.0">rotation in Z to give to the sub</input_port>
     </SubTree>
     <Action ID="ObjectDrifting">
-      <Action ID="AiFilter">
-          <output_port name="Detected_object" type="AiDetection"/>
-          <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Maximum allowed time in ms before failing the object research</input_port>
-          <input_port name="Max_frame_before_failing" default="0" type="int">Maximum allowed frames before failing the object research</input_port>
-          <input_port name="Two_objects_possible" default="0" type="int">0: Only one object can be detected, 1: Two or more object of the same class can be detected</input_port>
-          <input_port name="Min_detections_before_success" default="2" type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
-          <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
-          <input_port name="Max_depth" default="25.000000" type="float">Maximum allowed depth</input_port>
-          <input_port name="Object_class" type="std::string">Searched object</input_port>
-          <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
-      </Action>
       <inout_port name="Trajectory"
                   type="Trajectory"/>
       <input_port name="Detection"

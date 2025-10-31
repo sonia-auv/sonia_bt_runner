@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
-  <BehaviorTree ID="Air00Script">
-    <Sequence>
-      <RetryUntilSuccessful num_attempts="-1">
-        <MissionSwitchStatus/>
-      </RetryUntilSuccessful>
-      <Script code="fish:=&quot;yellow-box&quot;"/>
-      <AiActivation Model="0"
-                    Bottom="false"
-                    Front="true"/>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
-      <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_sec="30"
-                Max_frame_before_failing="0"
-                Two_objects_possible="0"
-                Min_detections_before_success="5"
-                Confidence="0.700000"
-                Max_depth="25.000000"
-                Object_class="{fish}"
-                Camera="1"/>
-      <IfThenElse>
-        <ScriptCondition code="fish==&quot;yellow-box&quot;"/>
-        <MoveToObject Offset="0"
-                      Trajectory="{Trajectory}"
-                      Detection="{AiDetection}"/>
-        <FaceTheObject Trajectory="{Trajectory}"
+  <BehaviorTree ID="Air00If">
+    <IfThenElse>
+      <Sequence>
+        <RetryUntilSuccessful num_attempts="-1">
+          <MissionSwitchStatus/>
+        </RetryUntilSuccessful>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.3000"
+                  Max_depth="25"
+                  Object_class="path"
+                  Camera="1"/>
+        <TorpedoAiming Trajectory="{Trajectory}"
+                       TargetOffset="0"
+                       LaunchingSide="port_side"
                        Detection="{AiDetection}"/>
-      </IfThenElse>
-    </Sequence>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
   </BehaviorTree>
 
   <BehaviorTree ID="Air05AimingPortSide">

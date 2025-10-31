@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
+  <BehaviorTree ID="Pool00PrequalRun">
+    <AlwaysSuccess/>
+  </BehaviorTree>
+
   <BehaviorTree ID="Pool01AiBottom">
     <Sequence>
       <SubTree ID="InitialSubmerge"
@@ -46,11 +50,662 @@
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="Pool20Search">
-    <Sequence>
-      <SubTree ID="InitialSubmerge"
-               Depth="0.5"/>
-      <IfThenElse>
+  <BehaviorTree ID="Pool03FaceTheObjectgateshark">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="gate-shark"
+                  Camera="1"/>
+        <FaceTheObject Trajectory="{Trajectory}"
+                       Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool04MoveToObjectgateshark">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="gate-shark"
+                  Camera="1"/>
+        <MoveToObject Offset="0"
+                      Trajectory="{Trajectory}"
+                      Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool05MoveToObjectgatesharkoff">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="gate-shark"
+                  Camera="1"/>
+        <MoveToObject Offset="1"
+                      Trajectory="{Trajectory}"
+                      Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool06MoveToObjectgatesawfish">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="gate-sawfish"
+                  Camera="1"/>
+        <MoveToObject Offset="0"
+                      Trajectory="{Trajectory}"
+                      Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool07MoveToObjectgatesawfishoff">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="gate-sawfish"
+                  Camera="1"/>
+        <MoveToObject Offset="1"
+                      Trajectory="{Trajectory}"
+                      Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool08MoveToObjectbin">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="bin"
+                  Camera="1"/>
+        <MoveToObject Offset="0"
+                      Trajectory="{Trajectory}"
+                      Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool09MoveToObjectbinoff">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="bin"
+                  Camera="1"/>
+        <MoveToObject Offset="1"
+                      Trajectory="{Trajectory}"
+                      Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool10MoveToObjecttorpedoposter">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="torpedo-poster"
+                  Camera="1"/>
+        <MoveToObject Offset="0"
+                      Trajectory="{Trajectory}"
+                      Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool11MoveToObjecttorpedoposteroff">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="torpedo-poster"
+                  Camera="1"/>
+        <MoveToObject Offset="-0.3"
+                      Trajectory="{Trajectory}"
+                      Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool12ObjectDriftinggateshark">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="gate-shark"
+                  Camera="1"/>
+        <FaceTheObject Trajectory="{Trajectory}"
+                       Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="gate-shark"
+                  Camera="1"/>
+        <ObjectDrifting Trajectory="{Trajectory}"
+                        Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool13ObjectDriftinggatesawfish">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="gate-sawfish"
+                  Camera="1"/>
+        <FaceTheObject Trajectory="{Trajectory}"
+                       Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="gate-sawfish"
+                  Camera="1"/>
+        <ObjectDrifting Trajectory="{Trajectory}"
+                        Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool14ObjectDriftingtorpedoposter">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="torpedo-poster"
+                  Camera="1"/>
+        <FaceTheObject Trajectory="{Trajectory}"
+                       Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="torpedo-poster"
+                  Camera="1"/>
+        <ObjectDrifting Trajectory="{Trajectory}"
+                        Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool15TorpedoAimingsharksub">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="shark"
+                  Camera="1"/>
+        <TorpedoAiming Trajectory="{Trajectory}"
+                       TargetOffset="0.3"
+                       LaunchingSide="Sub"
+                       Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool16TorpedoAimingsharkportside">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="shark"
+                  Camera="1"/>
+        <TorpedoAiming Trajectory="{Trajectory}"
+                       TargetOffset="0.3"
+                       LaunchingSide="port_side"
+                       Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+        <ShootTorpedo side="port_side"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool17TorpedoAimingsharkstarboard">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="shark"
+                  Camera="1"/>
+        <TorpedoAiming Trajectory="{Trajectory}"
+                       TargetOffset="0.3"
+                       LaunchingSide="starboard"
+                       Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+        <ShootTorpedo side="starboard"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool18TorpedoAimingsawfishsub">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="sawfish"
+                  Camera="1"/>
+        <TorpedoAiming Trajectory="{Trajectory}"
+                       TargetOffset="0.3"
+                       LaunchingSide="Sub"
+                       Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool19TorpedoAimingsawfishportside">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="sawfish"
+                  Camera="1"/>
+        <TorpedoAiming Trajectory="{Trajectory}"
+                       TargetOffset="0.3"
+                       LaunchingSide="port_side"
+                       Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+        <ShootTorpedo side="port_side"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool20TorpedoAimingsawfishstarboard">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="sawfish"
+                  Camera="1"/>
+        <TorpedoAiming Trajectory="{Trajectory}"
+                       TargetOffset="0.3"
+                       LaunchingSide="starboard"
+                       Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+        <ShootTorpedo side="starboard"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool21MoveAboveObjectshark">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="true"
+                      Front="false"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="shark"
+                  Camera="0"/>
+        <MoveAboveObject Trajectory="{Trajectory}"
+                         Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+        <LaunchDropper side="port_side"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool22MoveAboveObjectsawfish">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <AiActivation Model="0"
+                      Bottom="true"
+                      Front="false"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="sawfish"
+                  Camera="0"/>
+        <MoveAboveObject Trajectory="{Trajectory}"
+                         Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+        <LaunchDropper side="port_side"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool30Search">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
         <SubTree ID="SearchObjectByRotation"
                  Object="gate-shark"
                  FoundAiDetection="{AiDetection}"
@@ -59,43 +714,90 @@
                  Min_detection_before_success="5"
                  Confidence="0.60000"
                  Max_depth="25"/>
-        <SubTree ID="MissionSuccess"/>
-        <SubTree ID="MissionFailed"/>
-      </IfThenElse>
-    </Sequence>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
   </BehaviorTree>
 
-  <BehaviorTree ID="Pool21Gate">
-    <Sequence>
-      <SubTree ID="InitialSubmerge"
-               Depth="0.5"/>
-      <IfThenElse>
+  <BehaviorTree ID="Pool31Gategateshark">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
         <SubTree ID="Gate"
-                 DetectedObject="{FishDetection}"/>
-        <SubTree ID="MissionSuccess"/>
-        <SubTree ID="MissionFailed"/>
-      </IfThenElse>
-    </Sequence>
+                 DetectedObject="gate-sawfish"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
   </BehaviorTree>
 
-  <BehaviorTree ID="Pool22Bin">
-    <Sequence>
-      <SubTree ID="InitialSubmerge"
-               Depth="0.5"/>
-      <IfThenElse>
+  <BehaviorTree ID="Pool32Gategatesawfish">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <SubTree ID="Gate"
+                 DetectedObject="gate-shark"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool33Bingateshark">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
         <SubTree ID="Bin"
-                 ObjectToAim="shark"/>
-        <SubTree ID="MissionSuccess"/>
-        <SubTree ID="MissionFailed"/>
-      </IfThenElse>
-    </Sequence>
+                 ObjectToAim="shark"
+                 _autoremap="false"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
   </BehaviorTree>
 
-  <BehaviorTree ID="PrequalificationRun">
-    <Sequence>
-      <SubTree ID="InitialSubmerge"
-               Depth="0.5"/>
-    </Sequence>
+  <BehaviorTree ID="Pool34Bingatesawfish">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <SubTree ID="Bin"
+                 ObjectToAim="sawfish"
+                 _autoremap="false"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool35Torpedoshark">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <SubTree ID="Torpedos"
+                 ObjectToAim="shark"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool36Torpedosawfish">
+    <IfThenElse>
+      <Sequence>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+        <SubTree ID="Torpedos"
+                 ObjectToAim="sawfish"/>
+      </Sequence>
+      <SubTree ID="MissionSuccess"/>
+      <SubTree ID="MissionFailed"/>
+    </IfThenElse>
   </BehaviorTree>
 
   <!-- Description of Node Models (used by Groot) -->
@@ -142,6 +844,12 @@
              editable="true">
       <input_port name="ObjectToAim">The object in the bin that the sub needs to aim</input_port>
     </SubTree>
+    <Action ID="FaceTheObject">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
     <SubTree ID="Gate"
              editable="true">
       <input_port name="DetectedObject">The type of object that the sub will working to</input_port>
@@ -151,6 +859,34 @@
       <input_port name="Depth"
                   default="0.5"/>
     </SubTree>
+    <Action ID="InitializeTrajectory">
+      <output_port name="trajectory"
+                   type="Trajectory"/>
+    </Action>
+    <Action ID="LaunchDropper">
+      <input_port name="side"
+                  type="std::string">port_side or starboard</input_port>
+    </Action>
+    <Action ID="MoveAboveObject">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
+    <Action ID="MoveToObject">
+      <input_port name="Offset"
+                  type="float"/>
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
+    <Action ID="ObjectDrifting">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
     <SubTree ID="SearchObjectByRotation"
              editable="true">
       <input_port name="Object">Object we are looking for</input_port>
@@ -165,6 +901,30 @@
                   default="0.60000">Minimum confidence of the Ai</input_port>
       <input_port name="Max_depth"
                   default="25">Max distance to detect an object</input_port>
+    </SubTree>
+    <SubTree ID="SendTrajectoryOnly"
+             editable="true">
+      <input_port name="Trajectory">The trajectory to do to the sub</input_port>
+      <input_port name="TimeBeforeFailing"
+                  default="5">The time before the sub movement fail</input_port>
+    </SubTree>
+    <Action ID="ShootTorpedo">
+      <input_port name="side"
+                  type="std::string">port_side or starboard</input_port>
+    </Action>
+    <Action ID="TorpedoAiming">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="TargetOffset"
+                  type="float"/>
+      <input_port name="LaunchingSide"
+                  type="std::string"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
+    <SubTree ID="Torpedos"
+             editable="true">
+      <input_port name="ObjectToAim">The object that the sub needs to aim first</input_port>
     </SubTree>
   </TreeNodesModel>
 
