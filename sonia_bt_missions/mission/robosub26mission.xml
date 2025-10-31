@@ -52,14 +52,8 @@
   </BehaviorTree>
 
   <BehaviorTree ID="CoinFlip">
-    <SubTree ID="MoveSinglePose"
-             frame="2.0"
-             positionX="0.0"
-             positionY="0.0"
-             positionZ="0.0"
-             orientationX="0.0"
-             orientationY="0.0"
-             orientationZ="0.0"/>
+    <SubTree ID="RotateToAbsoluteAngle"
+             Angle="0"/>
   </BehaviorTree>
 
   <BehaviorTree ID="Gate">
@@ -78,9 +72,11 @@
                    Min_detection_before_success="5"
                    Confidence="0.60000"
                    Max_depth="25"/>
-          <Script code="DetectedObject:=gate_shark"/>
+          <Script code="DetectedObject:=&quot;gate_shark&quot;"/>
         </Sequence>
         <Sequence>
+          <SubTree ID="RotateToAbsoluteAngle"
+                   Angle="0"/>
           <SubTree ID="SearchObjectByRotation"
                    Object="gate-sawfish"
                    FoundAiDetection="{Aidetection}"
@@ -89,7 +85,7 @@
                    Min_detection_before_success="5"
                    Confidence="0.60000"
                    Max_depth="25"/>
-          <Script code="DetectedObject:=gate_sawfish"/>
+          <Script code="DetectedObject:=&quot;gate_sawfish&quot;"/>
         </Sequence>
       </Fallback>
       <FaceTheObject Trajectory="{Trajectory}"
@@ -157,9 +153,6 @@
         <SubTree ID="Torpedos"
                  ObjectToAim="{FishDetected}"/>
       </ForceSuccess>
-      <ForceSuccess>
-        <SubTree ID="Octogon"/>
-      </ForceSuccess>
     </Sequence>
   </BehaviorTree>
 
@@ -182,7 +175,7 @@
                TimeBeforeFailing="5"/>
       <SubTree ID="TorpedoApproachSequence"/>
       <IfThenElse>
-        <ScriptCondition code="ObjectToAim==gate-shark"/>
+        <ScriptCondition code="ObjectToAim==&quot;gate-shark&quot;"/>
         <Sequence>
           <SubTree ID="TorpedoShootingSequence"
                    TorpedoSide="port_side"
@@ -466,6 +459,10 @@
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
+    <SubTree ID="RotateToAbsoluteAngle"
+             editable="true">
+      <input_port name="Angle">Angle to put to the sub</input_port>
+    </SubTree>
     <SubTree ID="SearchObjectByRotation"
              editable="true">
       <input_port name="Object">Object we are looking for</input_port>
