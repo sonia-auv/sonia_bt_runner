@@ -11,7 +11,7 @@
                     Front="true"/>
       <InitializeTrajectory trajectory="{Trajectory}"/>
       <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_sec="4"
+                Max_time_before_failing_sec="30"
                 Max_frame_before_failing="0"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
