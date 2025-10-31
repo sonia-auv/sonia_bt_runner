@@ -5,19 +5,22 @@
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
       </RetryUntilSuccessful>
-      <Script code="fish:=&quot;gate-shark&quot;"/>
+      <Script code="fish:=&quot;torpedo-poster&quot;"/>
+      <AiActivation Model="0"
+                    Bottom="false"
+                    Front="true"/>
       <InitializeTrajectory trajectory="{Trajectory}"/>
       <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_sec="0.000000"
-                Max_frame_before_failing="300"
+                Max_time_before_failing_sec="4"
+                Max_frame_before_failing="0"
                 Two_objects_possible="0"
                 Min_detections_before_success="5"
-                Confidence="0.600000"
+                Confidence="0.700000"
                 Max_depth="25.000000"
                 Object_class="{fish}"
                 Camera="1"/>
       <IfThenElse>
-        <ScriptCondition code="fish==gate-shark"/>
+        <ScriptCondition code="fish==&quot;torpedo-poster&quot;"/>
         <MoveToObject Offset="0"
                       Trajectory="{Trajectory}"
                       Detection="{AiDetection}"/>
