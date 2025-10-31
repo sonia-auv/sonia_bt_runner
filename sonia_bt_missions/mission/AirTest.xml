@@ -5,7 +5,7 @@
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
       </RetryUntilSuccessful>
-      <Script code="fish:=&quot;torpedo-poster&quot;"/>
+      <Script code="fish:=&quot;yellow-box&quot;"/>
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"/>
@@ -20,7 +20,7 @@
                 Object_class="{fish}"
                 Camera="1"/>
       <IfThenElse>
-        <ScriptCondition code="fish==&quot;torpedo-poster&quot;"/>
+        <ScriptCondition code="fish==&quot;yellow-box&quot;"/>
         <MoveToObject Offset="0"
                       Trajectory="{Trajectory}"
                       Detection="{AiDetection}"/>
