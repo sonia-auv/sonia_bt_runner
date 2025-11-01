@@ -1,6 +1,6 @@
 # sonia_bt_runner
 
-*description*
+The project runs a **mission server** that accepts and launchs missions on the **AUV** prototype for autonomous operations. It also handles the generation of custom **Behavior Tree nodes** used within these missions. The mission server oversees execution from start to finish, providing real-time control and feedback throughout the operation.
 
 ---
 
@@ -26,9 +26,9 @@
 ---
 ## sonia_bt_missions
 
-sonia_bt_missions contains the missions used for autonomous operations as well as the generated sonia behaviortree nodes required by groot. The missions are created using **Groot2** which is an application that helps interact with behaviortree nodes.
+sonia_bt_missions contains the missions used for autonomous operations as well as the generated sonia behaviortree nodes required by groot. The missions are created using **Groot2**, an application that helps interact with behaviortree nodes.
 
-![Groot2 interface](https://docs.nav2.org/_images/groot_bt_editor1.png)
+![Groot2 interface](https://www.behaviortree.dev/img/groot2.png)
 
 ---
 
