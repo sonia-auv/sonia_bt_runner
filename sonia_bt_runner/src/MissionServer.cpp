@@ -11,7 +11,7 @@ MissionServer::MissionServer()
         search_directory.append("/src/sonia_bt_runner/sonia_bt_missions/mission/");
 
         pub_status_ = this->create_publisher<std_msgs::msg::String>("/mission_server/status_report",1);
-        fetch_missions_srv = this->create_service<sonia_common_ros2::srv::MissionListService>("/mission_server/mission_list", std::bind(&MissionServer::serveMissions, this, _1, _2));
+        fetch_missions_srv_ = this->create_service<sonia_common_ros2::srv::MissionListService>("/mission_server/mission_list", std::bind(&MissionServer::serveMissions, this, _1, _2));
 
         server_ = rclcpp_action::create_server<MissionControl>(
                     this,
@@ -25,7 +25,6 @@ MissionServer::MissionServer()
     
     void MissionServer::init(){
         registerNodes(factory_, this->shared_from_this());    
-        registerFactory();
     }
 
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal){
@@ -66,12 +65,20 @@ MissionServer::MissionServer()
         (void)uuid;
         RCLCPP_INFO(this->get_logger(), "Received goal request with mission : %s", goal->mission.c_str());
         name_ =goal->mission;
-        temp_file="";
+        std::string temp_file;
 
         try
-        {  
-            factory_.clearRegisteredBehaviorTrees();
-            registerFactory();
+        {
+            for (auto const &entry : directory_iterator(search_directory))
+            {
+                if (entry.path().extension() == ".xml")
+                {
+                    temp_file = entry.path().string();
+                    factory_.registerBehaviorTreeFromFile(temp_file);
+                    std::cout << "file: "<<entry.path()<<std::endl;
+                }
+            }
+            
             std::filesystem::path fullFilePath(name_);
             tree_ = factory_.createTree(fullFilePath);
             tree_.initialize();
@@ -105,7 +112,7 @@ MissionServer::MissionServer()
         std::thread{std::bind(&MissionServer::execute, this, _1), goal_handle}.detach();
     }
 
-    void MissionServer::registerFactory() {
+    void MissionServer::generateMissionList() {
     
         mission_list.clear();
         for (auto const &entry : directory_iterator(search_directory))
@@ -122,9 +129,6 @@ MissionServer::MissionServer()
                         const char* id = element->Attribute("ID");
                         mission_list.push_back(id);
                     }
-                temp_file = entry.path().string();
-                factory_.registerBehaviorTreeFromFile(temp_file);
-                std::cout << "file: "<<entry.path()<<std::endl;
             }
         }     
     }
@@ -137,5 +141,7 @@ MissionServer::MissionServer()
         factory_.clearRegisteredBehaviorTrees();
     }
     void MissionServer::serveMissions(const std::shared_ptr<sonia_common_ros2::srv::MissionListService::Request> request, std::shared_ptr<sonia_common_ros2::srv::MissionListService::Response> response){
+        (void)request;
+        generateMissionList();
         response->missions = mission_list;
     }
