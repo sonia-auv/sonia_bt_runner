@@ -26,15 +26,13 @@
 ---
 ## sonia_bt_missions
 
-sonia_bt_missions contains the missions used for autonomous operations. The
-|[alt text](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.behaviortree.dev%2Fgroot%2F&psig=AOvVaw19LZZBtV7SrYXU6vcXOB1O&ust=1762107197801000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPjvv_7G0ZADFQAAAAAdAAAAABAE)
-###
+sonia_bt_missions contains the missions used for autonomous operations as well as the generated sonia behaviortree nodes required by groot. The missions are created using **Groot2** which is an application that helps interact with behaviortree nodes.
+
 ---
 
 ## Node
 
 * Name: `Mission_server`
-* Port Name: ``
 
 ---
 
@@ -59,6 +57,14 @@ source install/setup.bash
 
 ## Launch Instructions
 
+### Env variables
+Required environment variables to launch the project
+
+```bash
+export SONIA_WS={path_to_your_ros2_workspace}
+```
+replace `{path_to_your_ros2_workspace}` with the path to your project's workspace
+
 ### Default launch
 The command launchs the mission server 
 
@@ -67,7 +73,7 @@ ros2 launch sonia_bt_runner launch.py
 ```
 
 ### Node generate command
-The command generates an xml file of custom behaviortree nodes required by groot to create sonia missions, 
+The command generates an xml file of custom behaviortree nodes required by groot to create sonia missions.
 
 ```bash
 ros2 run sonia_bt_runner gen_nodes
