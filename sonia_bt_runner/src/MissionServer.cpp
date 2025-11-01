@@ -11,7 +11,7 @@ MissionServer::MissionServer()
         search_directory.append("/src/sonia_bt_runner/sonia_bt_missions/mission/");
 
         pub_status_ = this->create_publisher<std_msgs::msg::String>("/mission_server/status_report",1);
-        fetch_missions_srv_ = this->create_service<sonia_common_ros2::srv::MissionListService>("/mission_server/mission_list", std::bind(&MissionServer::serveMissions, this, _1, _2));
+        fetch_missions_srv_ = this->create_service<sonia_common_ros2::srv::MissionListService>("/mission_server/mission_list", std::bind(&MissionServer::grabMissionList, this, _1, _2));
 
         server_ = rclcpp_action::create_server<MissionControl>(
                     this,
@@ -113,7 +113,6 @@ MissionServer::MissionServer()
     }
 
     void MissionServer::generateMissionList() {
-    
         mission_list.clear();
         for (auto const &entry : directory_iterator(search_directory))
         {
@@ -123,12 +122,10 @@ MissionServer::MissionServer()
                 document.LoadFile(entry.path().string().c_str());
                 tinyxml2::XMLElement* root_element = document.RootElement();
 
-                for(tinyxml2::XMLElement* element = root_element->FirstChildElement("BehaviorTree");
-                    element!= nullptr;
-                    element = element->NextSiblingElement("BehaviorTree")){
-                        const char* id = element->Attribute("ID");
-                        mission_list.push_back(id);
-                    }
+                for(tinyxml2::XMLElement* element = root_element->FirstChildElement("BehaviorTree"); element!= nullptr; element = element->NextSiblingElement("BehaviorTree")){
+                    const char* id = element->Attribute("ID");
+                    mission_list.push_back(id);
+                }
             }
         }     
     }
@@ -140,7 +137,7 @@ MissionServer::MissionServer()
         RCLCPP_INFO(this->get_logger(), "%s", log.c_str());
         factory_.clearRegisteredBehaviorTrees();
     }
-    void MissionServer::serveMissions(const std::shared_ptr<sonia_common_ros2::srv::MissionListService::Request> request, std::shared_ptr<sonia_common_ros2::srv::MissionListService::Response> response){
+    void MissionServer::grabMissionList(const std::shared_ptr<sonia_common_ros2::srv::MissionListService::Request> request, std::shared_ptr<sonia_common_ros2::srv::MissionListService::Response> response){
         (void)request;
         generateMissionList();
         response->missions = mission_list;

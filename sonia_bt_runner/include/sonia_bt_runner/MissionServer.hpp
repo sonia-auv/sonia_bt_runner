@@ -34,7 +34,7 @@ class MissionServer : public rclcpp::Node{
         const uint64_t _TICK_SLEEP_TIME = 66;
     private:
         void generateMissionList();
-        void serveMissions(const std::shared_ptr<sonia_common_ros2::srv::MissionListService::Request> request, std::shared_ptr<sonia_common_ros2::srv::MissionListService::Response> response);
+        void grabMissionList(const std::shared_ptr<sonia_common_ros2::srv::MissionListService::Request> request, std::shared_ptr<sonia_common_ros2::srv::MissionListService::Response> response);
         void clearFactory(const std::string log);
         void execute(const std::shared_ptr<GoalHandle> goal);
 
