@@ -65,7 +65,7 @@ Required environment variables to launch the project
 ```bash
 export SONIA_WS={path_to_your_ros2_workspace}
 ```
-replace `{path_to_your_ros2_workspace}` with the path to your ros2 workspace
+replace `{path_to_your_ros2_workspace}` with the absolute path to your ros2 workspace
 
 ### Node generate command
 The command generates an xml file of custom behaviortree nodes required by groot to create sonia missions.
