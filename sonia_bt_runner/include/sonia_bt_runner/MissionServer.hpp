@@ -12,11 +12,13 @@
 #include "behaviortree_cpp/xml_parsing.h"
 #include "behaviortree_cpp/loggers/bt_observer.h"
 #include "behaviortree_cpp/loggers/groot2_publisher.h"
+#include "tinyxml2.h"
 
 #include <std_msgs/msg/string.hpp>
 #include "sonia_bt_runner/SoniaNodes.hpp"
 #include "sonia_bt_runner/Tracker.hpp"
 #include "sonia_common_ros2/action/mission_control.hpp"
+#include "sonia_common_ros2/srv/mission_list_service.hpp"
 
 using namespace BT;
 using MissionControl = sonia_common_ros2::action::MissionControl;
@@ -31,6 +33,8 @@ class MissionServer : public rclcpp::Node{
 
         const uint64_t _TICK_SLEEP_TIME = 66;
     private:
+        void generateMissionList();
+        void grabMissionList(const std::shared_ptr<sonia_common_ros2::srv::MissionListService::Request> request, std::shared_ptr<sonia_common_ros2::srv::MissionListService::Response> response);
         void clearFactory(const std::string log);
         void execute(const std::shared_ptr<GoalHandle> goal);
 
@@ -42,8 +46,10 @@ class MissionServer : public rclcpp::Node{
         BehaviorTreeFactory factory_;
         rclcpp_action::Server<MissionControl>::SharedPtr server_;
         rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pub_status_;
+        rclcpp::Service<sonia_common_ros2::srv::MissionListService>::SharedPtr fetch_missions_srv_;
         Tree tree_;
         std::string search_directory;
         NodeStatus result_;
+        std::vector<std::string> mission_list;
         
 };
