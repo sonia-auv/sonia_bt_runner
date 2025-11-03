@@ -68,6 +68,7 @@ BT::NodeBuilder configBuilder(std::shared_ptr<rclcpp::Node> node){
 template <typename T>
 BT::NodeBuilder simpleBuilder(std::shared_ptr<rclcpp::Node> node){
     return [node](const std::string &name, const BT::NodeConfig &config){
+        (void)config;
         return std::make_unique<T>(name,node);
     }; 
 }

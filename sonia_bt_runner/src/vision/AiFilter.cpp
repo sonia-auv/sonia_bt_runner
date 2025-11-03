@@ -7,7 +7,7 @@ namespace vision{
     {
         
     }
-    AiFilter::~AiFilter(){}
+
     BT::NodeStatus AiFilter::onStart(){
 
         // We go get the information in the behavior tree

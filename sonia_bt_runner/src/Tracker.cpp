@@ -6,7 +6,6 @@ Tracker::Tracker(BT::Tree& tree, const std::shared_ptr<GoalHandle> goal)
         feedback =  std::make_shared<MissionControl::Feedback>();
     }
 
-    Tracker::~Tracker(){}
     void Tracker::callback(BT::Duration timestamp, const BT::TreeNode& node, BT::NodeStatus prev_status, BT::NodeStatus status) 
     {
         try{

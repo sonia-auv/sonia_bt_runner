@@ -5,7 +5,6 @@ namespace vision{
     :BT::SyncActionNode(name, config), ros_node(node){
         ai_client = ros_node->create_client<sonia_common_ros2::srv::AiActivationService>("/proc_vision/ai_activation");
     }
-    AiActivation::~AiActivation(){}
 
     BT::NodeStatus AiActivation::tick(){
         std::shared_ptr<sonia_common_ros2::srv::AiActivationService_Response> response;

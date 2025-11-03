@@ -8,9 +8,7 @@ namespace navigation{
     {
         timeout_pub = ros_node->create_publisher<sonia_common_ros2::msg::MissionTimer>("/sonia_behaviors/timeout",5);
     }
-    WaitTargetReached::~WaitTargetReached(){
-
-    }
+    
      BT::NodeStatus WaitTargetReached::onStart(){
         
         _traj_complete = false;
