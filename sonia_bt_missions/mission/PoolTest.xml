@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
   <BehaviorTree ID="Pool00PrequalRun">
-    <AlwaysSuccess/>
+    <Sequence>
+      <SubTree ID="InitialSubmerge"
+               Depth="1"/>
+      <SubTree ID="MoveSinglePose"
+               frame="1.0"
+               positionX="0.0"
+               positionY="-2"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="-90"
+               _autoremap="false"/>
+    </Sequence>
   </BehaviorTree>
 
   <BehaviorTree ID="Pool01AiBottom">
@@ -701,6 +713,53 @@
     </IfThenElse>
   </BehaviorTree>
 
+  <BehaviorTree ID="Pool23DriftMove">
+    <AlwaysSuccess/>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Pool24DriftMove2">
+    <Sequence>
+      <SubTree ID="InitialSubmerge"
+               Depth="1"/>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <TrajectoryAppendPose trajectory="{Trajectory}"
+                            precision="0"
+                            speed="0"
+                            frame="1"
+                            orientationZ="0.000000"
+                            longRotation="false"
+                            positionZ="0.000000"
+                            positionY="0.000000"
+                            orientationY="-90"
+                            orientationX="0.000000"
+                            positionX="0.000000"/>
+      <TrajectoryAppendPose trajectory="{Trajectory}"
+                            precision="0"
+                            speed="0"
+                            frame="1"
+                            orientationZ="0.000000"
+                            longRotation="false"
+                            positionZ="0.000000"
+                            positionY="2"
+                            orientationY="0.000000"
+                            orientationX="90"
+                            positionX="0.000000"/>
+      <TrajectoryAppendPose trajectory="{Trajectory}"
+                            precision="0"
+                            speed="0"
+                            frame="1"
+                            orientationZ="0.000000"
+                            longRotation="false"
+                            positionZ="0.000000"
+                            positionY="0.000000"
+                            orientationY="90"
+                            orientationX="0.000000"
+                            positionX="0.000000"/>
+      <SendTrajectory trajectory="{Trajectory}"
+                      interpolation="0"/>
+    </Sequence>
+  </BehaviorTree>
+
   <BehaviorTree ID="Pool30Search">
     <IfThenElse>
       <Sequence>
@@ -873,6 +932,23 @@
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
+    <SubTree ID="MoveSinglePose"
+             editable="true">
+      <input_port name="frame"
+                  default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
+      <input_port name="positionX"
+                  default="0.0">x value to go</input_port>
+      <input_port name="positionY"
+                  default="0.0">y value to go</input_port>
+      <input_port name="positionZ"
+                  default="0.0">z value to go</input_port>
+      <input_port name="orientationX"
+                  default="0.0">z orientation to go</input_port>
+      <input_port name="orientationY"
+                  default="0.0">y orientation to go</input_port>
+      <input_port name="orientationZ"
+                  default="0.0">rotation in Z to give to the sub</input_port>
+    </SubTree>
     <Action ID="MoveToObject">
       <input_port name="Offset"
                   type="float"/>
@@ -902,6 +978,13 @@
       <input_port name="Max_depth"
                   default="25">Max distance to detect an object</input_port>
     </SubTree>
+    <Action ID="SendTrajectory">
+      <input_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="interpolation"
+                  default="0"
+                  type="int"/>
+    </Action>
     <SubTree ID="SendTrajectoryOnly"
              editable="true">
       <input_port name="Trajectory">The trajectory to do to the sub</input_port>
@@ -926,6 +1009,40 @@
              editable="true">
       <input_port name="ObjectToAim">The object that the sub needs to aim first</input_port>
     </SubTree>
+    <Action ID="TrajectoryAppendPose">
+      <inout_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="precision"
+                  default="0"
+                  type="int"/>
+      <input_port name="speed"
+                  default="0"
+                  type="int"/>
+      <input_port name="frame"
+                  default="1"
+                  type="int"/>
+      <input_port name="orientationZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="longRotation"
+                  default="false"
+                  type="bool"/>
+      <input_port name="positionZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationX"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionX"
+                  default="0.000000"
+                  type="float"/>
+    </Action>
   </TreeNodesModel>
 
 </root>
