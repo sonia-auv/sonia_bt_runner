@@ -6,6 +6,7 @@
         <MissionSwitchStatus/>
       </RetryUntilSuccessful>
       <Tare sensor="imu"/>
+      <Tare sensor="depth"/>
       <EnableDisableDVL dvl_input="true"/>
       <ControlSetMode set_mode="true"/>
     </Sequence>

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
+  <BehaviorTree ID="Pool000Booting">
+    <Sequence>
+      <SubTree ID="BootingSequence"/>
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+    </Sequence>
+  </BehaviorTree>
+
   <BehaviorTree ID="Pool00PrequalRun">
     <Sequence>
       <SubTree ID="InitialSubmerge"
