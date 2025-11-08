@@ -1,0 +1,3 @@
+[submodule "sonia_bt_runner/deps/tinyxml2"]
+	path = sonia_bt_runner/deps/tinyxml2
+	url = https://github.com/leethomason/tinyxml2.git
