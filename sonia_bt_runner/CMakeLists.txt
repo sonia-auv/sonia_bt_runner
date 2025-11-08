@@ -21,6 +21,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
 
+add_subdirectory(${CMAKE_SOURCE_DIR}/deps/tinyxml2)
+
 #==============================================================================
 #I N C L U D E   F I L E S
 
@@ -66,6 +68,9 @@ install(TARGETS
     ${TARGET_NAME_MAIN}
     ${TARGET_NAME_GEN}
     DESTINATION lib/${PROJECT_NAME})
+
+target_link_libraries(${TARGET_NAME_MAIN} tinyxml2::tinyxml2)
+target_link_libraries(${TARGET_NAME_GEN} tinyxml2::tinyxml2)
 
 ament_target_dependencies(${TARGET_NAME_MAIN} rclcpp rclcpp_action sonia_common_ros2 std_msgs std_srvs behaviortree_cpp)
 ament_target_dependencies(${TARGET_NAME_GEN} rclcpp rclcpp_action sonia_common_ros2 std_msgs std_srvs behaviortree_cpp)

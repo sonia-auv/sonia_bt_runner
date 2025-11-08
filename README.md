@@ -6,6 +6,8 @@ The project runs a **mission server** that accepts and launchs missions on the *
 
 ## Dependencies
 
+* [tinyxml2](https://github.com/leethomason/tinyxml2/tree/master)
+
 ### ROS 2 Distro
 
 * Humble
