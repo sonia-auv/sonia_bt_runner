@@ -1,0 +1,22 @@
+name: Build
+
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
+
+on:
+  pull_request:
+  push:
+    branches: ["develop"]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: docker/setup-docker-action@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: sonia-auv/docker_ci 
+          ref: develop
+      - name: Running
+        run: |
+          ./scripts/ci.sh sonia_bt_runner $BRANCH_NAME
