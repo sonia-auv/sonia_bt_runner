@@ -28,15 +28,27 @@
       <Repeat num_cycles="3">
         <Sequence>
           <InitializeTrajectory trajectory="{Trajectory}"/>
-          <AiFilter Detected_object="{AiDetection}"
-                    Max_time_before_failing_sec="0.000000"
-                    Max_frame_before_failing="300"
-                    Two_objects_possible="0"
-                    Min_detections_before_success="5"
-                    Confidence="0.600000"
-                    Max_depth="25"
-                    Object_class="{ObjectToAim}"
-                    Camera="0"/>
+          <IfThenElse>
+            <ScriptCondition code="ObjectToAim==&quot;gate-shark&quot;"/>
+            <AiFilter Detected_object="{AiDetection}"
+                      Max_time_before_failing_sec="0.000000"
+                      Max_frame_before_failing="300"
+                      Two_objects_possible="0"
+                      Min_detections_before_success="5"
+                      Confidence="0.600000"
+                      Max_depth="25"
+                      Object_class="shark"
+                      Camera="0"/>
+            <AiFilter Detected_object="{AiDetection}"
+                      Max_time_before_failing_sec="0.000000"
+                      Max_frame_before_failing="300"
+                      Two_objects_possible="0"
+                      Min_detections_before_success="5"
+                      Confidence="0.600000"
+                      Max_depth="25"
+                      Object_class="sawfish"
+                      Camera="0"/>
+          </IfThenElse>
           <MoveAboveObject Trajectory="{Trajectory}"
                            Detection="{AiDetection}"/>
           <SubTree ID="SendTrajectoryOnly"
@@ -120,7 +132,7 @@
                 Camera="1"/>
       <MoveToObject Offset="1.5"
                     Trajectory="{Trajectory}"
-                    Detection="{Trajectory}"/>
+                    Detection="{Aidetection}"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
                TimeBeforeFailing="5"/>
