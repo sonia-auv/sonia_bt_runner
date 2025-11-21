@@ -3,6 +3,7 @@
     <include path="AirTest.xml"/>
     <include path="PoolTest.xml"/>
     <include path="Template.xml"/>
+    <include path="TestSLAM.xml"/>
     <include path="robosub26mission.xml"/>
     <!-- Description of Node Models (used by Groot) -->
     <TreeNodesModel>

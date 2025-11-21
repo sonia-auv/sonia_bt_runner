@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="01SmallPath">
+    <Sequence>
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+      <Repeat num_cycles="2">
+        <Sequence>
+          <SubTree ID="MoveSinglePose"
+                   frame="1.0"
+                   positionX="1"
+                   positionY="0.0"
+                   positionZ="0.0"
+                   orientationX="0.0"
+                   orientationY="0.0"
+                   orientationZ="0.0"/>
+          <SubTree ID="MoveSinglePose"
+                   frame="1.0"
+                   positionX="0.0"
+                   positionY="0.0"
+                   positionZ="0.0"
+                   orientationX="0.0"
+                   orientationY="0.0"
+                   orientationZ="180"/>
+        </Sequence>
+      </Repeat>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="02LongPath">
+    <Sequence>
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+      <Sequence name="mv1 + mv2 + mv3">
+        <Repeat num_cycles="2">
+          <Sequence>
+            <SubTree ID="MoveSinglePose"
+                     frame="1.0"
+                     positionX="1"
+                     positionY="0.0"
+                     positionZ="0.0"
+                     orientationX="0.0"
+                     orientationY="0.0"
+                     orientationZ="0.0"/>
+            <SubTree ID="MoveSinglePose"
+                     frame="1.0"
+                     positionX="0.0"
+                     positionY="0.0"
+                     positionZ="0.0"
+                     orientationX="0.0"
+                     orientationY="0.0"
+                     orientationZ="45"/>
+          </Sequence>
+        </Repeat>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="1"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
+      </Sequence>
+      <Sequence name="mv4">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="135"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="2"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
+      </Sequence>
+      <Sequence name="mv5">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="90"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="2"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
+      </Sequence>
+      <Sequence name="mv6">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="75"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="1"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
+      </Sequence>
+      <Sequence name="mv7">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="90"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="1.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
+      </Sequence>
+      <Sequence name="mv6">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="120"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="2"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
+      </Sequence>
+      <Sequence name="Return Home">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="-148.9"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="3.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.5"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="2.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
+      </Sequence>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <SubTree ID="InitialSubmerge"
+             editable="true">
+      <input_port name="Depth"
+                  default="0.5"/>
+    </SubTree>
+    <SubTree ID="MoveSinglePose"
+             editable="true">
+      <input_port name="frame"
+                  default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
+      <input_port name="positionX"
+                  default="0.0">x value to go</input_port>
+      <input_port name="positionY"
+                  default="0.0">y value to go</input_port>
+      <input_port name="positionZ"
+                  default="0.0">z value to go</input_port>
+      <input_port name="orientationX"
+                  default="0.0">z orientation to go</input_port>
+      <input_port name="orientationY"
+                  default="0.0">y orientation to go</input_port>
+      <input_port name="orientationZ"
+                  default="0.0">rotation in Z to give to the sub</input_port>
+    </SubTree>
+  </TreeNodesModel>
+
+</root>
