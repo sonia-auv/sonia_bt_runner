@@ -12,6 +12,13 @@
     </Sequence>
   </BehaviorTree>
 
+  <BehaviorTree ID="Done">
+    <Sequence>
+      <ControlSetMode set_mode="false"/>
+      <AlwaysSuccess/>
+    </Sequence>
+  </BehaviorTree>
+
   <BehaviorTree ID="InitialSubmerge">
     <Sequence>
       <RetryUntilSuccessful num_attempts="-1">
@@ -110,6 +117,10 @@
                Trajectory="{traj}"
                TimeBeforeFailing="5"/>
     </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Nop">
+    <AlwaysSuccess/>
   </BehaviorTree>
 
   <BehaviorTree ID="RotateToAbsoluteAngle">
