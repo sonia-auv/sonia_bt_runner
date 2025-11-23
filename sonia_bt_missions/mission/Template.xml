@@ -373,7 +373,7 @@
     <Sequence>
       <SendTrajectory trajectory="{Trajectory}"
                       interpolation="0"/>
-      <WaitTargetReached timeout="{TimeBerforeFailing}"/>
+      <WaitTargetReached timeout="{TimeBeforeFailing}"/>
     </Sequence>
   </BehaviorTree>
 
