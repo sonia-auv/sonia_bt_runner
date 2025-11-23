@@ -72,7 +72,7 @@
     <Sequence>
       <Sequence _description="Initialize the sub.">
         <SubTree ID="InitialSubmerge"
-                 Depth="0.5"
+                 Depth="1"
                  _description="Dive from 0.5m."/>
       </Sequence>
       <Sequence _description="Move foward until the gate">
@@ -125,7 +125,7 @@
                  _description="Move foward of 2.5m."/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
-                 positionX="2.5"
+                 positionX="1.5"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
