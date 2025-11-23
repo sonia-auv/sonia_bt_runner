@@ -72,7 +72,7 @@
     <Sequence>
       <Sequence _description="Initialize the sub.">
         <SubTree ID="InitialSubmerge"
-                 Depth="1"
+                 Depth="0.5"
                  _description="Dive from 1m."/>
       </Sequence>
       <Sequence _description="Move foward until the gate">
@@ -246,7 +246,7 @@
                       Front="true"
                       _description="Active AI."/>
         <SubTree ID="InitialSubmerge"
-                 Depth="1"
+                 Depth="0.5"
                  _description="Dive of 1m."/>
       </Sequence>
       <IfThenElse _description="Detect gate and move foward to it.">
