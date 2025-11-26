@@ -23,6 +23,9 @@
             <input_port name="Object_class" type="std::string">Searched object</input_port>
             <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
         </Action>
+        <SubTree ID="AutomaticInitialSubmerge" editable="true">
+            <input_port name="Depth" default="1">Depth that the sub will submerge</input_port>
+        </SubTree>
         <SubTree ID="Bin" editable="true">
             <input_port name="ObjectToAim">The object in the bin that the sub needs to aim</input_port>
         </SubTree>

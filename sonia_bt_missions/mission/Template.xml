@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
-  <BehaviorTree ID="BootingSequence">
+  <BehaviorTree ID="AutomaticInitialSubmerge">
     <Sequence>
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
@@ -9,6 +9,14 @@
       <Tare sensor="depth"/>
       <EnableDisableDVL dvl_input="true"/>
       <ControlSetMode set_mode="true"/>
+      <SubTree ID="MoveSinglePose"
+               frame="1.0"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="{Depth}"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"/>
     </Sequence>
   </BehaviorTree>
 
