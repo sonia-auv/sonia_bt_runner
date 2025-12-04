@@ -24,6 +24,8 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
 #==============================================================================
 #I N C L U D E   F I L E S
 
+pkg_check_modules(tinyxml2 REQUIRED tinyxml2)
+
 set(sonia_bt_runner_INCLUDE_DIRS "include")
 set(sonia_bt_runner_SRC_DIR "src")
 
@@ -67,7 +69,7 @@ install(TARGETS
     ${TARGET_NAME_GEN}
     DESTINATION lib/${PROJECT_NAME})
 
-ament_target_dependencies(${TARGET_NAME_MAIN} rclcpp rclcpp_action sonia_common_ros2 std_msgs std_srvs behaviortree_cpp)
-ament_target_dependencies(${TARGET_NAME_GEN} rclcpp rclcpp_action sonia_common_ros2 std_msgs std_srvs behaviortree_cpp)
+ament_target_dependencies(${TARGET_NAME_MAIN} rclcpp rclcpp_action sonia_common_ros2 tinyxml2 std_msgs std_srvs behaviortree_cpp)
+ament_target_dependencies(${TARGET_NAME_GEN} rclcpp rclcpp_action sonia_common_ros2 tinyxml2 std_msgs std_srvs behaviortree_cpp)
 
 ament_package()

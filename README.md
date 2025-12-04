@@ -23,6 +23,10 @@ The project runs a **mission server** that accepts and launchs missions on the *
 
 * `sonia_common_ros2`
 
+### External packages
+
+* `tinyxml2`
+
 ---
 ## sonia_bt_missions
 
