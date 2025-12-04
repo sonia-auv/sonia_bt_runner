@@ -2,8 +2,8 @@
 <root BTCPP_format="4">
   <BehaviorTree ID="Pool000DriftMove">
     <Sequence>
-      <SubTree ID="InitialSubmerge"
-               Depth="1"/>
+      <SubTree ID="AutomaticInitialSubmerge"
+               Depth="0.5"/>
       <Repeat num_cycles="4">
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
@@ -286,7 +286,7 @@
   <BehaviorTree ID="Pool08MoveToObjecttorpedoposter">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
+        <SubTree ID="AutomaticInitialSubmerge"
                  Depth="0.5"/>
         <AiActivation Model="0"
                       Bottom="false"
@@ -316,7 +316,7 @@
   <BehaviorTree ID="Pool09MoveToObjecttorpedoposteroff">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
+        <SubTree ID="AutomaticInitialSubmerge"
                  Depth="0.5"/>
         <AiActivation Model="0"
                       Bottom="false"
@@ -346,7 +346,7 @@
   <BehaviorTree ID="Pool10ObjectDriftinggateshark">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
+        <SubTree ID="AutomaticInitialSubmerge"
                  Depth="0.5"/>
         <AiActivation Model="0"
                       Bottom="false"
@@ -390,7 +390,7 @@
   <BehaviorTree ID="Pool11ObjectDriftingtorpedoposter">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
+        <SubTree ID="AutomaticInitialSubmerge"
                  Depth="0.5"/>
         <AiActivation Model="0"
                       Bottom="false"
@@ -434,7 +434,7 @@
   <BehaviorTree ID="Pool12TorpedoAimingsharksub">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
+        <SubTree ID="AutomaticInitialSubmerge"
                  Depth="0.5"/>
         <AiActivation Model="0"
                       Bottom="false"
@@ -465,7 +465,7 @@
   <BehaviorTree ID="Pool13TorpedoAimingsharkportside">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
+        <SubTree ID="AutomaticInitialSubmerge"
                  Depth="0.5"/>
         <AiActivation Model="0"
                       Bottom="false"
@@ -497,7 +497,7 @@
   <BehaviorTree ID="Pool14TorpedoAimingsharkstarboard">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
+        <SubTree ID="AutomaticInitialSubmerge"
                  Depth="0.5"/>
         <AiActivation Model="0"
                       Bottom="false"
@@ -529,7 +529,7 @@
   <BehaviorTree ID="Pool15MoveAboveObjectshark">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
+        <SubTree ID="AutomaticInitialSubmerge"
                  Depth="0.5"/>
         <AiActivation Model="0"
                       Bottom="true"
@@ -556,40 +556,10 @@
     </IfThenElse>
   </BehaviorTree>
 
-  <BehaviorTree ID="Pool16MoveAboveObjectsawfish">
-    <IfThenElse>
-      <Sequence>
-        <SubTree ID="InitialSubmerge"
-                 Depth="0.5"/>
-        <AiActivation Model="0"
-                      Bottom="true"
-                      Front="false"/>
-        <InitializeTrajectory trajectory="{Trajectory}"/>
-        <AiFilter Detected_object="{AiDetection}"
-                  Max_time_before_failing_sec="0.000000"
-                  Max_frame_before_failing="300"
-                  Two_objects_possible="0"
-                  Min_detections_before_success="5"
-                  Confidence="0.600000"
-                  Max_depth="25.000000"
-                  Object_class="sawfish"
-                  Camera="0"/>
-        <MoveAboveObject Trajectory="{Trajectory}"
-                         Detection="{AiDetection}"/>
-        <SubTree ID="SendTrajectoryOnly"
-                 Trajectory="{Trajectory}"
-                 TimeBeforeFailing="5"/>
-        <LaunchDropper side="port_side"/>
-      </Sequence>
-      <SubTree ID="MissionSuccess"/>
-      <SubTree ID="MissionFailed"/>
-    </IfThenElse>
-  </BehaviorTree>
-
   <BehaviorTree ID="Pool18Search">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
+        <SubTree ID="AutomaticInitialSubmerge"
                  Depth="0.5"/>
         <SubTree ID="SearchObjectByRotation"
                  Object="gate-shark"
@@ -608,8 +578,8 @@
   <BehaviorTree ID="Pool19Gategateshark">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
-                 Depth="1"/>
+        <SubTree ID="AutomaticInitialSubmerge"
+                 Depth="0.5"/>
         <SubTree ID="Gate"
                  DetectedObject="gate-shark"/>
       </Sequence>
@@ -621,8 +591,8 @@
   <BehaviorTree ID="Pool20Gategatesawfish">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
-                 Depth="1"/>
+        <SubTree ID="AutomaticInitialSubmerge"
+                 Depth="0.5"/>
         <SubTree ID="Gate"
                  DetectedObject="gate-sawfish"/>
       </Sequence>
@@ -634,8 +604,8 @@
   <BehaviorTree ID="Pool21Bingateshark">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
-                 Depth="1"/>
+        <SubTree ID="AutomaticInitialSubmerge"
+                 Depth="0.5"/>
         <SubTree ID="Bin"
                  ObjectToAim="gate-shark"
                  _autoremap="false"/>
@@ -648,8 +618,8 @@
   <BehaviorTree ID="Pool22Bingatesawfish">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
-                 Depth="1"/>
+        <SubTree ID="AutomaticInitialSubmerge"
+                 Depth="0.5"/>
         <SubTree ID="Bin"
                  ObjectToAim="gate-sawfish"
                  _autoremap="false"/>
@@ -662,8 +632,8 @@
   <BehaviorTree ID="Pool23Torpedoshark">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
-                 Depth="1"/>
+        <SubTree ID="AutomaticInitialSubmerge"
+                 Depth="0.5"/>
         <SubTree ID="Torpedos"
                  ObjectToAim="gate-shark"/>
       </Sequence>
@@ -675,8 +645,8 @@
   <BehaviorTree ID="Pool24Torpedosawfish">
     <IfThenElse>
       <Sequence>
-        <SubTree ID="InitialSubmerge"
-                 Depth="1"/>
+        <SubTree ID="AutomaticInitialSubmerge"
+                 Depth="0.5"/>
         <SubTree ID="Torpedos"
                  ObjectToAim="gate-sawfish"/>
       </Sequence>
@@ -743,11 +713,6 @@
     <SubTree ID="Gate"
              editable="true">
       <input_port name="DetectedObject">The type of object that the sub will working to</input_port>
-    </SubTree>
-    <SubTree ID="InitialSubmerge"
-             editable="true">
-      <input_port name="Depth"
-                  default="0.5"/>
     </SubTree>
     <Action ID="InitializeTrajectory">
       <output_port name="trajectory"
