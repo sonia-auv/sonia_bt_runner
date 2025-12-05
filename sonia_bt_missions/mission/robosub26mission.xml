@@ -21,7 +21,7 @@
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
                TimeBeforeFailing="5"/>
-      <AiActivation Model="0.5"
+      <AiActivation Model="0"
                     Bottom="true"
                     Front="false"/>
       <InitializeTrajectory trajectory="{Trajectory}"/>
