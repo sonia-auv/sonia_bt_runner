@@ -19,6 +19,7 @@
 #include "sonia_bt_runner/Tracker.hpp"
 #include "sonia_common_ros2/action/mission_control.hpp"
 #include "sonia_common_ros2/srv/mission_list_service.hpp"
+#include "sonia_common_ros2/msg/node_status.hpp"
 
 using namespace BT;
 using MissionControl = sonia_common_ros2::action::MissionControl;
@@ -37,6 +38,7 @@ class MissionServer : public rclcpp::Node{
         void grabMissionList(const std::shared_ptr<sonia_common_ros2::srv::MissionListService::Request> request, std::shared_ptr<sonia_common_ros2::srv::MissionListService::Response> response);
         void clearFactory(const std::string log);
         void execute(const std::shared_ptr<GoalHandle> goal);
+        void publishStatus();
 
         rclcpp_action::GoalResponse handleGoal(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const MissionControl::Goal> goal);
         rclcpp_action::CancelResponse handleCancel(const std::shared_ptr<GoalHandle> goalhandle);
@@ -46,10 +48,14 @@ class MissionServer : public rclcpp::Node{
         BehaviorTreeFactory factory_;
         rclcpp_action::Server<MissionControl>::SharedPtr server_;
         rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pub_status_;
+        rclcpp::Publisher<sonia_common_ros2::msg::NodeStatus>::SharedPtr pub_node_status_;
         rclcpp::Service<sonia_common_ros2::srv::MissionListService>::SharedPtr fetch_missions_srv_;
+        rclcpp::TimerBase::SharedPtr _timerNodeStatus;
+
         Tree tree_;
         std::string search_directory;
         NodeStatus result_;
         std::vector<std::string> mission_list;
+        sonia_common_ros2::msg::NodeStatus node_status;
         
 };
