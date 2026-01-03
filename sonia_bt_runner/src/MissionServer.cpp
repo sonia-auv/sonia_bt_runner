@@ -22,7 +22,7 @@ MissionServer::MissionServer()
                     std::bind(&MissionServer::handleCancel, this, _1),
                     std::bind(&MissionServer::handleAccept, this, _1));
 
-        node_status.quality = sonia_common_ros2::msg::NodeStatus::LVL_OK;
+        node_status.quality = sonia_common_ros2::msg::NodeStatus::Q_OK;
         node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
         
         RCLCPP_INFO(this->get_logger(), "Mission Server up running");
