@@ -153,6 +153,6 @@ MissionServer::MissionServer()
     }
     void MissionServer::publishStatus(){
         node_status.node_name = this->get_name();
-        node_status.stamp = this->get_clock().get()->now();
+        node_status.stamp = this->now();
         pub_node_status_->publish(node_status);
     }
