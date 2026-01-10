@@ -23,13 +23,14 @@ MissionServer::MissionServer()
                     std::bind(&MissionServer::handleAccept, this, _1));
 
         node_status.quality = sonia_common_ros2::msg::NodeStatus::Q_OK;
-        node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
+        node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_INITIALIZING;
         
         RCLCPP_INFO(this->get_logger(), "Mission Server up running");
     }
     
     void MissionServer::init(){
-        registerNodes(factory_, this->shared_from_this());    
+        registerNodes(factory_, this->shared_from_this());
+        node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;    
     }
 
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal){
@@ -49,7 +50,6 @@ MissionServer::MissionServer()
             if(goal->is_canceling()){
                 res->success = false;
                 goal->canceled(res);
-                node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
                 clearFactory("Mission Cancelled");
                 return;
             }
@@ -145,6 +145,7 @@ MissionServer::MissionServer()
         pub_status_->publish(rep);
         RCLCPP_INFO(this->get_logger(), "%s", log.c_str());
         factory_.clearRegisteredBehaviorTrees();
+        node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
     }
     void MissionServer::grabMissionList(const std::shared_ptr<sonia_common_ros2::srv::MissionListService::Request> request, std::shared_ptr<sonia_common_ros2::srv::MissionListService::Response> response){
         (void)request;
