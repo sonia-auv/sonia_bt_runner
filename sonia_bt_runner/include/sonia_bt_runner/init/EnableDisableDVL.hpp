@@ -10,7 +10,7 @@ namespace init{
             EnableDisableDVL(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
             ~EnableDisableDVL() = default;
             static BT::PortsList providedPorts(){
-                return {BT::InputPort<bool>("dvl_input",false, "true: start, false: stop")};
+                return {BT::InputPort<bool>("dvl_input", false, "true: start, false: stop")};
             }
             BT::NodeStatus tick() override;
         private:
