@@ -6,6 +6,7 @@ using namespace std::placeholders;
 MissionServer::MissionServer()
     : Node("Mission_server")
     {
+        //set mission path
         const char *ws = std::getenv("SONIA_WS");
         search_directory.assign(ws);
         search_directory.append("/src/sonia_bt_runner/sonia_bt_missions/mission/");
@@ -15,13 +16,15 @@ MissionServer::MissionServer()
         fetch_missions_srv_ = this->create_service<sonia_common_ros2::srv::MissionListService>("/mission_server/mission_list", std::bind(&MissionServer::grabMissionList, this, _1, _2));
 
         _timerNodeStatus = this->create_wall_timer(500ms, std::bind(&MissionServer::publishStatus, this));
+
         server_ = rclcpp_action::create_server<MissionControl>(
                     this,
                     "MissionControl",
                     std::bind(&MissionServer::handleGoal, this, _1,_2),
                     std::bind(&MissionServer::handleCancel, this, _1),
                     std::bind(&MissionServer::handleAccept, this, _1));
-
+        
+        node_status.node_name = this->get_name();
         node_status.quality = sonia_common_ros2::msg::NodeStatus::Q_OK;
         node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_INITIALIZING;
         
@@ -153,7 +156,6 @@ MissionServer::MissionServer()
         response->missions = mission_list;
     }
     void MissionServer::publishStatus(){
-        node_status.node_name = this->get_name();
         node_status.stamp = this->now();
         pub_node_status_->publish(node_status);
     }
