@@ -6,12 +6,16 @@ using namespace std::placeholders;
 MissionServer::MissionServer()
     : Node("Mission_server")
     {
+        //set mission path
         const char *ws = std::getenv("SONIA_WS");
         search_directory.assign(ws);
         search_directory.append("/src/sonia_bt_runner/sonia_bt_missions/mission/");
 
         pub_status_ = this->create_publisher<std_msgs::msg::String>("/mission_server/status_report",1);
+        pub_node_status_ = this->create_publisher<sonia_common_ros2::msg::NodeStatus>("/system_monitor/node_status",1);
         fetch_missions_srv_ = this->create_service<sonia_common_ros2::srv::MissionListService>("/mission_server/mission_list", std::bind(&MissionServer::grabMissionList, this, _1, _2));
+
+        _timerNodeStatus = this->create_wall_timer(500ms, std::bind(&MissionServer::publishStatus, this));
 
         server_ = rclcpp_action::create_server<MissionControl>(
                     this,
@@ -20,11 +24,16 @@ MissionServer::MissionServer()
                     std::bind(&MissionServer::handleCancel, this, _1),
                     std::bind(&MissionServer::handleAccept, this, _1));
         
+        node_status.node_name = this->get_name();
+        node_status.quality = sonia_common_ros2::msg::NodeStatus::Q_OK;
+        node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_INITIALIZING;
+        
         RCLCPP_INFO(this->get_logger(), "Mission Server up running");
-    } 
+    }
     
     void MissionServer::init(){
-        registerNodes(factory_, this->shared_from_this());    
+        registerNodes(factory_, this->shared_from_this());
+        node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;    
     }
 
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal){
@@ -59,10 +68,13 @@ MissionServer::MissionServer()
         RCLCPP_INFO(this->get_logger(), "Mission completed");
         rep.data= "Mission completed....";
         pub_status_->publish(rep);
+
+        node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
     }
 
     rclcpp_action::GoalResponse MissionServer::handleGoal(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const MissionControl::Goal> goal){
         (void)uuid;
+        node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_RUNNING;
         RCLCPP_INFO(this->get_logger(), "Received goal request with mission : %s", goal->mission.c_str());
         name_ =goal->mission;
         std::string temp_file;
@@ -136,9 +148,14 @@ MissionServer::MissionServer()
         pub_status_->publish(rep);
         RCLCPP_INFO(this->get_logger(), "%s", log.c_str());
         factory_.clearRegisteredBehaviorTrees();
+        node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
     }
     void MissionServer::grabMissionList(const std::shared_ptr<sonia_common_ros2::srv::MissionListService::Request> request, std::shared_ptr<sonia_common_ros2::srv::MissionListService::Response> response){
         (void)request;
         generateMissionList();
         response->missions = mission_list;
+    }
+    void MissionServer::publishStatus(){
+        node_status.stamp = this->now();
+        pub_node_status_->publish(node_status);
     }

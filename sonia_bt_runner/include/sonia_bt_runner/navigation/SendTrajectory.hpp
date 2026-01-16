@@ -36,8 +36,6 @@ namespace navigation{
 
             rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr depth_sub;
             void update_depth(const std_msgs::msg::Float32::ConstSharedPtr &msg);
-
-
             
             int valid;
             std::chrono::_V2::system_clock::time_point _time_launch;
