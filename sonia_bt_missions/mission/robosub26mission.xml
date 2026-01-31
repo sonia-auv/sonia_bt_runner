@@ -68,6 +68,169 @@
              Angle="0"/>
   </BehaviorTree>
 
+  <BehaviorTree ID="DummyPreQualification">
+    <Sequence>
+      <Sequence _description="Initialize the sub.">
+        <SubTree ID="InitialSubmerge"
+                 Depth="1"
+                 _description="Dive from 0.5m."/>
+      </Sequence>
+      <Sequence _description="Move foward until the gate">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="2.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move foward of 2.5m."/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move foward of 0.5m."/>
+      </Sequence>
+      <Sequence _description="Move foward of 10m and change the orientation of z axis to turn.">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="2.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move foward of 2.5m."/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="2.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move foward of 2.5m."/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="2.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move foward of 2.5m."/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="1.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move foward of 2.5m"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="90"
+                 _description="Turn in z of 90."/>
+      </Sequence>
+      <Sequence _description="Turn around the marker">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move to turn."/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="90.0"
+                 _description="Position the sub to finish to turn."/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move to finish to turn."/>
+      </Sequence>
+      <Sequence _description="Back to starting point.">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="2.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move backward of 2.5m"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="2.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move backward of 2.5m."/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="2.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move backward of 2.5m."/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="2.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move backward of 2.5m."/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="2.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move backward of 2.5m."/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move backward of 10m."/>
+        <SubTree ID="Done"/>
+      </Sequence>
+    </Sequence>
+  </BehaviorTree>
+
   <BehaviorTree ID="Gate">
     <Sequence>
       <AiActivation Model="0"
@@ -144,6 +307,122 @@
       <RetryUntilSuccessful num_attempts="-1">
         <MissionSwitchStatus/>
       </RetryUntilSuccessful>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="PreQualification">
+    <Sequence>
+      <Sequence _description="Init sub.">
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"
+                      _description="Active AI."/>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"
+                 _description="Dive of 0.5m."/>
+      </Sequence>
+      <IfThenElse _description="Detect gate and move foward to it.">
+        <Sequence _description="Detect gate and move to it if success.">
+          <AiFilter Detected_object="{GateDetection}"
+                    Max_time_before_failing_sec="0.0"
+                    Max_frame_before_failing="300"
+                    Two_objects_possible="0"
+                    Min_detections_before_success="5"
+                    Confidence="0.600000"
+                    Max_depth="25.000000"
+                    Object_class="gate-shark"
+                    Camera="1"
+                    _description="Detect gate"/>
+          <MoveToObject Offset="0"
+                        Trajectory="{GateTrajectory}"
+                        Detection="{GateDetection}"/>
+          <SubTree ID="SendTrajectoryOnly"
+                   Trajectory="{GateTrajectory}"
+                   TimeBeforeFailing="5"/>
+        </Sequence>
+        <SubTree ID="Nop"/>
+        <SubTree ID="MissionFailed"/>
+      </IfThenElse>
+      <Sequence _description="Move foward of 10m and change the orientation of z axis to turn.">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="10"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move foward of 10m."/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="90"
+                 _description="Turn in z of 90."/>
+      </Sequence>
+      <Sequence _description="Turn around the marker">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move to turn."/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="-0.5"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move foward in y axis of 0.5m"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="90.0"
+                 _description="Position the sub to finish to turn."/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="-0.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 _description="Move to finish to turn."/>
+      </Sequence>
+      <IfThenElse _description="Detect gate and move foward to it.">
+        <Sequence>
+          <AiFilter Detected_object="{GateDetection}"
+                    Max_time_before_failing_sec="0.0"
+                    Max_frame_before_failing="300"
+                    Two_objects_possible="0"
+                    Min_detections_before_success="5"
+                    Confidence="0.600000"
+                    Max_depth="25.000000"
+                    Object_class="gate-shark"
+                    Camera="1"
+                    _description="Detect gate"/>
+          <MoveToObject Offset="0"
+                        Trajectory="{GateTrajectory}"
+                        Detection="{GateDetection}"/>
+          <SubTree ID="SendTrajectoryOnly"
+                   Trajectory="{GateTrajectory}"
+                   TimeBeforeFailing="5"/>
+        </Sequence>
+        <SubTree ID="Done"/>
+        <SubTree ID="MissionFailed"/>
+      </IfThenElse>
     </Sequence>
   </BehaviorTree>
 
