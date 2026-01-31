@@ -11,6 +11,7 @@ namespace navigation{
     }
 
     BT::NodeStatus SendTrajectory::onStart(){
+        receivingFlag
         Trajectory t;
         getInput<Trajectory>("trajectory", t);
         sonia_common_ros2::msg::PoseArray array_to_send;
@@ -48,14 +49,22 @@ namespace navigation{
     }
     BT::NodeStatus SendTrajectory::onRunning(){
         std::chrono::duration<double> elapsed_time = std::chrono::system_clock::now() - _time_launch;
-        if (elapsed_time.count() > 5)
+        // if (elapsed_time.count() > 5) // Ajouter le valid dans la condition, cette partie est à modifier pour garder de la vitesse
+        // {
+        //     if (valid == 0)
+        //     {
+        //         return BT::NodeStatus::SUCCESS;
+        //     }
+        //     else
+        //         return BT::NodeStatus::FAILURE;
+        // }
+        if (valid == 0)
         {
-            if (valid == 0)
-            {
-                return BT::NodeStatus::SUCCESS;
-            }
-            else
-                return BT::NodeStatus::FAILURE;
+            return BT::NodeStatus::SUCCESS;
+        }
+        else if (elapsed_time.count() > 5)
+        {
+            return BT::NodeStatus::FAILURE;
         }
     
         return BT::NodeStatus::RUNNING;
