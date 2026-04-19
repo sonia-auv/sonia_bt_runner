@@ -14,7 +14,7 @@ namespace navigation
     {
         public:
             MoveAboveObject(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~MoveAboveObject()=default;
+            ~MoveAboveObject() override = default;
             static BT::PortsList providedPorts()
             {
                 return {

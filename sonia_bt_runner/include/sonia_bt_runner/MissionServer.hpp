@@ -32,7 +32,7 @@ using GoalHandle = rclcpp_action::ServerGoalHandle<MissionControl>;
 class MissionServer : public rclcpp::Node{
     public:
         MissionServer();
-        ~MissionServer() = default;
+        ~MissionServer() override = default;
 
         /**
          * @brief initializes the server by registering all existing BT nodes.

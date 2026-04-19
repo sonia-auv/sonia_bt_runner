@@ -14,7 +14,7 @@ namespace navigation
     {
         public:
             ObjectDrifting(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~ObjectDrifting()=default;
+            ~ObjectDrifting() override = default;
             static BT::PortsList providedPorts()
             {
                 return {

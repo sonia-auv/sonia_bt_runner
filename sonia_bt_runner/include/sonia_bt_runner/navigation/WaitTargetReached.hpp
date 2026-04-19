@@ -10,7 +10,7 @@ namespace navigation{
     {
     public:
         WaitTargetReached(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-        ~WaitTargetReached() = default;
+        ~WaitTargetReached() override = default;
         static BT::PortsList providedPorts()
         {
             const int def_timeout = 5;

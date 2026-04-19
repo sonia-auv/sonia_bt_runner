@@ -7,7 +7,7 @@ namespace navigation{
     {
         public:
             TrajectoryAppendPose(const std::string &name, const BT::NodeConfig &config);
-            ~TrajectoryAppendPose() = default;
+            ~TrajectoryAppendPose() override = default;
 
             static BT::PortsList providedPorts()
             {

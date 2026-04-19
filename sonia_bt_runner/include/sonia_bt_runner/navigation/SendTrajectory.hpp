@@ -14,7 +14,7 @@ namespace navigation{
     class SendTrajectory: public BT::StatefulActionNode{
         public:
             SendTrajectory(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~SendTrajectory() = default;
+            ~SendTrajectory() override = default;
             static BT::PortsList providedPorts()
             {
                 const int def_inter = 0;

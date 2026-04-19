@@ -10,7 +10,7 @@ namespace init{
     {
         public:
             MissionSwitchStatus(const std::string &name, std::shared_ptr<rclcpp::Node> node);
-            ~MissionSwitchStatus() = default;
+            ~MissionSwitchStatus() override = default;
             BT::NodeStatus tick() override;
             
         private:

@@ -11,7 +11,7 @@ namespace sensors
     {
         public:
             DepthCheck(const std::string &name, std::shared_ptr<rclcpp::Node> node);
-            ~DepthCheck() = default;
+            ~DepthCheck() override = default;
             static BT::PortsList providedPorts()
             {
                 return

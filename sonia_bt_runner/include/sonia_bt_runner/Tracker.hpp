@@ -17,7 +17,7 @@ class Tracker : public BT::StatusChangeLogger
 {
     public:
         Tracker(BT::Tree& tree, const std::shared_ptr<GoalHandle> goal);
-        ~Tracker() = default;
+        ~Tracker() override = default;
 
         /**
          * @brief Process information returned by the subscriber about the node's status.

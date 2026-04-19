@@ -14,7 +14,7 @@ namespace navigation
     {
         public:
             FaceTheObject(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~FaceTheObject()=default;
+            ~FaceTheObject() override = default;
             static BT::PortsList providedPorts()
             {
                 return {

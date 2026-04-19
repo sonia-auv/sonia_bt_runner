@@ -8,7 +8,7 @@ namespace init{
     class Tare: public BT::StatefulActionNode{
         public:
             Tare(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~Tare() = default;
+            ~Tare() override = default;
             static BT::PortsList providedPorts(){
                 return {BT::InputPort<std::string>("sensor", "imu or depth")};
             }

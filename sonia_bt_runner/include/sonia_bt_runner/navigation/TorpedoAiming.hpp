@@ -14,7 +14,7 @@ namespace navigation
     {
         public:
             TorpedoAiming(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~TorpedoAiming()=default;
+            ~TorpedoAiming() override = default;
             static BT::PortsList providedPorts()
             {
                 return {

@@ -8,7 +8,7 @@ namespace actuator{
     class ShootTorpedo: public BT::StatefulActionNode{
         public:
             ShootTorpedo(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~ShootTorpedo();
+            ~ShootTorpedo() override = default;
             static BT::PortsList providedPorts()
             {
                 // Options for 'side' are 'port_side' or 'starboard'
