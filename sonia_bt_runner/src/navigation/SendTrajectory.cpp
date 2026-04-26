@@ -11,7 +11,6 @@ namespace navigation{
     }
 
     BT::NodeStatus SendTrajectory::onStart(){
-        receivingFlag
         Trajectory t;
         getInput<Trajectory>("trajectory", t);
         sonia_common_ros2::msg::PoseArray array_to_send;
