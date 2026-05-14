@@ -4,6 +4,7 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_common_ros2/msg/mission_status.hpp"
+#include "std_msgs/msg/bool.hpp"
 
 namespace init{
     class MissionSwitchStatus: public BT::ConditionNode

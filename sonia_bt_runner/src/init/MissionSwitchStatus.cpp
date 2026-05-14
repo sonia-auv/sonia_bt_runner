@@ -1,5 +1,5 @@
 #include "sonia_bt_runner/init/MissionSwitchStatus.hpp"
-#include "std_msgs/msg/bool.hpp"
+
 using std::placeholders::_1;
 
 namespace init{     
