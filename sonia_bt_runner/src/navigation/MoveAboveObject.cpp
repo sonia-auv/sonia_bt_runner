@@ -28,6 +28,7 @@ namespace navigation
         // We compute the trajectory to do
         TrajectoryPose t;
 
+        // Switch dropper if multiple dropper. Need an input for that
         t.positionX = -det.distance_beta - CAMERA_TO_DROPPER_OFFSET_X;
         t.positionY = det.distance_teta - CAMERA_TO_DROPPER_OFFSET_Y;
         t.positionZ = 0.0;

@@ -17,7 +17,7 @@ namespace navigation {
             static BT::PortsList providedPorts()
             {
                 return {
-                    BT::OutputPort<Point>("point"),
+                    BT::OutputPort<Point>("Point"),
                 };
             }
 

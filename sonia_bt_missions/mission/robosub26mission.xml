@@ -1,62 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4"
-      main_tree_to_execute="Run26">
-  <BehaviorTree ID="Bin">
-    <Sequence>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
+      main_tree_to_execute="Run26Strategy1">
+  <BehaviorTree ID="BinOneBox">
+    <Sequence name="Dropping in 1 bin">
+      <Sequence name="Move above the bin">
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <SubTree ID="SearchObjectByRotation"
+                 Object="bin"
+                 FoundAiDetection="{FrontAidetection}"
+                 Max_time_before_failing_sec="0.0"
+                 Max_frame_before_failing="300"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"/>
+        <MoveToObject Offset="0"
+                      Trajectory="{Trajectory}"
+                      Detection="{FrontAidetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <Sequence name="Align the dropper with the bin">
+        <AiActivation Model="0"
+                      Bottom="true"
+                      Front="false"/>
+        <Repeat num_cycles="3">
+          <Sequence>
+            <InitializeTrajectory trajectory="{Trajectory}"/>
+            <IfThenElse>
+              <ScriptCondition code="ObjectToAim==&quot;gate-shark&quot;"/>
+              <AiFilter Detected_object="{AiDetection}"
+                        Max_time_before_failing_sec="0.000000"
+                        Max_frame_before_failing="300"
+                        Two_objects_possible="0"
+                        Min_detections_before_success="5"
+                        Confidence="0.600000"
+                        Max_depth="25"
+                        Object_class="shark"
+                        Camera="0"/>
+              <AiFilter Detected_object="{AiDetection}"
+                        Max_time_before_failing_sec="0.000000"
+                        Max_frame_before_failing="300"
+                        Two_objects_possible="0"
+                        Min_detections_before_success="5"
+                        Confidence="0.600000"
+                        Max_depth="25"
+                        Object_class="sawfish"
+                        Camera="0"/>
+            </IfThenElse>
+            <MoveAboveObject Trajectory="{Trajectory}"
+                             Detection="{AiDetection}"/>
+            <SubTree ID="SendTrajectoryOnly"
+                     Trajectory="{Trajectory}"
+                     TimeBeforeFailing="5"/>
+          </Sequence>
+        </Repeat>
+      </Sequence>
+      <LaunchDropper side="port_side"/>
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"/>
-      <SubTree ID="SearchObjectByRotation"
-               Object="bin"
-               FoundAiDetection="{FrontAidetection}"
-               Max_time_before_failing_sec="0.0"
-               Max_frame_before_failing="300"
-               Min_detection_before_success="5"
-               Confidence="0.60000"
-               Max_depth="25"/>
-      <MoveToObject Offset="0"
-                    Trajectory="{Trajectory}"
-                    Detection="{FrontAidetection}"/>
-      <SubTree ID="SendTrajectoryOnly"
-               Trajectory="{Trajectory}"
-               TimeBeforeFailing="5"/>
-      <AiActivation Model="0"
-                    Bottom="true"
-                    Front="false"/>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
-      <Repeat num_cycles="3">
-        <Sequence>
-          <InitializeTrajectory trajectory="{Trajectory}"/>
-          <IfThenElse>
-            <ScriptCondition code="ObjectToAim==&quot;gate-shark&quot;"/>
-            <AiFilter Detected_object="{AiDetection}"
-                      Max_time_before_failing_sec="0.000000"
-                      Max_frame_before_failing="300"
-                      Two_objects_possible="0"
-                      Min_detections_before_success="5"
-                      Confidence="0.600000"
-                      Max_depth="25"
-                      Object_class="shark"
-                      Camera="0"/>
-            <AiFilter Detected_object="{AiDetection}"
-                      Max_time_before_failing_sec="0.000000"
-                      Max_frame_before_failing="300"
-                      Two_objects_possible="0"
-                      Min_detections_before_success="5"
-                      Confidence="0.600000"
-                      Max_depth="25"
-                      Object_class="sawfish"
-                      Camera="0"/>
-          </IfThenElse>
-          <MoveAboveObject Trajectory="{Trajectory}"
-                           Detection="{AiDetection}"/>
-          <SubTree ID="SendTrajectoryOnly"
-                   Trajectory="{Trajectory}"
-                   TimeBeforeFailing="5"/>
-        </Sequence>
-      </Repeat>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="BinTwoBox">
+    <Sequence name="Dropping in 2 bins">
+      <Sequence name="Move above the bin">
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <SubTree ID="SearchObjectByRotation"
+                 Object="bin"
+                 FoundAiDetection="{FrontAidetection}"
+                 Max_time_before_failing_sec="0.0"
+                 Max_frame_before_failing="300"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"/>
+        <MoveToObject Offset="0"
+                      Trajectory="{Trajectory}"
+                      Detection="{FrontAidetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <Sequence name="Align the dropper with the bin">
+        <AiActivation Model="0"
+                      Bottom="true"
+                      Front="false"/>
+        <Repeat num_cycles="3">
+          <Sequence>
+            <InitializeTrajectory trajectory="{Trajectory}"/>
+            <IfThenElse>
+              <ScriptCondition code="ObjectToAim==&quot;gate-shark&quot;"/>
+              <AiFilter Detected_object="{AiDetection}"
+                        Max_time_before_failing_sec="0.000000"
+                        Max_frame_before_failing="300"
+                        Two_objects_possible="0"
+                        Min_detections_before_success="5"
+                        Confidence="0.600000"
+                        Max_depth="25"
+                        Object_class="shark"
+                        Camera="0"/>
+              <AiFilter Detected_object="{AiDetection}"
+                        Max_time_before_failing_sec="0.000000"
+                        Max_frame_before_failing="300"
+                        Two_objects_possible="0"
+                        Min_detections_before_success="5"
+                        Confidence="0.600000"
+                        Max_depth="25"
+                        Object_class="sawfish"
+                        Camera="0"/>
+            </IfThenElse>
+            <MoveAboveObject Trajectory="{Trajectory}"
+                             Detection="{AiDetection}"/>
+            <SubTree ID="SendTrajectoryOnly"
+                     Trajectory="{Trajectory}"
+                     TimeBeforeFailing="5"/>
+          </Sequence>
+        </Repeat>
+      </Sequence>
       <LaunchDropper side="port_side"/>
+      <Sequence name="Offsetting the sub to see the second bin">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="1"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
+      </Sequence>
+      <Sequence name="Align the second dropper with the next bin">
+        <Repeat num_cycles="3">
+          <Sequence>
+            <InitializeTrajectory trajectory="{Trajectory}"/>
+            <IfThenElse>
+              <ScriptCondition code="ObjectToAim==&quot;gate-shark&quot;"/>
+              <AiFilter Detected_object="{AiDetection}"
+                        Max_time_before_failing_sec="0.000000"
+                        Max_frame_before_failing="300"
+                        Two_objects_possible="0"
+                        Min_detections_before_success="5"
+                        Confidence="0.600000"
+                        Max_depth="25"
+                        Object_class="shark"
+                        Camera="0"/>
+              <AiFilter Detected_object="{AiDetection}"
+                        Max_time_before_failing_sec="0.000000"
+                        Max_frame_before_failing="300"
+                        Two_objects_possible="0"
+                        Min_detections_before_success="5"
+                        Confidence="0.600000"
+                        Max_depth="25"
+                        Object_class="sawfish"
+                        Camera="0"/>
+            </IfThenElse>
+            <MoveAboveObject Trajectory="{Trajectory}"
+                             Detection="{AiDetection}"/>
+            <SubTree ID="SendTrajectoryOnly"
+                     Trajectory="{Trajectory}"
+                     TimeBeforeFailing="5"/>
+          </Sequence>
+        </Repeat>
+      </Sequence>
+      <LaunchDropper side="starboard"/>
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"/>
@@ -68,14 +180,21 @@
              Angle="0"/>
   </BehaviorTree>
 
+  <BehaviorTree ID="CommunicationEmitter">
+    <AlwaysSuccess/>
+  </BehaviorTree>
+
+  <BehaviorTree ID="CommunicationReceiver">
+    <AlwaysSuccess/>
+  </BehaviorTree>
+
   <BehaviorTree ID="DummyPreQualification">
     <Sequence>
-      <Sequence _description="Initialize the sub.">
+      <Sequence name="Initialize the sub">
         <SubTree ID="InitialSubmerge"
-                 Depth="1"
-                 _description="Dive from 0.5m."/>
+                 Depth="1"/>
       </Sequence>
-      <Sequence _description="Move foward until the gate">
+      <Sequence name="Move foward until the gate">
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="2.5"
@@ -83,8 +202,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move foward of 2.5m."/>
+                 orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="0.5"
@@ -92,10 +210,9 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move foward of 0.5m."/>
+                 orientationZ="0.0"/>
       </Sequence>
-      <Sequence _description="Move foward of 10m and change the orientation of z axis to turn.">
+      <Sequence name="Move foward of 10m and change the orientation of z axis to turn">
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="2.5"
@@ -103,8 +220,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move foward of 2.5m."/>
+                 orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="2.5"
@@ -112,8 +228,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move foward of 2.5m."/>
+                 orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="2.5"
@@ -121,8 +236,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move foward of 2.5m."/>
+                 orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="1.5"
@@ -130,8 +244,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move foward of 2.5m"/>
+                 orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="0.0"
@@ -139,10 +252,9 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="90"
-                 _description="Turn in z of 90."/>
+                 orientationZ="90"/>
       </Sequence>
-      <Sequence _description="Turn around the marker">
+      <Sequence name="Turn around the marker">
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="0.5"
@@ -150,8 +262,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move to turn."/>
+                 orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="0.0"
@@ -159,8 +270,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="90.0"
-                 _description="Position the sub to finish to turn."/>
+                 orientationZ="90.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="0.5"
@@ -168,10 +278,9 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move to finish to turn."/>
+                 orientationZ="0.0"/>
       </Sequence>
-      <Sequence _description="Back to starting point.">
+      <Sequence name="Back to starting point">
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="2.5"
@@ -179,8 +288,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move backward of 2.5m"/>
+                 orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="2.5"
@@ -188,8 +296,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move backward of 2.5m."/>
+                 orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="2.5"
@@ -197,8 +304,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move backward of 2.5m."/>
+                 orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="2.5"
@@ -206,8 +312,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move backward of 2.5m."/>
+                 orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="2.5"
@@ -215,8 +320,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move backward of 2.5m."/>
+                 orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="0.5"
@@ -224,105 +328,120 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move backward of 10m."/>
+                 orientationZ="0.0"/>
         <SubTree ID="Done"/>
       </Sequence>
     </Sequence>
   </BehaviorTree>
 
   <BehaviorTree ID="Gate">
-    <Sequence>
-      <AiActivation Model="0"
-                    Bottom="false"
-                    Front="true"/>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
-      <Fallback>
-        <Sequence>
-          <SubTree ID="SearchObjectByRotation"
-                   Object="gate-shark"
-                   FoundAiDetection="{Aidetection}"
-                   Max_time_before_failing_sec="0.00"
-                   Max_frame_before_failing="300"
-                   Min_detection_before_success="5"
-                   Confidence="0.60000"
-                   Max_depth="25"/>
-          <Script code="DetectedObject:=&quot;gate_shark&quot;"/>
-        </Sequence>
-        <Sequence>
-          <SubTree ID="RotateToAbsoluteAngle"
-                   Angle="0"/>
-          <SubTree ID="SearchObjectByRotation"
-                   Object="gate-sawfish"
-                   FoundAiDetection="{Aidetection}"
-                   Max_time_before_failing_sec="0.00"
-                   Max_frame_before_failing="300"
-                   Min_detection_before_success="5"
-                   Confidence="0.60000"
-                   Max_depth="25"/>
-          <Script code="DetectedObject:=&quot;gate_sawfish&quot;"/>
-        </Sequence>
-      </Fallback>
-      <FaceTheObject Trajectory="{Trajectory}"
-                     Detection="{Aidetection}"/>
-      <SubTree ID="SendTrajectoryOnly"
-               Trajectory="{Trajectory}"
-               TimeBeforeFailing="5"/>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
-      <AiFilter Detected_object="{Aidetection}"
-                Max_time_before_failing_sec="0.000000"
-                Max_frame_before_failing="0"
-                Two_objects_possible="0"
-                Min_detections_before_success="5"
-                Confidence="0.600000"
-                Max_depth="25.000000"
-                Object_class="{DetectedObject}"
-                Camera="1"/>
-      <ObjectDrifting Trajectory="{Trajectory}"
+    <Sequence name="Gate">
+      <Sequence name="Looking for the gate image">
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <Fallback>
+          <Sequence>
+            <SubTree ID="SearchObjectByRotation"
+                     Object="gate-shark"
+                     FoundAiDetection="{Aidetection}"
+                     Max_time_before_failing_sec="0.00"
+                     Max_frame_before_failing="300"
+                     Min_detection_before_success="5"
+                     Confidence="0.60000"
+                     Max_depth="25"/>
+            <Script code="Path:=&quot;gate_shark&quot;"/>
+          </Sequence>
+          <Sequence>
+            <SubTree ID="RotateToAbsoluteAngle"
+                     Angle="0"/>
+            <SubTree ID="SearchObjectByRotation"
+                     Object="gate-sawfish"
+                     FoundAiDetection="{Aidetection}"
+                     Max_time_before_failing_sec="0.00"
+                     Max_frame_before_failing="300"
+                     Min_detection_before_success="5"
+                     Confidence="0.60000"
+                     Max_depth="25"/>
+            <Script code="Path:=&quot;gate_sawfish&quot;"/>
+          </Sequence>
+        </Fallback>
+        <FaceTheObject Trajectory="{Trajectory}"
+                       Detection="{Aidetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <Sequence name="Position the sub at the right place to pass the gate">
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{Aidetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="0"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="{Path}"
+                  Camera="1"/>
+        <ObjectDrifting Trajectory="{Trajectory}"
+                        Detection="{Aidetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <Sequence name="Moving the sub throw the gate">
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{Aidetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Two_objects_possible="0"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="{Path}"
+                  Camera="1"/>
+        <MoveToObject Offset="0.5"
+                      Trajectory="{Trajectory}"
                       Detection="{Aidetection}"/>
-      <SubTree ID="SendTrajectoryOnly"
-               Trajectory="{Trajectory}"
-               TimeBeforeFailing="5"/>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
-      <AiFilter Detected_object="{Aidetection}"
-                Max_time_before_failing_sec="0.000000"
-                Max_frame_before_failing="300"
-                Two_objects_possible="0"
-                Min_detections_before_success="5"
-                Confidence="0.600000"
-                Max_depth="25.000000"
-                Object_class="{DetectedObject}"
-                Camera="1"/>
-      <MoveToObject Offset="1.5"
-                    Trajectory="{Trajectory}"
-                    Detection="{Aidetection}"/>
-      <SubTree ID="SendTrajectoryOnly"
-               Trajectory="{Trajectory}"
-               TimeBeforeFailing="5"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
     </Sequence>
   </BehaviorTree>
 
   <BehaviorTree ID="Octogon">
     <Sequence>
-      <RetryUntilSuccessful num_attempts="-1">
-        <MissionSwitchStatus/>
-      </RetryUntilSuccessful>
+      <Sequence name="Finding the table">
+        <AlwaysSuccess/>
+      </Sequence>
+      <Sequence name="Move in direction of the table">
+        <AlwaysSuccess/>
+      </Sequence>
+      <Sequence name="Move on top of the table">
+        <AlwaysSuccess/>
+      </Sequence>
+      <Sequence name="Submerge inside the octogon">
+        <AlwaysSuccess/>
+      </Sequence>
+      <Sequence name="Submerge on top of the table">
+        <AlwaysSuccess/>
+      </Sequence>
     </Sequence>
   </BehaviorTree>
 
   <BehaviorTree ID="PreQualification">
     <Sequence>
-      <Sequence _description="Init sub.">
+      <Sequence name="Init sub.">
         <AiActivation Model="0"
                       Bottom="false"
-                      Front="true"
-                      _description="Active AI."/>
+                      Front="true"/>
         <SubTree ID="InitialSubmerge"
-                 Depth="0.5"
-                 _description="Dive of 0.5m."/>
+                 Depth="0.5"/>
       </Sequence>
-      <IfThenElse _description="Detect gate and move foward to it.">
-        <Sequence _description="Detect gate and move to it if success.">
+      <IfThenElse>
+        <Sequence name="Detect gate and move to it if success.">
           <AiFilter Detected_object="{GateDetection}"
                     Max_time_before_failing_sec="0.0"
                     Max_frame_before_failing="300"
@@ -331,8 +450,7 @@
                     Confidence="0.600000"
                     Max_depth="25.000000"
                     Object_class="gate-shark"
-                    Camera="1"
-                    _description="Detect gate"/>
+                    Camera="1"/>
           <MoveToObject Offset="0"
                         Trajectory="{GateTrajectory}"
                         Detection="{GateDetection}"/>
@@ -343,7 +461,7 @@
         <SubTree ID="Nop"/>
         <SubTree ID="MissionFailed"/>
       </IfThenElse>
-      <Sequence _description="Move foward of 10m and change the orientation of z axis to turn.">
+      <Sequence name="Move foward of 10m and change the orientation of z axis to turn.">
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="10"
@@ -351,8 +469,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move foward of 10m."/>
+                 orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="0.0"
@@ -360,10 +477,9 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="90"
-                 _description="Turn in z of 90."/>
+                 orientationZ="90"/>
       </Sequence>
-      <Sequence _description="Turn around the marker">
+      <Sequence name="Turn around the marker">
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="0.5"
@@ -371,8 +487,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move to turn."/>
+                 orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="0.0"
@@ -380,8 +495,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move foward in y axis of 0.5m"/>
+                 orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="0.0"
@@ -389,8 +503,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="90.0"
-                 _description="Position the sub to finish to turn."/>
+                 orientationZ="90.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="-0.5"
@@ -398,11 +511,10 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="0.0"
-                 _description="Move to finish to turn."/>
+                 orientationZ="0.0"/>
       </Sequence>
-      <IfThenElse _description="Detect gate and move foward to it.">
-        <Sequence>
+      <IfThenElse>
+        <Sequence name="Detect gate and move foward to it.">
           <AiFilter Detected_object="{GateDetection}"
                     Max_time_before_failing_sec="0.0"
                     Max_frame_before_failing="300"
@@ -411,8 +523,7 @@
                     Confidence="0.600000"
                     Max_depth="25.000000"
                     Object_class="gate-shark"
-                    Camera="1"
-                    _description="Detect gate"/>
+                    Camera="1"/>
           <MoveToObject Offset="0"
                         Trajectory="{GateTrajectory}"
                         Detection="{GateDetection}"/>
@@ -426,24 +537,287 @@
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="Run26">
+  <BehaviorTree ID="ReturnHome">
     <Sequence>
+      <Sequence name="Move in direction of the gate">
+        <InitializeTrajectory trajectory="{trajectory}"/>
+        <MoveToPoint Trajectory="{trajectory}"
+                     Point="{point_retour}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{trajectory}"
+                 TimeBeforeFailing="15"/>
+      </Sequence>
+      <Sequence name="Pass throw the gate">
+        <InitializeTrajectory trajectory="{trajectory}"/>
+        <TrajectoryAppendPose trajectory="{trajectory}"
+                              positionX="0.000000"
+                              positionY="0.000000"
+                              positionZ="0.000000"
+                              orientationX="0.000000"
+                              orientationY="0.000000"
+                              orientationZ="180"
+                              precision="0"
+                              speed="0"
+                              frame="2"
+                              longRotation="false"/>
+        <TrajectoryAppendPose trajectory="{trajectory}"
+                              positionX="0"
+                              positionY="0.000000"
+                              positionZ="0.000000"
+                              orientationX="0.000000"
+                              orientationY="0.000000"
+                              orientationZ="180"
+                              precision="0"
+                              speed="0"
+                              frame="0"
+                              longRotation="false"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{trajectory}"
+                 TimeBeforeFailing="15"/>
+      </Sequence>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy1">
+    <Sequence name="Strategy 1 : Easy Strategy that every sub can do">
       <SubTree ID="InitialSubmerge"
                Depth="1"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
         <SubTree ID="Gate"
-                 DetectedObject="{FishDetected}"/>
+                 Path="{path}"
+                 Side="{side}"/>
       </ForceSuccess>
-      <SubTree ID="TrickshotLegacy"/>
+      <SavePoint Point="{point_retour}"/>
       <ForceSuccess>
-        <SubTree ID="Bin"
-                 ObjectToAim="{FishDetected}"/>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="SlalomSimple"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy2">
+    <Sequence name="Strategy 2 : AUV8 alone strategy">
+      <SubTree ID="InitialSubmerge"
+               Depth="1"/>
+      <SubTree ID="CoinFlip"/>
+      <ForceSuccess>
+        <SubTree ID="Gate"
+                 Path="{path}"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="SlalomSimple"
+                 Side="{side}"
+                 _autoremap="false"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="BinOneBox"
+                 ObjectToAim="{path}"/>
       </ForceSuccess>
       <ForceSuccess>
         <SubTree ID="Torpedos"
-                 ObjectToAim="{FishDetected}"/>
+                 ObjectToAim="{path}"/>
       </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy3AUV8">
+    <Sequence name="Strategy for AUV8 with combo sub">
+      <SubTree ID="InitialSubmerge"
+               Depth="1"/>
+      <SubTree ID="CoinFlip"/>
+      <ForceSuccess>
+        <SubTree ID="Gate"
+                 Path="{path}"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="SlalomSimple"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="BinOneBox"
+                 ObjectToAim="{path}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="Torpedos"
+                 ObjectToAim="{path}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy3LITE">
+    <Sequence name="Strategy for LITE with combo sub">
+      <SubTree ID="InitialSubmerge"
+               Depth="1"/>
+      <SubTree ID="CoinFlip"/>
+      <ForceSuccess>
+        <SubTree ID="Gate"
+                 Path="{path}"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="SlalomSimple"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy4AUV8">
+    <Sequence name="Hard Strategy for AUV8 with combo sub">
+      <SubTree ID="InitialSubmerge"
+               Depth="1"/>
+      <SubTree ID="CoinFlip"/>
+      <ForceSuccess>
+        <SubTree ID="Gate"
+                 Path="{path}"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="SlalomSimple"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="BinTwoBox"
+                 ObjectToAim="{path}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="Torpedos"
+                 ObjectToAim="{path}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy4LITE">
+    <Sequence name="Hard Strategy for LITE with combo sub">
+      <SubTree ID="InitialSubmerge"
+               Depth="1"/>
+      <SubTree ID="CoinFlip"/>
+      <ForceSuccess>
+        <SubTree ID="Gate"
+                 Path="{path}"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="SlalomSimple"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="SlalomRafinee">
+    <Sequence>
+      <Sequence name="Detection of the red slalom">
+        <SubTree ID="SearchObjectByRotation"
+                 Object=""
+                 FoundAiDetection="{reddetection}"
+                 Max_time_before_failing_sec="5"
+                 Max_frame_before_failing="300"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"/>
+      </Sequence>
+      <Sequence name="Detection of the white slalom">
+        <SubTree ID="SearchObjectByRotation"
+                 Object=""
+                 FoundAiDetection="{whitedetection}"
+                 Max_time_before_failing_sec="5"
+                 Max_frame_before_failing="300"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"/>
+      </Sequence>
+      <Sequence name="Compute a trajectory to pass all the slalom one shot">
+        <InitializeTrajectory trajectory="{trajectory}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{trajectory}"
+                 TimeBeforeFailing="10"/>
+      </Sequence>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="SlalomSimple">
+    <Sequence>
+      <Sequence name="Detection of the red slalom">
+        <SubTree ID="SearchObjectByRotation"
+                 Object=""
+                 FoundAiDetection="{reddetection}"
+                 Max_time_before_failing_sec="5"
+                 Max_frame_before_failing="300"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"/>
+      </Sequence>
+      <Sequence name="Detection of the white slalom">
+        <SubTree ID="SearchObjectByRotation"
+                 Object=""
+                 FoundAiDetection="{whitedetection}"
+                 Max_time_before_failing_sec="5"
+                 Max_frame_before_failing="300"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"/>
+      </Sequence>
+      <Sequence name="Compute a trajectory to pass all the slalom one shot">
+        <InitializeTrajectory trajectory="{trajectory}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{trajectory}"
+                 TimeBeforeFailing="10"/>
+      </Sequence>
     </Sequence>
   </BehaviorTree>
 
@@ -493,88 +867,88 @@
                frame="4"
                positionX="0.0"
                positionY="0.0"
-               positionZ="0.75"
+               positionZ="1"
                orientationX="0.0"
                orientationY="0.0"
                orientationZ="0.0"/>
       <InitializeTrajectory trajectory="{traj}"/>
       <TrajectoryAppendPose trajectory="{traj}"
-                            precision="0"
-                            speed="2"
-                            frame="1"
-                            orientationZ="0.000000"
-                            longRotation="false"
-                            positionZ="0.000000"
+                            positionX="0.000000"
                             positionY="0.000000"
+                            positionZ="0.000000"
+                            orientationX="0"
                             orientationY="90"
-                            orientationX="0"
-                            positionX="0.000000"/>
-      <TrajectoryAppendPose trajectory="{traj}"
+                            orientationZ="0.000000"
                             precision="0"
                             speed="2"
                             frame="1"
-                            orientationZ="0"
-                            longRotation="false"
-                            positionZ="0.000000"
-                            positionY="0.000000"
-                            orientationY="0.000000"
-                            orientationX="0180"
-                            positionX="0.000000"/>
+                            longRotation="false"/>
       <TrajectoryAppendPose trajectory="{traj}"
-                            precision="0"
-                            speed="2"
-                            frame="1"
-                            orientationZ="180"
-                            longRotation="false"
-                            positionZ="0.000000"
+                            positionX="0.000000"
                             positionY="0.000000"
-                            orientationY="0.000000"
-                            orientationX="0.000000"
-                            positionX="0.000000"/>
-      <TrajectoryAppendPose trajectory="{traj}"
-                            precision="0"
-                            speed="2"
-                            frame="1"
-                            orientationZ="180"
-                            longRotation="false"
                             positionZ="0.000000"
-                            positionY="0.000000"
-                            orientationY="0.000000"
-                            orientationX="0"
-                            positionX="0.000000"/>
-      <TrajectoryAppendPose trajectory="{traj}"
-                            precision="0"
-                            speed="2"
-                            frame="1"
-                            orientationZ="0"
-                            longRotation="false"
-                            positionZ="0.000000"
-                            positionY="0.000000"
-                            orientationY="-180"
-                            orientationX="0"
-                            positionX="0.000000"/>
-      <TrajectoryAppendPose trajectory="{traj}"
-                            precision="0"
-                            speed="2"
-                            frame="1"
-                            orientationZ="0"
-                            longRotation="false"
-                            positionZ="0.000000"
-                            positionY="0.000000"
-                            orientationY="-90"
-                            orientationX="0"
-                            positionX="0.000000"/>
-      <TrajectoryAppendPose trajectory="{traj}"
-                            precision="0"
-                            speed="2"
-                            frame="1"
-                            orientationZ="0"
-                            longRotation="false"
-                            positionZ="0.000000"
-                            positionY="0.000000"
-                            orientationY="0.000000"
                             orientationX="180"
-                            positionX="0.000000"/>
+                            orientationY="0.000000"
+                            orientationZ="0"
+                            precision="0"
+                            speed="2"
+                            frame="1"
+                            longRotation="false"/>
+      <TrajectoryAppendPose trajectory="{traj}"
+                            positionX="0.000000"
+                            positionY="0.000000"
+                            positionZ="0.000000"
+                            orientationX="0.000000"
+                            orientationY="0.000000"
+                            orientationZ="180"
+                            precision="0"
+                            speed="2"
+                            frame="1"
+                            longRotation="false"/>
+      <TrajectoryAppendPose trajectory="{traj}"
+                            positionX="0.000000"
+                            positionY="0.000000"
+                            positionZ="0.000000"
+                            orientationX="0"
+                            orientationY="0.000000"
+                            orientationZ="180"
+                            precision="0"
+                            speed="2"
+                            frame="1"
+                            longRotation="false"/>
+      <TrajectoryAppendPose trajectory="{traj}"
+                            positionX="0.000000"
+                            positionY="0.000000"
+                            positionZ="0.000000"
+                            orientationX="0"
+                            orientationY="-180"
+                            orientationZ="0"
+                            precision="0"
+                            speed="2"
+                            frame="1"
+                            longRotation="false"/>
+      <TrajectoryAppendPose trajectory="{traj}"
+                            positionX="0.000000"
+                            positionY="0.000000"
+                            positionZ="0.000000"
+                            orientationX="0"
+                            orientationY="-90"
+                            orientationZ="0"
+                            precision="0"
+                            speed="2"
+                            frame="1"
+                            longRotation="false"/>
+      <TrajectoryAppendPose trajectory="{traj}"
+                            positionX="0.000000"
+                            positionY="0.000000"
+                            positionZ="0.000000"
+                            orientationX="180"
+                            orientationY="0.000000"
+                            orientationZ="0"
+                            precision="0"
+                            speed="2"
+                            frame="1"
+                            longRotation="false"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{traj}"
                TimeBeforeFailing="5"/>
@@ -582,67 +956,85 @@
   </BehaviorTree>
 
   <BehaviorTree ID="TrickshotLegacy">
-    <Sequence>
-      <InitializeTrajectory trajectory="{traj}"/>
-      <TrajectoryAppendPose trajectory="{traj}"
-                            precision="0"
-                            speed="0"
-                            frame="1"
-                            orientationZ="0.000000"
-                            longRotation="false"
-                            positionZ="0.000000"
-                            positionY="0.000000"
-                            orientationY="90"
-                            orientationX="0.000000"
-                            positionX="0.000000"/>
-      <TrajectoryAppendPose trajectory="{traj}"
-                            precision="0"
-                            speed="0"
-                            frame="1"
-                            orientationZ="0.000000"
-                            longRotation="false"
-                            positionZ="0.000000"
-                            positionY="0.000000"
-                            orientationY="0.000000"
-                            orientationX="180"
-                            positionX="0.000000"/>
-      <TrajectoryAppendPose trajectory="{traj}"
-                            precision="0"
-                            speed="0"
-                            frame="1"
-                            orientationZ="0.000000"
-                            longRotation="false"
-                            positionZ="0.000000"
-                            positionY="0.000000"
-                            orientationY="0.000000"
-                            orientationX="180"
-                            positionX="0.000000"/>
-      <TrajectoryAppendPose trajectory="{traj}"
-                            precision="0"
-                            speed="0"
-                            frame="1"
-                            orientationZ="0.000000"
-                            longRotation="false"
-                            positionZ="0.000000"
-                            positionY="0.000000"
-                            orientationY="90"
-                            orientationX="0.000000"
-                            positionX="0.000000"/>
-      <TrajectoryAppendPose trajectory="{traj}"
-                            precision="0"
-                            speed="0"
-                            frame="1"
-                            orientationZ="0.000000"
-                            longRotation="false"
-                            positionZ="0.000000"
-                            positionY="0.000000"
-                            orientationY="180"
-                            orientationX="0.000000"
-                            positionX="0.000000"/>
-      <SubTree ID="SendTrajectoryOnly"
-               Trajectory="{traj}"
-               TimeBeforeFailing="10"/>
-    </Sequence>
+    <Fallback>
+      <Sequence>
+        <SubTree ID="MoveSinglePose"
+                 frame="4.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="1.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
+        <InitializeTrajectory trajectory="{traj}"/>
+        <TrajectoryAppendPose trajectory="{traj}"
+                              positionX="0.000000"
+                              positionY="0.000000"
+                              positionZ="0.000000"
+                              orientationX="0.000000"
+                              orientationY="90"
+                              orientationZ="0.000000"
+                              precision="0"
+                              speed="0"
+                              frame="1"
+                              longRotation="false"/>
+        <TrajectoryAppendPose trajectory="{traj}"
+                              positionX="0.000000"
+                              positionY="0.000000"
+                              positionZ="0.000000"
+                              orientationX="180"
+                              orientationY="0.000000"
+                              orientationZ="0.000000"
+                              precision="0"
+                              speed="0"
+                              frame="1"
+                              longRotation="false"/>
+        <TrajectoryAppendPose trajectory="{traj}"
+                              positionX="0.000000"
+                              positionY="0.000000"
+                              positionZ="0.000000"
+                              orientationX="180"
+                              orientationY="0.000000"
+                              orientationZ="0.000000"
+                              precision="0"
+                              speed="0"
+                              frame="1"
+                              longRotation="false"/>
+        <TrajectoryAppendPose trajectory="{traj}"
+                              positionX="0.000000"
+                              positionY="0.000000"
+                              positionZ="0.000000"
+                              orientationX="0.000000"
+                              orientationY="90"
+                              orientationZ="0.000000"
+                              precision="0"
+                              speed="0"
+                              frame="1"
+                              longRotation="false"/>
+        <TrajectoryAppendPose trajectory="{traj}"
+                              positionX="0.000000"
+                              positionY="0.000000"
+                              positionZ="0.000000"
+                              orientationX="0.000000"
+                              orientationY="180"
+                              orientationZ="0.000000"
+                              precision="0"
+                              speed="0"
+                              frame="1"
+                              longRotation="false"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{traj}"
+                 TimeBeforeFailing="10"/>
+      </Sequence>
+      <SubTree ID="MoveSinglePose"
+               frame="2.0"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"/>
+    </Fallback>
   </BehaviorTree>
 
   <!-- Description of Node Models (used by Groot) -->
@@ -685,7 +1077,11 @@
                   default="1"
                   type="int">1: Front, 0: Bottom</input_port>
     </Action>
-    <SubTree ID="Bin"
+    <SubTree ID="BinOneBox"
+             editable="true">
+      <input_port name="ObjectToAim"/>
+    </SubTree>
+    <SubTree ID="BinTwoBox"
              editable="true">
       <input_port name="ObjectToAim">The object in the bin that the sub needs to aim</input_port>
     </SubTree>
@@ -697,7 +1093,8 @@
     </Action>
     <SubTree ID="Gate"
              editable="true">
-      <input_port name="DetectedObject">The type of object that the sub will working to</input_port>
+      <output_port name="Path">The path that the sub as taken</output_port>
+      <output_port name="Side">The left or right side that the sub as taken</output_port>
     </SubTree>
     <SubTree ID="InitialSubmerge"
              editable="true">
@@ -712,7 +1109,6 @@
       <input_port name="side"
                   type="std::string">port_side or starboard</input_port>
     </Action>
-    <Condition ID="MissionSwitchStatus"/>
     <Action ID="MoveAboveObject">
       <inout_port name="Trajectory"
                   type="Trajectory"/>
@@ -744,16 +1140,30 @@
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
+    <Action ID="MoveToPoint">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Point"
+                  type="Point"/>
+    </Action>
     <Action ID="ObjectDrifting">
       <inout_port name="Trajectory"
                   type="Trajectory"/>
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
+    <SubTree ID="ReturnHome"
+             editable="true">
+      <input_port name="point_retour">The register point after the gate</input_port>
+    </SubTree>
     <SubTree ID="RotateToAbsoluteAngle"
              editable="true">
       <input_port name="Angle">Angle to put to the sub</input_port>
     </SubTree>
+    <Action ID="SavePoint">
+      <output_port name="Point"
+                   type="Point"/>
+    </Action>
     <SubTree ID="SearchObjectByRotation"
              editable="true">
       <input_port name="Object">Object we are looking for</input_port>
@@ -775,6 +1185,10 @@
       <input_port name="TimeBeforeFailing"
                   default="5">The time before the sub movement fail</input_port>
     </SubTree>
+    <SubTree ID="SlalomSimple"
+             editable="true">
+      <input_port name="Side">The side for passing the slalom</input_port>
+    </SubTree>
     <SubTree ID="TorpedoShootingSequence"
              editable="true">
       <input_port name="TorpedoSide">The torpedo side to launch</input_port>
@@ -787,6 +1201,24 @@
     <Action ID="TrajectoryAppendPose">
       <inout_port name="trajectory"
                   type="Trajectory"/>
+      <input_port name="positionX"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationX"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationZ"
+                  default="0.000000"
+                  type="float"/>
       <input_port name="precision"
                   default="0"
                   type="int"/>
@@ -796,27 +1228,9 @@
       <input_port name="frame"
                   default="1"
                   type="int"/>
-      <input_port name="orientationZ"
-                  default="0.000000"
-                  type="float"/>
       <input_port name="longRotation"
                   default="false"
                   type="bool"/>
-      <input_port name="positionZ"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="positionY"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="orientationY"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="orientationX"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="positionX"
-                  default="0.000000"
-                  type="float"/>
     </Action>
   </TreeNodesModel>
 

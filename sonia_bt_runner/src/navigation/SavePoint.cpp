@@ -26,7 +26,7 @@ namespace navigation {
             point_retour.x = pose_msg.position.x;
             point_retour.y = pose_msg.position.y;
             point_retour.z = pose_msg.position.z;
-            setOutput("point", point_retour);
+            setOutput("Point", point_retour);
             return BT::NodeStatus::SUCCESS;
         }
         else if (time_diff > 5.0)
@@ -47,5 +47,5 @@ namespace navigation {
         pose_msg = msg;
         msg_received = true;
     }
-    
+
 }

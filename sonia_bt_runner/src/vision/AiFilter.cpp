@@ -48,7 +48,7 @@ namespace vision{
         std::chrono::duration<double> diff = std::chrono::system_clock::now() - _launch_time;
         time_diff = diff.count();
 
-        if(max_frame_before_failing.value() != 0 && counter >= max_frame_before_failing.value() || max_time_before_failing.value() != 0.0 && time_diff >= max_time_before_failing.value())
+        if((max_frame_before_failing.value() != 0 && counter >= max_frame_before_failing.value()) || (max_time_before_failing.value() != 0.0 && time_diff >= max_time_before_failing.value()))
         {
             // We took to much time or count too many frame to fond the object
             if (max_frame_before_failing.value() != 0)
@@ -60,7 +60,7 @@ namespace vision{
             return BT::NodeStatus::FAILURE;
         }
 
-        if(_detection_array.size() < min_detections_before_success.value()){
+        if(_detection_array.size() < (size_t)min_detections_before_success.value()){
 
             //No image or not enought image captured
             return BT::NodeStatus::RUNNING;
@@ -81,7 +81,7 @@ namespace vision{
             float index_of_smallest_distance = 0;
             
             // We compute the closest detection to the center of the camera
-            for (int i = 1; i < _detection_array.size(); i++)
+            for (size_t i{1}; i < _detection_array.size(); i++)
             {
                 float centered_distance = pow(_detection_array[i].distance_teta, 2) + pow(_detection_array[i].distance_beta, 2);
                 if (centered_distance < smallest_distance)
@@ -93,7 +93,7 @@ namespace vision{
 
             // We choose the detection on a distance of 10 cm with the closest one.
             choosen_index.push_back(index_of_smallest_distance);
-            for (int i = 0;i < _detection_array.size(); i++)
+            for (size_t i{0};i < _detection_array.size(); i++)
             {
                 if (i != index_of_smallest_distance)
                 {
@@ -108,18 +108,18 @@ namespace vision{
         {
             float teta_average;
             float beta_average;
-            int highest_index = 0;
+            size_t highest_index{0};
             float highest_error = 0.0;
 
             // We compute a teta and beta average of the detection
-            for (int i = 0; i < _detection_array.size(); i++)
+            for (size_t i{0}; i < _detection_array.size(); i++)
             {
                 teta_average += _detection_array[i].distance_teta/_detection_array.size();
                 beta_average += _detection_array[i].distance_beta/_detection_array.size();
             }
 
             // We flush the higest and the lowest error between the average and detection value
-            for (int i = 0; i < _detection_array.size(); i++)
+            for (size_t i{0}; i < _detection_array.size(); i++)
             {
                 float teta_error = _detection_array[i].distance_teta - teta_average;
                 float beta_error = _detection_array[i].distance_beta - beta_average;
@@ -130,7 +130,7 @@ namespace vision{
                     highest_error = error;
                 }
             }
-            for (int i = 0; i < _detection_array.size(); i++)
+            for (size_t i{0}; i < _detection_array.size(); i++)
             {
                 if (i != highest_index)
                 {

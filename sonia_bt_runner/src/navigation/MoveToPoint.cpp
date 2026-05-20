@@ -13,8 +13,15 @@ namespace navigation {
         Point point_retour;
         Trajectory traj;
 
-        getInput("point", point_retour);
-        getInput("trajectory", traj);
+        getInput("Point", point_retour);
+
+        if(!getInput<Trajectory>("Trajectory"))
+        {
+            RCLCPP_INFO(ros_node->get_logger(), "The Trajectory is not initialize");
+
+            return BT::NodeStatus::FAILURE;
+        }
+        getInput("Trajectory", traj);
 
         TrajectoryPose point_retour_pose;
         point_retour_pose.orientationX = 0;
@@ -29,7 +36,7 @@ namespace navigation {
         point_retour_pose.long_rotation = false;
 
         traj.trajectory.push_back(point_retour_pose);
-        setOutput("trajectory", traj);
+        setOutput("Trajectory", traj);
         return BT::NodeStatus::SUCCESS;
     }
 }
