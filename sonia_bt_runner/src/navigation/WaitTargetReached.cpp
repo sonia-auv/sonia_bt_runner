@@ -4,9 +4,9 @@ using std::placeholders::_1;
 namespace navigation{
 
     WaitTargetReached::WaitTargetReached(const std::string& name, const BT::NodeConfig& config, std::shared_ptr<rclcpp::Node> node) 
-    : BT::StatefulActionNode(name, config), ros_node(node)
+    : BT::StatefulActionNode(name, config), _ros_node(node)
     {
-        timeout_pub = ros_node->create_publisher<sonia_common_ros2::msg::MissionTimer>("/sonia_behaviors/timeout",5);
+        _timeout_pub = _ros_node->create_publisher<sonia_common_ros2::msg::MissionTimer>("/sonia_behaviors/timeout",5);
     }
     
      BT::NodeStatus WaitTargetReached::onStart(){
@@ -20,7 +20,7 @@ namespace navigation{
         getInput<float>("timeout", _param_timeout);
     
         _launch_time = std::chrono::system_clock::now();
-        controller_sub =ros_node->create_subscription<sonia_common_ros2::msg::MpcInfo>("/proc_control/controller_info", 1, std::bind(&WaitTargetReached::get_controller_info_callback, this,_1));
+        _controller_sub =_ros_node->create_subscription<sonia_common_ros2::msg::MpcInfo>("/proc_control/controller_info", 1, std::bind(&WaitTargetReached::get_controller_info_callback, this,_1));
         return BT::NodeStatus::RUNNING;
     }
     BT::NodeStatus WaitTargetReached::onRunning(){
@@ -39,14 +39,14 @@ namespace navigation{
         {
             if (_target_reached)
             {
-                timeout_pub->publish(missionTimerFunc("wait_target_reached", _param_timeout, std::chrono::system_clock::to_time_t(_launch_time), 2));
-                RCLCPP_INFO(ros_node->get_logger(), "Target Reached");
+                _timeout_pub->publish(missionTimerFunc("wait_target_reached", _param_timeout, std::chrono::system_clock::to_time_t(_launch_time), 2));
+                RCLCPP_INFO(_ros_node->get_logger(), "Target Reached");
                 return BT::NodeStatus::SUCCESS;
             }
             else
             {
-                timeout_pub->publish(missionTimerFunc("wait_target_reached", _param_timeout, std::chrono::system_clock::to_time_t(_launch_time), 3));
-                RCLCPP_INFO(ros_node->get_logger(), "Target couldn't be reached");
+                _timeout_pub->publish(missionTimerFunc("wait_target_reached", _param_timeout, std::chrono::system_clock::to_time_t(_launch_time), 3));
+                RCLCPP_INFO(_ros_node->get_logger(), "Target couldn't be reached");
                 return BT::NodeStatus::FAILURE;
             }
         }
@@ -65,12 +65,12 @@ namespace navigation{
             {
                 _launch_time = std::chrono::system_clock::now();
                 _traj_complete = true;
-                timeout_pub->publish(missionTimerFunc("wait_target_reached", _param_timeout, std::chrono::system_clock::to_time_t(_launch_time), 1));
-                RCLCPP_INFO(ros_node->get_logger(), "Trajectory Completed");
+                _timeout_pub->publish(missionTimerFunc("wait_target_reached", _param_timeout, std::chrono::system_clock::to_time_t(_launch_time), 1));
+                RCLCPP_INFO(_ros_node->get_logger(), "Trajectory Completed");
             }
             else
             {
-                RCLCPP_INFO(ros_node->get_logger(), "Trajectory has been received");    
+                RCLCPP_INFO(_ros_node->get_logger(), "Trajectory has been received");    
             }
         }
         _trajectory_done_prev = _trajectory_done;

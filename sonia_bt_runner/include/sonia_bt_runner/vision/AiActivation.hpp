@@ -22,8 +22,8 @@ namespace vision{
         BT::NodeStatus tick() override;
 
     private:
-        std::shared_ptr<sonia_common_ros2::srv::AiActivationService_Request> request;
-        rclcpp::Client<sonia_common_ros2::srv::AiActivationService>::SharedPtr ai_client;
-        std::shared_ptr<rclcpp::Node> ros_node;
+        std::shared_ptr<sonia_common_ros2::srv::AiActivationService_Request> _request;
+        rclcpp::Client<sonia_common_ros2::srv::AiActivationService>::SharedPtr _ai_client;
+        std::shared_ptr<rclcpp::Node> _ros_node;
     };
 }

@@ -13,15 +13,16 @@ namespace init{
             static BT::PortsList providedPorts(){
                 return {BT::InputPort<bool>("set_mode", false,"")};
             }
-
             BT::NodeStatus onStart() override;
             BT::NodeStatus onRunning() override;
             void onHalted() override;
+
         private:
             void control_callback(const sonia_common_ros2::msg::MpcInfo &msg);
-            std::shared_ptr<rclcpp::Node> ros_node;
-            rclcpp::Publisher<std_msgs::msg::UInt8>::SharedPtr mode_pub;
-            rclcpp::Subscription<sonia_common_ros2::msg::MpcInfo>::SharedPtr ctrl_sub;
-            uint8_t ctrl_state;
+            
+            std::shared_ptr<rclcpp::Node> _ros_node;
+            rclcpp::Publisher<std_msgs::msg::UInt8>::SharedPtr _mode_pub;
+            rclcpp::Subscription<sonia_common_ros2::msg::MpcInfo>::SharedPtr _ctrl_sub;
+            uint8_t _ctrl_state;
     };
 } // namespace init

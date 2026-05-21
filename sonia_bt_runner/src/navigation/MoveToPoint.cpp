@@ -3,7 +3,7 @@
 namespace navigation {
 
     MoveToPoint::MoveToPoint(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    : BT::SyncActionNode(name, config), ros_node(node)
+    : BT::SyncActionNode(name, config), _ros_node(node)
     {
         
     }
@@ -17,7 +17,7 @@ namespace navigation {
 
         if(!getInput<Trajectory>("Trajectory"))
         {
-            RCLCPP_INFO(ros_node->get_logger(), "The Trajectory is not initialize");
+            RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
             return BT::NodeStatus::FAILURE;
         }

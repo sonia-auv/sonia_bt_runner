@@ -5,10 +5,10 @@ using std::placeholders::_1;
 namespace navigation {
 
     SavePoint::SavePoint(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-        : BT::StatefulActionNode(name, config), ros_node(node), pose_msg(), msg_received{false}
+        : BT::StatefulActionNode(name, config), _ros_node(node), _pose_msg(), _msg_received{false}
     {
         rclcpp::QoS qos(10);
-        pose_sub = ros_node->create_subscription<sonia_common_ros2::msg::Pose>("/proc_control/current_target", qos, std::bind(&SavePoint::pose_call_back,this, _1));
+        _pose_sub = _ros_node->create_subscription<sonia_common_ros2::msg::Pose>("/proc_control/current_target", qos, std::bind(&SavePoint::pose_call_back,this, _1));
     }
 
     BT::NodeStatus SavePoint::onStart()
@@ -20,18 +20,18 @@ namespace navigation {
     BT::NodeStatus SavePoint::onRunning()
     {
         std::chrono::duration<double> diff = std::chrono::system_clock::now() - _launch_time;
-        time_diff = diff.count();
-        if (msg_received) {
+        _time_diff = diff.count();
+        if (_msg_received) {
             Point point_retour;
-            point_retour.x = pose_msg.position.x;
-            point_retour.y = pose_msg.position.y;
-            point_retour.z = pose_msg.position.z;
+            point_retour.x = _pose_msg.position.x;
+            point_retour.y = _pose_msg.position.y;
+            point_retour.z = _pose_msg.position.z;
             setOutput("Point", point_retour);
             return BT::NodeStatus::SUCCESS;
         }
-        else if (time_diff > 5.0)
+        else if (_time_diff > 5.0)
         {
-            RCLCPP_WARN(ros_node->get_logger(), "The current target wasn't published. Verify the control node");
+            RCLCPP_WARN(_ros_node->get_logger(), "The current target wasn't published. Verify the control node");
             return BT::NodeStatus::FAILURE;
         }
         return BT::NodeStatus::RUNNING;
@@ -44,8 +44,8 @@ namespace navigation {
 
     void SavePoint::pose_call_back(const sonia_common_ros2::msg::Pose &msg)
     {
-        pose_msg = msg;
-        msg_received = true;
+        _pose_msg = msg;
+        _msg_received = true;
     }
 
 }

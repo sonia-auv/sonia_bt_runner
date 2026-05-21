@@ -8,47 +8,47 @@ MissionServer::MissionServer()
     {
         //set mission path
         const char *ws = std::getenv("SONIA_WS");
-        search_directory.assign(ws);
-        search_directory.append("/src/sonia_bt_runner/sonia_bt_missions/mission/");
+        _search_directory.assign(ws);
+        _search_directory.append("/src/sonia_bt_runner/sonia_bt_missions/mission/");
 
-        pub_status_ = this->create_publisher<std_msgs::msg::String>("/mission_server/status_report",1);
-        pub_node_status_ = this->create_publisher<sonia_common_ros2::msg::NodeStatus>("/system_monitor/node_status",1);
-        fetch_missions_srv_ = this->create_service<sonia_common_ros2::srv::MissionListService>("/mission_server/mission_list", std::bind(&MissionServer::grabMissionList, this, _1, _2));
+        _pub_status = this->create_publisher<std_msgs::msg::String>("/mission_server/status_report",1);
+        _pub_node_status = this->create_publisher<sonia_common_ros2::msg::NodeStatus>("/system_monitor/node_status",1);
+        _fetch_missions_srv = this->create_service<sonia_common_ros2::srv::MissionListService>("/mission_server/mission_list", std::bind(&MissionServer::grabMissionList, this, _1, _2));
 
-        _timerNodeStatus = this->create_wall_timer(500ms, std::bind(&MissionServer::publishStatus, this));
+        _timer_node_status = this->create_wall_timer(500ms, std::bind(&MissionServer::publishStatus, this));
 
-        server_ = rclcpp_action::create_server<MissionControl>(
+        _server = rclcpp_action::create_server<MissionControl>(
                     this,
                     "MissionControl",
                     std::bind(&MissionServer::handleGoal, this, _1,_2),
                     std::bind(&MissionServer::handleCancel, this, _1),
                     std::bind(&MissionServer::handleAccept, this, _1));
         
-        node_status.node_name = this->get_name();
-        node_status.quality = sonia_common_ros2::msg::NodeStatus::Q_OK;
-        node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_INITIALIZING;
+        _node_status.node_name = this->get_name();
+        _node_status.quality = sonia_common_ros2::msg::NodeStatus::Q_OK;
+        _node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_INITIALIZING;
         
         RCLCPP_INFO(this->get_logger(), "Mission Server up running");
     }
     
     void MissionServer::init(){
-        registerNodes(factory_, this->shared_from_this());
-        node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;    
+        registerNodes(_factory, this->shared_from_this());
+        _node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;    
     }
 
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal){
         auto res = std::make_shared<MissionControl::Result>();
         std_msgs::msg::String rep;
-        result_=NodeStatus::RUNNING;
-        Tracker trac(tree_, goal); 
+        _result=NodeStatus::RUNNING;
+        Tracker trac(_tree, goal); 
        
         RCLCPP_INFO(this->get_logger(), "Mission launched"); 
         rep.data= "Mission launched....";
-        pub_status_->publish(rep);  
+        _pub_status->publish(rep);
         
-        while (!BT::isStatusCompleted(result_))
+        while (!BT::isStatusCompleted(_result))
         { 
-            result_ = tree_.tickExactlyOnce(); 
+            _result = _tree.tickExactlyOnce(); 
           
             if(goal->is_canceling()){
                 res->success = false;
@@ -56,44 +56,44 @@ MissionServer::MissionServer()
                 clearFactory("Mission Cancelled");
                 return;
             }
-            tree_.sleep(std::chrono::milliseconds(_TICK_SLEEP_TIME));
+            _tree.sleep(std::chrono::milliseconds(_TICK_SLEEP_TIME));
         }
 
-        RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(result_).c_str());
+        RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(_result).c_str());
         RCLCPP_INFO(this->get_logger(), "----------------");
 
-        res->success = (result_ == NodeStatus::SUCCESS);
+        res->success = (_result == NodeStatus::SUCCESS);
         goal->succeed(res);
 
         RCLCPP_INFO(this->get_logger(), "Mission completed");
         rep.data= "Mission completed....";
-        pub_status_->publish(rep);
+        _pub_status->publish(rep);
 
-        node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
+        _node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
     }
 
     rclcpp_action::GoalResponse MissionServer::handleGoal(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const MissionControl::Goal> goal){
         (void)uuid;
-        node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_RUNNING;
+        _node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_RUNNING;
         RCLCPP_INFO(this->get_logger(), "Received goal request with mission : %s", goal->mission.c_str());
-        name_ =goal->mission;
+        _name =goal->mission;
         std::string temp_file;
 
         try
         {
-            for (auto const &entry : directory_iterator(search_directory))
+            for (auto const &entry : directory_iterator(_search_directory))
             {
                 if (entry.path().extension() == ".xml")
                 {
                     temp_file = entry.path().string();
-                    factory_.registerBehaviorTreeFromFile(temp_file);
+                    _factory.registerBehaviorTreeFromFile(temp_file);
                     std::cout << "file: "<<entry.path()<<std::endl;
                 }
             }
             
-            std::filesystem::path fullFilePath(name_);
-            tree_ = factory_.createTree(fullFilePath);
-            tree_.initialize();
+            std::filesystem::path fullFilePath(_name);
+            _tree = _factory.createTree(fullFilePath);
+            _tree.initialize();
             return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
         }
         catch(const BT::RuntimeError& e)
@@ -112,7 +112,7 @@ MissionServer::MissionServer()
     
     rclcpp_action::CancelResponse MissionServer::handleCancel(const std::shared_ptr<GoalHandle> goal_handle){
         (void)goal_handle;
-        if (result_ != NodeStatus::RUNNING){
+        if (_result != NodeStatus::RUNNING){
             RCLCPP_INFO(this->get_logger(), "Cancel request rejected: NO MISSION RUNNING");
             return rclcpp_action::CancelResponse::REJECT;
         }
@@ -125,8 +125,8 @@ MissionServer::MissionServer()
     }
 
     void MissionServer::generateMissionList() {
-        mission_list.clear();
-        for (auto const &entry : directory_iterator(search_directory))
+        _mission_list.clear();
+        for (auto const &entry : directory_iterator(_search_directory))
         {
             tinyxml2::XMLDocument document;
             if (entry.path().extension() == ".xml")
@@ -136,7 +136,7 @@ MissionServer::MissionServer()
 
                 for(tinyxml2::XMLElement* element = root_element->FirstChildElement("BehaviorTree"); element!= nullptr; element = element->NextSiblingElement("BehaviorTree")){
                     const char* id = element->Attribute("ID");
-                    mission_list.push_back(id);
+                    _mission_list.push_back(id);
                 }
             }
         }     
@@ -145,17 +145,17 @@ MissionServer::MissionServer()
     void MissionServer::clearFactory(const std::string log){
         std_msgs::msg::String rep;
         rep.data=log;
-        pub_status_->publish(rep);
+        _pub_status->publish(rep);
         RCLCPP_INFO(this->get_logger(), "%s", log.c_str());
-        factory_.clearRegisteredBehaviorTrees();
-        node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
+        _factory.clearRegisteredBehaviorTrees();
+        _node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
     }
     void MissionServer::grabMissionList(const std::shared_ptr<sonia_common_ros2::srv::MissionListService::Request> request, std::shared_ptr<sonia_common_ros2::srv::MissionListService::Response> response){
         (void)request;
         generateMissionList();
-        response->missions = mission_list;
+        response->missions = _mission_list;
     }
     void MissionServer::publishStatus(){
-        node_status.stamp = this->now();
-        pub_node_status_->publish(node_status);
+        _node_status.stamp = this->now();
+        _pub_node_status->publish(_node_status);
     }

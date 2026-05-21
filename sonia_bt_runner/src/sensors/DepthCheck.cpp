@@ -4,11 +4,11 @@ using std::placeholders::_1;
 
 namespace sensors
 {
-    DepthCheck::DepthCheck(const std::string &name, std::shared_ptr<rclcpp::Node> node) : BT::ConditionNode(name, {}), ros_node(node), _depth_val{0.1}
+    DepthCheck::DepthCheck(const std::string &name, std::shared_ptr<rclcpp::Node> node) : BT::ConditionNode(name, {}), _ros_node(node), _depth_val{0.1}
     {
         rclcpp::QoS qos(10);
         qos.reliability(rclcpp::ReliabilityPolicy::Reliable);
-        depth_sub = ros_node->create_subscription<std_msgs::msg::Float32>("/provider_depth/depth", qos, std::bind(&DepthCheck::update_status, this, _1));
+        _depth_sub = _ros_node->create_subscription<std_msgs::msg::Float32>("/provider_depth/depth", qos, std::bind(&DepthCheck::update_status, this, _1));
     }
 
     BT::NodeStatus DepthCheck::tick()

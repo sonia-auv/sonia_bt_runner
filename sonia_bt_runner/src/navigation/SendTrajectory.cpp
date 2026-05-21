@@ -3,10 +3,10 @@
 using std::placeholders::_1;
 namespace navigation{
     SendTrajectory::SendTrajectory(const std::string& name, const BT::NodeConfig& config, std::shared_ptr<rclcpp::Node> node) 
-    : BT::StatefulActionNode(name, config), ros_node(node), valid(0), _time_launch(std::chrono::system_clock::now())
+    : BT::StatefulActionNode(name, config), _ros_node(node), _valid(0), _time_launch(std::chrono::system_clock::now())
     {
-        planner_pub = ros_node->create_publisher<sonia_common_ros2::msg::PoseArray>("/proc_planner/send_pose_array",10);
-        depth_sub = ros_node->create_subscription<std_msgs::msg::Float32>("/provider_depth/depth", 10, std::bind(&SendTrajectory::update_depth, this, _1));
+        _planner_pub = _ros_node->create_publisher<sonia_common_ros2::msg::PoseArray>("/proc_planner/send_pose_array",10);
+        _depth_sub = _ros_node->create_subscription<std_msgs::msg::Float32>("/provider_depth/depth", 10, std::bind(&SendTrajectory::update_depth, this, _1));
 
     }
 
@@ -41,23 +41,23 @@ namespace navigation{
             ap.rotation = t.trajectory[i].long_rotation;
             array_to_send.poses.push_back(ap);
         }
-        planner_pub->publish(array_to_send);
+        _planner_pub->publish(array_to_send);
         _time_launch = std::chrono::system_clock::now();
-        planner_sub =ros_node->create_subscription<std_msgs::msg::Int8>("/proc_planner/is_waypoints_valid", 10, std::bind(&SendTrajectory::isWaypointValid, this,_1));
+        _planner_sub =_ros_node->create_subscription<std_msgs::msg::Int8>("/proc_planner/is_waypoints_valid", 10, std::bind(&SendTrajectory::isWaypointValid, this,_1));
         return BT::NodeStatus::RUNNING;
     }
     BT::NodeStatus SendTrajectory::onRunning(){
         std::chrono::duration<double> elapsed_time = std::chrono::system_clock::now() - _time_launch;
-        // if (elapsed_time.count() > 5) // Ajouter le valid dans la condition, cette partie est à modifier pour garder de la vitesse
+        // if (elapsed_time.count() > 5) // Ajouter le _valid dans la condition, cette partie est à modifier pour garder de la vitesse
         // {
-        //     if (valid == 0)
+        //     if (_valid == 0)
         //     {
         //         return BT::NodeStatus::SUCCESS;
         //     }
         //     else
         //         return BT::NodeStatus::FAILURE;
         // }
-        if (valid == 0)
+        if (_valid == 0)
         {
             return BT::NodeStatus::SUCCESS;
         }
@@ -71,7 +71,7 @@ namespace navigation{
     void SendTrajectory::onHalted(){}
 
     void SendTrajectory::isWaypointValid(const std_msgs::msg::Int8 &msg){
-        valid= msg.data;
+        _valid= msg.data;
     }
     void SendTrajectory::update_depth(const std_msgs::msg::Float32::ConstSharedPtr &msg)
     {

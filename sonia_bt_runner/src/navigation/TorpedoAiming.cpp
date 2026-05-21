@@ -4,7 +4,7 @@ namespace navigation
 {
 
     TorpedoAiming::TorpedoAiming(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    : BT::SyncActionNode(name, config), ros_node(node)
+    : BT::SyncActionNode(name, config), _ros_node(node)
     {
 
     }
@@ -22,12 +22,12 @@ namespace navigation
 
         if(!getInput<Trajectory>("Trajectory"))
         {
-            RCLCPP_INFO(ros_node->get_logger(), "The Trajectory is not initialize");
+            RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
             return BT::NodeStatus::FAILURE;
         }
 
-        RCLCPP_INFO(ros_node->get_logger(), "Computing TorpedoAiming trajectory");
+        RCLCPP_INFO(_ros_node->get_logger(), "Computing TorpedoAiming trajectory");
         
         TrajectoryPose t;
         t.positionX = det.distance - target_offset; // We take an offset with the target poster
@@ -53,12 +53,12 @@ namespace navigation
         t.precision = 0;            // We don't care about the precision
         t.long_rotation = false;    // We don't care about the long rotation
 
-        RCLCPP_INFO(ros_node->get_logger(), "position en x: %f", t.positionX);
-        RCLCPP_INFO(ros_node->get_logger(), "position en y: %f", t.positionY);
-        RCLCPP_INFO(ros_node->get_logger(), "position en z: %f", t.positionZ);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t.orientationX);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t.orientationY);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t.orientationZ);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en x: %f", t.positionX);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en y: %f", t.positionY);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en z: %f", t.positionZ);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en x: %f", t.orientationX);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en y: %f", t.orientationY);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en z: %f", t.orientationZ);
 
         // We append the new pose to the trajectory
         Trajectory traj = getInput<Trajectory>("Trajectory").value();

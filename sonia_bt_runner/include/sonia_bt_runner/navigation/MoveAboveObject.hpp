@@ -29,7 +29,7 @@ namespace navigation
             BT::NodeStatus tick() override;
             
         private:
-            std::shared_ptr<rclcpp::Node> ros_node;
+            std::shared_ptr<rclcpp::Node> _ros_node;
     };
 
 }  // namespace navigation

@@ -90,19 +90,19 @@ class MissionServer : public rclcpp::Node{
          */
         void handleAccept(const std::shared_ptr<GoalHandle> goal_handle);
 
-        std::string name_;
-        BehaviorTreeFactory factory_;
-        rclcpp_action::Server<MissionControl>::SharedPtr server_;
-        rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pub_status_;
-        rclcpp::Publisher<sonia_common_ros2::msg::NodeStatus>::SharedPtr pub_node_status_;
-        rclcpp::Service<sonia_common_ros2::srv::MissionListService>::SharedPtr fetch_missions_srv_;
-        rclcpp::TimerBase::SharedPtr _timerNodeStatus;
+        std::string _name;
+        BehaviorTreeFactory _factory;
+        rclcpp_action::Server<MissionControl>::SharedPtr _server;
+        rclcpp::Publisher<std_msgs::msg::String>::SharedPtr _pub_status;
+        rclcpp::Publisher<sonia_common_ros2::msg::NodeStatus>::SharedPtr _pub_node_status;
+        rclcpp::Service<sonia_common_ros2::srv::MissionListService>::SharedPtr _fetch_missions_srv;
+        rclcpp::TimerBase::SharedPtr _timer_node_status;
 
-        Tree tree_;
-        std::string search_directory;
-        NodeStatus result_;
-        std::vector<std::string> mission_list;
-        sonia_common_ros2::msg::NodeStatus node_status;
+        Tree _tree;
+        std::string _search_directory;
+        NodeStatus _result;
+        std::vector<std::string> _mission_list;
+        sonia_common_ros2::msg::NodeStatus _node_status;
 
         const uint64_t _TICK_SLEEP_TIME = 66;
         

@@ -3,41 +3,41 @@
 using std::placeholders::_1;
 namespace vision{
     AiFilter::AiFilter(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    :BT::StatefulActionNode(name, config), ros_node(node)
+    :BT::StatefulActionNode(name, config), _ros_node(node)
     {
         
     }
 
-    BT::NodeStatus AiFilter::onStart(){
-
+    BT::NodeStatus AiFilter::onStart()
+    {
         // We go get the information in the behavior tree
-        cam = getInput<int>("Camera");
+        _cam = getInput<int>("Camera");
         _object = getInput<std::string>("Object_class");
-        confidence = getInput<float>("Confidence");
-        min_detections_before_success = getInput<int>("Min_detections_before_success");
-        two_objects_possible = getInput<int>("Two_objects_possible");
+        _confidence = getInput<float>("Confidence");
+        _min_detections_before_success = getInput<int>("Min_detections_before_success");
+        _two_objects_possible = getInput<int>("Two_objects_possible");
 
         // I put those two parameter to do the test of witch one we're gonna use.
-        max_frame_before_failing = getInput<int>("Max_frame_before_failing");
-        max_time_before_failing = getInput<float>("Max_time_before_failing_sec");
+        _max_frame_before_failing = getInput<int>("Max_frame_before_failing");
+        _max_time_before_failing = getInput<float>("Max_time_before_failing_sec");
 
-        max_depth = getInput<float>("Max_depth");
+        _max_depth = getInput<float>("Max_depth");
 
-        if (min_detections_before_success.value() <= 1)
+        if (_min_detections_before_success.value() <= 1)
         {
-            RCLCPP_INFO(ros_node->get_logger(), "You have to set the Min_detections_before_success parameter to more than 1.");
+            RCLCPP_INFO(_ros_node->get_logger(), "You have to set the Min_detections_before_success parameter to more than 1.");
             return BT::NodeStatus::FAILURE;
         }
 
         // We initialize some value
-        counter = 0;
+        _counter = 0;
         _launch_time = std::chrono::system_clock::now();
 
         // We chose the right camera to capture the image
-        if(cam.value())
-            ai_filter_sub = ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/front/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
+        if(_cam.value())
+            _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/front/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
         else
-            ai_filter_sub = ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/bottom/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));    
+            _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/bottom/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));    
         
         // We run the node
         return BT::NodeStatus::RUNNING;
@@ -46,36 +46,36 @@ namespace vision{
     BT::NodeStatus AiFilter::onRunning(){
 
         std::chrono::duration<double> diff = std::chrono::system_clock::now() - _launch_time;
-        time_diff = diff.count();
+        _time_diff = diff.count();
 
-        if((max_frame_before_failing.value() != 0 && counter >= max_frame_before_failing.value()) || (max_time_before_failing.value() != 0.0 && time_diff >= max_time_before_failing.value()))
+        if((_max_frame_before_failing.value() != 0 && _counter >= _max_frame_before_failing.value()) || (_max_time_before_failing.value() != 0.0 && _time_diff >= _max_time_before_failing.value()))
         {
             // We took to much time or count too many frame to fond the object
-            if (max_frame_before_failing.value() != 0)
-                RCLCPP_INFO(ros_node->get_logger(), "counter %d : max frame = %d, We don't find what we are looking for.", counter, max_frame_before_failing.value());
+            if (_max_frame_before_failing.value() != 0)
+                RCLCPP_INFO(_ros_node->get_logger(), "_counter %d : max frame = %d, We don't find what we are looking for.", _counter, _max_frame_before_failing.value());
             else
-                RCLCPP_INFO(ros_node->get_logger(), "node time %f : max time = %f, We don't find what we are looking for.", time_diff, max_time_before_failing.value());
+                RCLCPP_INFO(_ros_node->get_logger(), "node time %f : max time = %f, We don't find what we are looking for.", _time_diff, _max_time_before_failing.value());
             
-            ai_filter_sub.reset();
+            _ai_filter_sub.reset();
             return BT::NodeStatus::FAILURE;
         }
 
-        if(_detection_array.size() < (size_t)min_detections_before_success.value()){
+        if(_detection_array.size() < (size_t)_min_detections_before_success.value()){
 
             //No image or not enought image captured
             return BT::NodeStatus::RUNNING;
         }
 
         // We kill the subscriber because we don't need more detection
-        ai_filter_sub.reset();
+        _ai_filter_sub.reset();
 
         // We need to make some selection in the image array
-        RCLCPP_INFO(ros_node->get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
+        RCLCPP_INFO(_ros_node->get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
 
         // We compute the detection that we use to compute the output
         std::vector<int> choosen_index;
 
-        if (two_objects_possible.value())
+        if (_two_objects_possible.value())
         {
             float smallest_distance = pow(_detection_array[0].distance_teta, 2) + pow(_detection_array[0].distance_beta, 2);
             float index_of_smallest_distance = 0;
@@ -168,20 +168,20 @@ namespace vision{
 
     void AiFilter::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) {
        
-        counter++;
+        _counter++;
         for (auto msg_obj: msg.detected_object){
             
             if(msg_obj.class_name.compare(_object.value()) == 0){
 
                 // The searching object has been detected
-                RCLCPP_INFO(ros_node->get_logger(), "Class OK");
-                RCLCPP_INFO(ros_node->get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name.c_str(), msg_obj.distance, msg_obj.confidence);
-                RCLCPP_INFO(ros_node->get_logger(), "Comparing %s and %s = %d", msg_obj.class_name.c_str(), _object.value().c_str(), msg_obj.class_name.compare(_object.value()));
+                RCLCPP_INFO(_ros_node->get_logger(), "Class OK");
+                RCLCPP_INFO(_ros_node->get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name.c_str(), msg_obj.distance, msg_obj.confidence);
+                RCLCPP_INFO(_ros_node->get_logger(), "Comparing %s and %s = %d", msg_obj.class_name.c_str(), _object.value().c_str(), msg_obj.class_name.compare(_object.value()));
                 
-                if(msg_obj.confidence >= confidence.value() && msg_obj.distance <= max_depth.value())
+                if(msg_obj.confidence >= _confidence.value() && msg_obj.distance <= _max_depth.value())
                 {
                     //The detected object respect the confidence and the depth. We can put it in the filter array
-                    RCLCPP_INFO(ros_node->get_logger(), "Confidence and depth OK, a new object has been detected");
+                    RCLCPP_INFO(_ros_node->get_logger(), "Confidence and depth OK, a new object has been detected");
                     _detection_array.push_back(msg_obj);
                 }
             }

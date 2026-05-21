@@ -4,7 +4,7 @@ namespace navigation
 {
 
     ObjectDrifting::ObjectDrifting(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    : BT::SyncActionNode(name, config), ros_node(node)
+    : BT::SyncActionNode(name, config), _ros_node(node)
     {
 
     }
@@ -18,12 +18,12 @@ namespace navigation
 
         if(!getInput<Trajectory>("Trajectory"))
         {
-            RCLCPP_INFO(ros_node->get_logger(), "The Trajectory is not initialize");
+            RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
             return BT::NodeStatus::FAILURE;
         }
 
-        RCLCPP_INFO(ros_node->get_logger(), "Computing ObjectDrifting trajectory");
+        RCLCPP_INFO(_ros_node->get_logger(), "Computing ObjectDrifting trajectory");
         
         // We compute a rotation to make the sub rotate at 90 degrees to the target
         TrajectoryPose t1;
@@ -38,12 +38,12 @@ namespace navigation
         t1.precision = 0;
         t1.long_rotation = false;
 
-        RCLCPP_INFO(ros_node->get_logger(), "position en x: %f", t1.positionX);
-        RCLCPP_INFO(ros_node->get_logger(), "position en y: %f", t1.positionY);
-        RCLCPP_INFO(ros_node->get_logger(), "position en z: %f", t1.positionZ);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t1.orientationX);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t1.orientationY);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t1.orientationZ);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en x: %f", t1.positionX);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en y: %f", t1.positionY);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en z: %f", t1.positionZ);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en x: %f", t1.orientationX);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en y: %f", t1.orientationY);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en z: %f", t1.orientationZ);
 
         // We compute a translation in Y to go in front of the target
         TrajectoryPose t2;
@@ -58,12 +58,12 @@ namespace navigation
         t2.precision = 0;
         t2.long_rotation = false;
 
-        RCLCPP_INFO(ros_node->get_logger(), "position en x: %f", t2.positionX);
-        RCLCPP_INFO(ros_node->get_logger(), "position en y: %f", t2.positionY);
-        RCLCPP_INFO(ros_node->get_logger(), "position en z: %f", t2.positionZ);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t2.orientationX);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t2.orientationY);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t2.orientationZ);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en x: %f", t2.positionX);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en y: %f", t2.positionY);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en z: %f", t2.positionZ);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en x: %f", t2.orientationX);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en y: %f", t2.orientationY);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en z: %f", t2.orientationZ);
 
         // We append the two new trajectory points to the sending trajectory
         Trajectory traj = getInput<Trajectory>("Trajectory").value();

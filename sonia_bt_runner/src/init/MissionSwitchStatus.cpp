@@ -5,12 +5,12 @@ using std::placeholders::_1;
 namespace init{     
 
     MissionSwitchStatus::MissionSwitchStatus(const std::string &name, std::shared_ptr<rclcpp::Node> node)
-    : BT::ConditionNode(name, {}), ros_node(node), _mission_status{false}, _in_simulation{false}
+    : BT::ConditionNode(name, {}), _ros_node(node), _mission_status{false}, _in_simulation{false}
     {
         rclcpp::QoS qos(10);
         qos.reliability(rclcpp::ReliabilityPolicy::Reliable);
-        mission_sub= ros_node->create_subscription<sonia_common_ros2::msg::MissionStatus>("/provider_rs485/mission_status", qos, std::bind(&MissionSwitchStatus::update_status,this, _1));
-        simulation_sub= ros_node->create_subscription<std_msgs::msg::Bool>("/proc_simulation/in_simulation", qos, std::bind(&MissionSwitchStatus::update_simulation_status,this, _1));
+        _mission_sub= _ros_node->create_subscription<sonia_common_ros2::msg::MissionStatus>("/provider_rs485/mission_status", qos, std::bind(&MissionSwitchStatus::update_status,this, _1));
+        _simulation_sub= _ros_node->create_subscription<std_msgs::msg::Bool>("/proc_simulation/in_simulation", qos, std::bind(&MissionSwitchStatus::update_simulation_status,this, _1));
     }
 
     BT::NodeStatus MissionSwitchStatus::tick()

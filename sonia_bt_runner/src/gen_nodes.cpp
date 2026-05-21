@@ -6,7 +6,7 @@
 
 #include "sonia_bt_runner/SoniaNodes.hpp"
 
-int main(int argc, char *argv[])
+int main()
 {
     const char *ws = std::getenv("SONIA_WS");
 

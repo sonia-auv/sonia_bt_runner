@@ -19,8 +19,10 @@ namespace actuator{
             void onHalted() override;
 
         private:
-            std::shared_ptr<rclcpp::Node> ros_node;
-            std::shared_ptr<sonia_common_ros2::srv::ActuatorService::Request> request;
-            rclcpp::Client<sonia_common_ros2::srv::ActuatorService>::SharedPtr torpedo_client;        
+            std::shared_ptr<rclcpp::Node> _ros_node;
+            std::shared_ptr<sonia_common_ros2::srv::ActuatorService::Request> _request;
+            rclcpp::Client<sonia_common_ros2::srv::ActuatorService>::SharedPtr _torpedo_client;
+
+            BT::Expected<std::string> _side;
     };
 }

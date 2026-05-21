@@ -34,8 +34,8 @@ class Tracker : public BT::StatusChangeLogger
         void flush() override;
     
     private:
-        std::shared_ptr<GoalHandle> gl;
-        std::shared_ptr<MissionControl::Feedback> feedback;
+        std::shared_ptr<GoalHandle> _gl;
+        std::shared_ptr<MissionControl::Feedback> _feedback;
 
         const uint8_t _THREAD_SLEEP_TIME = 66;
     

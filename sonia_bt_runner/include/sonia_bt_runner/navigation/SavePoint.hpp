@@ -27,11 +27,11 @@ namespace navigation {
             void pose_call_back(const sonia_common_ros2::msg::Pose &msg);
 
         private:
-            std::shared_ptr<rclcpp::Node> ros_node;
-            rclcpp::Subscription<sonia_common_ros2::msg::Pose>::SharedPtr pose_sub;
-            sonia_common_ros2::msg::Pose pose_msg;
+            std::shared_ptr<rclcpp::Node> _ros_node;
+            rclcpp::Subscription<sonia_common_ros2::msg::Pose>::SharedPtr _pose_sub;
+            sonia_common_ros2::msg::Pose _pose_msg;
             std::chrono::_V2::system_clock::time_point _launch_time;
-            float time_diff;
-            bool msg_received;
+            float _time_diff;
+            bool _msg_received;
     };
 }

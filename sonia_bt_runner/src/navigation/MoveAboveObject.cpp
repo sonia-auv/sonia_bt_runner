@@ -4,7 +4,7 @@ namespace navigation
 {
 
     MoveAboveObject::MoveAboveObject(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    : BT::SyncActionNode(name, config), ros_node(node)
+    : BT::SyncActionNode(name, config), _ros_node(node)
     {
         
     }
@@ -18,12 +18,12 @@ namespace navigation
 
         if(!getInput<Trajectory>("Trajectory"))
         {
-            RCLCPP_INFO(ros_node->get_logger(), "The Trajectory is not initialize");
+            RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
             return BT::NodeStatus::FAILURE;
         }
 
-        RCLCPP_INFO(ros_node->get_logger(), "Computing MoveAboveObject trajectory");
+        RCLCPP_INFO(_ros_node->get_logger(), "Computing MoveAboveObject trajectory");
         
         // We compute the trajectory to do
         TrajectoryPose t;
@@ -40,12 +40,12 @@ namespace navigation
         t.precision = 0;
         t.long_rotation = false;
 
-        RCLCPP_INFO(ros_node->get_logger(), "position en x: %f", t.positionX);
-        RCLCPP_INFO(ros_node->get_logger(), "position en y: %f", t.positionY);
-        RCLCPP_INFO(ros_node->get_logger(), "position en z: %f", t.positionZ);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t.orientationX);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t.orientationY);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t.orientationZ);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en x: %f", t.positionX);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en y: %f", t.positionY);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en z: %f", t.positionZ);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en x: %f", t.orientationX);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en y: %f", t.orientationY);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en z: %f", t.orientationZ);
 
         // We append the new trajectory point to the sending trajectory
         Trajectory traj = getInput<Trajectory>("Trajectory").value();

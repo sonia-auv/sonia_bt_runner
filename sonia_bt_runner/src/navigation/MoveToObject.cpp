@@ -4,7 +4,7 @@ namespace navigation
 {
 
     MoveToObject::MoveToObject(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-       : BT::SyncActionNode(name, config), ros_node(node)
+       : BT::SyncActionNode(name, config), _ros_node(node)
     {
 
     }
@@ -19,12 +19,12 @@ namespace navigation
 
         if(!getInput<Trajectory>("Trajectory"))
         {
-            RCLCPP_INFO(ros_node->get_logger(), "The Trajectory is not initialize");
+            RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
             return BT::NodeStatus::FAILURE;
         }
 
-        RCLCPP_INFO(ros_node->get_logger(), "Computing MoveToObject trajectory");
+        RCLCPP_INFO(_ros_node->get_logger(), "Computing MoveToObject trajectory");
 
         TrajectoryPose t1;
         // We set the trajectory of the submarine to rotate on itself to face the object
@@ -39,12 +39,12 @@ namespace navigation
         t1.precision = 0;                    // Precision of the rotation
         t1.long_rotation = true;             // true: take the long way around, false:
 
-        RCLCPP_INFO(ros_node->get_logger(), "position en x: %f", t1.positionX);
-        RCLCPP_INFO(ros_node->get_logger(), "position en y: %f", t1.positionY);
-        RCLCPP_INFO(ros_node->get_logger(), "position en z: %f", t1.positionZ);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t1.orientationX);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t1.orientationY);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t1.orientationZ);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en x: %f", t1.positionX);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en y: %f", t1.positionY);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en z: %f", t1.positionZ);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en x: %f", t1.orientationX);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en y: %f", t1.orientationY);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en z: %f", t1.orientationZ);
 
         // We move forward to go to the object
         TrajectoryPose t2;
@@ -59,12 +59,12 @@ namespace navigation
         t2.precision = 0; // We use the default precision of the motion controller
         t2.long_rotation = false; // We don't use long rotation
 
-        RCLCPP_INFO(ros_node->get_logger(), "position en x: %f", t2.positionX);
-        RCLCPP_INFO(ros_node->get_logger(), "position en y: %f", t2.positionY);
-        RCLCPP_INFO(ros_node->get_logger(), "position en z: %f", t2.positionZ);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en x: %f", t2.orientationX);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en y: %f", t2.orientationY);
-        RCLCPP_INFO(ros_node->get_logger(), "orientation en z: %f", t2.orientationZ);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en x: %f", t2.positionX);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en y: %f", t2.positionY);
+        RCLCPP_INFO(_ros_node->get_logger(), "position en z: %f", t2.positionZ);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en x: %f", t2.orientationX);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en y: %f", t2.orientationY);
+        RCLCPP_INFO(_ros_node->get_logger(), "orientation en z: %f", t2.orientationZ);
 
         // We append the new pose to the trajectory
         Trajectory traj = getInput<Trajectory>("Trajectory").value();

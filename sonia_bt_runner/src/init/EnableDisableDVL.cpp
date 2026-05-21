@@ -3,19 +3,19 @@
 namespace init{
 
     EnableDisableDVL::EnableDisableDVL(const std::string& name, const BT::NodeConfig& config, std::shared_ptr<rclcpp::Node> node)
-    : BT::SyncActionNode(name, config), ros_node(node)
+    : BT::SyncActionNode(name, config), _ros_node(node)
     {
         rclcpp::QoS qos(1);
         qos.reliability(rclcpp::ReliabilityPolicy::Reliable);
 
-        dvl_pub= ros_node->create_publisher<std_msgs::msg::Bool>("/provider_dvl/enable_disable_dvl", qos);    
+        _dvl_pub= _ros_node->create_publisher<std_msgs::msg::Bool>("/provider_dvl/enable_disable_dvl", qos);    
     }
     BT::NodeStatus EnableDisableDVL::tick(){
         std_msgs::msg::Bool dvl_state;
-        BT::Expected<bool> data = getInput<bool>("dvl_input");
+        BT::Expected<bool> data(getInput<bool>("dvl_input"));
 
         dvl_state.data=data.value();
-        dvl_pub->publish(dvl_state);
+        _dvl_pub->publish(dvl_state);
         return BT::NodeStatus::SUCCESS;
     }
 }  // namespace init

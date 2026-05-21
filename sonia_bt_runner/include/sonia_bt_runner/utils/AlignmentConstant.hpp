@@ -1,7 +1,5 @@
 #pragma once
 
-#include "behaviortree_cpp/behavior_tree.h"
-
 // Constant list for droppers and torpidoes3
 const float CAMERA_TO_DROPPER_OFFSET_X = 0.12;
 const float CAMERA_TO_DROPPER_OFFSET_Y = 0.18;

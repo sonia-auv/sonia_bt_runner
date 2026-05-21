@@ -13,8 +13,9 @@ namespace init{
                 return {BT::InputPort<bool>("dvl_input", false, "true: start, false: stop")};
             }
             BT::NodeStatus tick() override;
+            
         private:
-            std::shared_ptr<rclcpp::Node> ros_node;
-            rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr dvl_pub;
+            std::shared_ptr<rclcpp::Node> _ros_node;
+            rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr _dvl_pub;
     };
 } // namespace init

@@ -25,8 +25,8 @@ namespace sensors
         private:
             void update_status(const std_msgs::msg::Float32::ConstSharedPtr &msg);
 
-            std::shared_ptr<rclcpp::Node> ros_node;
-            rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr depth_sub;
+            std::shared_ptr<rclcpp::Node> _ros_node;
+            rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr _depth_sub;
             float _depth_val;
     };
 }  // namespace sensors
