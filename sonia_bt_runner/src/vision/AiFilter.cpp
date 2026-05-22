@@ -37,7 +37,7 @@ namespace vision{
         if(_cam.value())
             _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/front/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
         else
-            _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/bottom/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));    
+            _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/bottom/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
         
         // We run the node
         return BT::NodeStatus::RUNNING;
@@ -72,91 +72,33 @@ namespace vision{
         // We need to make some selection in the image array
         RCLCPP_INFO(_ros_node->get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
 
-        // We compute the detection that we use to compute the output
-        std::vector<int> choosen_index;
+        // We select the detection that we want to use to compute the output
+        std::vector<size_t> choosen_index;
 
-        if (_two_objects_possible.value())
-        {
-            float smallest_distance = pow(_detection_array[0].distance_teta, 2) + pow(_detection_array[0].distance_beta, 2);
-            float index_of_smallest_distance = 0;
-            
-            // We compute the closest detection to the center of the camera
-            for (size_t i{1}; i < _detection_array.size(); i++)
-            {
-                float centered_distance = pow(_detection_array[i].distance_teta, 2) + pow(_detection_array[i].distance_beta, 2);
-                if (centered_distance < smallest_distance)
-                {
-                    smallest_distance = centered_distance;
-                    index_of_smallest_distance = i;
-                }
-            }
-
-            // We choose the detection on a distance of 10 cm with the closest one.
-            choosen_index.push_back(index_of_smallest_distance);
-            for (size_t i{0};i < _detection_array.size(); i++)
-            {
-                if (i != index_of_smallest_distance)
-                {
-                    if (0.1 >= sqrt(pow(_detection_array[i].distance_beta - _detection_array[index_of_smallest_distance].distance_beta, 2) + pow(_detection_array[i].distance_teta - _detection_array[index_of_smallest_distance].distance_teta, 2)))
-                    {
-                        choosen_index.push_back(i);
-                    }
-                }
-            }
-        }
-        else
-        {
-            float teta_average;
-            float beta_average;
-            size_t highest_index{0};
-            float highest_error = 0.0;
-
-            // We compute a teta and beta average of the detection
-            for (size_t i{0}; i < _detection_array.size(); i++)
-            {
-                teta_average += _detection_array[i].distance_teta/_detection_array.size();
-                beta_average += _detection_array[i].distance_beta/_detection_array.size();
-            }
-
-            // We flush the higest and the lowest error between the average and detection value
-            for (size_t i{0}; i < _detection_array.size(); i++)
-            {
-                float teta_error = _detection_array[i].distance_teta - teta_average;
-                float beta_error = _detection_array[i].distance_beta - beta_average;
-                float error = pow(teta_error,2) + pow(beta_error,2);
-                if (error > highest_error)
-                {
-                    highest_index = i;
-                    highest_error = error;
-                }
-            }
-            for (size_t i{0}; i < _detection_array.size(); i++)
-            {
-                if (i != highest_index)
-                {
-                    choosen_index.push_back(i);
-                }
-            }
+        if (_two_objects_possible.value()) {
+            multiple_object_possible(choosen_index);
+        } else {
+            one_object_possible(choosen_index);
         }
 
         // We compute the new average of every parameter of the detection that we keep.
-        AiDetection output_detection;
+        AiDetection output_detection{};
         output_detection.classification = _object.value();
-        output_detection.distance = 0.0;
-        output_detection.confidence = 0.0;
-        output_detection.angle_teta = 0.0;
-        output_detection.angle_alpha = 0.0;
-        output_detection.distance_teta = 0.0;
-        output_detection.distance_beta = 0.0;
-        for(int i : choosen_index)
+        for(size_t i : choosen_index)
         {
-            output_detection.distance += _detection_array[i].distance/choosen_index.size();
-            output_detection.confidence += _detection_array[i].confidence/choosen_index.size();
-            output_detection.angle_teta += _detection_array[i].angle_teta/choosen_index.size();
-            output_detection.angle_alpha += _detection_array[i].angle_alpha/choosen_index.size();
-            output_detection.distance_teta += _detection_array[i].distance_teta/choosen_index.size();
-            output_detection.distance_beta += _detection_array[i].distance_beta/choosen_index.size();
+            output_detection.distance += _detection_array[i].distance;
+            output_detection.confidence += _detection_array[i].confidence;
+            output_detection.angle_teta += _detection_array[i].angle_teta;
+            output_detection.angle_alpha += _detection_array[i].angle_alpha;
+            output_detection.distance_teta += _detection_array[i].distance_teta;
+            output_detection.distance_beta += _detection_array[i].distance_beta;
         }
+        output_detection.distance /= choosen_index.size();
+        output_detection.confidence /= choosen_index.size();
+        output_detection.angle_teta /= choosen_index.size();
+        output_detection.angle_alpha /= choosen_index.size();
+        output_detection.distance_teta /= choosen_index.size();
+        output_detection.distance_beta /= choosen_index.size();
 
         setOutput("Detected_object", output_detection);
 
@@ -183,6 +125,80 @@ namespace vision{
                     //The detected object respect the confidence and the depth. We can put it in the filter array
                     RCLCPP_INFO(_ros_node->get_logger(), "Confidence and depth OK, a new object has been detected");
                     _detection_array.push_back(msg_obj);
+                }
+            }
+        }
+    }
+    void AiFilter::one_object_possible(std::vector<size_t>& indexs)
+    {
+        double teta_average{};
+        double beta_average{};
+        size_t highest_index{};
+        double highest_error{};
+
+        // We compute a teta and beta average of the detection
+        for (size_t i{}; i < _detection_array.size(); i++)
+        {
+            teta_average += _detection_array[i].distance_teta;
+            beta_average += _detection_array[i].distance_beta;
+        }
+        teta_average /= _detection_array.size();
+        beta_average /= _detection_array.size();
+
+        // We flush the higest and the lowest error between the average and detection value
+        double teta_error;
+        double beta_error;
+        double error;
+        for (size_t i{}; i < _detection_array.size(); i++)
+        {
+            teta_error = _detection_array[i].distance_teta - teta_average;
+            beta_error = _detection_array[i].distance_beta - beta_average;
+            error = teta_error * teta_error + beta_error * beta_error;
+            if (error > highest_error)
+            {
+                highest_index = i;
+                highest_error = error;
+            }
+        }
+        for (size_t i{}; i < _detection_array.size(); i++)
+        {
+            if (i != highest_index)
+            {
+                indexs.push_back(i);
+            }
+        }
+    }
+
+    void AiFilter::multiple_object_possible(std::vector<size_t>& indexs)
+    {
+        double smallest_distance {_detection_array[0].distance_teta * _detection_array[0].distance_teta + _detection_array[0].distance_beta * _detection_array[0].distance_beta};
+        size_t index_of_smallest_distance{};
+        float i_centered_distance;
+        
+        // We compute the closest detection to the center of the camera
+        for (size_t i{1}; i < _detection_array.size(); i++)
+        {
+            i_centered_distance = _detection_array[i].distance_teta * _detection_array[i].distance_teta + _detection_array[i].distance_beta * _detection_array[i].distance_beta;
+            if (i_centered_distance < smallest_distance)
+            {
+                smallest_distance = i_centered_distance;
+                index_of_smallest_distance = i;
+            }
+        }
+
+        // We choose the detection on a distance of 10 cm with the closest one.
+        indexs.push_back(index_of_smallest_distance);
+        double beta;
+        double teta;
+        for (size_t i{};i < _detection_array.size(); i++)
+        {
+            if (i != index_of_smallest_distance)
+            {
+                beta = _detection_array[i].distance_beta - _detection_array[index_of_smallest_distance].distance_beta;
+                teta = _detection_array[i].distance_teta - _detection_array[index_of_smallest_distance].distance_teta;
+                if (0.1 >= sqrt(beta * beta + teta * teta))
+                {
+                    indexs.push_back(i);
                 }
             }
         }

@@ -37,6 +37,8 @@ namespace vision{
 
         private:
             void ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg);
+            void one_object_possible(std::vector<size_t>& indexs);
+            void multiple_object_possible(std::vector<size_t>& indexs);
             std::shared_ptr<rclcpp::Node> _ros_node;
             rclcpp::Subscription<sonia_common_ros2::msg::DetectionArray>::SharedPtr _ai_filter_sub;
             std::vector<sonia_common_ros2::msg::Detection> _detection_array;
