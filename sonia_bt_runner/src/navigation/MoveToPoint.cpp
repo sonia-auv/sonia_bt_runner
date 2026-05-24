@@ -13,7 +13,13 @@ namespace navigation {
         Point point_retour;
         Trajectory traj;
 
-        getInput("Point", point_retour);
+        
+        if(!getInput("Point", point_retour);)
+        {
+            RCLCPP_INFO(_ros_node->get_logger(), "The point is not specified");
+
+            return BT::NodeStatus::FAILURE;
+        }
 
         if(!getInput<Trajectory>("Trajectory"))
         {

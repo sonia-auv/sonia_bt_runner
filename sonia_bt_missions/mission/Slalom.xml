@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="SlalomRafinee">
+    <Sequence>
+      <Sequence name="Detection of the red slalom">
+        <SubTree ID="SearchObjectByRotation"
+                 Object=""
+                 FoundAiDetection="{reddetection}"
+                 Max_time_before_failing_sec="5"
+                 Max_frame_before_failing="300"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"/>
+      </Sequence>
+      <Sequence name="Detection of the white slalom">
+        <SubTree ID="SearchObjectByRotation"
+                 Object=""
+                 FoundAiDetection="{whitedetection}"
+                 Max_time_before_failing_sec="5"
+                 Max_frame_before_failing="300"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"/>
+      </Sequence>
+      <Sequence name="Compute a trajectory to pass all the slalom one shot">
+        <InitializeTrajectory trajectory="{trajectory}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{trajectory}"
+                 TimeBeforeFailing="10"/>
+      </Sequence>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="SlalomSimple">
+    <Sequence>
+      <Sequence name="Detection of the red slalom">
+        <SubTree ID="SearchObjectByRotation"
+                 Object=""
+                 FoundAiDetection="{reddetection}"
+                 Max_time_before_failing_sec="5"
+                 Max_frame_before_failing="300"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"/>
+      </Sequence>
+      <Sequence name="Detection of the white slalom">
+        <SubTree ID="SearchObjectByRotation"
+                 Object=""
+                 FoundAiDetection="{whitedetection}"
+                 Max_time_before_failing_sec="5"
+                 Max_frame_before_failing="300"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"/>
+      </Sequence>
+      <Sequence name="Compute a trajectory to pass all the slalom one shot">
+        <InitializeTrajectory trajectory="{trajectory}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{trajectory}"
+                 TimeBeforeFailing="10"/>
+      </Sequence>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Action ID="InitializeTrajectory">
+      <output_port name="trajectory"
+                   type="Trajectory"/>
+    </Action>
+    <SubTree ID="SearchObjectByRotation"
+             editable="true">
+      <input_port name="Object">Object we are looking for</input_port>
+      <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
+      <input_port name="Max_time_before_failing_sec"
+                  default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0">Number of frame that the sub will take to every 30 degree position to find the object</input_port>
+      <input_port name="Min_detection_before_success"
+                  default="5">Nombre of detected frame to call a found status</input_port>
+      <input_port name="Confidence"
+                  default="0.60000">Minimum confidence of the Ai</input_port>
+      <input_port name="Max_depth"
+                  default="25">Max distance to detect an object</input_port>
+    </SubTree>
+    <SubTree ID="SendTrajectoryOnly"
+             editable="true">
+      <input_port name="Trajectory">The trajectory to do to the sub</input_port>
+      <input_port name="TimeBeforeFailing"
+                  default="5">The time before the sub movement fail</input_port>
+    </SubTree>
+  </TreeNodesModel>
+
+</root>

@@ -159,7 +159,8 @@
         <SubTree ID="AutomaticInitialSubmerge"
                  Depth="0.5"/>
         <SubTree ID="Gate"
-                 DetectedObject="gate-shark"/>
+                 Path="gate-shark"
+                 Side="right"/>
       </Sequence>
       <SubTree ID="MissionSuccess"/>
       <SubTree ID="MissionFailed"/>
@@ -172,7 +173,8 @@
         <SubTree ID="AutomaticInitialSubmerge"
                  Depth="0.5"/>
         <SubTree ID="Gate"
-                 DetectedObject="gate-sawfish"/>
+                 Path="gate-sawfish"
+                 Side="left"/>
       </Sequence>
       <SubTree ID="MissionSuccess"/>
       <SubTree ID="MissionFailed"/>
@@ -711,8 +713,9 @@
                   type="AiDetection"/>
     </Action>
     <SubTree ID="Gate"
-             editable="true">
-      <input_port name="DetectedObject">The type of object that the sub will working to</input_port>
+            editable="true">
+      <output_port name="Path">The path that the sub as taken</output_port>
+      <output_port name="Side">The left or right side that the sub as taken</output_port>
     </SubTree>
     <Action ID="InitializeTrajectory">
       <output_port name="trajectory"

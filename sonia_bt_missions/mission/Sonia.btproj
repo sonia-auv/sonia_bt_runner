@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4" project_name="Project">
+    <include path="Bin.xml"/>
+    <include path="Gate.xml"/>
     <include path="PoolTest.xml"/>
+    <include path="PreQualification.xml"/>
+    <include path="ReturnHome.xml"/>
+    <include path="Slalom.xml"/>
+    <include path="TableOctogon.xml"/>
     <include path="Template.xml"/>
-    <include path="TestSLAM.xml"/>
+    <include path="Torpedo.xml"/>
     <include path="robosub26mission.xml"/>
     <!-- Description of Node Models (used by Groot) -->
     <TreeNodesModel>
