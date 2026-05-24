@@ -1,6 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
-  <BehaviorTree ID="DummyPreQualification">
+  <BehaviorTree ID="PreQualificationAI">
+    <Sequence>
+      <Sequence name="Init sub.">
+        <AiActivation Model="0"
+                      Bottom="false"
+                      Front="true"/>
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.5"/>
+      </Sequence>
+      <IfThenElse>
+        <Sequence name="Detect gate and move to it if success.">
+          <AiFilter Detected_object="{GateDetection}"
+                    Max_time_before_failing_sec="0.0"
+                    Max_frame_before_failing="300"
+                    Two_objects_possible="0"
+                    Min_detections_before_success="5"
+                    Confidence="0.600000"
+                    Max_depth="25.000000"
+                    Object_class="gate-shark"
+                    Camera="1"/>
+          <MoveToObject Offset="0"
+                        Trajectory="{GateTrajectory}"
+                        Detection="{GateDetection}"/>
+          <SubTree ID="SendTrajectoryOnly"
+                   Trajectory="{GateTrajectory}"
+                   TimeBeforeFailing="5"/>
+        </Sequence>
+        <SubTree ID="Nop"/>
+        <SubTree ID="MissionFailed"/>
+      </IfThenElse>
+      <Sequence name="Move foward of 10m and change the orientation of z axis to turn.">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="10"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="90"/>
+      </Sequence>
+      <Sequence name="Turn around the marker">
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="-0.5"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="90.0"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="-0.5"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
+      </Sequence>
+      <IfThenElse>
+        <Sequence name="Detect gate and move foward to it.">
+          <AiFilter Detected_object="{GateDetection}"
+                    Max_time_before_failing_sec="0.0"
+                    Max_frame_before_failing="300"
+                    Two_objects_possible="0"
+                    Min_detections_before_success="5"
+                    Confidence="0.600000"
+                    Max_depth="25.000000"
+                    Object_class="gate-shark"
+                    Camera="1"/>
+          <MoveToObject Offset="0"
+                        Trajectory="{GateTrajectory}"
+                        Detection="{GateDetection}"/>
+          <SubTree ID="SendTrajectoryOnly"
+                   Trajectory="{GateTrajectory}"
+                   TimeBeforeFailing="5"/>
+        </Sequence>
+        <SubTree ID="Done"/>
+        <SubTree ID="MissionFailed"/>
+      </IfThenElse>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="PreQualificationDR">
     <Sequence>
       <Sequence name="Initialize the sub">
         <SubTree ID="InitialSubmerge"
@@ -143,112 +249,6 @@
                  orientationZ="0.0"/>
         <SubTree ID="Done"/>
       </Sequence>
-    </Sequence>
-  </BehaviorTree>
-
-  <BehaviorTree ID="PreQualification">
-    <Sequence>
-      <Sequence name="Init sub.">
-        <AiActivation Model="0"
-                      Bottom="false"
-                      Front="true"/>
-        <SubTree ID="InitialSubmerge"
-                 Depth="0.5"/>
-      </Sequence>
-      <IfThenElse>
-        <Sequence name="Detect gate and move to it if success.">
-          <AiFilter Detected_object="{GateDetection}"
-                    Max_time_before_failing_sec="0.0"
-                    Max_frame_before_failing="300"
-                    Two_objects_possible="0"
-                    Min_detections_before_success="5"
-                    Confidence="0.600000"
-                    Max_depth="25.000000"
-                    Object_class="gate-shark"
-                    Camera="1"/>
-          <MoveToObject Offset="0"
-                        Trajectory="{GateTrajectory}"
-                        Detection="{GateDetection}"/>
-          <SubTree ID="SendTrajectoryOnly"
-                   Trajectory="{GateTrajectory}"
-                   TimeBeforeFailing="5"/>
-        </Sequence>
-        <SubTree ID="Nop"/>
-        <SubTree ID="MissionFailed"/>
-      </IfThenElse>
-      <Sequence name="Move foward of 10m and change the orientation of z axis to turn.">
-        <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="10"
-                 positionY="0.0"
-                 positionZ="0.0"
-                 orientationX="0.0"
-                 orientationY="0.0"
-                 orientationZ="0.0"/>
-        <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="0.0"
-                 positionY="0.0"
-                 positionZ="0.0"
-                 orientationX="0.0"
-                 orientationY="0.0"
-                 orientationZ="90"/>
-      </Sequence>
-      <Sequence name="Turn around the marker">
-        <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="0.5"
-                 positionY="0.0"
-                 positionZ="0.0"
-                 orientationX="0.0"
-                 orientationY="0.0"
-                 orientationZ="0.0"/>
-        <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="0.0"
-                 positionY="-0.5"
-                 positionZ="0.0"
-                 orientationX="0.0"
-                 orientationY="0.0"
-                 orientationZ="0.0"/>
-        <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="0.0"
-                 positionY="0.0"
-                 positionZ="0.0"
-                 orientationX="0.0"
-                 orientationY="0.0"
-                 orientationZ="90.0"/>
-        <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="-0.5"
-                 positionY="0.0"
-                 positionZ="0.0"
-                 orientationX="0.0"
-                 orientationY="0.0"
-                 orientationZ="0.0"/>
-      </Sequence>
-      <IfThenElse>
-        <Sequence name="Detect gate and move foward to it.">
-          <AiFilter Detected_object="{GateDetection}"
-                    Max_time_before_failing_sec="0.0"
-                    Max_frame_before_failing="300"
-                    Two_objects_possible="0"
-                    Min_detections_before_success="5"
-                    Confidence="0.600000"
-                    Max_depth="25.000000"
-                    Object_class="gate-shark"
-                    Camera="1"/>
-          <MoveToObject Offset="0"
-                        Trajectory="{GateTrajectory}"
-                        Detection="{GateDetection}"/>
-          <SubTree ID="SendTrajectoryOnly"
-                   Trajectory="{GateTrajectory}"
-                   TimeBeforeFailing="5"/>
-        </Sequence>
-        <SubTree ID="Done"/>
-        <SubTree ID="MissionFailed"/>
-      </IfThenElse>
     </Sequence>
   </BehaviorTree>
 
