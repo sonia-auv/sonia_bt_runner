@@ -645,6 +645,19 @@
     </Sequence>
   </BehaviorTree>
 
+  <BehaviorTree ID="auto_torps">
+    <Sequence>
+      <SubTree ID="InitialSubmerge"
+               Depth="1"/>
+      <Delay delay_msec="5000">
+        <ShootTorpedo side="port_side"/>
+      </Delay>
+      <Delay delay_msec="5000">
+        <ShootTorpedo side="starboard"/>
+      </Delay>
+    </Sequence>
+  </BehaviorTree>
+
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
     <Action ID="AiActivation">
@@ -775,6 +788,10 @@
       <input_port name="TimeBeforeFailing"
                   default="5">The time before the sub movement fail</input_port>
     </SubTree>
+    <Action ID="ShootTorpedo">
+      <input_port name="side"
+                  type="std::string">port_side or starboard</input_port>
+    </Action>
     <SubTree ID="TorpedoShootingSequence"
              editable="true">
       <input_port name="TorpedoSide">The torpedo side to launch</input_port>
