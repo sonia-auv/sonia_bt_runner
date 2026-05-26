@@ -14,7 +14,7 @@ namespace navigation {
         Trajectory traj;
 
         
-        if(!getInput("Point", point_retour);)
+        if(!getInput("Point", point_retour))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The point is not specified");
 
