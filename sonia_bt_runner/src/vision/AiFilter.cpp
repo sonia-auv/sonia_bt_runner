@@ -1,4 +1,5 @@
 #include "sonia_bt_runner/vision/AiFilter.hpp"
+#include "sonia_bt_runner/vision/ObjectVerification.hpp"
 
 using std::placeholders::_1;
 namespace vision{
@@ -22,6 +23,11 @@ namespace vision{
         _max_time_before_failing = getInput<float>("Max_time_before_failing_sec");
 
         _max_depth = getInput<float>("Max_depth");
+
+        if (!verifyObject(_object.value()).has_value()) {
+            RCLCPP_INFO(_ros_node->get_logger(), "The detected object is not a valid name of type of detection. Syntaxe error");
+            return BT::NodeStatus::FAILURE;
+        }
 
         if (_min_detections_before_success.value() <= 1)
         {
@@ -112,7 +118,6 @@ namespace vision{
        
         _counter++;
         for (auto msg_obj: msg.detected_object){
-            
             if(msg_obj.class_name.compare(_object.value()) == 0){
 
                 // The searching object has been detected
@@ -129,6 +134,7 @@ namespace vision{
             }
         }
     }
+
     void AiFilter::one_object_possible(std::vector<size_t>& indexs)
     {
         double teta_average{};
