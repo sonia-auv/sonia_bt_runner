@@ -60,7 +60,7 @@
             <inout_port name="Trajectory" type="Trajectory"/>
             <input_port name="Detection" type="AiDetection"/>
         </Action>
-        <SubTree ID="Gate" editable="true">
+        <SubTree ID="GateSearchRescue" editable="true">
             <output_port name="Path">The path that the sub as taken</output_port>
             <output_port name="Side">The left or right side that the sub as taken</output_port>
         </SubTree>

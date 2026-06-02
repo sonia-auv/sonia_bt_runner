@@ -13,14 +13,16 @@
     <AlwaysSuccess/>
   </BehaviorTree>
 
-  <BehaviorTree ID="Gate">
+  <BehaviorTree ID="GateSearchRescue">
     <Sequence name="Gate">
       <Sequence name="Looking for the gate image">
+        <Script code="Path:=&quot;SurveyRepair&quot;"/>
         <AiActivation Model="0"
                       Bottom="false"
                       Front="true"/>
-        <InitializeTrajectory trajectory="{Trajectory}"/>
-        <Fallback>
+        <InitializeTrajectory trajectory="{@Trajectory}"/>
+        <IfThenElse>
+          <ScriptCondition code="Path==CONSTANTE"/>
           <Sequence>
             <SubTree ID="SearchObjectByRotation"
                      Object="gate-shark"
@@ -30,7 +32,6 @@
                      Min_detection_before_success="5"
                      Confidence="0.60000"
                      Max_depth="25"/>
-            <Script code="Path:=&quot;gate_shark&quot;"/>
           </Sequence>
           <Sequence>
             <SubTree ID="RotateToAbsoluteAngle"
@@ -43,9 +44,9 @@
                      Min_detection_before_success="5"
                      Confidence="0.60000"
                      Max_depth="25"/>
-            <Script code="Path:=&quot;gate_sawfish&quot;"/>
+            <Script code="Path:=&quot;&quot;"/>
           </Sequence>
-        </Fallback>
+        </IfThenElse>
         <FaceTheObject Trajectory="{Trajectory}"
                        Detection="{Aidetection}"/>
         <SubTree ID="SendTrajectoryOnly"
@@ -88,6 +89,10 @@
                  TimeBeforeFailing="5"/>
       </Sequence>
     </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="GateSurveyRepair">
+    <AlwaysSuccess/>
   </BehaviorTree>
 
   <BehaviorTree ID="Trickshot">

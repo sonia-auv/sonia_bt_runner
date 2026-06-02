@@ -7,7 +7,7 @@
                Depth="1"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="Gate"
+        <SubTree ID="GateSearchRescue"
                  Path="{path}"
                  Side="{side}"/>
       </ForceSuccess>
@@ -33,7 +33,7 @@
                Depth="1"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="Gate"
+        <SubTree ID="GateSearchRescue"
                  Path="{path}"
                  Side="{side}"/>
       </ForceSuccess>
@@ -68,7 +68,7 @@
                Depth="1"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="Gate"
+        <SubTree ID="GateSearchRescue"
                  Path="{path}"
                  Side="{side}"/>
       </ForceSuccess>
@@ -102,7 +102,7 @@
                Depth="1"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="Gate"
+        <SubTree ID="GateSearchRescue"
                  Path="{path}"
                  Side="{side}"/>
       </ForceSuccess>
@@ -128,7 +128,7 @@
                Depth="1"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="Gate"
+        <SubTree ID="GateSearchRescue"
                  Path="{path}"
                  Side="{side}"/>
       </ForceSuccess>
@@ -162,7 +162,7 @@
                Depth="1"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="Gate"
+        <SubTree ID="GateSearchRescue"
                  Path="{path}"
                  Side="{side}"/>
       </ForceSuccess>
@@ -192,7 +192,7 @@
              editable="true">
       <input_port name="ObjectToAim">The object in the bin that the sub needs to aim</input_port>
     </SubTree>
-    <SubTree ID="Gate"
+    <SubTree ID="GateSearchRescue"
              editable="true">
       <output_port name="Path">The path that the sub as taken</output_port>
       <output_port name="Side">The left or right side that the sub as taken</output_port>
