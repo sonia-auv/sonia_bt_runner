@@ -247,7 +247,7 @@
                frame="4"
                positionX="0.0"
                positionY="0.0"
-               positionZ="1"
+               positionZ="1.5"
                orientationX="0.0"
                orientationY="0.0"
                orientationZ="0.0"/>
@@ -342,7 +342,7 @@
                  frame="4.0"
                  positionX="0.0"
                  positionY="0.0"
-                 positionZ="1.0"
+                 positionZ="1.5"
                  orientationX="0.0"
                  orientationY="0.0"
                  orientationZ="0.0"/>
