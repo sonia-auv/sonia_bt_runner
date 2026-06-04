@@ -14,7 +14,7 @@ namespace vision {
         // We go get the information in the behavior tree
         _object = getInput<std::string>("Object_class");
         _confidence = getInput<float>("Confidence");
-        _min_detections_before_success = getInput<int>("Min_detections_before_success");
+        _detection_number_for_average = getInput<int>("Min_detections_before_success");
         _two_objects_possible = getInput<int>("Two_objects_possible");
 
         // I put those two parameter to do the test of witch one we're gonna use.
@@ -28,7 +28,7 @@ namespace vision {
             return BT::NodeStatus::FAILURE;
         }
 
-        if (_min_detections_before_success.value() <= 1)
+        if (_detection_number_for_average.value() <= 1)
         {
             RCLCPP_INFO(_ros_node->get_logger(), "You have to set the Min_detections_before_success parameter to more than 1.");
             return BT::NodeStatus::FAILURE;
@@ -69,7 +69,7 @@ namespace vision {
             return BT::NodeStatus::FAILURE;
         }
 
-        if(_detection_array.size() < (size_t)_min_detections_before_success.value()){
+        if(_detection_array.size() < (size_t)_detection_number_for_average.value()){
 
             //No image or not enought image captured
             return BT::NodeStatus::RUNNING;

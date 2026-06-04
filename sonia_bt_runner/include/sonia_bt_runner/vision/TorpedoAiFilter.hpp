@@ -3,7 +3,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetection.hpp"
-#include "sonia_bt_runner/utils/AiDetectionArray.hpp"
+#include "sonia_bt_runner/utils/AiDetection.hpp"
 #include "sonia_common_ros2/msg/detection.hpp"
 #include "sonia_common_ros2/msg/detection_array.hpp"
 
@@ -47,7 +47,7 @@ namespace vision {
             
             BT::Expected<std::string> _object;
             BT::Expected<float> _confidence;
-            BT::Expected<int> _min_detections_before_success;
+            BT::Expected<int> _detection_number_for_average;
             BT::Expected<int> _max_frame_before_failing;
             BT::Expected<float> _max_time_before_failing;
             BT::Expected<float> _max_depth;
