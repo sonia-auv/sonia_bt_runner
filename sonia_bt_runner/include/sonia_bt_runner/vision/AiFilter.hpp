@@ -57,6 +57,7 @@ namespace vision{
         protected:
             bool is_object_found(const std::string& object, const float confidence, const float max_depth);
             void applicate_box_plot_to_detections();
+            AiDetection detection_average();
             
             // void applicate_confidence_interval_to_detections();
 

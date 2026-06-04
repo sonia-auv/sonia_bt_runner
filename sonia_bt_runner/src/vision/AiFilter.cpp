@@ -51,13 +51,13 @@ namespace vision{
 
     BT::NodeStatus AiFilter::onRunning(){
 
-        if(!is_object_found(_object, _confidence, _max_depth))
+        if(!is_object_found(_object.value(), _confidence.value(), _max_depth.value()))
         {
             // We took to much time or count too many frame to fond the object
             if (_max_frame_before_failing.value() != 0)
-                RCLCPP_INFO(_ros_node->get_logger(), "_timout_counter %d : max frame = %d, We don't find what we are looking for.", _timout_counter, _max_frame_before_failing.value());
+                RCLCPP_INFO(_ros_node->get_logger(), "max frame = %d, We don't find what we are looking for.", _max_frame_before_failing.value());
             else
-                RCLCPP_INFO(_ros_node->get_logger(), "node time %f : max time = %f, We don't find what we are looking for.", _time_diff, _max_time_before_failing.value());
+                RCLCPP_INFO(_ros_node->get_logger(), "max time = %f, We don't find what we are looking for.", _max_time_before_failing.value());
             
             return BT::NodeStatus::FAILURE;
         }
@@ -66,30 +66,9 @@ namespace vision{
         RCLCPP_INFO(_ros_node->get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
 
         // We select the detection that we want to use to compute the output
-        std::vector<size_t> choosen_index;
-
         applicate_box_plot_to_detections();
 
-        // We compute the new average of every parameter of the detection that we keep.
-        AiDetection output_detection{};
-        output_detection.classification = _object.value();
-        for(size_t i : choosen_index)
-        {
-            output_detection.distance += _detection_array[i].distance;
-            output_detection.confidence += _detection_array[i].confidence;
-            output_detection.angle_teta += _detection_array[i].angle_teta;
-            output_detection.angle_alpha += _detection_array[i].angle_alpha;
-            output_detection.distance_teta += _detection_array[i].distance_teta;
-            output_detection.distance_beta += _detection_array[i].distance_beta;
-        }
-        output_detection.distance /= choosen_index.size();
-        output_detection.confidence /= choosen_index.size();
-        output_detection.angle_teta /= choosen_index.size();
-        output_detection.angle_alpha /= choosen_index.size();
-        output_detection.distance_teta /= choosen_index.size();
-        output_detection.distance_beta /= choosen_index.size();
-
-        setOutput("Detected_object", output_detection);
+        setOutput("Detected_object", detection_average());
 
         return BT::NodeStatus::SUCCESS;
     }
@@ -137,13 +116,13 @@ namespace vision{
        
         _timout_counter++;
         for (auto msg_obj: msg.detected_object){
-            if(msg_obj.class_name.compare(_object_filter.value()) == 0)
+            if(msg_obj.class_name.compare(_object_filter) == 0)
             {
                 // The searching object has been detected
                 // RCLCPP_INFO(_ros_node->get_logger(), "Class OK");
                 // RCLCPP_INFO(_ros_node->get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name.c_str(), msg_obj.distance, msg_obj.confidence);
                 // RCLCPP_INFO(_ros_node->get_logger(), "Comparing %s and %s = %d", msg_obj.class_name.c_str(), _object.value().c_str(), msg_obj.class_name.compare(_object.value()));
-                if(msg_obj.confidence >= _confidence_filter.value() && msg_obj.distance <= _max_depth_filter.value())
+                if(msg_obj.confidence >= _confidence_filter && msg_obj.distance <= _max_depth_filter)
                 {
                     //The detected object respect the confidence and the depth. We can put it in the filter array
                     RCLCPP_INFO(_ros_node->get_logger(), "Confidence and depth OK, a new object has been detected");
@@ -163,7 +142,7 @@ namespace vision{
         // We made a filtering in ascending order of the teta distance
         sonia_common_ros2::msg::Detection temp;
         for (size_t i{}; i < _detection_array.size() - 1; ++i) {
-            for (size_t j{}; j < _detection_array.size() - i - 1; ++j;) {
+            for (size_t j{}; j < _detection_array.size() - i - 1; ++j) {
                 if (_detection_array[j].distance_teta > _detection_array[j + 1].distance_teta) {
                     temp = _detection_array[j];
                     _detection_array[j] = _detection_array[j + 1];
@@ -186,18 +165,18 @@ namespace vision{
         max = q3 + 1.5f * (q3 - q1);
 
         // We keep the detection inside the min and the max bound
-        for (size_t i{_detection_array.begin()}; i != _detection_array.end();) {
-            if (_detection_array[i].distance_teta < min || _detection_array[i].distance_teta > max) {
-                _detection_array.erase(i);
+        for (std::vector<sonia_common_ros2::msg::Detection>::iterator it = _detection_array.begin(); it != _detection_array.end();) {
+            if (it->distance_teta < min || it->distance_teta > max) {
+                it = _detection_array.erase(it);
             } else {
-                ++i;
+                ++it;
             }
         }
 
         // We did the same thing with the distance_beta
-        sonia_common_ros2::msg::Detection temp;
+        // We made a filtering in ascending order of the beta distance
         for (size_t i{}; i < _detection_array.size() - 1; ++i) {
-            for (size_t j{}; j < _detection_array.size() - i - 1; ++j;) {
+            for (size_t j{}; j < _detection_array.size() - i - 1; ++j) {
                 if (_detection_array[j].distance_beta > _detection_array[j + 1].distance_beta) {
                     temp = _detection_array[j];
                     _detection_array[j] = _detection_array[j + 1];
@@ -220,11 +199,11 @@ namespace vision{
         max = q3 + 1.5f * (q3 - q1);
 
         // We keep the detection inside the min and the max bound
-        for (size_t i{_detection_array.begin()}; i != _detection_array.end();) {
-            if (_detection_array[i].distance_beta < min || _detection_array[i].distance_beta > max) {
-                _detection_array.erase(i);
+        for (std::vector<sonia_common_ros2::msg::Detection>::iterator it = _detection_array.begin(); it != _detection_array.end();) {
+            if (it->distance_beta < min || it->distance_beta > max) {
+                it = _detection_array.erase(it);
             } else {
-                ++i;
+                ++it;
             }
         }
     }
@@ -263,4 +242,29 @@ namespace vision{
     //         }
     //     }
     // }
+
+    AiDetection AiFilter::detection_average()
+    {
+        // We compute the new average of every parameter of the detection that we keep.
+        AiDetection output_detection{};
+        output_detection.classification = _object.value();
+        for(auto detection : _detection_array)
+        {
+            output_detection.distance += detection.distance;
+            output_detection.confidence += detection.confidence;
+            output_detection.angle_teta += detection.angle_teta;
+            output_detection.angle_alpha += detection.angle_alpha;
+            output_detection.distance_teta += detection.distance_teta;
+            output_detection.distance_beta += detection.distance_beta;
+        }
+        output_detection.distance /= _detection_array.size();
+        output_detection.confidence /= _detection_array.size();
+        output_detection.angle_teta /= _detection_array.size();
+        output_detection.angle_alpha /= _detection_array.size();
+        output_detection.distance_teta /= _detection_array.size();
+        output_detection.distance_beta /= _detection_array.size();
+
+        return output_detection;
+    }
+
 }  // namespace vision
