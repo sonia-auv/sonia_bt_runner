@@ -1,28 +1,28 @@
-#include "sonia_bt_runner/vision/AiFilter.hpp"
+#include "sonia_bt_runner/vision/TorpedoAiFilter.hpp"
 #include "sonia_bt_runner/vision/ObjectVerification.hpp"
 
 using std::placeholders::_1;
-namespace vision{
-    AiFilter::AiFilter(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    :BT::StatefulActionNode(name, config), _ros_node(node)
+namespace vision {
+    TorpedoAi::TorpedoAi(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
+    :BT::StatefulActionNode(name, config), _ros_node(node), _detecting_target{false}, _timout_counter{}
     {
         
     }
 
-    BT::NodeStatus AiFilter::onStart()
+    BT::NodeStatus TorpedoAi::onStart()
     {
         // We go get the information in the behavior tree
-        _cam = getInput<int>("Camera");
         _object = getInput<std::string>("Object_class");
         _confidence = getInput<float>("Confidence");
-        _max_depth = getInput<float>("Max_depth");
-        _min_detections_before_success = getInput<int>("Detection_number_for_average");
+        _min_detections_before_success = getInput<int>("Min_detections_before_success");
+        _two_objects_possible = getInput<int>("Two_objects_possible");
 
         // I put those two parameter to do the test of witch one we're gonna use.
-        _max_frame_before_failing = getInput<int>("Max_frame_number_before_failing");
+        _max_frame_before_failing = getInput<int>("Max_frame_before_failing");
         _max_time_before_failing = getInput<float>("Max_time_before_failing_sec");
 
-        // We verify if the object is valid
+        _max_depth = getInput<float>("Max_depth");
+
         if (!verifyObject(_object.value()).has_value()) {
             RCLCPP_INFO(_ros_node->get_logger(), "The detected object is not a valid name of type of detection. Syntaxe error");
             return BT::NodeStatus::FAILURE;
@@ -35,24 +35,28 @@ namespace vision{
         }
 
         // We initialize some value
-        _timout_counter = 0;
         _launch_time = std::chrono::system_clock::now();
 
-        // We chose the right camera to capture the image
-        if(_cam.value())
+        // We initialize the subscriber to get the info of the detected image
+        // if(_cam.value())
             _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/front/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
-        else
-            _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/bottom/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
+        // else
+        //     _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/bottom/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
         
         // We run the node
         return BT::NodeStatus::RUNNING;
     }
 
-    BT::NodeStatus AiFilter::onRunning(){
+    BT::NodeStatus TorpedoAi::onRunning(){
 
         std::chrono::duration<double> diff = std::chrono::system_clock::now() - _launch_time;
         _time_diff = diff.count();
 
+        if (_detecting_target) {
+
+        } else {
+
+        }
         if((_max_frame_before_failing.value() != 0 && _timout_counter >= _max_frame_before_failing.value()) || (_max_time_before_failing.value() != 0.0 && _time_diff >= _max_time_before_failing.value()))
         {
             // We took to much time or count too many frame to fond the object
@@ -69,6 +73,11 @@ namespace vision{
 
             //No image or not enought image captured
             return BT::NodeStatus::RUNNING;
+        }
+
+        if (!_detecting_target) {
+            _main_object
+            _detecting_target = true;
         }
 
         // We kill the subscriber because we don't need more detection
@@ -109,11 +118,10 @@ namespace vision{
 
         return BT::NodeStatus::SUCCESS;
     }
-    void AiFilter::onHalted()
-    {
-    }
 
-    void AiFilter::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) {
+    void TorpedoAi::onHalted() {}
+
+    void TorpedoAi::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) {
        
         _timout_counter++;
         for (auto msg_obj: msg.detected_object){
@@ -134,7 +142,7 @@ namespace vision{
         }
     }
 
-    void AiFilter::one_object_possible(std::vector<size_t>& indexs)
+    void TorpedoAi::one_object_possible(std::vector<size_t>& indexs)
     {
         double teta_average{};
         double beta_average{};
@@ -174,7 +182,7 @@ namespace vision{
         }
     }
 
-    void AiFilter::multiple_object_possible(std::vector<size_t>& indexs)
+    void TorpedoAi::multiple_object_possible(std::vector<size_t>& indexs)
     {
         double smallest_distance {_detection_array[0].distance_teta * _detection_array[0].distance_teta + _detection_array[0].distance_beta * _detection_array[0].distance_beta};
         size_t index_of_smallest_distance{};
