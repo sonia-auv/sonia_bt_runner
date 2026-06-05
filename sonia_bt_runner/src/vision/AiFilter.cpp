@@ -13,10 +13,10 @@ namespace vision{
     {
         // We go get the information in the behavior tree
         _cam = getInput<int>("Camera");
-        _object = getInput<std::string>("Object");
+        _object = getInput<std::string>("Object_class");
         _confidence = getInput<float>("Confidence");
         _max_depth = getInput<float>("Max_depth");
-        _detection_number_for_average = getInput<int>("Detection_number_for_average");
+        _detection_number_for_average = getInput<int>("Min_detections_before_success");
 
         // I put those two parameter to do the test of witch one we're gonna use.
         _max_frame_before_failing = getInput<int>("Max_frame_number_before_failing");

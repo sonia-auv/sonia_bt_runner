@@ -2,39 +2,24 @@
 <root BTCPP_format="4">
   <BehaviorTree ID="Torpedos">
     <Sequence>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
-      <SubTree ID="SearchObjectByRotation"
-               Object="torpedo-poster"
-               FoundAiDetection="{AiDetection}"
-               Max_time_before_failing_sec="0.0"
-               Max_frame_before_failing="300"
-               Min_detection_before_success="5"
-               Confidence="0.60000"
-               Max_depth="25"/>
-      <MoveToObject Offset="-1.5"
-                    Trajectory="{Trajectory}"
-                    Detection="{AiDetection}"/>
-      <SubTree ID="SendTrajectoryOnly"
-               Trajectory="{Trajectory}"
-               TimeBeforeFailing="5"/>
       <SubTree ID="TorpedoApproachSequence"/>
       <IfThenElse>
-        <ScriptCondition code="ObjectToAim==&quot;gate-shark&quot;"/>
+        <ScriptCondition code="ObjectToAim==&quot;fire-truck&quot;"/>
         <Sequence>
           <SubTree ID="TorpedoShootingSequence"
                    TorpedoSide="port_side"
-                   ObjectToAim="shark"/>
+                   ObjectToAim="fire-truck"/>
           <SubTree ID="TorpedoShootingSequence"
                    TorpedoSide="starboard"
-                   ObjectToAim="sawfish"/>
+                   ObjectToAim="ambulance"/>
         </Sequence>
         <Sequence>
           <SubTree ID="TorpedoShootingSequence"
                    TorpedoSide="starboard"
-                   ObjectToAim="sawfish"/>
+                   ObjectToAim="ambulance"/>
           <SubTree ID="TorpedoShootingSequence"
                    TorpedoSide="port_side"
-                   ObjectToAim="shark"/>
+                   ObjectToAim="fire-truck"/>
         </Sequence>
       </IfThenElse>
     </Sequence>
@@ -42,39 +27,6 @@
 
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
-    <Action ID="InitializeTrajectory">
-      <output_port name="trajectory"
-                   type="Trajectory"/>
-    </Action>
-    <Action ID="MoveToObject">
-      <input_port name="Offset"
-                  type="float"/>
-      <inout_port name="Trajectory"
-                  type="Trajectory"/>
-      <input_port name="Detection"
-                  type="AiDetection"/>
-    </Action>
-    <SubTree ID="SearchObjectByRotation"
-             editable="true">
-      <input_port name="Object">Object we are looking for</input_port>
-      <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
-      <input_port name="Max_time_before_failing_sec"
-                  default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
-      <input_port name="Max_frame_before_failing"
-                  default="0">Number of frame that the sub will take to every 30 degree position to find the object</input_port>
-      <input_port name="Min_detection_before_success"
-                  default="5">Nombre of detected frame to call a found status</input_port>
-      <input_port name="Confidence"
-                  default="0.60000">Minimum confidence of the Ai</input_port>
-      <input_port name="Max_depth"
-                  default="25">Max distance to detect an object</input_port>
-    </SubTree>
-    <SubTree ID="SendTrajectoryOnly"
-             editable="true">
-      <input_port name="Trajectory">The trajectory to do to the sub</input_port>
-      <input_port name="TimeBeforeFailing"
-                  default="5">The time before the sub movement fail</input_port>
-    </SubTree>
     <SubTree ID="TorpedoShootingSequence"
              editable="true">
       <input_port name="TorpedoSide">The torpedo side to launch</input_port>

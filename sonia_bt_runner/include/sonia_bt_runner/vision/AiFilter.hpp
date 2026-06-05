@@ -17,10 +17,10 @@ namespace vision{
                 return {
                     // Inputs
                     BT::InputPort<int>("Camera", 1, "1: Front, 0: Bottom"),
-                    BT::InputPort<std::string>("Object", "Searched object"),
-                    BT::InputPort<float>("Confidence", 0.6, "Ai _confidence"),
+                    BT::InputPort<std::string>("Object_class", "Searched object"),
+                    BT::InputPort<float>("Confidence", 0.6, "Ai confidence"),
                     BT::InputPort<float>("Max_depth", 25.0, "Maximum allowed depth"),
-                    BT::InputPort<int>("Detection_number_for_average", 2, "Minumum number of frames with at least one detection before sending results. Need to be heigher than 2"),
+                    BT::InputPort<int>("Min_detections_before_success", 2, "Minumum number of frames with at least one detection before sending results. Need to be heigher than 2"),
 
                     BT::InputPort<int>("Max_frame_before_failing", 0, "Maximum allowed frames before failing the object research"),
                     BT::InputPort<float>("Max_time_before_failing_sec", 0.0, "Maximum allowed time in ms before failing the object research"),

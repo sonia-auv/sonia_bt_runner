@@ -99,7 +99,6 @@
         <AiFilter Detected_object="{AiDetection}"
                   Max_time_before_failing_sec="0.000000"
                   Max_frame_before_failing="300"
-                  Two_objects_possible="0"
                   Min_detections_before_success="5"
                   Confidence="0.60000"
                   Max_depth="25"
@@ -122,7 +121,6 @@
         <AiFilter Detected_object="{AiDetection}"
                   Max_time_before_failing_sec="0.000000"
                   Max_frame_before_failing="300"
-                  Two_objects_possible="0"
                   Min_detections_before_success="5"
                   Confidence="0.600000"
                   Max_depth="25"
@@ -175,9 +173,6 @@
       <input_port name="Max_frame_before_failing"
                   default="0"
                   type="int">Maximum allowed frames before failing the object research</input_port>
-      <input_port name="Two_objects_possible"
-                  default="0"
-                  type="int">0: Only one object can be detected, 1: Two or more object of the same class can be detected</input_port>
       <input_port name="Min_detections_before_success"
                   default="2"
                   type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
