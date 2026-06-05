@@ -7,7 +7,6 @@ namespace vision{
     AiFilter::AiFilter(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
     :BT::StatefulActionNode(name, config), _ros_node(node), _detection_array()
     {
-        
     }
 
     BT::NodeStatus AiFilter::onStart()
@@ -35,30 +34,12 @@ namespace vision{
             return BT::NodeStatus::FAILURE;
         }
 
-        // We initialize some value
-        // _timout_counter = 0;
-        // _launch_time = std::chrono::system_clock::now();
-
-        // We chose the right camera to capture the image
-        // if(_cam.value())
-        //     _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/front/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
-        // else
-        //     _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/bottom/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
-        
-        // We run the node
         return BT::NodeStatus::RUNNING;
     }
 
-    BT::NodeStatus AiFilter::onRunning(){
-
-        if(!is_object_found(_object.value(), _confidence.value(), _max_depth.value()))
-        {
-            // We took to much time or count too many frame to fond the object
-            if (_max_frame_before_failing.value() != 0)
-                RCLCPP_INFO(_ros_node->get_logger(), "max frame = %d, We don't find what we are looking for.", _max_frame_before_failing.value());
-            else
-                RCLCPP_INFO(_ros_node->get_logger(), "max time = %f, We don't find what we are looking for.", _max_time_before_failing.value());
-            
+    BT::NodeStatus AiFilter::onRunning()
+    {
+        if(!detection_complete()) {
             return BT::NodeStatus::FAILURE;
         }
 
@@ -72,6 +53,7 @@ namespace vision{
 
         return BT::NodeStatus::SUCCESS;
     }
+
     void AiFilter::onHalted()
     {
     }
@@ -130,6 +112,21 @@ namespace vision{
                 }
             }
         }
+
+    }
+
+    bool AiFilter::detection_complete() 
+    {
+        if(!is_object_found(_object.value(), _confidence.value(), _max_depth.value()))
+        {
+            // We took to much time or count too many frame to fond the object
+            if (_max_frame_before_failing.value() != 0)
+                RCLCPP_INFO(_ros_node->get_logger(), "max frame = %d, We don't find what we are looking for.", _max_frame_before_failing.value());
+            else
+                RCLCPP_INFO(_ros_node->get_logger(), "max time = %f, We don't find what we are looking for.", _max_time_before_failing.value());
+            return false;
+        }
+        return true;
     }
 
     void AiFilter::applicate_box_plot_to_detections()
@@ -206,42 +203,10 @@ namespace vision{
                 ++it;
             }
         }
+
+        // Will propably do the same thing with the depth
+
     }
-
-    // void AiFilter::applicate_confidence_interval_to_detections()
-    // {
-    //     double smallest_distance {_detection_array[0].distance_teta * _detection_array[0].distance_teta + _detection_array[0].distance_beta * _detection_array[0].distance_beta};
-    //     size_t index_of_smallest_distance{};
-    //     float i_centered_distance;
-        
-    //     // We compute the closest detection to the center of the camera
-    //     for (size_t i{1}; i < _detection_array.size(); i++)
-    //     {
-    //         i_centered_distance = _detection_array[i].distance_teta * _detection_array[i].distance_teta + _detection_array[i].distance_beta * _detection_array[i].distance_beta;
-    //         if (i_centered_distance < smallest_distance)
-    //         {
-    //             smallest_distance = i_centered_distance;
-    //             index_of_smallest_distance = i;
-    //         }
-    //     }
-
-    //     // We choose the detection on a distance of 10 cm with the closest one.
-    //     indexs.push_back(index_of_smallest_distance);
-    //     double beta;
-    //     double teta;
-    //     for (size_t i{};i < _detection_array.size(); i++)
-    //     {
-    //         if (i != index_of_smallest_distance)
-    //         {
-    //             beta = _detection_array[i].distance_beta - _detection_array[index_of_smallest_distance].distance_beta;
-    //             teta = _detection_array[i].distance_teta - _detection_array[index_of_smallest_distance].distance_teta;
-    //             if (0.1 >= sqrt(beta * beta + teta * teta))
-    //             {
-    //                 indexs.push_back(i);
-    //             }
-    //         }
-    //     }
-    // }
 
     AiDetection AiFilter::detection_average()
     {

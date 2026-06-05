@@ -35,17 +35,17 @@ namespace vision{
             void onHalted() override;
 
         private:
-            void ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg);
-            std::shared_ptr<rclcpp::Node> _ros_node;
             rclcpp::Subscription<sonia_common_ros2::msg::DetectionArray>::SharedPtr _ai_filter_sub;
-            std::vector<sonia_common_ros2::msg::Detection> _detection_array;
             // std::chrono::_V2::system_clock::time_point _launch_time;
             // float _time_diff;
-            int _timout_counter;
+            
+        protected:
+            std::shared_ptr<rclcpp::Node> _ros_node;
             std::string _object_filter;
             float _confidence_filter;
             float _max_depth_filter;
-            
+            std::vector<sonia_common_ros2::msg::Detection> _detection_array;
+            int _timout_counter;
             BT::Expected<int> _cam;
             BT::Expected<std::string> _object;
             BT::Expected<float> _confidence;
@@ -53,10 +53,11 @@ namespace vision{
             BT::Expected<int> _detection_number_for_average;
             BT::Expected<int> _max_frame_before_failing;
             BT::Expected<float> _max_time_before_failing;
-
-        protected:
+            
+            virtual void ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg);
             bool is_object_found(const std::string& object, const float confidence, const float max_depth);
             void applicate_box_plot_to_detections();
+            bool detection_complete();
             AiDetection detection_average();
             
             // void applicate_confidence_interval_to_detections();
