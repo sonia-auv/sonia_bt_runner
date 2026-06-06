@@ -60,7 +60,7 @@
             <inout_port name="Trajectory" type="Trajectory"/>
             <input_port name="Detection" type="AiDetection"/>
         </Action>
-        <SubTree ID="GateSearchRescue" editable="true">
+        <SubTree ID="Gate" editable="true">
             <output_port name="Path">The path that the sub as taken</output_port>
             <output_port name="Side">The left or right side that the sub as taken</output_port>
         </SubTree>
@@ -77,6 +77,11 @@
         <Action ID="MoveAboveObject">
             <inout_port name="Trajectory" type="Trajectory"/>
             <input_port name="Detection" type="AiDetection"/>
+        </Action>
+        <Action ID="MoveBetweenDetections" editable="true">
+            <input_port name="DetectionA">A detection object (A).</input_port>
+            <input_port name="DetectionB">A detection object (B).</input_port>
+            <input_port name="PositionX" default="10">The X distance than the need to do.</input_port>
         </Action>
         <SubTree ID="MoveSinglePose" editable="true">
             <input_port name="frame" default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
@@ -118,6 +123,11 @@
             <input_port name="Confidence" default="0.60000">Minimum confidence of the Ai</input_port>
             <input_port name="Max_depth" default="25">Max distance to detect an object</input_port>
         </SubTree>
+        <Action ID="SearchWhiteSlalom" editable="true">
+            <input_port name="RedSlalomDetection">The detection of the red slalom.</input_port>
+            <input_port name="Side" default="Left">This information tells the sub which side to pass on the relation to the position of the "red slalom". Value: Left or Right</input_port>
+            <output_port name="WhiteSlalomDetection">The detection of the white slalom.</output_port>
+        </Action>
         <Action ID="SendTrajectory">
             <input_port name="trajectory" type="Trajectory"/>
             <input_port name="interpolation" default="0" type="int"/>

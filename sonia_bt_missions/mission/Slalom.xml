@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
+  <BehaviorTree ID="SlalomFinal">
+    <AlwaysSuccess/>
+  </BehaviorTree>
+
   <BehaviorTree ID="SlalomRafinee">
     <Sequence>
       <Sequence name="Detection of the red slalom">
@@ -28,6 +32,41 @@
                  Trajectory="{trajectory}"
                  TimeBeforeFailing="10"/>
       </Sequence>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="SlalomSemiFinal">
+    <Sequence>
+      <AiActivation Model="0"
+                    Bottom="false"
+                    Front="true"
+                    _description="Activate the AI.&#10;&#10;I have no idea which model to choose to be defined."/>
+      <IfThenElse>
+        <SubTree ID="SearchObjectByRotation"
+                 Object="red_slalom"
+                 FoundAiDetection="{RedSlalomDetection}"
+                 Max_time_before_failing_sec="0.0"
+                 Max_frame_before_failing="0"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"
+                 _description="Detect the red slalom."/>
+        <SubTree ID="Nop"/>
+        <SubTree ID="MissionFailed"/>
+      </IfThenElse>
+      <IfThenElse>
+        <SearchWhiteSlalom RedSlalomDetection="{RedSlalomDetection}"
+                           Side="Left"
+                           WhiteSlalomDetection="{WhiteSlalomDetection}"
+                           _description="We search the white slalom according the given side we receive."/>
+        <SubTree ID="Nop"/>
+        <SubTree ID="MissionFailed"/>
+      </IfThenElse>
+      <MoveBetweenDetections DetectionA="{RedSlalomDetection}"
+                             DetectionB="{WhiteSlalomDetection}"
+                             PositionX="10"
+                             _description="Move between slaloms according the X position."/>
+      <SubTree ID="MissionSuccess"/>
     </Sequence>
   </BehaviorTree>
 
@@ -64,9 +103,27 @@
 
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
+    <Action ID="AiActivation">
+      <input_port name="Model"
+                  default="0"
+                  type="int">model choice, default = 0</input_port>
+      <input_port name="Bottom"
+                  default="false"
+                  type="bool">true: ON, talse: OFF</input_port>
+      <input_port name="Front"
+                  default="false"
+                  type="bool">true: ON, talse: OFF</input_port>
+    </Action>
     <Action ID="InitializeTrajectory">
       <output_port name="trajectory"
                    type="Trajectory"/>
+    </Action>
+    <Action ID="MoveBetweenDetections"
+            editable="true">
+      <input_port name="DetectionA">A detection object (A).</input_port>
+      <input_port name="DetectionB">A detection object (B).</input_port>
+      <input_port name="PositionX"
+                  default="10">The X distance than the need to do.</input_port>
     </Action>
     <SubTree ID="SearchObjectByRotation"
              editable="true">
@@ -83,6 +140,13 @@
       <input_port name="Max_depth"
                   default="25">Max distance to detect an object</input_port>
     </SubTree>
+    <Action ID="SearchWhiteSlalom"
+            editable="true">
+      <input_port name="RedSlalomDetection">The detection of the red slalom.</input_port>
+      <input_port name="Side"
+                  default="Left">This information tells the sub which side to pass on the relation to the position of the "red slalom". Value: Left or Right</input_port>
+      <output_port name="WhiteSlalomDetection">The detection of the white slalom.</output_port>
+    </Action>
     <SubTree ID="SendTrajectoryOnly"
              editable="true">
       <input_port name="Trajectory">The trajectory to do to the sub</input_port>
