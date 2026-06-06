@@ -96,7 +96,8 @@
       <MoveBetweenDetections DetectionA="{RedSlalomDetection}"
                              DetectionB="{WhiteSlalomDetection}"
                              PositionX="10"
-                             _description="Move between slaloms according the X position."/>
+                             TimeBeforeFailing="15"
+                             _description="Center laterally between the two slaloms then move forward 10 m through the gap."/>
       <SubTree ID="MissionSuccess"/>
     </Sequence>
   </BehaviorTree>
@@ -289,10 +290,14 @@
     </Action>
     <Action ID="MoveBetweenDetections"
             editable="true">
-      <input_port name="DetectionA">A detection object (A).</input_port>
-      <input_port name="DetectionB">A detection object (B).</input_port>
+      <input_port name="DetectionA">Detection of the first slalom.</input_port>
+      <input_port name="DetectionB">Detection of the second slalom.</input_port>
       <input_port name="PositionX"
-                  default="10">The X distance than the need to do.</input_port>
+                  default="10"
+                  type="float">Forward distance to travel after centering between the two detections.</input_port>
+      <input_port name="TimeBeforeFailing"
+                  default="15"
+                  type="float">Timeout in seconds before the movement is considered failed.</input_port>
     </Action>
     <SubTree ID="SearchObjectByRotation"
              editable="true">
