@@ -46,6 +46,12 @@
         <SubTree ID="CommunicationReceiver" editable="true">
             <input_port name="Path">The path that the othor sub has choosen</input_port>
         </SubTree>
+        <Action ID="ComputeTrajectoryBetweenDetections" editable="true">
+            <input_port name="DetectionA">Detection of the first slalom.</input_port>
+            <input_port name="DetectionB">Detection of the second slalom.</input_port>
+            <input_port name="PositionX" default="10" type="float">Forward distance to travel after centering between the two detections.</input_port>
+            <inout_port name="Trajectory" type="Trajectory">Trajectory to append the two poses to.</inout_port>
+        </Action>
         <Action ID="ControlSetMode">
             <input_port name="set_mode" default="false" type="bool"/>
         </Action>
@@ -81,11 +87,6 @@
         <Action ID="MoveAboveObject">
             <inout_port name="Trajectory" type="Trajectory"/>
             <input_port name="Detection" type="AiDetection"/>
-        </Action>
-        <Action ID="MoveBetweenDetections" editable="true">
-            <input_port name="DetectionA">A detection object (A).</input_port>
-            <input_port name="DetectionB">A detection object (B).</input_port>
-            <input_port name="PositionX" default="10">The X distance than the need to do.</input_port>
         </Action>
         <SubTree ID="MoveSinglePose" editable="true">
             <input_port name="frame" default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
