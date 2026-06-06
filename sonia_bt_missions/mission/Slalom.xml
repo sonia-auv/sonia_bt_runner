@@ -41,6 +41,7 @@
                     Bottom="false"
                     Front="true"
                     _description="Activate the AI.&#10;&#10;I have no idea which model to choose to be defined."/>
+
       <IfThenElse>
         <SubTree ID="SearchObjectByRotation"
                  Object="red_slalom"
@@ -54,20 +55,155 @@
         <SubTree ID="Nop"/>
         <SubTree ID="MissionFailed"/>
       </IfThenElse>
+
+      <InitializeTrajectory trajectory="{Trajectory}"
+                            _description="Prepare trajectory to face the red slalom."/>
+      <FaceTheObject Trajectory="{Trajectory}"
+                     Detection="{RedSlalomDetection}"
+                     _description="Rotate the sub to center the red slalom in the camera frame."/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="5"/>
       <IfThenElse>
-        <SearchWhiteSlalom RedSlalomDetection="{RedSlalomDetection}"
-                           Side="Left"
-                           WhiteSlalomDetection="{WhiteSlalomDetection}"
-                           _description="We search the white slalom according the given side we receive."/>
+        <AiFilter Detected_object="{RedSlalomDetection}"
+                  Object_class="red_slalom"
+                  Camera="1"
+                  Confidence="0.60000"
+                  Min_detections_before_success="5"
+                  Two_objects_possible="0"
+                  Max_frame_before_failing="0"
+                  Max_time_before_failing_sec="5.0"
+                  Max_depth="25.0"
+                  _description="Refresh the red slalom detection now that we are facing it (angle_teta ~ 0)."/>
         <SubTree ID="Nop"/>
         <SubTree ID="MissionFailed"/>
       </IfThenElse>
+
+      <IfThenElse>
+        <SubTree ID="SearchWhiteSlalomByRotation"
+                 RedSlalomDetection="{RedSlalomDetection}"
+                 Side="Left"
+                 WhiteSlalomDetection="{WhiteSlalomDetection}"
+                 Confidence="0.60000"
+                 Min_detections_before_success="5"
+                 Max_time_before_failing_sec="5.0"
+                 Max_depth="25.0"
+                 _description="We search the white slalom on the given side, rotating if it is not immediately visible."/>
+        <SubTree ID="Nop"/>
+        <SubTree ID="MissionFailed"/>
+      </IfThenElse>
+
       <MoveBetweenDetections DetectionA="{RedSlalomDetection}"
                              DetectionB="{WhiteSlalomDetection}"
                              PositionX="10"
                              _description="Move between slaloms according the X position."/>
       <SubTree ID="MissionSuccess"/>
     </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="SearchWhiteSlalomByRotation">
+    <Fallback>
+      <SearchWhiteSlalom RedSlalomDetection="{RedSlalomDetection}"
+                         Side="{Side}"
+                         WhiteSlalomDetection="{WhiteSlalomDetection}"
+                         Confidence="{Confidence}"
+                         Min_detections_before_success="{Min_detections_before_success}"
+                         Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                         Max_depth="{Max_depth}"/>
+      <Sequence>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="30"/>
+        <Fallback>
+          <SearchWhiteSlalom RedSlalomDetection="{RedSlalomDetection}"
+                             Side="{Side}"
+                             WhiteSlalomDetection="{WhiteSlalomDetection}"
+                             Confidence="{Confidence}"
+                             Min_detections_before_success="{Min_detections_before_success}"
+                             Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                             Max_depth="{Max_depth}"/>
+          <Sequence>
+            <SubTree ID="MoveSinglePose"
+                     frame="1.0"
+                     positionX="0.0"
+                     positionY="0.0"
+                     positionZ="0.0"
+                     orientationX="0.0"
+                     orientationY="0.0"
+                     orientationZ="-60"/>
+            <Fallback>
+              <SearchWhiteSlalom RedSlalomDetection="{RedSlalomDetection}"
+                                 Side="{Side}"
+                                 WhiteSlalomDetection="{WhiteSlalomDetection}"
+                                 Confidence="{Confidence}"
+                                 Min_detections_before_success="{Min_detections_before_success}"
+                                 Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                                 Max_depth="{Max_depth}"/>
+              <Sequence>
+                <SubTree ID="MoveSinglePose"
+                         frame="1.0"
+                         positionX="0.0"
+                         positionY="0.0"
+                         positionZ="0.0"
+                         orientationX="0.0"
+                         orientationY="0.0"
+                         orientationZ="-30"/>
+                <Fallback>
+                  <SearchWhiteSlalom RedSlalomDetection="{RedSlalomDetection}"
+                                     Side="{Side}"
+                                     WhiteSlalomDetection="{WhiteSlalomDetection}"
+                                     Confidence="{Confidence}"
+                                     Min_detections_before_success="{Min_detections_before_success}"
+                                     Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                                     Max_depth="{Max_depth}"/>
+                  <Sequence>
+                    <SubTree ID="MoveSinglePose"
+                             frame="1.0"
+                             positionX="0.0"
+                             positionY="0.0"
+                             positionZ="0.0"
+                             orientationX="0.0"
+                             orientationY="0.0"
+                             orientationZ="120"/>
+                    <Fallback>
+                      <SearchWhiteSlalom RedSlalomDetection="{RedSlalomDetection}"
+                                         Side="{Side}"
+                                         WhiteSlalomDetection="{WhiteSlalomDetection}"
+                                         Confidence="{Confidence}"
+                                         Min_detections_before_success="{Min_detections_before_success}"
+                                         Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                                         Max_depth="{Max_depth}"/>
+                      <Sequence>
+                        <SubTree ID="MoveSinglePose"
+                                 frame="1.0"
+                                 positionX="0.0"
+                                 positionY="0.0"
+                                 positionZ="0.0"
+                                 orientationX="0.0"
+                                 orientationY="0.0"
+                                 orientationZ="30"/>
+                        <SearchWhiteSlalom RedSlalomDetection="{RedSlalomDetection}"
+                                           Side="{Side}"
+                                           WhiteSlalomDetection="{WhiteSlalomDetection}"
+                                           Confidence="{Confidence}"
+                                           Min_detections_before_success="{Min_detections_before_success}"
+                                           Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                                           Max_depth="{Max_depth}"/>
+                      </Sequence>
+                    </Fallback>
+                  </Sequence>
+                </Fallback>
+              </Sequence>
+            </Fallback>
+          </Sequence>
+        </Fallback>
+      </Sequence>
+    </Fallback>
   </BehaviorTree>
 
   <BehaviorTree ID="SlalomSimple">
@@ -114,6 +250,39 @@
                   default="false"
                   type="bool">true: ON, talse: OFF</input_port>
     </Action>
+    <Action ID="AiFilter">
+      <output_port name="Detected_object"
+                   type="AiDetection"/>
+      <input_port name="Max_time_before_failing_sec"
+                  default="0.000000"
+                  type="float">Maximum allowed time in seconds before failing the object research</input_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0"
+                  type="int">Maximum allowed frames before failing the object research</input_port>
+      <input_port name="Two_objects_possible"
+                  default="0"
+                  type="int">0: Only one object can be detected, 1: Two or more object of the same class can be detected</input_port>
+      <input_port name="Min_detections_before_success"
+                  default="2"
+                  type="int">Minimum number of frames with at least one detection before sending results</input_port>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Minimum AI confidence</input_port>
+      <input_port name="Max_depth"
+                  default="25.000000"
+                  type="float">Maximum allowed depth</input_port>
+      <input_port name="Object_class"
+                  type="std::string">Searched object</input_port>
+      <input_port name="Camera"
+                  default="1"
+                  type="int">1: Front, 0: Bottom</input_port>
+    </Action>
+    <Action ID="FaceTheObject">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
     <Action ID="InitializeTrajectory">
       <output_port name="trajectory"
                    type="Trajectory"/>
@@ -144,9 +313,36 @@
             editable="true">
       <input_port name="RedSlalomDetection">The detection of the red slalom.</input_port>
       <input_port name="Side"
-                  default="Left">This information tells the sub which side to pass on the relation to the position of the "red slalom". Value: Left or Right</input_port>
+                  default="Left">Which side the white slalom is on relative to the red slalom. Value: Left or Right</input_port>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Minimum AI confidence</input_port>
+      <input_port name="Min_detections_before_success"
+                  default="5"
+                  type="int">Minimum valid detections before succeeding</input_port>
+      <input_port name="Max_time_before_failing_sec"
+                  default="0.0"
+                  type="float">Timeout in seconds, 0 = disabled</input_port>
+      <input_port name="Max_depth"
+                  default="25.0"
+                  type="float">Maximum detection distance</input_port>
       <output_port name="WhiteSlalomDetection">The detection of the white slalom.</output_port>
     </Action>
+    <SubTree ID="SearchWhiteSlalomByRotation"
+             editable="true">
+      <input_port name="RedSlalomDetection">The detection of the red slalom used as angular reference.</input_port>
+      <input_port name="Side"
+                  default="Left">Which side the white slalom is on relative to the red slalom. Value: Left or Right</input_port>
+      <output_port name="WhiteSlalomDetection">The detection of the white slalom found during the search.</output_port>
+      <input_port name="Confidence"
+                  default="0.60000">Minimum confidence of the AI</input_port>
+      <input_port name="Min_detections_before_success"
+                  default="5">Minimum valid detections before succeeding at each rotation step</input_port>
+      <input_port name="Max_time_before_failing_sec"
+                  default="5.0">Timeout per rotation step in seconds</input_port>
+      <input_port name="Max_depth"
+                  default="25.0">Maximum detection distance</input_port>
+    </SubTree>
     <SubTree ID="SendTrajectoryOnly"
              editable="true">
       <input_port name="Trajectory">The trajectory to do to the sub</input_port>
