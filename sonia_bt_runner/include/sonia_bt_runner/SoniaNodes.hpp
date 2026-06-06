@@ -38,7 +38,7 @@ static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::share
     factory.registerNodeType<navigation::TrajectoryAppendPose>("TrajectoryAppendPose");
     factory.registerBuilder<navigation::SendTrajectory>("SendTrajectory", configBuilder<navigation::SendTrajectory>(node));
     factory.registerBuilder<navigation::WaitTargetReached>("WaitTargetReached", configBuilder<navigation::WaitTargetReached>(node));
-    factory.registerBuilder<navigation::MoveBetweenDetections>("MoveBetweenDetections", configBuilder<navigation::MoveBetweenDetections>(node));
+    factory.registerBuilder<navigation::ComputeTrajectoryBetweenDetections>("ComputeTrajectoryBetweenDetections", configBuilder<navigation::ComputeTrajectoryBetweenDetections>(node));
 }
 
 static void registerSensorNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
