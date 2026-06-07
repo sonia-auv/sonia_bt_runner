@@ -142,6 +142,8 @@
 
   <BehaviorTree ID="SlalomSemiFinal">
     <Sequence>
+      <SubTree ID="InitialSubmerge"
+               Depth="1.0"/>
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"
@@ -294,6 +296,11 @@
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
+    <SubTree ID="InitialSubmerge"
+             editable="true">
+      <input_port name="Depth"
+                  default="0.5"/>
+    </SubTree>
     <Action ID="InitializeTrajectory">
       <output_port name="trajectory"
                    type="Trajectory"/>
