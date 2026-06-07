@@ -143,14 +143,14 @@
   <BehaviorTree ID="SlalomSemiFinal">
     <Sequence>
       <SubTree ID="InitialSubmerge"
-               Depth="1.0"/>
+               Depth="0.5"/>
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"
                     _description="Activate the AI.&#10;&#10;I have no idea which model to choose to be defined."/>
       <IfThenElse>
         <SubTree ID="SearchObjectByRotation"
-                 Object="red_slalom"
+                 Object="RED_SLALOM"
                  FoundAiDetection="{RedSlalomDetection}"
                  Max_time_before_failing_sec="0.0"
                  Max_frame_before_failing="0"
@@ -190,7 +190,7 @@
                   Min_detections_before_success="5"
                   Confidence="0.60000"
                   Max_depth="25.0"
-                  Object_class="red_slalom"
+                  Object_class="RED_SLALOM"
                   Camera="1"
                   _description="Refresh the red slalom detection."/>
         <SubTree ID="Nop"/>

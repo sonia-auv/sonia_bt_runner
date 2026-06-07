@@ -60,7 +60,7 @@ BT::NodeStatus SearchWhiteSlalom::onRunning()
     _sub.reset();
 
     AiDetection output{};
-    output.classification = "white_slalom";
+    output.classification = "WHITE_SLALOM";
     for (const auto &d : _valid_detections) {
         output.distance       += d.distance;
         output.confidence     += d.confidence;
@@ -96,7 +96,7 @@ void SearchWhiteSlalom::detection_callback(const sonia_common_ros2::msg::Detecti
     bool want_left = (_side.value() == "Left");
 
     for (const auto &obj : msg.detected_object) {
-        if (obj.class_name != "white_slalom") continue;
+        if (obj.class_name != "WHITE_SLALOM") continue;
         if (obj.confidence < _confidence.value()) continue;
         if (obj.distance > _max_depth.value()) continue;
 
