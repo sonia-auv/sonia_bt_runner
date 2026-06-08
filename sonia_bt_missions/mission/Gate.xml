@@ -16,13 +16,13 @@
   <BehaviorTree ID="GateSearchRescue">
     <Sequence name="Gate SearchRescue">
       <Sequence name="Looking for the SOS image">
-        <Script code="Path:=&quot;survey-repair&quot;"/>
+        <Script code="Path:=&quot;search-rescue&quot;"/>
         <AiActivation Model="0"
                       Bottom="false"
                       Front="true"/>
         <InitializeTrajectory trajectory="{Trajectory}"/>
         <SubTree ID="SearchObjectByRotation"
-                 Object="sos"
+                 Object="SOS"
                  FoundAiDetection="{Aidetection}"
                  Max_time_before_failing_sec="0.00"
                  Max_frame_before_failing="300"
@@ -44,7 +44,7 @@
                   Min_detections_before_success="5"
                   Confidence="0.600000"
                   Max_depth="25.000000"
-                  Object_class="sos"
+                  Object_class="SOS"
                   Camera="1"/>
         <ObjectDrifting Trajectory="{Trajectory}"
                         Detection="{Aidetection}"/>
@@ -61,7 +61,7 @@
                   Min_detections_before_success="5"
                   Confidence="0.600000"
                   Max_depth="25.000000"
-                  Object_class="sos"
+                  Object_class="SOS"
                   Camera="1"/>
         <MoveToObject Offset="-1.5"
                       Trajectory="{Trajectory}"
@@ -90,7 +90,7 @@
                     Min_detections_before_success="5"
                     Confidence="0.600000"
                     Max_depth="25.000000"
-                    Object_class="compass"
+                    Object_class="COMPAS"
                     Camera="1"/>
           <Script code="Side:=&quot;left&quot;"/>
           <Script code="Side:=&quot;right&quot;"/>
@@ -136,7 +136,7 @@
                       Front="true"/>
         <InitializeTrajectory trajectory="{Trajectory}"/>
         <SubTree ID="SearchObjectByRotation"
-                 Object="compass"
+                 Object="COMPAS"
                  FoundAiDetection="{Aidetection}"
                  Max_time_before_failing_sec="0.00"
                  Max_frame_before_failing="300"
@@ -158,7 +158,7 @@
                   Min_detections_before_success="5"
                   Confidence="0.600000"
                   Max_depth="25.000000"
-                  Object_class="compass"
+                  Object_class="COMPAS"
                   Camera="1"/>
         <ObjectDrifting Trajectory="{Trajectory}"
                         Detection="{Aidetection}"/>
@@ -175,7 +175,7 @@
                   Min_detections_before_success="5"
                   Confidence="0.600000"
                   Max_depth="25.000000"
-                  Object_class="compass"
+                  Object_class="COMPAS"
                   Camera="1"/>
         <MoveToObject Offset="-1.5"
                       Trajectory="{Trajectory}"
@@ -204,7 +204,7 @@
                     Min_detections_before_success="5"
                     Confidence="0.600000"
                     Max_depth="25.000000"
-                    Object_class="sos"
+                    Object_class="SOS"
                     Camera="1"/>
           <Script code="Side:=&quot;left&quot;"/>
           <Script code="Side:=&quot;right&quot;"/>

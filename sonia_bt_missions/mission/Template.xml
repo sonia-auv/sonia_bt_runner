@@ -54,53 +54,53 @@
     <Sequence>
       <InitializeTrajectory trajectory="{Trajectory}"/>
       <TrajectoryAppendPose trajectory="{Trajectory}"
+                            positionX="0.000000"
+                            positionY="0.000000"
+                            positionZ="0.000000"
+                            orientationX="0.000000"
+                            orientationY="0.000000"
+                            orientationZ="-15"
                             precision="0"
                             speed="0"
                             frame="1"
-                            orientationZ="-15"
-                            longRotation="false"
-                            positionZ="0.000000"
-                            positionY="0.000000"
-                            orientationY="0.000000"
-                            orientationX="0.000000"
-                            positionX="0.000000"/>
+                            longRotation="false"/>
       <Repeat num_cycles="2">
         <Sequence>
           <TrajectoryAppendPose trajectory="{Trajectory}"
-                                precision="0"
-                                speed="0"
-                                frame="1"
+                                positionX="0.000000"
+                                positionY="0.000000"
+                                positionZ="0.000000"
+                                orientationX="0.000000"
+                                orientationY="0.000000"
                                 orientationZ="30"
-                                longRotation="false"
-                                positionZ="0.000000"
-                                positionY="0.000000"
-                                orientationY="0.000000"
-                                orientationX="0.000000"
-                                positionX="0.000000"/>
-          <TrajectoryAppendPose trajectory="{Trajectory}"
                                 precision="0"
                                 speed="0"
                                 frame="1"
-                                orientationZ="-30"
-                                longRotation="false"
-                                positionZ="0.000000"
+                                longRotation="false"/>
+          <TrajectoryAppendPose trajectory="{Trajectory}"
+                                positionX="0.000000"
                                 positionY="0.000000"
-                                orientationY="0.000000"
+                                positionZ="0.000000"
                                 orientationX="0.000000"
-                                positionX="0.000000"/>
+                                orientationY="0.000000"
+                                orientationZ="-30"
+                                precision="0"
+                                speed="0"
+                                frame="1"
+                                longRotation="false"/>
         </Sequence>
       </Repeat>
       <TrajectoryAppendPose trajectory="{Trajectory}"
+                            positionX="0.000000"
+                            positionY="0.000000"
+                            positionZ="0.000000"
+                            orientationX="0.000000"
+                            orientationY="0.000000"
+                            orientationZ="15"
                             precision="0"
                             speed="0"
                             frame="1"
-                            orientationZ="15"
-                            longRotation="false"
-                            positionZ="0.000000"
-                            positionY="0.000000"
-                            orientationY="0.000000"
-                            orientationX="0.000000"
-                            positionX="0.000000"/>
+                            longRotation="false"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
                TimeBeforeFailing="10"/>
@@ -111,16 +111,16 @@
     <Sequence>
       <InitializeTrajectory trajectory="{traj}"/>
       <TrajectoryAppendPose trajectory="{traj}"
+                            positionX="{positionX}"
+                            positionY="{positionY}"
+                            positionZ="{positionZ}"
+                            orientationX="{orientationX}"
+                            orientationY="{orientationY}"
+                            orientationZ="{orientationZ}"
                             precision="0"
                             speed="2"
                             frame="{frame}"
-                            orientationZ="{orientationZ}"
-                            longRotation="false"
-                            positionZ="{positionZ}"
-                            positionY="{positionY}"
-                            orientationY="{orientationY}"
-                            orientationX="{orientationX}"
-                            positionX="{positionX}"/>
+                            longRotation="false"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{traj}"
                TimeBeforeFailing="5"/>
@@ -450,23 +450,10 @@
   <BehaviorTree ID="TorpedoShootingSequence">
     <Sequence>
       <InitializeTrajectory trajectory="{Trajectory}"/>
-      <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_sec="0.000000"
-                Max_frame_before_failing="300"
-                Two_objects_possible="0"
-                Min_detections_before_success="5"
-                Confidence="0.600000"
-                Max_depth="25.000000"
-                Object_class="{ObjectToAim}"
-                Camera="1"/>
       <TorpedoAiming Trajectory="{Trajectory}"
-                     TargetOffset="1"
-                     LaunchingSide="Sub"
+                     TargetOffset="0.3"
+                     LaunchingSide="{TorpedoSide}"
                      Detection="{AiDetection}"/>
-      <SubTree ID="SendTrajectoryOnly"
-               Trajectory="{Trajectory}"
-               TimeBeforeFailing="5"/>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
       <AiFilter Detected_object="{AiDetection}"
                 Max_time_before_failing_sec="0.000000"
                 Max_frame_before_failing="300"
@@ -476,10 +463,6 @@
                 Max_depth="25.000000"
                 Object_class="torpedo-target"
                 Camera="1"/>
-      <TorpedoAiming Trajectory="{Trajectory}"
-                     TargetOffset="0.3"
-                     LaunchingSide="{TorpedoSide}"
-                     Detection="{AiDetection}"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
                TimeBeforeFailing="5"/>
@@ -632,17 +615,38 @@
                   type="AiDetection"/>
     </Action>
     <Action ID="TrajectoryAppendPose">
-        <inout_port name="trajectory" type="Trajectory"/>
-        <input_port name="positionX" type="float" default="0.000000"/>
-        <input_port name="positionY" type="float" default="0.000000"/>
-        <input_port name="positionZ" type="float" default="0.000000"/>
-        <input_port name="orientationX" type="float" default="0.000000"/>
-        <input_port name="orientationY" type="float" default="0.000000"/>
-        <input_port name="orientationZ" type="float" default="0.000000"/>
-        <input_port name="precision" type="int" default="0"/>
-        <input_port name="speed" type="int" default="0"/>
-        <input_port name="frame" type="int" default="1"/>
-        <input_port name="longRotation" type="bool" default="false"/>
+      <inout_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="positionX"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationX"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="precision"
+                  default="0"
+                  type="int"/>
+      <input_port name="speed"
+                  default="0"
+                  type="int"/>
+      <input_port name="frame"
+                  default="1"
+                  type="int"/>
+      <input_port name="longRotation"
+                  default="false"
+                  type="bool"/>
     </Action>
     <Action ID="WaitTargetReached">
       <input_port name="timeout"
