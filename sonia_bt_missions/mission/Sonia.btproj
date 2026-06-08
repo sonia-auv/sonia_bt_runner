@@ -158,7 +158,7 @@
             <input_port name="ObjectToAim">The object closest to the torpedo target</input_port>
         </SubTree>
         <SubTree ID="Torpedos" editable="true">
-            <input_port name="ObjectToAim">The object that the sub needs to aim first</input_port>
+            <input_port name="Path">The object that the sub needs to aim first</input_port>
         </SubTree>
         <Action ID="TrajectoryAppendPose">
             <inout_port name="trajectory" type="Trajectory"/>

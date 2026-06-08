@@ -389,7 +389,7 @@
       <Sequence name="We search for the torpedo poster and we move to be close to it">
         <InitializeTrajectory trajectory="{Trajectory}"/>
         <SubTree ID="SearchObjectByRotation"
-                 Object="fire-truck"
+                 Object="FIRETRUCK"
                  FoundAiDetection="{AiDetection}"
                  Max_time_before_failing_sec="0.0"
                  Max_frame_before_failing="0"
@@ -406,7 +406,7 @@
       <Sequence name="We aim the fire truck to mak a perfect drift">
         <InitializeTrajectory trajectory="{Trajectory}"/>
         <SubTree ID="SearchObjectByRotation"
-                 Object="fire-truck"
+                 Object="FIRETRUCK"
                  FoundAiDetection="{AiDetection}"
                  Max_time_before_failing_sec="0.0"
                  Max_frame_before_failing="0"
@@ -427,7 +427,7 @@
                   Min_detections_before_success="5"
                   Confidence="0.600000"
                   Max_depth="25.000000"
-                  Object_class="fire-truck"
+                  Object_class="FIRETRUCK"
                   Camera="1"/>
         <ObjectDrifting Trajectory="{Trajectory}"
                         Detection="{AiDetection}"/>
@@ -443,7 +443,7 @@
                   Min_detections_before_success="5"
                   Confidence="0.600000"
                   Max_depth="25.000000"
-                  Object_class="fire-truck"
+                  Object_class="FIRETRUCK"
                   Camera="1"/>
         <TorpedoAiming Trajectory="{Trajectory}"
                        TargetOffset="1.2"

@@ -4,22 +4,22 @@
     <Sequence>
       <SubTree ID="TorpedoApproachSequence"/>
       <IfThenElse>
-        <ScriptCondition code="ObjectToAim==&quot;fire-truck&quot;"/>
+        <ScriptCondition code="Path==&quot;survey-repair&quot;"/>
         <Sequence>
           <SubTree ID="TorpedoShootingSequence"
                    TorpedoSide="port_side"
-                   ObjectToAim="fire-truck"/>
+                   ObjectToAim="FIRETRUCK"/>
           <SubTree ID="TorpedoShootingSequence"
                    TorpedoSide="starboard"
-                   ObjectToAim="ambulance"/>
+                   ObjectToAim="FIRE"/>
         </Sequence>
         <Sequence>
           <SubTree ID="TorpedoShootingSequence"
                    TorpedoSide="starboard"
-                   ObjectToAim="ambulance"/>
+                   ObjectToAim="AMPULANCE"/>
           <SubTree ID="TorpedoShootingSequence"
                    TorpedoSide="port_side"
-                   ObjectToAim="fire-truck"/>
+                   ObjectToAim="BLOOD"/>
         </Sequence>
       </IfThenElse>
     </Sequence>
