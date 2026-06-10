@@ -22,12 +22,12 @@ namespace navigation{
                 const int def_precision = 0;
                 const bool def_longRotation = false;
                 return {
-                    BT::InputPort<float>("positionX", def_positionX, ""),
-                    BT::InputPort<float>("positionY", def_positionY, ""),
                     BT::InputPort<float>("positionZ", def_positionZ, ""),
+                    BT::InputPort<float>("positionY", def_positionY, ""),
                     BT::InputPort<float>("orientationX", def_orientationX, ""),
                     BT::InputPort<float>("orientationY", def_orientationY, ""),
                     BT::InputPort<float>("orientationZ", def_orientationZ, ""),
+                    BT::InputPort<float>("positionX", def_positionX, ""),
                     BT::InputPort<int>("frame", def_frame, ""),
                     BT::InputPort<int>("speed", def_speed, ""),
                     BT::InputPort<int>("precision", def_precision, ""),

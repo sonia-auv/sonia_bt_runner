@@ -147,7 +147,6 @@
       <AiFilter Detected_object="{FoundAiDetection}"
                 Max_time_before_failing_sec="{Max_time_before_failing_sec}"
                 Max_frame_before_failing="{Max_frame_before_failing}"
-                Two_objects_possible="0"
                 Min_detections_before_success="{Min_detection_before_success}"
                 Confidence="{Confidence}"
                 Max_depth="{Max_depth}"
@@ -166,7 +165,6 @@
           <AiFilter Detected_object="{FoundAiDetection}"
                     Max_time_before_failing_sec="{Max_time_before_failing_sec}"
                     Max_frame_before_failing="{Max_frame_before_failing}"
-                    Two_objects_possible="0"
                     Min_detections_before_success="{Min_detection_before_success}"
                     Confidence="{Confidence}"
                     Max_depth="{Max_depth}"
@@ -185,7 +183,6 @@
               <AiFilter Detected_object="{FoundAiDetection}"
                         Max_time_before_failing_sec="{Max_time_before_failing_sec}"
                         Max_frame_before_failing="{Max_frame_before_failing}"
-                        Two_objects_possible="0"
                         Min_detections_before_success="{Min_detection_before_success}"
                         Confidence="{Confidence}"
                         Max_depth="{Max_depth}"
@@ -204,7 +201,6 @@
                   <AiFilter Detected_object="{FoundAiDetection}"
                             Max_time_before_failing_sec="{Max_time_before_failing_sec}"
                             Max_frame_before_failing="{Max_frame_before_failing}"
-                            Two_objects_possible="0"
                             Min_detections_before_success="{Min_detection_before_success}"
                             Confidence="{Confidence}"
                             Max_depth="{Max_depth}"
@@ -223,7 +219,6 @@
                       <AiFilter Detected_object="{FoundAiDetection}"
                                 Max_time_before_failing_sec="{Max_time_before_failing_sec}"
                                 Max_frame_before_failing="{Max_frame_before_failing}"
-                                Two_objects_possible="0"
                                 Min_detections_before_success="{Min_detection_before_success}"
                                 Confidence="{Confidence}"
                                 Max_depth="{Max_depth}"
@@ -242,7 +237,6 @@
                           <AiFilter Detected_object="{FoundAiDetection}"
                                     Max_time_before_failing_sec="{Max_time_before_failing_sec}"
                                     Max_frame_before_failing="{Max_frame_before_failing}"
-                                    Two_objects_possible="0"
                                     Min_detections_before_success="{Min_detection_before_success}"
                                     Confidence="{Confidence}"
                                     Max_depth="{Max_depth}"
@@ -261,7 +255,6 @@
                               <AiFilter Detected_object="{FoundAiDetection}"
                                         Max_time_before_failing_sec="{Max_time_before_failing_sec}"
                                         Max_frame_before_failing="{Max_frame_before_failing}"
-                                        Two_objects_possible="0"
                                         Min_detections_before_success="{Min_detection_before_success}"
                                         Confidence="{Confidence}"
                                         Max_depth="{Max_depth}"
@@ -280,7 +273,6 @@
                                   <AiFilter Detected_object="{FoundAiDetection}"
                                             Max_time_before_failing_sec="{Max_time_before_failing_sec}"
                                             Max_frame_before_failing="{Max_frame_before_failing}"
-                                            Two_objects_possible="0"
                                             Min_detections_before_success="{Min_detection_before_success}"
                                             Confidence="{Confidence}"
                                             Max_depth="{Max_depth}"
@@ -299,7 +291,6 @@
                                       <AiFilter Detected_object="{FoundAiDetection}"
                                                 Max_time_before_failing_sec="{Max_time_before_failing_sec}"
                                                 Max_frame_before_failing="{Max_frame_before_failing}"
-                                                Two_objects_possible="0"
                                                 Min_detections_before_success="{Min_detection_before_success}"
                                                 Confidence="{Confidence}"
                                                 Max_depth="{Max_depth}"
@@ -318,7 +309,6 @@
                                           <AiFilter Detected_object="{FoundAiDetection}"
                                                     Max_time_before_failing_sec="{Max_time_before_failing_sec}"
                                                     Max_frame_before_failing="{Max_frame_before_failing}"
-                                                    Two_objects_possible="0"
                                                     Min_detections_before_success="{Min_detection_before_success}"
                                                     Confidence="{Confidence}"
                                                     Max_depth="{Max_depth}"
@@ -337,7 +327,6 @@
                                               <AiFilter Detected_object="{FoundAiDetection}"
                                                         Max_time_before_failing_sec="{Max_time_before_failing_sec}"
                                                         Max_frame_before_failing="{Max_frame_before_failing}"
-                                                        Two_objects_possible="0"
                                                         Min_detections_before_success="{Min_detection_before_success}"
                                                         Confidence="{Confidence}"
                                                         Max_depth="{Max_depth}"
@@ -356,7 +345,6 @@
                                                   <AiFilter Detected_object="{FoundAiDetection}"
                                                             Max_time_before_failing_sec="{Max_time_before_failing_sec}"
                                                             Max_frame_before_failing="{Max_frame_before_failing}"
-                                                            Two_objects_possible="0"
                                                             Min_detections_before_success="{Min_detection_before_success}"
                                                             Confidence="{Confidence}"
                                                             Max_depth="{Max_depth}"
@@ -398,71 +386,91 @@
 
   <BehaviorTree ID="TorpedoApproachSequence">
     <Sequence>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
-      <SubTree ID="SearchObjectByRotation"
-               Object="torpedo-poster"
-               FoundAiDetection="{AiDetection}"
-               Max_time_before_failing_sec="0.0"
-               Max_frame_before_failing="0"
-               Min_detection_before_success="5"
-               Confidence="0.60000"
-               Max_depth="25"/>
-      <FaceTheObject Trajectory="{Trajectory}"
-                     Detection="{AiDetection}"/>
-      <SubTree ID="SendTrajectoryOnly"
-               Trajectory="{Trajectory}"
-               TimeBeforeFailing="5"/>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
-      <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_sec="0.000000"
-                Max_frame_before_failing="300"
-                Two_objects_possible="0"
-                Min_detections_before_success="5"
-                Confidence="0.600000"
-                Max_depth="25.000000"
-                Object_class="torpedo-poster"
-                Camera="1"/>
-      <ObjectDrifting Trajectory="{Trajectory}"
+      <Sequence name="We search for the torpedo poster and we move to be close to it">
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <SubTree ID="SearchObjectByRotation"
+                 Object="FIRETRUCK"
+                 FoundAiDetection="{AiDetection}"
+                 Max_time_before_failing_sec="0.0"
+                 Max_frame_before_failing="0"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"/>
+        <MoveToObject Offset="-2"
+                      Trajectory="{Trajectory}"
                       Detection="{AiDetection}"/>
-      <SubTree ID="SendTrajectoryOnly"
-               Trajectory="{Trajectory}"
-               TimeBeforeFailing="5"/>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
-      <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_sec="0.000000"
-                Max_frame_before_failing="300"
-                Two_objects_possible="0"
-                Min_detections_before_success="5"
-                Confidence="0.600000"
-                Max_depth="25.000000"
-                Object_class="torpedo-poster"
-                Camera="1"/>
-      <TorpedoAiming Trajectory="{Trajectory}"
-                     TargetOffset="1.2"
-                     LaunchingSide="sub"
-                     Detection="{AiDetection}"/>
-      <SubTree ID="SendTrajectoryOnly"
-               Trajectory="{Trajectory}"
-               TimeBeforeFailing="5"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <Sequence name="We aim the fire truck to mak a perfect drift">
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <SubTree ID="SearchObjectByRotation"
+                 Object="FIRETRUCK"
+                 FoundAiDetection="{AiDetection}"
+                 Max_time_before_failing_sec="0.0"
+                 Max_frame_before_failing="0"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"/>
+        <FaceTheObject Trajectory="{Trajectory}"
+                       Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <Sequence name="We move to be perpendicular to the poster and right in front of it">
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="FIRETRUCK"
+                  Camera="1"/>
+        <ObjectDrifting Trajectory="{Trajectory}"
+                        Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <Sequence name="We position te sub to make sure to see all the target">
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <AiFilter Detected_object="{AiDetection}"
+                  Max_time_before_failing_sec="0.000000"
+                  Max_frame_before_failing="300"
+                  Min_detections_before_success="5"
+                  Confidence="0.600000"
+                  Max_depth="25.000000"
+                  Object_class="FIRETRUCK"
+                  Camera="1"/>
+        <TorpedoAiming Trajectory="{Trajectory}"
+                       TargetOffset="1.2"
+                       LaunchingSide="sub"
+                       Detection="{AiDetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
     </Sequence>
   </BehaviorTree>
 
   <BehaviorTree ID="TorpedoShootingSequence">
-    <Sequence>
+    <Sequence name="We aim the taget detecter closer to the aiming object">
       <InitializeTrajectory trajectory="{Trajectory}"/>
+      <TorpedoAiFilter Detected_object="{AiDetection}"
+                       Max_time_before_failing_sec="0.000000"
+                       Max_frame_before_failing="0"
+                       Min_detections_before_success="5"
+                       Confidence="0.600000"
+                       Max_depth="25.000000"
+                       Object_class="{ObjectToAim}"
+                       Camera="1"/>
       <TorpedoAiming Trajectory="{Trajectory}"
-                     TargetOffset="0.3"
+                     TargetOffset="0.6"
                      LaunchingSide="{TorpedoSide}"
                      Detection="{AiDetection}"/>
-      <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_sec="0.000000"
-                Max_frame_before_failing="300"
-                Two_objects_possible="1"
-                Min_detections_before_success="5"
-                Confidence="0.600000"
-                Max_depth="25.000000"
-                Object_class="torpedo-target"
-                Camera="1"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
                TimeBeforeFailing="5"/>
@@ -475,23 +483,6 @@
                orientationX="0.0"
                orientationY="0.0"
                orientationZ="0.0"/>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
-      <AiFilter Detected_object="{AiDetection}"
-                Max_time_before_failing_sec="0.000000"
-                Max_frame_before_failing="300"
-                Two_objects_possible="0"
-                Min_detections_before_success="5"
-                Confidence="0.600000"
-                Max_depth="25.000000"
-                Object_class="torpedo-poster"
-                Camera="1"/>
-      <TorpedoAiming Trajectory="{Trajectory}"
-                     TargetOffset="1.2"
-                     LaunchingSide="Sub"
-                     Detection="{AiDetection}"/>
-      <SubTree ID="SendTrajectoryOnly"
-               Trajectory="{Trajectory}"
-               TimeBeforeFailing="5"/>
     </Sequence>
   </BehaviorTree>
 
@@ -506,9 +497,6 @@
       <input_port name="Max_frame_before_failing"
                   default="0"
                   type="int">Maximum allowed frames before failing the object research</input_port>
-      <input_port name="Two_objects_possible"
-                  default="0"
-                  type="int">0: Only one object can be detected, 1: Two or more object of the same class can be detected</input_port>
       <input_port name="Min_detections_before_success"
                   default="2"
                   type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
@@ -562,6 +550,14 @@
       <input_port name="orientationZ"
                   default="0.0">rotation in Z to give to the sub</input_port>
     </SubTree>
+    <Action ID="MoveToObject">
+      <input_port name="Offset"
+                  type="float"/>
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
     <Action ID="ObjectDrifting">
       <inout_port name="Trajectory"
                   type="Trajectory"/>
@@ -603,6 +599,30 @@
     <Action ID="Tare">
       <input_port name="sensor"
                   type="std::string">imu or depth</input_port>
+    </Action>
+    <Action ID="TorpedoAiFilter">
+      <output_port name="Detected_object"
+                   type="AiDetection"/>
+      <input_port name="Max_time_before_failing_sec"
+                  default="0.000000"
+                  type="float">Maximum allowed time in ms before failing the object research</input_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0"
+                  type="int">Maximum allowed frames before failing the object research</input_port>
+      <input_port name="Min_detections_before_success"
+                  default="2"
+                  type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Ai confidence</input_port>
+      <input_port name="Max_depth"
+                  default="25.000000"
+                  type="float">Maximum allowed depth</input_port>
+      <input_port name="Object_class"
+                  type="std::string">Searched object</input_port>
+      <input_port name="Camera"
+                  default="1"
+                  type="int">1: Front, 0: Bottom</input_port>
     </Action>
     <Action ID="TorpedoAiming">
       <inout_port name="Trajectory"

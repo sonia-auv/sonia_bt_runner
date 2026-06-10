@@ -52,7 +52,7 @@
       </ForceSuccess>
       <ForceSuccess>
         <SubTree ID="Torpedos"
-                 ObjectToAim="{path}"/>
+                 Path="{path}"/>
       </ForceSuccess>
       <ForceSuccess>
         <SubTree ID="ReturnHome"
@@ -86,7 +86,7 @@
       </ForceSuccess>
       <ForceSuccess>
         <SubTree ID="Torpedos"
-                 ObjectToAim="{path}"/>
+                 Path="{path}"/>
       </ForceSuccess>
       <ForceSuccess>
         <SubTree ID="ReturnHome"
@@ -137,16 +137,12 @@
         <SubTree ID="TrickshotLegacy"/>
       </ForceSuccess>
       <ForceSuccess>
-        <SubTree ID="SlalomSimple"
-                 Side="{side}"/>
-      </ForceSuccess>
-      <ForceSuccess>
         <SubTree ID="BinTwoBox"
                  ObjectToAim="{path}"/>
       </ForceSuccess>
       <ForceSuccess>
         <SubTree ID="Torpedos"
-                 ObjectToAim="{path}"/>
+                 Path="{path}"/>
       </ForceSuccess>
       <ForceSuccess>
         <SubTree ID="ReturnHome"
@@ -216,7 +212,7 @@
     </SubTree>
     <SubTree ID="Torpedos"
              editable="true">
-      <input_port name="ObjectToAim">The object that the sub needs to aim first</input_port>
+      <input_port name="Path">The object that the sub needs to aim first</input_port>
     </SubTree>
   </TreeNodesModel>
 

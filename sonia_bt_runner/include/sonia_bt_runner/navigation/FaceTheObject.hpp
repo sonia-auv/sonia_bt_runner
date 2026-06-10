@@ -3,7 +3,7 @@
 #include <limits>
 #include "rclcpp/rclcpp.hpp"
 #include "behaviortree_cpp/behavior_tree.h"
-#include "sonia_bt_runner/utils/AiDetectionArray.hpp"
+#include "sonia_bt_runner/utils/AiDetection.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 
 

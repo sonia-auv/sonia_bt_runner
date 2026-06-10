@@ -49,6 +49,7 @@ static void registerVisionNodes(BT::BehaviorTreeFactory &factory, std::shared_pt
 {
     factory.registerBuilder<vision::AiActivation>("AiActivation", configBuilder<vision::AiActivation>(node));
     factory.registerBuilder<vision::AiFilter>("AiFilter", configBuilder<vision::AiFilter>(node));
+    factory.registerBuilder<vision::TorpedoAiFilter>("TorpedoAiFilter", configBuilder<vision::TorpedoAiFilter>(node));
 }
 
 static void registerNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
