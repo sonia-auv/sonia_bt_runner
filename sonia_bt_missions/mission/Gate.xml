@@ -22,7 +22,7 @@
                       Front="true"/>
         <InitializeTrajectory trajectory="{Trajectory}"/>
         <SubTree ID="SearchObjectByRotation"
-                 Object="SOS"
+                 Object="LIFE PRESERVER"
                  FoundAiDetection="{Aidetection}"
                  Max_time_before_failing_sec="0.00"
                  Max_frame_before_failing="300"
@@ -44,7 +44,7 @@
                   Min_detections_before_success="5"
                   Confidence="0.600000"
                   Max_depth="25.000000"
-                  Object_class="SOS"
+                  Object_class="LIFE PRESERVER"
                   Camera="1"/>
         <ObjectDrifting Trajectory="{Trajectory}"
                         Detection="{Aidetection}"/>
@@ -61,7 +61,7 @@
                   Min_detections_before_success="5"
                   Confidence="0.600000"
                   Max_depth="25.000000"
-                  Object_class="SOS"
+                  Object_class="LIFE PRESERVER"
                   Camera="1"/>
         <MoveToObject Offset="-1.5"
                       Trajectory="{Trajectory}"
@@ -129,8 +129,8 @@
 
   <BehaviorTree ID="GateSurveyRepair">
     <Sequence name="Gate SurveyRepair">
+      <Script code="Path:=&quot;survey-repair&quot;"/>
       <Sequence name="Looking for the Compass image">
-        <Script code="Path:=&quot;survey-repair&quot;"/>
         <AiActivation Model="0"
                       Bottom="false"
                       Front="true"/>
@@ -204,7 +204,7 @@
                     Min_detections_before_success="5"
                     Confidence="0.600000"
                     Max_depth="25.000000"
-                    Object_class="SOS"
+                    Object_class="LIFE PRESERVER"
                     Camera="1"/>
           <Script code="Side:=&quot;left&quot;"/>
           <Script code="Side:=&quot;right&quot;"/>

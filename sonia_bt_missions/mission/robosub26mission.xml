@@ -30,7 +30,7 @@
   <BehaviorTree ID="Run26Strategy2">
     <Sequence name="Strategy 2 : AUV8 alone strategy">
       <SubTree ID="InitialSubmerge"
-               Depth="1"/>
+               Depth="0.5"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
         <SubTree ID="GateSearchRescue"
@@ -65,7 +65,7 @@
   <BehaviorTree ID="Run26Strategy3AUV8">
     <Sequence name="Strategy for AUV8 with combo sub">
       <SubTree ID="InitialSubmerge"
-               Depth="1"/>
+               Depth="0.5"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
         <SubTree ID="GateSearchRescue"
@@ -99,7 +99,7 @@
   <BehaviorTree ID="Run26Strategy3LITE">
     <Sequence name="Strategy for LITE with combo sub">
       <SubTree ID="InitialSubmerge"
-               Depth="1"/>
+               Depth="0.5"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
         <SubTree ID="GateSearchRescue"
@@ -125,7 +125,7 @@
   <BehaviorTree ID="Run26Strategy4AUV8">
     <Sequence name="Hard Strategy for AUV8 with combo sub">
       <SubTree ID="InitialSubmerge"
-               Depth="1"/>
+               Depth="0.5"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
         <SubTree ID="GateSearchRescue"
@@ -159,7 +159,7 @@
   <BehaviorTree ID="Run26Strategy4LITE">
     <Sequence name="Hard Strategy for LITE with combo sub">
       <SubTree ID="InitialSubmerge"
-               Depth="1"/>
+               Depth="0.5"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
         <SubTree ID="GateSearchRescue"
