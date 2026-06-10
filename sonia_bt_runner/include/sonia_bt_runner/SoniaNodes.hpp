@@ -38,6 +38,7 @@ static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::share
     factory.registerNodeType<navigation::TrajectoryAppendPose>("TrajectoryAppendPose");
     factory.registerBuilder<navigation::SendTrajectory>("SendTrajectory", configBuilder<navigation::SendTrajectory>(node));
     factory.registerBuilder<navigation::WaitTargetReached>("WaitTargetReached", configBuilder<navigation::WaitTargetReached>(node));
+    factory.registerBuilder<navigation::ComputeTrajectoryBetweenDetections>("ComputeTrajectoryBetweenDetections", configBuilder<navigation::ComputeTrajectoryBetweenDetections>(node));
 }
 
 static void registerSensorNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
@@ -50,6 +51,7 @@ static void registerVisionNodes(BT::BehaviorTreeFactory &factory, std::shared_pt
     factory.registerBuilder<vision::AiActivation>("AiActivation", configBuilder<vision::AiActivation>(node));
     factory.registerBuilder<vision::AiFilter>("AiFilter", configBuilder<vision::AiFilter>(node));
     factory.registerBuilder<vision::TorpedoAiFilter>("TorpedoAiFilter", configBuilder<vision::TorpedoAiFilter>(node));
+    factory.registerBuilder<vision::SearchWhiteSlalom>("SearchWhiteSlalom", configBuilder<vision::SearchWhiteSlalom>(node));
 }
 
 static void registerNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)

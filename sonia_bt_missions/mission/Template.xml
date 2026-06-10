@@ -33,7 +33,7 @@
         <MissionSwitchStatus/>
       </RetryUntilSuccessful>
       <SubTree ID="MoveSinglePose"
-               frame="1.0"
+               frame="4.0"
                positionX="0.0"
                positionY="0.0"
                positionZ="{Depth}"

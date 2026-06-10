@@ -45,6 +45,12 @@
         <SubTree ID="CommunicationReceiver" editable="true">
             <input_port name="Path">The path that the othor sub has choosen</input_port>
         </SubTree>
+        <Action ID="ComputeTrajectoryBetweenDetections" editable="true">
+            <input_port name="DetectionA">Detection of the first slalom.</input_port>
+            <input_port name="DetectionB">Detection of the second slalom.</input_port>
+            <input_port name="PositionX" default="10" type="float">Forward distance to travel after centering between the two detections.</input_port>
+            <inout_port name="Trajectory" type="Trajectory">Trajectory to append the two poses to.</inout_port>
+        </Action>
         <Action ID="ControlSetMode">
             <input_port name="set_mode" default="false" type="bool"/>
         </Action>
@@ -59,6 +65,10 @@
             <inout_port name="Trajectory" type="Trajectory"/>
             <input_port name="Detection" type="AiDetection"/>
         </Action>
+        <SubTree ID="Gate" editable="true">
+            <output_port name="Path">The path that the sub as taken</output_port>
+            <output_port name="Side">The left or right side that the sub as taken</output_port>
+        </SubTree>
         <SubTree ID="GateSearchRescue" editable="true">
             <output_port name="Path">The path that the sub as taken</output_port>
             <output_port name="Side">The left or right side that the sub as taken</output_port>
@@ -123,6 +133,24 @@
             <input_port name="Min_detection_before_success" default="5">Nombre of detected frame to call a found status</input_port>
             <input_port name="Confidence" default="0.60000">Minimum confidence of the Ai</input_port>
             <input_port name="Max_depth" default="25">Max distance to detect an object</input_port>
+        </SubTree>
+        <Action ID="SearchWhiteSlalom" editable="true">
+            <input_port name="RedSlalomDetection">The detection of the red slalom.</input_port>
+            <input_port name="Side" default="Left">Which side the white slalom is on relative to the red slalom. Value: Left or Right</input_port>
+            <input_port name="Confidence" default="0.600000" type="float">Minimum AI confidence</input_port>
+            <input_port name="Min_detections_before_success" default="5" type="int">Minimum valid detections before succeeding</input_port>
+            <input_port name="Max_time_before_failing_sec" default="0.0" type="float">Timeout in seconds, 0 = disabled</input_port>
+            <input_port name="Max_depth" default="25.0" type="float">Maximum detection distance</input_port>
+            <output_port name="WhiteSlalomDetection">The detection of the white slalom.</output_port>
+        </Action>
+        <SubTree ID="SearchWhiteSlalomByRotation" editable="true">
+            <input_port name="RedSlalomDetection">The detection of the red slalom used as angular reference.</input_port>
+            <input_port name="Side" default="Left">Which side the white slalom is on relative to the red slalom. Value: Left or Right</input_port>
+            <output_port name="WhiteSlalomDetection">The detection of the white slalom found during the search.</output_port>
+            <input_port name="Confidence" default="0.60000">Minimum confidence of the AI</input_port>
+            <input_port name="Min_detections_before_success" default="5">Minimum valid detections before succeeding at each rotation step</input_port>
+            <input_port name="Max_time_before_failing_sec" default="5.0">Timeout per rotation step in seconds</input_port>
+            <input_port name="Max_depth" default="25.0">Maximum detection distance</input_port>
         </SubTree>
         <Action ID="SendTrajectory">
             <input_port name="trajectory" type="Trajectory"/>
