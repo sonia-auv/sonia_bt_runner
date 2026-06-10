@@ -2,25 +2,239 @@
 <root BTCPP_format="4">
   <BehaviorTree ID="Octogon">
     <Sequence>
-      <Sequence name="Finding the table">
-        <AlwaysSuccess/>
+      <Sequence name="Finding the octogone with the gate image and move in front of it">
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <SubTree ID="SearchObjectByRotation"
+                 Object="LIFE PRESERVER"
+                 FoundAiDetection="{Aidetection}"
+                 Max_time_before_failing_sec="0.00"
+                 Max_frame_before_failing="300"
+                 Min_detection_before_success="5"
+                 Confidence="0.60000"
+                 Max_depth="25"/>
+        <MoveToObject Offset="2"
+                      Trajectory="{Trajectory}"
+                      Detection="{Aidetection}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="5"/>
       </Sequence>
-      <Sequence name="Move in direction of the table">
-        <AlwaysSuccess/>
+      <Sequence name="Pitch the sub to look at the right image">
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="20.0"
+                 orientationZ="0.0"/>
+        <IfThenElse>
+          <Fallback>
+            <AiFilter Detected_object="{Aidetection}"
+                      Max_time_before_failing_sec="0.000000"
+                      Max_frame_before_failing="0"
+                      Min_detections_before_success="2"
+                      Confidence="0.600000"
+                      Max_depth="25.000000"
+                      Object_class="COMPASS"
+                      Camera="1"/>
+            <AiFilter Detected_object="{Aidetection}"
+                      Max_time_before_failing_sec="0.000000"
+                      Max_frame_before_failing="0"
+                      Min_detections_before_success="2"
+                      Confidence="0.600000"
+                      Max_depth="25.000000"
+                      Object_class="TOOLS"
+                      Camera="1"/>
+          </Fallback>
+          <IfThenElse>
+            <ScriptCondition code="Path==&quot;survey-repair&quot;"/>
+            <SubTree ID="OctogoneGoodPath"/>
+            <SubTree ID="OctogoneWrongPath"/>
+          </IfThenElse>
+          <IfThenElse>
+            <ScriptCondition code="Path==&quot;search-rescue&quot;"/>
+            <SubTree ID="OctogoneGoodPath"/>
+            <SubTree ID="OctogoneWrongPath"/>
+          </IfThenElse>
+        </IfThenElse>
       </Sequence>
-      <Sequence name="Move on top of the table">
-        <AlwaysSuccess/>
+      <Sequence name="Surface inside the octogon">
+        <SubTree ID="MoveSinglePose"
+                 frame="4"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
       </Sequence>
-      <Sequence name="Submerge inside the octogon">
-        <AlwaysSuccess/>
-      </Sequence>
-      <Sequence name="Submerge on top of the table">
-        <AlwaysSuccess/>
+      <Sequence name="Submerge to continue the mission">
+        <SubTree ID="MoveSinglePose"
+                 frame="4"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="1.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"/>
       </Sequence>
     </Sequence>
   </BehaviorTree>
 
+  <BehaviorTree ID="OctogoneGoodPath">
+    <SubTree ID="MoveSinglePose"
+             frame="1.0"
+             positionX="0.0"
+             positionY="0.0"
+             positionZ="0.0"
+             orientationX="0.0"
+             orientationY="-20.0"
+             orientationZ="0.0"/>
+  </BehaviorTree>
+
+  <BehaviorTree ID="OctogoneWrongPath">
+    <Sequence>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <TrajectoryAppendPose trajectory="{Trajectory}"
+                            positionX="0.000000"
+                            positionY="0.000000"
+                            positionZ="0.000000"
+                            orientationX="0.000000"
+                            orientationY="-20"
+                            orientationZ="0.000000"
+                            precision="0"
+                            speed="0"
+                            frame="1"
+                            longRotation="false"/>
+      <TrajectoryAppendPose trajectory="{Trajectory}"
+                            positionX="0.000000"
+                            positionY="0.000000"
+                            positionZ="90.0"
+                            orientationX="0.000000"
+                            orientationY="0"
+                            orientationZ="0.000000"
+                            precision="0"
+                            speed="0"
+                            frame="1"
+                            longRotation="false"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="5"/>
+    </Sequence>
+  </BehaviorTree>
+
   <!-- Description of Node Models (used by Groot) -->
-  <TreeNodesModel/>
+  <TreeNodesModel>
+    <Action ID="AiFilter">
+      <output_port name="Detected_object"
+                   type="AiDetection"/>
+      <input_port name="Max_time_before_failing_sec"
+                  default="0.000000"
+                  type="float">Maximum allowed time in ms before failing the object research</input_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0"
+                  type="int">Maximum allowed frames before failing the object research</input_port>
+      <input_port name="Min_detections_before_success"
+                  default="2"
+                  type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Ai confidence</input_port>
+      <input_port name="Max_depth"
+                  default="25.000000"
+                  type="float">Maximum allowed depth</input_port>
+      <input_port name="Object_class"
+                  type="std::string">Searched object</input_port>
+      <input_port name="Camera"
+                  default="1"
+                  type="int">1: Front, 0: Bottom</input_port>
+    </Action>
+    <Action ID="InitializeTrajectory">
+      <output_port name="trajectory"
+                   type="Trajectory"/>
+    </Action>
+    <SubTree ID="MoveSinglePose"
+             editable="true">
+      <input_port name="frame"
+                  default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
+      <input_port name="positionX"
+                  default="0.0">x value to go</input_port>
+      <input_port name="positionY"
+                  default="0.0">y value to go</input_port>
+      <input_port name="positionZ"
+                  default="0.0">z value to go</input_port>
+      <input_port name="orientationX"
+                  default="0.0">z orientation to go</input_port>
+      <input_port name="orientationY"
+                  default="0.0">y orientation to go</input_port>
+      <input_port name="orientationZ"
+                  default="0.0">rotation in Z to give to the sub</input_port>
+    </SubTree>
+    <Action ID="MoveToObject">
+      <input_port name="Offset"
+                  type="float"/>
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
+    <SubTree ID="SearchObjectByRotation"
+             editable="true">
+      <input_port name="Object">Object we are looking for</input_port>
+      <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
+      <input_port name="Max_time_before_failing_sec"
+                  default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0">Number of frame that the sub will take to every 30 degree position to find the object</input_port>
+      <input_port name="Min_detection_before_success"
+                  default="5">Nombre of detected frame to call a found status</input_port>
+      <input_port name="Confidence"
+                  default="0.60000">Minimum confidence of the Ai</input_port>
+      <input_port name="Max_depth"
+                  default="25">Max distance to detect an object</input_port>
+    </SubTree>
+    <SubTree ID="SendTrajectoryOnly"
+             editable="true">
+      <input_port name="Trajectory">The trajectory to do to the sub</input_port>
+      <input_port name="TimeBeforeFailing"
+                  default="5">The time before the sub movement fail</input_port>
+    </SubTree>
+    <Action ID="TrajectoryAppendPose">
+      <inout_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="positionX"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationX"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="precision"
+                  default="0"
+                  type="int"/>
+      <input_port name="speed"
+                  default="0"
+                  type="int"/>
+      <input_port name="frame"
+                  default="1"
+                  type="int"/>
+      <input_port name="longRotation"
+                  default="false"
+                  type="bool"/>
+    </Action>
+  </TreeNodesModel>
 
 </root>
