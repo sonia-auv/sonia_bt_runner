@@ -152,11 +152,11 @@ namespace vision{
 
         // We compute the quartile
         if (_detection_array.size() % 4) {
-            q1 = _detection_array[(size_t)std::floor((float)_detection_array.size()/4.0f)].distance_teta;
-            q3 = _detection_array[(size_t)std::floor((float)_detection_array.size()*3.0f/4.0f)].distance_teta;
+            q1 = _detection_array[std::floor((float)_detection_array.size()/4.0f)].distance_teta;
+            q3 = _detection_array[std::floor((float)_detection_array.size()*3.0f/4.0f)].distance_teta;
         } else {
-            q1 = (_detection_array[(size_t)(_detection_array.size()/4)].distance_teta + _detection_array[(size_t)(_detection_array.size()/4) + (size_t)1].distance_teta)/2.0f;
-            q3 = (_detection_array[(size_t)(_detection_array.size()*3/4)].distance_teta + _detection_array[(size_t)(_detection_array.size()*3/4) + (size_t)1].distance_teta)/2.0f;
+            q1 = (_detection_array[_detection_array.size()/4].distance_teta + _detection_array[_detection_array.size()/4 + 1].distance_teta)/2.0f;
+            q3 = (_detection_array[_detection_array.size()*3/4].distance_teta + _detection_array[_detection_array.size()*3/4 + 1].distance_teta)/2.0f;
         }
 
         // We compute the min and max bound where the data will be kept
