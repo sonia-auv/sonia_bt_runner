@@ -186,7 +186,6 @@
         <AiFilter Detected_object="{RedSlalomDetection}"
                   Max_time_before_failing_sec="5.0"
                   Max_frame_before_failing="0"
-                  Two_objects_possible="0"
                   Min_detections_before_success="5"
                   Confidence="0.60000"
                   Max_depth="25.0"
@@ -262,9 +261,6 @@
       <input_port name="Max_frame_before_failing"
                   default="0"
                   type="int">Maximum allowed frames before failing the object research</input_port>
-      <input_port name="Two_objects_possible"
-                  default="0"
-                  type="int">0: Only one object can be detected, 1: Two or more object of the same class can be detected</input_port>
       <input_port name="Min_detections_before_success"
                   default="2"
                   type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
