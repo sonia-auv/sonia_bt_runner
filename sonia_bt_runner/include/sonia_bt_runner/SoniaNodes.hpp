@@ -54,7 +54,7 @@ static void registerVisionNodes(BT::BehaviorTreeFactory &factory, std::shared_pt
     factory.registerBuilder<vision::SlalomAiFilter>("SlalomAiFilter", configBuilder<vision::SlalomAiFilter>(node));
 }
 
-static void registerNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
+[[maybe_unused]] static void registerNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
     registerInitNodes(factory, node);
     registerActuatorNodes(factory, node);
