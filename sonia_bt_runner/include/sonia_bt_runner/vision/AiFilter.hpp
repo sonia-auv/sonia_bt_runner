@@ -56,9 +56,13 @@ namespace vision{
             BT::Expected<float> _max_time_before_failing;
             
             virtual void ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg);
-            BT::NodeStatus get_detection_status(const std::string& object, const float confidence, const float max_depth);
-            void applicate_box_plot_to_detections();
-            AiDetection detection_average();
+            virtual void parameter_setter();
+            virtual bool condition_verification();
+            virtual bool is_object_found(const std::string& object, const float confidence, const float max_depth);
+            virtual void applicate_box_plot_to_detections();
+            virtual bool detection_complete();
+            virtual void setting_output();
+            AiDetection detection_average(const std::vector<sonia_common_ros2::msg::Detection>& detection_array);
             
             // void applicate_confidence_interval_to_detections();
 
