@@ -15,6 +15,12 @@
             <input_port name="Object_class" type="std::string">Searched object</input_port>
             <input_port name="Camera" type="int" default="1">1: Front, 0: Bottom</input_port>
         </Action>
+        <Action ID="ComputeTrajectoryBetweenDetections">
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="PositionX" type="float" default="10.000000">Forward distance to travel after centering between the two detections</input_port>
+            <input_port name="DetectionB" type="AiDetection"/>
+            <input_port name="DetectionA" type="AiDetection"/>
+        </Action>
         <Action ID="ControlSetMode">
             <input_port name="set_mode" type="bool" default="false"/>
         </Action>
@@ -62,6 +68,15 @@
         </Action>
         <Action ID="ShootTorpedo">
             <input_port name="side" type="std::string">port_side or starboard</input_port>
+        </Action>
+        <Action ID="SlalomAiFilter">
+            <input_port name="Confidence" type="float" default="0.600000">Ai confidence</input_port>
+            <input_port name="Max_depth" type="float" default="25.000000">Maximum allowed depth</input_port>
+            <input_port name="Min_detections_before_success" type="int" default="2">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+            <input_port name="Max_time_before_failing_sec" type="float" default="0.000000">Maximum allowed time in ms before failing the object research</input_port>
+            <input_port name="Max_frame_before_failing" type="int" default="0">Maximum allowed frames before failing the object research</input_port>
+            <output_port name="Red_slalom" type="AiDetection"/>
+            <output_port name="White_slalom" type="AiDetection"/>
         </Action>
         <Action ID="Tare">
             <input_port name="sensor" type="std::string">imu or depth</input_port>

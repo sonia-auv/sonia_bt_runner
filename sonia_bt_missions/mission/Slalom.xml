@@ -12,62 +12,29 @@
                     Bottom="false"
                     Front="true"
                     _description="Activate the AI.&#10;&#10;I have no idea which model to choose to be defined."/>
-      <IfThenElse>
-        <SubTree ID="SearchObjectByRotation"
-                 Object="RED_SLALOM"
-                 FoundAiDetection="{RedSlalomDetection}"
-                 Max_time_before_failing_sec="0.0"
-                 Max_frame_before_failing="0"
-                 Min_detection_before_success="5"
-                 Confidence="0.60000"
-                 Max_depth="25"
-                 _description="Detect the red slalom."/>
-        <SubTree ID="Nop"/>
-        <SubTree ID="MissionFailed"/>
-      </IfThenElse>
       <InitializeTrajectory trajectory="{Trajectory}"
                             _description="Prepare trajectory to face the red slalom."/>
-      <FaceTheObject Trajectory="{Trajectory}"
-                     Detection="{RedSlalomDetection}"
-                     _description="Rotate the sub to center the red slalom in the camera frame."/>
+      <SubTree ID="SearchObjectByRotation"
+               Object="RED_SLALOM"
+               FoundAiDetection="{RedSlalomDetection}"
+               Max_time_before_failing_sec="0.0"
+               Max_frame_before_failing="0"
+               Min_detection_before_success="5"
+               Confidence="0.60000"
+               Max_depth="25"
+               _description="Detect the red slalom."/>
+      <MoveToObject Offset="2"
+                    Trajectory="{Trajectory}"
+                    Detection="{RedSlalomDetection}"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
                TimeBeforeFailing="5"/>
-      <IfThenElse>
-        <AiFilter Detected_object="{WhiteSlalomDetection}"
-                  Max_time_before_failing_sec="0.000000"
-                  Max_frame_before_failing="0"
-                  Min_detections_before_success="2"
-                  Confidence="0.600000"
-                  Max_depth="25.000000"
-                  Object_class="WHITE_SLALOM"
-                  Camera="1"/>
-        <SubTree ID="Nop"/>
-        <SubTree ID="MissionFailed"/>
-      </IfThenElse>
-      <IfThenElse>
-        <AiFilter Detected_object="{RedSlalomDetection}"
-                  Max_time_before_failing_sec="5.0"
-                  Max_frame_before_failing="0"
-                  Min_detections_before_success="5"
-                  Confidence="0.60000"
-                  Max_depth="25.0"
-                  Object_class="RED_SLALOM"
-                  Camera="1"
-                  _description="Refresh the red slalom detection."/>
-        <SubTree ID="Nop"/>
-        <SubTree ID="MissionFailed"/>
-      </IfThenElse>
       <InitializeTrajectory trajectory="{Trajectory}"/>
-      <ComputeTrajectoryBetweenDetections DetectionA="{RedSlalomDetection}"
-                                          DetectionB="{WhiteSlalomDetection}"
-                                          PositionX="10"
-                                          Trajectory="{Trajectory}"
-                                          _description="Append a lateral centering pose and a forward pose to the trajectory."/>
+      <AlwaysSuccess name="SlalomAiFilter"/>
+      <AlwaysSuccess name="Compute trajectory block"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
                TimeBeforeFailing="15"/>
-      <SubTree ID="MissionSuccess"/>
     </Sequence>
   </BehaviorTree>
 
@@ -84,46 +51,6 @@
                   default="false"
                   type="bool">true: ON, talse: OFF</input_port>
     </Action>
-    <Action ID="AiFilter">
-      <output_port name="Detected_object"
-                   type="AiDetection"/>
-      <input_port name="Max_time_before_failing_sec"
-                  default="0.000000"
-                  type="float">Maximum allowed time in ms before failing the object research</input_port>
-      <input_port name="Max_frame_before_failing"
-                  default="0"
-                  type="int">Maximum allowed frames before failing the object research</input_port>
-      <input_port name="Min_detections_before_success"
-                  default="2"
-                  type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
-      <input_port name="Confidence"
-                  default="0.600000"
-                  type="float">Ai confidence</input_port>
-      <input_port name="Max_depth"
-                  default="25.000000"
-                  type="float">Maximum allowed depth</input_port>
-      <input_port name="Object_class"
-                  type="std::string">Searched object</input_port>
-      <input_port name="Camera"
-                  default="1"
-                  type="int">1: Front, 0: Bottom</input_port>
-    </Action>
-    <Action ID="ComputeTrajectoryBetweenDetections"
-            editable="true">
-      <input_port name="DetectionA">Detection of the first slalom.</input_port>
-      <input_port name="DetectionB">Detection of the second slalom.</input_port>
-      <input_port name="PositionX"
-                  default="10"
-                  type="float">Forward distance to travel after centering between the two detections.</input_port>
-      <inout_port name="Trajectory"
-                  type="Trajectory">Trajectory to append the two poses to.</inout_port>
-    </Action>
-    <Action ID="FaceTheObject">
-      <inout_port name="Trajectory"
-                  type="Trajectory"/>
-      <input_port name="Detection"
-                  type="AiDetection"/>
-    </Action>
     <SubTree ID="InitialSubmerge"
              editable="true">
       <input_port name="Depth"
@@ -132,6 +59,14 @@
     <Action ID="InitializeTrajectory">
       <output_port name="trajectory"
                    type="Trajectory"/>
+    </Action>
+    <Action ID="MoveToObject">
+      <input_port name="Offset"
+                  type="float"/>
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
     </Action>
     <SubTree ID="SearchObjectByRotation"
              editable="true">

@@ -12,6 +12,16 @@ namespace vision {
     void SlalomAiFilter::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg)
     {
 
+        // We first detect the closest red slalom on the image
+
+        // We detect the closest white slalom depending on the side or the one most to the parameter side
+
+        // If we don't detect a white and a red, we d'ont use the detection
+
+        // We push_back the red and white slalom
+
+
+
 
         // float red_angle = _red_detection.value().angle_teta;
         // bool want_left = (_side.value() == "Left");
