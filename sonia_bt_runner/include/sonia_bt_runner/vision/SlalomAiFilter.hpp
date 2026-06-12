@@ -15,6 +15,7 @@ namespace vision {
             {
                 return {
                     // Inputs
+                    BT::InputPort<std::string>("Side", "", "The passing side for the slalom"),
                     BT::InputPort<float>("Confidence", 0.6, "Ai confidence"),
                     BT::InputPort<float>("Max_depth", 25.0, "Maximum allowed depth"),
                     BT::InputPort<int>("Min_detections_before_success", 2, "Minumum number of frames with at least one detection before sending results. Need to be heigher than 2"),
@@ -30,6 +31,7 @@ namespace vision {
 
 		protected:
 			std::vector<sonia_common_ros2::msg::Detection> _detection_array_white_slalom;
+            BT::Expected<std::string> _side;
 			void ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) override;
 			void parameter_setter() override;
 			bool condition_verification() override;

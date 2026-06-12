@@ -12,16 +12,38 @@ namespace vision {
     void SlalomAiFilter::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg)
     {
 
-        // We first detect the closest red slalom on the image
+        std::optionnal<sonia_common_ros2::msg::Detection> closest_red_slalom;
+        std::vector<sonia_common_ros2::msg::Detection> whites_slaloms;
+        sonia_common_ros2::msg::Detection choosen_white_slalom;
 
-        // We detect the closest white slalom depending on the side or the one most to the parameter side
+        for (auto msg_obj : msg) {
+            // We first detect the closest red slalom on the image
+            if (msg_obj.class_name.compare("RED_SLALOM") == 0
+             && msg_obj.confidence >= _confidence_filter
+             && msg_obj.distance <= _max_depth_filter
+             && (!closest_red_slalom || closest_red_slalom.distance >= msg_obj.distance))
+            {
+                closest_red_slalom = msg_obj;
+            }
 
-        // If we don't detect a white and a red, we d'ont use the detection
+            // We detect the whites slaloms
+            if (msg_obj.class_name.compare("WHITE_SLALOM") == 0
+                && msg_obj.confidence >= _confidence_filter
+                && msg_obj.distance <= _max_depth_filter)
+            {
+                white_slaloms.push_back(msg_obj);
+            }
+        }
+        
+        // We verify if we have both a RED_SLALOM and at least one WHITE_SLALOM
+        if (!closest_red_slalom.has_value() || !whites_slaloms.size()) {
+            return;
+        }
 
         // We push_back the red and white slalom
+        _detetection_array.push_back(closest_red_slalom.value());
 
-
-
+        // We verify the depth on the detection
 
         // float red_angle = _red_detection.value().angle_teta;
         // bool want_left = (_side.value() == "Left");
@@ -45,6 +67,7 @@ namespace vision {
     void SlalomAiFilter::parameter_setter()
     {
         // We go get the information in the behavior tree
+        _side = getInput<std::stirng>("Side");
         _cam = getInput<int>("Camera");
         _confidence = getInput<float>("Confidence");
         _max_depth = getInput<float>("Max_depth");
