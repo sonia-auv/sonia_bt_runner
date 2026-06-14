@@ -94,6 +94,7 @@ namespace vision{
 
 
 			setOutput("Detected_object", detected_object);
+			[[fallthrough]];
 		      }
 			case BT::NodeStatus::FAILURE:
 				_ai_filter_sub.reset();
