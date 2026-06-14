@@ -3,10 +3,10 @@
 namespace navigation {
 
 ComputeTrajectoryBetweenDetections::ComputeTrajectoryBetweenDetections(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    : BT::StatefulActionNode(name, config), _ros_node(node)
+    : BT::SyncActionNode(name, config), _ros_node(node)
 {}
 
-BT::NodeStatus ComputeTrajectoryBetweenDetections::onStart()
+BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
 {
     if (!getInput<AiDetection>("DetectionA", _det_a) || !getInput<AiDetection>("DetectionB", _det_b)) {
         RCLCPP_ERROR(_ros_node->get_logger(), "ComputeTrajectoryBetweenDetections: missing DetectionA or DetectionB");
@@ -18,38 +18,21 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::onStart()
         return BT::NodeStatus::FAILURE;
     }
 
-
-
-    return BT::NodeStatus::RUNNING;
-}
-
-BT::NodeStatus ComputeTrajectoryBetweenDetections::onRunning()
-{
-    std::chrono::duration<double> diff = std::chrono::system_clock::now() - _launch_time;
-    _time_diff = diff.count();
-
-    if (_time_diff < 5 && !_pose_msg.has_value()) {
-        return BT::NodeStatus::RUNNING;
-    } else if (_time_diff >= 5) {
-        RCLCPP_WARN(_ros_node->get_logger(), "No pose has been received to compute the angle of the slalom. Please check if the planner is running");
-        return BT::NodeStatus::FAILURE;
-    }
-
-    float a_det_dist{DetA.distance};
-    float b_det_dist{DetB.distance};
-    float delta_alpha{std::abs(DetA.angle_alpha - DetB.angle_alpha)};
-    float cen_dist_betw_det{std::sqrtf(a_det_dist*a_det_dist + b_det_dist*b_det_dist - 2.0f*a_det_dist*b_det_dist*std::cos(delta_alpha))/2.0f};
+    float a_det_dist{_det_a.distance};
+    float b_det_dist{_det_b.distance};
+    float delta_alpha{std::abs(_det_a.angle_alpha - _det_a.angle_alpha)};
+    float cen_dist_betw_det{std::sqrt(a_det_dist*a_det_dist + b_det_dist*b_det_dist - 2.0f*a_det_dist*b_det_dist*std::cos(delta_alpha))/2.0f};
     float det_b_angle, det_a_angle;
     if (a_det_dist > b_det_dist) {
-        det_a_angle = std::asinf((b_det_dist*std::sin(delta_alpha))/(2.0f*cen_dist_betw_det));
+        det_a_angle = std::asin((b_det_dist*std::sin(delta_alpha))/(2.0f*cen_dist_betw_det));
     } else {
-        det_b_angle = std::asinf((a_det_dist*std::sin(delta_alpha))/(2.0f*cen_dist_betw_det));
+        det_b_angle = std::asin((a_det_dist*std::sin(delta_alpha))/(2.0f*cen_dist_betw_det));
         det_a_angle = 180.0f-delta_alpha-det_b_angle;
     }
     float cen_slalom_dist{std::sqrt(cen_dist_betw_det*cen_dist_betw_det + a_det_dist*a_det_dist - 2.0f*cen_dist_betw_det*a_det_dist*std::cos(det_a_angle))};
-    float plane_slalom_angle{std::asinf(a_det_dist*std::sin(det_a_angle)/cen_slalom_dist)};
+    float plane_slalom_angle{std::asin(a_det_dist*std::sin(det_a_angle)/cen_slalom_dist)};
     float det_cen_a_angle{180.0f-plane_slalom_angle-det_a_angle};
-    float rot_to_cen_angle{DetA.distance - det_cen_a_angle};
+    float rot_to_cen_angle{a_det_dist - det_cen_a_angle};
     float slalom_orientation{90.0f-plane_slalom_angle};
 
     // float positionX = getInput<float>("PositionX").value_or(10.0f);
@@ -76,7 +59,7 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::onRunning()
     p2.frame = 1;
 
     TrajectoryPose p3{};
-    p2.positionX = getinput<float>("PositionX");
+    p2.positionX = getInput<float>("PositionX").value();
     p2.frame = 1;
 
     Trajectory traj = getInput<Trajectory>("Trajectory").value();
@@ -87,11 +70,6 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::onRunning()
     setOutput<Trajectory>("Trajectory", traj);
 
     return BT::NodeStatus::SUCCESS;
-}
-
-void ComputeTrajectoryBetweenDetections::pose_call_back(const sonia_common_ros2::msg::Pose& msg)
-{
-    _pose_msg = msg;
 }
 
 }  // namespace navigation
