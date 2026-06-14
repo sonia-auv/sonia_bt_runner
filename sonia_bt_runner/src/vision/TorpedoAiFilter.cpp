@@ -9,6 +9,7 @@ namespace vision {
 
     void TorpedoAiFilter::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) 
     {
+        RCLCPP_INFO(_ros_node->get_logger(), "TorpedoAiFilter callback running");
         sonia_common_ros2::msg::Detection object;
         std::vector<sonia_common_ros2::msg::Detection> target;
         bool detection_flag{false};

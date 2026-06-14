@@ -104,7 +104,7 @@ namespace vision{
         // We verify if the object is valid
         if (_detection_number_for_average.value() <= 1)
         {
-            RCLCPP_INFO(_ros_node->get_logger(), "You have to set the Min_detections_before_success parameter to more than 1.");
+            RCLCPP_WARN(_ros_node->get_logger(), "You have to set the Min_detections_before_success parameter to more than 1.");
             return false;
         }
         return true;
@@ -127,7 +127,7 @@ namespace vision{
     BT::NodeStatus AiFilter::get_detection_status()
     {
         std::chrono::duration<double> diff(std::chrono::system_clock::now() - _launch_time);
-        float time_diff{diff.count()};
+        float time_diff{(float)diff.count()};
 
         // We now wait for the detection
         if (_detection_array.size() >= (size_t)_detection_number_for_average.value())
@@ -148,6 +148,7 @@ namespace vision{
 
     void AiFilter::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) {
        
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter callback running");
         _timout_counter++;
          RCLCPP_INFO(_ros_node->get_logger(), "Start ai_filter_callback");
         for (auto msg_obj: msg.detected_object){
