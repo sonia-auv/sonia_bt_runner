@@ -7,7 +7,7 @@
 
 namespace navigation {
 
-class ComputeTrajectoryBetweenDetections : public BT::SyncActionNode {
+class ComputeTrajectoryBetweenDetections : public BT::StatefulActionNode {
 public:
     ComputeTrajectoryBetweenDetections(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
     ~ComputeTrajectoryBetweenDetections() override = default;
@@ -21,10 +21,17 @@ public:
         };
     }
 
-    BT::NodeStatus tick() override;
+    BT::NodeStatus onStart() override;
+    BT::NodeStatus onRunning() override;
 
 private:
     std::shared_ptr<rclcpp::Node> _ros_node;
+    rclcpp::Subscription<sonia_common_ros2::msg::Pose>::SharedPtr _pose_sub;
+    std::optional<sonia_common_ros2::msg::Pose> _pose_msg;
+    std::chrono::_V2::system_clock::time_point _launch_time;
+    void pose_call_back(const sonia_common_ros2::msg::Pose& msg);
+
+    AiDetection _det_a, _det_b;
 };
 
 }  // namespace navigation
