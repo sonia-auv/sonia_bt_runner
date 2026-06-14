@@ -74,7 +74,7 @@ namespace vision{
 
     BT::NodeStatus AiFilter::onRunning()
     {
-		auto detection_status = get_detection_status();
+		auto detection_status = get_detection_status(_object.value(), _confidence.value(), _max_depth.value());
 
 		if (detection_status == BT::NodeStatus::SUCCESS) {
 			// We need to make some selection in the image array
