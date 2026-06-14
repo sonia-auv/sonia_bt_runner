@@ -86,6 +86,8 @@ namespace vision{
 
 			// We select the detection that we want to use to compute the output
 			applicate_box_plot_to_detections();
+			
+			_ai_filter_sub.reset();
 
 			setOutput("Detected_object", detection_average());
 		}
