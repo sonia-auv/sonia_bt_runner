@@ -30,8 +30,17 @@
                Trajectory="{Trajectory}"
                TimeBeforeFailing="5"/>
       <InitializeTrajectory trajectory="{Trajectory}"/>
-      <AlwaysSuccess name="SlalomAiFilter"/>
-      <AlwaysSuccess name="Compute trajectory block"/>
+      <SlalomAiFilter Confidence="0.600000"
+                      Max_depth="15.000000"
+                      Min_detections_before_success="5"
+                      Max_time_before_failing_sec="5"
+                      Max_frame_before_failing="300"
+                      Red_slalom="{red_slalom_detection}"
+                      White_slalom="{white_slalom_detection}"/>
+      <ComputeTrajectoryBetweenDetections Trajectory="{Trajectory}"
+                                          PositionX="10.000000"
+                                          DetectionB="{white_slalom_detection}"
+                                          DetectionA="{red_slalom_detection}"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
                TimeBeforeFailing="15"/>
@@ -50,6 +59,17 @@
       <input_port name="Front"
                   default="false"
                   type="bool">true: ON, talse: OFF</input_port>
+    </Action>
+    <Action ID="ComputeTrajectoryBetweenDetections">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="PositionX"
+                  default="10.000000"
+                  type="float">Forward distance to travel after centering between the two detections</input_port>
+      <input_port name="DetectionB"
+                  type="AiDetection"/>
+      <input_port name="DetectionA"
+                  type="AiDetection"/>
     </Action>
     <SubTree ID="InitialSubmerge"
              editable="true">
@@ -89,6 +109,27 @@
       <input_port name="TimeBeforeFailing"
                   default="5">The time before the sub movement fail</input_port>
     </SubTree>
+    <Action ID="SlalomAiFilter">
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Ai confidence</input_port>
+      <input_port name="Max_depth"
+                  default="25.000000"
+                  type="float">Maximum allowed depth</input_port>
+      <input_port name="Min_detections_before_success"
+                  default="2"
+                  type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+      <input_port name="Max_time_before_failing_sec"
+                  default="0.000000"
+                  type="float">Maximum allowed time in ms before failing the object research</input_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0"
+                  type="int">Maximum allowed frames before failing the object research</input_port>
+      <output_port name="Red_slalom"
+                   type="AiDetection"/>
+      <output_port name="White_slalom"
+                   type="AiDetection"/>
+    </Action>
   </TreeNodesModel>
 
 </root>
