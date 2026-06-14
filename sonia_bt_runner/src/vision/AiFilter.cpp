@@ -56,11 +56,11 @@ namespace vision{
          RCLCPP_INFO(_ros_node->get_logger(), "Get detection status");
          RCLCPP_INFO(_ros_node->get_logger(), "detection_array_size = %ld, min_detection = %ld", _detection_array.size(), _detection_number_for_average.value());
 
-		if (_max_frame_before_failing.value() != 0 && _timout_counter < _max_frame_before_failing.value()) {
+		if (_max_frame_before_failing.value() != 0 && _timout_counter > _max_frame_before_failing.value()) {
 			RCLCPP_INFO(_ros_node->get_logger(), "max frame = %d, We don't find what we are looking for.", _max_frame_before_failing.value());
 
             return BT::NodeStatus::FAILURE;
-		} else if (_max_time_before_failing.value() != 0.0f && time_diff < _max_time_before_failing.value()) {
+		} else if (_max_time_before_failing.value() != 0.0f && time_diff > _max_time_before_failing.value()) {
 			RCLCPP_INFO(_ros_node->get_logger(), "max time = %f, We don't find what we are looking for.", _max_time_before_failing.value());
 
             return BT::NodeStatus::FAILURE;
@@ -79,17 +79,28 @@ namespace vision{
 
 		auto detection_status = get_detection_status(_object.value(), _confidence.value(), _max_depth.value());
 
-		if (detection_status == BT::NodeStatus::SUCCESS) {
-         RCLCPP_INFO(_ros_node->get_logger(), "onRunning success!!!");
+		switch (detection_status) {
+			case BT::NodeStatus::SUCCESS: {
+		       		RCLCPP_INFO(_ros_node->get_logger(), "onRunning success!!!");
 			// We need to make some selection in the image array
 			RCLCPP_INFO(_ros_node->get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
 
 			// We select the detection that we want to use to compute the output
 			applicate_box_plot_to_detections();
 			
-			_ai_filter_sub.reset();
+			auto detected_object = detection_average();
 
-			setOutput("Detected_object", detection_average());
+			RCLCPP_INFO(_ros_node->get_logger(), "classification = %s, distance = %f, confidence = %f, angle_teta = %f, angle_alpha = %f", detected_object.classification.c_str(), detected_object.distance, detected_object.confidence, detected_object.angle_teta, detected_object.angle_alpha);
+
+
+			setOutput("Detected_object", detected_object);
+		      }
+			case BT::NodeStatus::FAILURE:
+				_ai_filter_sub.reset();
+
+				break;
+			default:
+				break;
 		}
 
 		return detection_status;
