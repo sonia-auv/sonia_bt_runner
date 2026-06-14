@@ -33,8 +33,8 @@ namespace vision {
 			std::vector<sonia_common_ros2::msg::Detection> _detection_array_white_slalom;
             BT::Expected<std::string> _side;
 			void ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) override;
-			void parameter_setter() override;
-			bool condition_verification() override;
+			void stock_input_parameters() override;
+			bool initial_condition_verification() override;
 			void setting_output() override;
 		
 	};

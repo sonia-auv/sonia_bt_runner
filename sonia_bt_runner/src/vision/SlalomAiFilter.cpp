@@ -64,7 +64,7 @@ namespace vision {
 
     }
 
-    void SlalomAiFilter::parameter_setter()
+    void SlalomAiFilter::stock_input_parameters()
     {
         // We go get the information in the behavior tree
         _side = getInput<std::stirng>("Side");
@@ -78,7 +78,7 @@ namespace vision {
         _max_time_before_failing = getInput<float>("Max_time_before_failing_sec");
     }
 
-    bool SlalomAiFilter::condition_verification()
+    bool SlalomAiFilter::initial_condition_verification()
     {
         if (_detection_number_for_average.value() <= 1)
         {

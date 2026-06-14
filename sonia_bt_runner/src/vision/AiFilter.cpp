@@ -5,18 +5,23 @@
 using std::placeholders::_1;
 namespace vision{
     AiFilter::AiFilter(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    :BT::StatefulActionNode(name, config), _ros_node(node), _detection_array()
+    :BT::StatefulActionNode(name, config), _ros_node(node), _detection_array(), _timout_counter{}, _launch_time()
     {
     }
 
     BT::NodeStatus AiFilter::onStart()
     {
+        stock_input_parameters();
 
-        parameter_setter();
-
-        if (!condition_verification()) {
+        if (!set_filter_parameter(_object.value(), _confidence.value(), _max_depth.value())) {
             return BT::NodeStatus::FAILURE;
         }
+
+        if (!initial_condition_verification()) {
+            return BT::NodeStatus::FAILURE;
+        }
+
+        initialize_subscriber();
 
         return BT::NodeStatus::RUNNING;
     }
@@ -51,38 +56,24 @@ namespace vision{
 
     BT::NodeStatus AiFilter::onRunning()
     {
-         RCLCPP_INFO(_ros_node->get_logger(), "onRunning");
+        BT::NodeStatus detection_status = get_detection_status();
+        if(detection_status == BT::NodeStatus::SUCCESS) {
+            delete_subscriber();
 
-		auto detection_status = get_detection_status(_object.value(), _confidence.value(), _max_depth.value());
+            RCLCPP_INFO(_ros_node->get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
 
-		switch (detection_status) {
-			case BT::NodeStatus::SUCCESS: {
-		       		RCLCPP_INFO(_ros_node->get_logger(), "onRunning success!!!");
-			// We need to make some selection in the image array
-			RCLCPP_INFO(_ros_node->get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
+            applicate_box_plot_to_detections();
 
             setting_output();
-
-			RCLCPP_INFO(_ros_node->get_logger(), "classification = %s, distance = %f, confidence = %f, angle_teta = %f, angle_alpha = %f", detected_object.classification.c_str(), detected_object.distance, detected_object.confidence, detected_object.angle_teta, detected_object.angle_alpha);
-
-			[[fallthrough]];
-		      }
-			case BT::NodeStatus::FAILURE:
-				_ai_filter_sub.reset();
-
-				break;
-			default:
-				break;
-		}
-
-		return detection_status;
+        }
+        return detection_status;
     }
 
     void AiFilter::onHalted()
     {
     }
 
-    void AiFilter::parameter_setter()
+    void AiFilter::stock_input_parameters()
     {
         // We go get the information in the behavior tree
         _cam = getInput<int>("Camera");
@@ -96,14 +87,21 @@ namespace vision{
         _max_time_before_failing = getInput<float>("Max_time_before_failing_sec");
     }
 
-    bool AiFilter::condition_verification() 
+    bool AiFilter::set_filter_parameter(const std::string& object, const float confidence, const float max_depth)
     {
-        // We verify if the object is valid
-        if (!verifyObject(_object.value()).has_value()) {
+        if (!verifyObject(object).has_value()) {
             RCLCPP_INFO(_ros_node->get_logger(), "The detected object is not a valid name of type of detection. Syntaxe error");
             return false;
         }
+        _object_filter = object;
+        _confidence_filter = confidence;
+        _max_depth_filter = max_depth;
+        return true;
+    }
 
+    bool AiFilter::initial_condition_verification()
+    {
+        // We verify if the object is valid
         if (_detection_number_for_average.value() <= 1)
         {
             RCLCPP_INFO(_ros_node->get_logger(), "You have to set the Min_detections_before_success parameter to more than 1.");
@@ -112,40 +110,40 @@ namespace vision{
         return true;
     }
 
-    bool AiFilter::is_object_found(const std::string& object, const float confidence, const float max_depth)
+    void AiFilter::initialize_subscriber()
     {
-
-        float time_diff;
-
-        //We set the value for the detection
-        _object_filter = object;
-        _confidence_filter = confidence;
-        _max_depth_filter = max_depth;
-        _detection_array.clear();
-        _timout_counter = 0;
-        std::chrono::duration<double> diff;
-        std::chrono::_V2::system_clock::time_point launch_time(std::chrono::system_clock::now());
-        
-        // We create the subscriber to gather the information
         if(_cam.value())
             _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/front/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
         else
             _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/bottom/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
-        
-        // We now wait for the detection
-        while (
-            (_max_frame_before_failing.value() == 0 || _timout_counter < _max_frame_before_failing.value())
-            && (_max_time_before_failing.value() == 0.0f || time_diff < _max_time_before_failing.value())
-            && _detection_array.size() < (size_t)_detection_number_for_average.value())
-        {
-            diff = std::chrono::system_clock::now() - launch_time;
-            time_diff = diff.count();
-        }
-        
-        // We reset the subscriber because we don't want to update the number of detection in our array
+        _launch_time = std::chrono::system_clock::now();
+    }
+
+    void AiFilter::delete_subscriber()
+    {
         _ai_filter_sub.reset();
-        
-        return _detection_array.size() >= (size_t)_detection_number_for_average.value();
+    }
+
+    BT::NodeStatus AiFilter::get_detection_status()
+    {
+        std::chrono::duration<double> diff(std::chrono::system_clock::now() - _launch_time);
+        float time_diff{diff.count()};
+
+        // We now wait for the detection
+        if (_detection_array.size() >= (size_t)_detection_number_for_average.value())
+        {
+            return BT::NodeStatus::SUCCESS;
+        }
+        else if (_max_time_before_failing.value() != 0.0f && time_diff >= _max_time_before_failing.value())
+        {
+            return BT::NodeStatus::FAILURE;
+        }
+        else if (_max_frame_before_failing.value() != 0 && _timout_counter >= _max_frame_before_failing.value())
+        {
+            return BT::NodeStatus::FAILURE;
+        }
+
+        return BT::NodeStatus::RUNNING;
     }
 
     void AiFilter::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) {
