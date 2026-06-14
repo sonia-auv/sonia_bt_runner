@@ -45,7 +45,7 @@ namespace vision{
             float _confidence_filter;
             float _max_depth_filter;
             std::vector<sonia_common_ros2::msg::Detection> _detection_array;
-            int _timout_counter;
+            int _timout_counter = 0;
 			std::chrono::_V2::system_clock::time_point _start_time;
             BT::Expected<int> _cam;
             BT::Expected<std::string> _object;

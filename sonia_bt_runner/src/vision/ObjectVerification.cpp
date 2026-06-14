@@ -35,7 +35,7 @@ static std::vector<std::string> parseConfig()
     return definedObjectsValue;
 }
 
-std::optional<BT::NodeStatus>
+bool
 verifyObject(std::string object)
 {
     definedObjectsGuard.lock();
@@ -44,14 +44,16 @@ verifyObject(std::string object)
 	    definedObjects = {parseConfig()};
     }
 
+    bool object_is_valid = false;
+
     for (auto &definedObject : definedObjects.value()) {
 	    if (definedObject == object) {
-		    return {};
+		    object_is_valid = true;
+		    break;
 	    }
     }
 
     definedObjectsGuard.unlock();
 
-
-    return BT::NodeStatus::FAILURE;
+    return object_is_valid;
 }

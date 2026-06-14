@@ -3,5 +3,5 @@
 #include <optional>
 #include "behaviortree_cpp/behavior_tree.h"
 
-std::optional<BT::NodeStatus>
+bool
 verifyObject(std::string object);
