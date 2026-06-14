@@ -41,7 +41,7 @@ MissionServer::MissionServer()
         std_msgs::msg::String rep;
         _result=NodeStatus::RUNNING;
         Tracker trac(_tree, goal); 
-       
+
         RCLCPP_INFO(this->get_logger(), "Mission launched"); 
         rep.data= "Mission launched....";
         _pub_status->publish(rep);

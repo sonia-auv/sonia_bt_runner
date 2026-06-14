@@ -330,85 +330,70 @@
   </BehaviorTree>
 
   <BehaviorTree ID="TrickshotLegacy">
-    <Fallback>
-      <Sequence>
-        <SubTree ID="MoveSinglePose"
-                 frame="4.0"
-                 positionX="0.0"
-                 positionY="0.0"
-                 positionZ="1.5"
-                 orientationX="0.0"
-                 orientationY="0.0"
-                 orientationZ="0.0"/>
-        <InitializeTrajectory trajectory="{traj}"/>
-        <TrajectoryAppendPose trajectory="{traj}"
-                              positionX="0.000000"
-                              positionY="0.000000"
-                              positionZ="0.000000"
-                              orientationX="0.000000"
-                              orientationY="90"
-                              orientationZ="0.000000"
-                              precision="0"
-                              speed="0"
-                              frame="1"
-                              longRotation="false"/>
-        <TrajectoryAppendPose trajectory="{traj}"
-                              positionX="0.000000"
-                              positionY="0.000000"
-                              positionZ="0.000000"
-                              orientationX="180"
-                              orientationY="0.000000"
-                              orientationZ="0.000000"
-                              precision="0"
-                              speed="0"
-                              frame="1"
-                              longRotation="false"/>
-        <TrajectoryAppendPose trajectory="{traj}"
-                              positionX="0.000000"
-                              positionY="0.000000"
-                              positionZ="0.000000"
-                              orientationX="180"
-                              orientationY="0.000000"
-                              orientationZ="0.000000"
-                              precision="0"
-                              speed="0"
-                              frame="1"
-                              longRotation="false"/>
-        <TrajectoryAppendPose trajectory="{traj}"
-                              positionX="0.000000"
-                              positionY="0.000000"
-                              positionZ="0.000000"
-                              orientationX="0.000000"
-                              orientationY="90"
-                              orientationZ="0.000000"
-                              precision="0"
-                              speed="0"
-                              frame="1"
-                              longRotation="false"/>
-        <TrajectoryAppendPose trajectory="{traj}"
-                              positionX="0.000000"
-                              positionY="0.000000"
-                              positionZ="0.000000"
-                              orientationX="0.000000"
-                              orientationY="180"
-                              orientationZ="0.000000"
-                              precision="0"
-                              speed="0"
-                              frame="1"
-                              longRotation="false"/>
-        <SubTree ID="SendTrajectoryOnly"
-                 Trajectory="{traj}"
-                 TimeBeforeFailing="10"/>
-      </Sequence>
-      <SubTree ID="MoveSinglePose"
-               frame="2.0"
-               positionX="0.0"
-               positionY="0.0"
-               positionZ="0.0"
-               orientationX="0.0"
-               orientationY="0.0"
-               orientationZ="0.0"/>
-    </Fallback>
+    <Sequence>
+      <SubTree ID="InitialSubmerge"
+               Depth="1"/>
+      <InitializeTrajectory trajectory="{traj}"/>
+      <TrajectoryAppendPose trajectory="{traj}"
+                            positionX="0.000000"
+                            positionY="0.000000"
+                            positionZ="0.000000"
+                            orientationX="0.000000"
+                            orientationY="90"
+                            orientationZ="0.000000"
+                            precision="0"
+                            speed="0"
+                            frame="1"
+                            longRotation="false"/>
+      <TrajectoryAppendPose trajectory="{traj}"
+                            positionX="0.000000"
+                            positionY="0.000000"
+                            positionZ="0.000000"
+                            orientationX="180"
+                            orientationY="0.000000"
+                            orientationZ="0.000000"
+                            precision="0"
+                            speed="0"
+                            frame="1"
+                            longRotation="false"/>
+      <TrajectoryAppendPose trajectory="{traj}"
+                            positionX="0.000000"
+                            positionY="0.000000"
+                            positionZ="0.000000"
+                            orientationX="180"
+                            orientationY="0.000000"
+                            orientationZ="0.000000"
+                            precision="0"
+                            speed="0"
+                            frame="1"
+                            longRotation="false"/>
+      <TrajectoryAppendPose trajectory="{traj}"
+                            positionX="0.000000"
+                            positionY="0.000000"
+                            positionZ="0.000000"
+                            orientationX="0.000000"
+                            orientationY="90"
+                            orientationZ="0.000000"
+                            precision="0"
+                            speed="0"
+                            frame="1"
+                            longRotation="false"/>
+      <TrajectoryAppendPose trajectory="{traj}"
+                            positionX="0.000000"
+                            positionY="0.000000"
+                            positionZ="0.000000"
+                            orientationX="0.000000"
+                            orientationY="180"
+                            orientationZ="0.000000"
+                            precision="0"
+                            speed="0"
+                            frame="1"
+                            longRotation="false"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{traj}"
+               TimeBeforeFailing="10"/>
+      <ControlSetMode set_mode="false"/>
+    </Sequence>
   </BehaviorTree>
 
   <!-- Description of Node Models (used by Groot) -->
@@ -448,12 +433,22 @@
                   default="1"
                   type="int">1: Front, 0: Bottom</input_port>
     </Action>
+    <Action ID="ControlSetMode">
+      <input_port name="set_mode"
+                  default="false"
+                  type="bool"/>
+    </Action>
     <Action ID="FaceTheObject">
       <inout_port name="Trajectory"
                   type="Trajectory"/>
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
+    <SubTree ID="InitialSubmerge"
+             editable="true">
+      <input_port name="Depth"
+                  default="0.5"/>
+    </SubTree>
     <Action ID="InitializeTrajectory">
       <output_port name="trajectory"
                    type="Trajectory"/>

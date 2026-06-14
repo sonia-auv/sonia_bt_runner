@@ -1,19 +1,25 @@
 <root BTCPP_format="4">
     <TreeNodesModel>
         <Action ID="AiActivation">
-            <input_port name="Model" type="int" default="0">model choice, default = 0</input_port>
             <input_port name="Bottom" type="bool" default="false">true: ON, talse: OFF</input_port>
+            <input_port name="Model" type="int" default="0">model choice, default = 0</input_port>
             <input_port name="Front" type="bool" default="false">true: ON, talse: OFF</input_port>
         </Action>
         <Action ID="AiFilter">
-            <output_port name="Detected_object" type="AiDetection"/>
-            <input_port name="Max_time_before_failing_sec" type="float" default="0.000000">Maximum allowed time in ms before failing the object research</input_port>
             <input_port name="Max_frame_before_failing" type="int" default="0">Maximum allowed frames before failing the object research</input_port>
+            <output_port name="Detected_object" type="AiDetection"/>
             <input_port name="Min_detections_before_success" type="int" default="2">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
-            <input_port name="Confidence" type="float" default="0.600000">Ai confidence</input_port>
             <input_port name="Max_depth" type="float" default="25.000000">Maximum allowed depth</input_port>
+            <input_port name="Confidence" type="float" default="0.600000">Ai confidence</input_port>
             <input_port name="Object_class" type="std::string">Searched object</input_port>
+            <input_port name="Max_time_before_failing_sec" type="float" default="0.000000">Maximum allowed time in ms before failing the object research</input_port>
             <input_port name="Camera" type="int" default="1">1: Front, 0: Bottom</input_port>
+        </Action>
+        <Action ID="ComputeTrajectoryBetweenDetections">
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="DetectionB" type="AiDetection"/>
+            <input_port name="PositionX" type="float" default="10.000000">Forward distance to travel after centering between the two detections</input_port>
+            <input_port name="DetectionA" type="AiDetection"/>
         </Action>
         <Action ID="ControlSetMode">
             <input_port name="set_mode" type="bool" default="false"/>
@@ -41,8 +47,8 @@
             <input_port name="Detection" type="AiDetection"/>
         </Action>
         <Action ID="MoveToObject">
-            <input_port name="Offset" type="float"/>
             <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="Offset" type="float"/>
             <input_port name="Detection" type="AiDetection"/>
         </Action>
         <Action ID="MoveToPoint">
@@ -56,6 +62,15 @@
         <Action ID="SavePoint">
             <output_port name="Point" type="Point"/>
         </Action>
+        <Action ID="SearchWhiteSlalom">
+            <output_port name="WhiteSlalomDetection" type="AiDetection"/>
+            <input_port name="Max_time_before_failing_sec" type="float" default="0.000000">Timeout in seconds, 0 = disabled</input_port>
+            <input_port name="Min_detections_before_success" type="int" default="5">Minimum valid detections before succeeding</input_port>
+            <input_port name="Confidence" type="float" default="0.600000">Minimum AI confidence</input_port>
+            <input_port name="Side" type="std::string" default="Left">Left or Right</input_port>
+            <input_port name="Max_depth" type="float" default="25.000000">Maximum detection distance</input_port>
+            <input_port name="RedSlalomDetection" type="AiDetection"/>
+        </Action>
         <Action ID="SendTrajectory">
             <input_port name="trajectory" type="Trajectory"/>
             <input_port name="interpolation" type="int" default="0"/>
@@ -67,13 +82,13 @@
             <input_port name="sensor" type="std::string">imu or depth</input_port>
         </Action>
         <Action ID="TorpedoAiFilter">
-            <output_port name="Detected_object" type="AiDetection"/>
-            <input_port name="Max_time_before_failing_sec" type="float" default="0.000000">Maximum allowed time in ms before failing the object research</input_port>
             <input_port name="Max_frame_before_failing" type="int" default="0">Maximum allowed frames before failing the object research</input_port>
+            <output_port name="Detected_object" type="AiDetection"/>
             <input_port name="Min_detections_before_success" type="int" default="2">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
-            <input_port name="Confidence" type="float" default="0.600000">Ai confidence</input_port>
             <input_port name="Max_depth" type="float" default="25.000000">Maximum allowed depth</input_port>
+            <input_port name="Confidence" type="float" default="0.600000">Ai confidence</input_port>
             <input_port name="Object_class" type="std::string">Searched object</input_port>
+            <input_port name="Max_time_before_failing_sec" type="float" default="0.000000">Maximum allowed time in ms before failing the object research</input_port>
             <input_port name="Camera" type="int" default="1">1: Front, 0: Bottom</input_port>
         </Action>
         <Action ID="TorpedoAiming">
@@ -83,17 +98,17 @@
             <input_port name="Detection" type="AiDetection"/>
         </Action>
         <Action ID="TrajectoryAppendPose">
-            <inout_port name="trajectory" type="Trajectory"/>
-            <input_port name="positionX" type="float" default="0.000000"/>
-            <input_port name="positionY" type="float" default="0.000000"/>
-            <input_port name="positionZ" type="float" default="0.000000"/>
-            <input_port name="orientationX" type="float" default="0.000000"/>
-            <input_port name="orientationY" type="float" default="0.000000"/>
-            <input_port name="orientationZ" type="float" default="0.000000"/>
             <input_port name="precision" type="int" default="0"/>
             <input_port name="speed" type="int" default="0"/>
-            <input_port name="frame" type="int" default="1"/>
+            <input_port name="orientationZ" type="float" default="0.000000"/>
+            <input_port name="orientationY" type="float" default="0.000000"/>
+            <input_port name="orientationX" type="float" default="0.000000"/>
+            <inout_port name="trajectory" type="Trajectory"/>
             <input_port name="longRotation" type="bool" default="false"/>
+            <input_port name="positionX" type="float" default="0.000000"/>
+            <input_port name="positionY" type="float" default="0.000000"/>
+            <input_port name="frame" type="int" default="1"/>
+            <input_port name="positionZ" type="float" default="0.000000"/>
         </Action>
         <Action ID="WaitTargetReached">
             <input_port name="timeout" type="int" default="5"/>
