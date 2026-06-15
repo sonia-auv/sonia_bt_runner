@@ -143,237 +143,240 @@
   </BehaviorTree>
 
   <BehaviorTree ID="SearchObjectByRotation">
-    <Fallback>
-      <AiFilter Detected_object="{FoundAiDetection}"
-                Max_time_before_failing_sec="{Max_time_before_failing_sec}"
-                Max_frame_before_failing="{Max_frame_before_failing}"
-                Min_detections_before_success="{Min_detection_before_success}"
-                Confidence="{Confidence}"
-                Max_depth="{Max_depth}"
-                Object_class="{Object}"
-                Camera="1"/>
-      <Sequence>
-        <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="0.0"
-                 positionY="0.0"
-                 positionZ="0.0"
-                 orientationX="0.0"
-                 orientationY="0.0"
-                 orientationZ="30"/>
-        <Fallback>
-          <AiFilter Detected_object="{FoundAiDetection}"
-                    Max_time_before_failing_sec="{Max_time_before_failing_sec}"
-                    Max_frame_before_failing="{Max_frame_before_failing}"
-                    Min_detections_before_success="{Min_detection_before_success}"
-                    Confidence="{Confidence}"
-                    Max_depth="{Max_depth}"
-                    Object_class="{Object}"
-                    Camera="1"/>
-          <Sequence>
-            <SubTree ID="MoveSinglePose"
-                     frame="1.0"
-                     positionX="0.0"
-                     positionY="0.0"
-                     positionZ="0.0"
-                     orientationX="0.0"
-                     orientationY="0.0"
-                     orientationZ="-60"/>
-            <Fallback>
-              <AiFilter Detected_object="{FoundAiDetection}"
-                        Max_time_before_failing_sec="{Max_time_before_failing_sec}"
-                        Max_frame_before_failing="{Max_frame_before_failing}"
-                        Min_detections_before_success="{Min_detection_before_success}"
-                        Confidence="{Confidence}"
-                        Max_depth="{Max_depth}"
-                        Object_class="{Object}"
-                        Camera="1"/>
-              <Sequence>
-                <SubTree ID="MoveSinglePose"
-                         frame="1.0"
-                         positionX="0.0"
-                         positionY="0.0"
-                         positionZ="0.0"
-                         orientationX="0.0"
-                         orientationY="0.0"
-                         orientationZ="-30"/>
-                <Fallback>
-                  <AiFilter Detected_object="{FoundAiDetection}"
-                            Max_time_before_failing_sec="{Max_time_before_failing_sec}"
-                            Max_frame_before_failing="{Max_frame_before_failing}"
-                            Min_detections_before_success="{Min_detection_before_success}"
-                            Confidence="{Confidence}"
-                            Max_depth="{Max_depth}"
-                            Object_class="{Object}"
-                            Camera="1"/>
-                  <Sequence>
-                    <SubTree ID="MoveSinglePose"
-                             frame="1.0"
-                             positionX="0.0"
-                             positionY="0.0"
-                             positionZ="0.0"
-                             orientationX="0.0"
-                             orientationY="0.0"
-                             orientationZ="120"/>
-                    <Fallback>
-                      <AiFilter Detected_object="{FoundAiDetection}"
-                                Max_time_before_failing_sec="{Max_time_before_failing_sec}"
-                                Max_frame_before_failing="{Max_frame_before_failing}"
-                                Min_detections_before_success="{Min_detection_before_success}"
-                                Confidence="{Confidence}"
-                                Max_depth="{Max_depth}"
-                                Object_class="{Object}"
-                                Camera="1"/>
-                      <Sequence>
-                        <SubTree ID="MoveSinglePose"
-                                 frame="1.0"
-                                 positionX="0.0"
-                                 positionY="0.0"
-                                 positionZ="0.0"
-                                 orientationX="0.0"
-                                 orientationY="0.0"
-                                 orientationZ="30"/>
-                        <Fallback>
-                          <AiFilter Detected_object="{FoundAiDetection}"
-                                    Max_time_before_failing_sec="{Max_time_before_failing_sec}"
-                                    Max_frame_before_failing="{Max_frame_before_failing}"
-                                    Min_detections_before_success="{Min_detection_before_success}"
-                                    Confidence="{Confidence}"
-                                    Max_depth="{Max_depth}"
-                                    Object_class="{Object}"
-                                    Camera="1"/>
-                          <Sequence>
-                            <SubTree ID="MoveSinglePose"
-                                     frame="1.0"
-                                     positionX="0.0"
-                                     positionY="0.0"
-                                     positionZ="0.0"
-                                     orientationX="0.0"
-                                     orientationY="0.0"
-                                     orientationZ="30"/>
-                            <Fallback>
-                              <AiFilter Detected_object="{FoundAiDetection}"
-                                        Max_time_before_failing_sec="{Max_time_before_failing_sec}"
-                                        Max_frame_before_failing="{Max_frame_before_failing}"
-                                        Min_detections_before_success="{Min_detection_before_success}"
-                                        Confidence="{Confidence}"
-                                        Max_depth="{Max_depth}"
-                                        Object_class="{Object}"
-                                        Camera="1"/>
-                              <Sequence>
-                                <SubTree ID="MoveSinglePose"
-                                         frame="1.0"
-                                         positionX="0.0"
-                                         positionY="0.0"
-                                         positionZ="0.0"
-                                         orientationX="0.0"
-                                         orientationY="0.0"
-                                         orientationZ="30"/>
-                                <Fallback>
-                                  <AiFilter Detected_object="{FoundAiDetection}"
-                                            Max_time_before_failing_sec="{Max_time_before_failing_sec}"
-                                            Max_frame_before_failing="{Max_frame_before_failing}"
-                                            Min_detections_before_success="{Min_detection_before_success}"
-                                            Confidence="{Confidence}"
-                                            Max_depth="{Max_depth}"
-                                            Object_class="{Object}"
-                                            Camera="1"/>
-                                  <Sequence>
-                                    <SubTree ID="MoveSinglePose"
-                                             frame="1.0"
-                                             positionX="0.0"
-                                             positionY="0.0"
-                                             positionZ="0.0"
-                                             orientationX="0.0"
-                                             orientationY="0.0"
-                                             orientationZ="30"/>
-                                    <Fallback>
-                                      <AiFilter Detected_object="{FoundAiDetection}"
-                                                Max_time_before_failing_sec="{Max_time_before_failing_sec}"
-                                                Max_frame_before_failing="{Max_frame_before_failing}"
-                                                Min_detections_before_success="{Min_detection_before_success}"
-                                                Confidence="{Confidence}"
-                                                Max_depth="{Max_depth}"
-                                                Object_class="{Object}"
-                                                Camera="1"/>
-                                      <Sequence>
-                                        <SubTree ID="MoveSinglePose"
-                                                 frame="1.0"
-                                                 positionX="0.0"
-                                                 positionY="0.0"
-                                                 positionZ="0.0"
-                                                 orientationX="0.0"
-                                                 orientationY="0.0"
-                                                 orientationZ="30"/>
-                                        <Fallback>
-                                          <AiFilter Detected_object="{FoundAiDetection}"
-                                                    Max_time_before_failing_sec="{Max_time_before_failing_sec}"
-                                                    Max_frame_before_failing="{Max_frame_before_failing}"
-                                                    Min_detections_before_success="{Min_detection_before_success}"
-                                                    Confidence="{Confidence}"
-                                                    Max_depth="{Max_depth}"
-                                                    Object_class="{Object}"
-                                                    Camera="1"/>
-                                          <Sequence>
-                                            <SubTree ID="MoveSinglePose"
-                                                     frame="1.0"
-                                                     positionX="0.0"
-                                                     positionY="0.0"
-                                                     positionZ="0.0"
-                                                     orientationX="0.0"
-                                                     orientationY="0.0"
-                                                     orientationZ="30"/>
-                                            <Fallback>
-                                              <AiFilter Detected_object="{FoundAiDetection}"
-                                                        Max_time_before_failing_sec="{Max_time_before_failing_sec}"
-                                                        Max_frame_before_failing="{Max_frame_before_failing}"
-                                                        Min_detections_before_success="{Min_detection_before_success}"
-                                                        Confidence="{Confidence}"
-                                                        Max_depth="{Max_depth}"
-                                                        Object_class="{Object}"
-                                                        Camera="1"/>
-                                              <Sequence>
-                                                <SubTree ID="MoveSinglePose"
-                                                         frame="1.0"
-                                                         positionX="0.0"
-                                                         positionY="0.0"
-                                                         positionZ="0.0"
-                                                         orientationX="0.0"
-                                                         orientationY="0.0"
-                                                         orientationZ="30"/>
-                                                <IfThenElse>
-                                                  <AiFilter Detected_object="{FoundAiDetection}"
-                                                            Max_time_before_failing_sec="{Max_time_before_failing_sec}"
-                                                            Max_frame_before_failing="{Max_frame_before_failing}"
-                                                            Min_detections_before_success="{Min_detection_before_success}"
-                                                            Confidence="{Confidence}"
-                                                            Max_depth="{Max_depth}"
-                                                            Object_class="{Object}"
-                                                            Camera="1"/>
-                                                  <AlwaysFailure/>
-                                                </IfThenElse>
-                                              </Sequence>
-                                            </Fallback>
-                                          </Sequence>
-                                        </Fallback>
-                                      </Sequence>
-                                    </Fallback>
-                                  </Sequence>
-                                </Fallback>
-                              </Sequence>
-                            </Fallback>
-                          </Sequence>
-                        </Fallback>
-                      </Sequence>
-                    </Fallback>
-                  </Sequence>
-                </Fallback>
-              </Sequence>
-            </Fallback>
-          </Sequence>
-        </Fallback>
-      </Sequence>
-    </Fallback>
+    <Sequence>
+      <ScriptCondition code="Max_time_before_failing_sec != 0 || Max_frame_before_failing != 0"/>
+      <Fallback>
+        <AiFilter Detected_object="{FoundAiDetection}"
+                  Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                  Max_frame_before_failing="{Max_frame_before_failing}"
+                  Min_detections_before_success="{Min_detection_before_success}"
+                  Confidence="{Confidence}"
+                  Max_depth="{Max_depth}"
+                  Object_class="{Object}"
+                  Camera="1"/>
+        <Sequence>
+          <SubTree ID="MoveSinglePose"
+                   frame="1.0"
+                   positionX="0.0"
+                   positionY="0.0"
+                   positionZ="0.0"
+                   orientationX="0.0"
+                   orientationY="0.0"
+                   orientationZ="30"/>
+          <Fallback>
+            <AiFilter Detected_object="{FoundAiDetection}"
+                      Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                      Max_frame_before_failing="{Max_frame_before_failing}"
+                      Min_detections_before_success="{Min_detection_before_success}"
+                      Confidence="{Confidence}"
+                      Max_depth="{Max_depth}"
+                      Object_class="{Object}"
+                      Camera="1"/>
+            <Sequence>
+              <SubTree ID="MoveSinglePose"
+                       frame="1.0"
+                       positionX="0.0"
+                       positionY="0.0"
+                       positionZ="0.0"
+                       orientationX="0.0"
+                       orientationY="0.0"
+                       orientationZ="-60"/>
+              <Fallback>
+                <AiFilter Detected_object="{FoundAiDetection}"
+                          Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                          Max_frame_before_failing="{Max_frame_before_failing}"
+                          Min_detections_before_success="{Min_detection_before_success}"
+                          Confidence="{Confidence}"
+                          Max_depth="{Max_depth}"
+                          Object_class="{Object}"
+                          Camera="1"/>
+                <Sequence>
+                  <SubTree ID="MoveSinglePose"
+                           frame="1.0"
+                           positionX="0.0"
+                           positionY="0.0"
+                           positionZ="0.0"
+                           orientationX="0.0"
+                           orientationY="0.0"
+                           orientationZ="-30"/>
+                  <Fallback>
+                    <AiFilter Detected_object="{FoundAiDetection}"
+                              Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                              Max_frame_before_failing="{Max_frame_before_failing}"
+                              Min_detections_before_success="{Min_detection_before_success}"
+                              Confidence="{Confidence}"
+                              Max_depth="{Max_depth}"
+                              Object_class="{Object}"
+                              Camera="1"/>
+                    <Sequence>
+                      <SubTree ID="MoveSinglePose"
+                               frame="1.0"
+                               positionX="0.0"
+                               positionY="0.0"
+                               positionZ="0.0"
+                               orientationX="0.0"
+                               orientationY="0.0"
+                               orientationZ="120"/>
+                      <Fallback>
+                        <AiFilter Detected_object="{FoundAiDetection}"
+                                  Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                                  Max_frame_before_failing="{Max_frame_before_failing}"
+                                  Min_detections_before_success="{Min_detection_before_success}"
+                                  Confidence="{Confidence}"
+                                  Max_depth="{Max_depth}"
+                                  Object_class="{Object}"
+                                  Camera="1"/>
+                        <Sequence>
+                          <SubTree ID="MoveSinglePose"
+                                   frame="1.0"
+                                   positionX="0.0"
+                                   positionY="0.0"
+                                   positionZ="0.0"
+                                   orientationX="0.0"
+                                   orientationY="0.0"
+                                   orientationZ="30"/>
+                          <Fallback>
+                            <AiFilter Detected_object="{FoundAiDetection}"
+                                      Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                                      Max_frame_before_failing="{Max_frame_before_failing}"
+                                      Min_detections_before_success="{Min_detection_before_success}"
+                                      Confidence="{Confidence}"
+                                      Max_depth="{Max_depth}"
+                                      Object_class="{Object}"
+                                      Camera="1"/>
+                            <Sequence>
+                              <SubTree ID="MoveSinglePose"
+                                       frame="1.0"
+                                       positionX="0.0"
+                                       positionY="0.0"
+                                       positionZ="0.0"
+                                       orientationX="0.0"
+                                       orientationY="0.0"
+                                       orientationZ="30"/>
+                              <Fallback>
+                                <AiFilter Detected_object="{FoundAiDetection}"
+                                          Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                                          Max_frame_before_failing="{Max_frame_before_failing}"
+                                          Min_detections_before_success="{Min_detection_before_success}"
+                                          Confidence="{Confidence}"
+                                          Max_depth="{Max_depth}"
+                                          Object_class="{Object}"
+                                          Camera="1"/>
+                                <Sequence>
+                                  <SubTree ID="MoveSinglePose"
+                                           frame="1.0"
+                                           positionX="0.0"
+                                           positionY="0.0"
+                                           positionZ="0.0"
+                                           orientationX="0.0"
+                                           orientationY="0.0"
+                                           orientationZ="30"/>
+                                  <Fallback>
+                                    <AiFilter Detected_object="{FoundAiDetection}"
+                                              Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                                              Max_frame_before_failing="{Max_frame_before_failing}"
+                                              Min_detections_before_success="{Min_detection_before_success}"
+                                              Confidence="{Confidence}"
+                                              Max_depth="{Max_depth}"
+                                              Object_class="{Object}"
+                                              Camera="1"/>
+                                    <Sequence>
+                                      <SubTree ID="MoveSinglePose"
+                                               frame="1.0"
+                                               positionX="0.0"
+                                               positionY="0.0"
+                                               positionZ="0.0"
+                                               orientationX="0.0"
+                                               orientationY="0.0"
+                                               orientationZ="30"/>
+                                      <Fallback>
+                                        <AiFilter Detected_object="{FoundAiDetection}"
+                                                  Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                                                  Max_frame_before_failing="{Max_frame_before_failing}"
+                                                  Min_detections_before_success="{Min_detection_before_success}"
+                                                  Confidence="{Confidence}"
+                                                  Max_depth="{Max_depth}"
+                                                  Object_class="{Object}"
+                                                  Camera="1"/>
+                                        <Sequence>
+                                          <SubTree ID="MoveSinglePose"
+                                                   frame="1.0"
+                                                   positionX="0.0"
+                                                   positionY="0.0"
+                                                   positionZ="0.0"
+                                                   orientationX="0.0"
+                                                   orientationY="0.0"
+                                                   orientationZ="30"/>
+                                          <Fallback>
+                                            <AiFilter Detected_object="{FoundAiDetection}"
+                                                      Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                                                      Max_frame_before_failing="{Max_frame_before_failing}"
+                                                      Min_detections_before_success="{Min_detection_before_success}"
+                                                      Confidence="{Confidence}"
+                                                      Max_depth="{Max_depth}"
+                                                      Object_class="{Object}"
+                                                      Camera="1"/>
+                                            <Sequence>
+                                              <SubTree ID="MoveSinglePose"
+                                                       frame="1.0"
+                                                       positionX="0.0"
+                                                       positionY="0.0"
+                                                       positionZ="0.0"
+                                                       orientationX="0.0"
+                                                       orientationY="0.0"
+                                                       orientationZ="30"/>
+                                              <Fallback>
+                                                <AiFilter Detected_object="{FoundAiDetection}"
+                                                          Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                                                          Max_frame_before_failing="{Max_frame_before_failing}"
+                                                          Min_detections_before_success="{Min_detection_before_success}"
+                                                          Confidence="{Confidence}"
+                                                          Max_depth="{Max_depth}"
+                                                          Object_class="{Object}"
+                                                          Camera="1"/>
+                                                <Sequence>
+                                                  <SubTree ID="MoveSinglePose"
+                                                           frame="1.0"
+                                                           positionX="0.0"
+                                                           positionY="0.0"
+                                                           positionZ="0.0"
+                                                           orientationX="0.0"
+                                                           orientationY="0.0"
+                                                           orientationZ="30"/>
+                                                  <IfThenElse>
+                                                    <AiFilter Detected_object="{FoundAiDetection}"
+                                                              Max_time_before_failing_sec="{Max_time_before_failing_sec}"
+                                                              Max_frame_before_failing="{Max_frame_before_failing}"
+                                                              Min_detections_before_success="{Min_detection_before_success}"
+                                                              Confidence="{Confidence}"
+                                                              Max_depth="{Max_depth}"
+                                                              Object_class="{Object}"
+                                                              Camera="1"/>
+                                                    <AlwaysFailure/>
+                                                  </IfThenElse>
+                                                </Sequence>
+                                              </Fallback>
+                                            </Sequence>
+                                          </Fallback>
+                                        </Sequence>
+                                      </Fallback>
+                                    </Sequence>
+                                  </Fallback>
+                                </Sequence>
+                              </Fallback>
+                            </Sequence>
+                          </Fallback>
+                        </Sequence>
+                      </Fallback>
+                    </Sequence>
+                  </Fallback>
+                </Sequence>
+              </Fallback>
+            </Sequence>
+          </Fallback>
+        </Sequence>
+      </Fallback>
+    </Sequence>
   </BehaviorTree>
 
   <BehaviorTree ID="SendTrajectoryOnly">
