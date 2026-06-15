@@ -237,14 +237,8 @@
 
   <BehaviorTree ID="Trickshot">
     <Sequence>
-      <SubTree ID="MoveSinglePose"
-               frame="4"
-               positionX="0.0"
-               positionY="0.0"
-               positionZ="1.5"
-               orientationX="0.0"
-               orientationY="0.0"
-               orientationZ="0.0"/>
+      <SubTree ID="InitialSubmerge"
+               Depth="1.5"/>
       <InitializeTrajectory trajectory="{traj}"/>
       <TrajectoryAppendPose trajectory="{traj}"
                             positionX="0.000000"
@@ -453,23 +447,6 @@
       <output_port name="trajectory"
                    type="Trajectory"/>
     </Action>
-    <SubTree ID="MoveSinglePose"
-             editable="true">
-      <input_port name="frame"
-                  default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
-      <input_port name="positionX"
-                  default="0.0">x value to go</input_port>
-      <input_port name="positionY"
-                  default="0.0">y value to go</input_port>
-      <input_port name="positionZ"
-                  default="0.0">z value to go</input_port>
-      <input_port name="orientationX"
-                  default="0.0">z orientation to go</input_port>
-      <input_port name="orientationY"
-                  default="0.0">y orientation to go</input_port>
-      <input_port name="orientationZ"
-                  default="0.0">rotation in Z to give to the sub</input_port>
-    </SubTree>
     <Action ID="MoveToObject">
       <input_port name="Offset"
                   type="float"/>
