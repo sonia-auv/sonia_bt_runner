@@ -15,6 +15,7 @@ namespace vision {
             {
                 return {
                     // Inputs
+                    BT::InputPort<int>("Camera", 1, "1: Front, 0: Bottom"),
                     BT::InputPort<std::string>("Side", "", "The passing side for the slalom"),
                     BT::InputPort<float>("Confidence", 0.6, "Ai confidence"),
                     BT::InputPort<float>("Max_depth", 25.0, "Maximum allowed depth"),

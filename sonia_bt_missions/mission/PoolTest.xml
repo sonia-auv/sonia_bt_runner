@@ -6,13 +6,15 @@
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"/>
-      <SlalomAiFilter Confidence="0.600000"
-                      Max_depth="25.000000"
-                      Min_detections_before_success="2"
+      <SlalomAiFilter White_slalom="{white_detection}"
                       Max_time_before_failing_sec="0.000000"
                       Max_frame_before_failing="0"
+                      Min_detections_before_success="2"
+                      Max_depth="25.000000"
                       Red_slalom="{red_detection}"
-                      White_slalom="{white_detection}"/>
+                      Confidence="0.600000"
+                      Side="left"
+                      Camera="1"/>
       <ComputeTrajectoryBetweenDetections Trajectory="{traj}"
                                           PositionX="10.000000"
                                           DetectionB="{red_detection}"
@@ -244,25 +246,30 @@
                   default="25">Max distance to detect an object</input_port>
     </SubTree>
     <Action ID="SlalomAiFilter">
-      <input_port name="Confidence"
-                  default="0.600000"
-                  type="float">Ai confidence</input_port>
-      <input_port name="Max_depth"
-                  default="25.000000"
-                  type="float">Maximum allowed depth</input_port>
-      <input_port name="Min_detections_before_success"
-                  default="2"
-                  type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+      <output_port name="White_slalom"
+                   type="AiDetection"/>
       <input_port name="Max_time_before_failing_sec"
                   default="0.000000"
                   type="float">Maximum allowed time in ms before failing the object research</input_port>
       <input_port name="Max_frame_before_failing"
                   default="0"
                   type="int">Maximum allowed frames before failing the object research</input_port>
+      <input_port name="Min_detections_before_success"
+                  default="2"
+                  type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+      <input_port name="Max_depth"
+                  default="25.000000"
+                  type="float">Maximum allowed depth</input_port>
       <output_port name="Red_slalom"
                    type="AiDetection"/>
-      <output_port name="White_slalom"
-                   type="AiDetection"/>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Ai confidence</input_port>
+      <input_port name="Side"
+                  type="std::string">The passing side for the slalom</input_port>
+      <input_port name="Camera"
+                  default="1"
+                  type="int">1: Front, 0: Bottom</input_port>
     </Action>
   </TreeNodesModel>
 
