@@ -46,7 +46,15 @@ MissionServer::MissionServer()
 
 			while (!BT::isStatusCompleted(_result))
 			{
-				_result = _tree.tickExactlyOnce(); 
+				try {
+					_result = _tree.tickExactlyOnce();
+				} catch (const std::exception& e) {
+					RCLCPP_INFO(this->get_logger(), "An exception during the execution of the mission occured: %s", e.what());
+					res->success = false;
+					_result = NodeStatus::FAILURE;
+
+					break;
+				}
 
 				if(goal->is_canceling()) {
 					res->success = false;
