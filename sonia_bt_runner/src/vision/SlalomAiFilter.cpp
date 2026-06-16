@@ -98,6 +98,7 @@ namespace vision {
         // I put those two parameter to do the test of witch one we're gonna use.
         _max_frame_before_failing = getInput<int>("Max_frame_number_before_failing");
         _max_time_before_failing = getInput<float>("Max_time_before_failing_sec");
+        _object = "RED_SLALOM";
     }
 
     void SlalomAiFilter::setting_output()
