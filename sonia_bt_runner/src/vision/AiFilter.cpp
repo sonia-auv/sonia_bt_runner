@@ -84,11 +84,13 @@ namespace vision{
 
     void AiFilter::initialize_subscriber()
     {
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter initialize_subscriber started");
         if(_cam.value())
             _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/front/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
         else
             _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/bottom/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
         _launch_time = std::chrono::system_clock::now();
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter initialize_subscriber stopped");
     }
 
     void AiFilter::delete_subscriber()
