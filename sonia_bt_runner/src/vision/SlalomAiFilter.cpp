@@ -12,6 +12,7 @@ namespace vision {
     BT::NodeStatus SlalomAiFilter::onStart()
     {
         RCLCPP_INFO(_ros_node->get_logger(), "SlalomAiFilter onStart");
+        
         stock_input_parameters();
 
         if (!initial_condition_verification()) {
@@ -103,6 +104,7 @@ namespace vision {
 
     void SlalomAiFilter::stock_input_parameters()
     {
+        RCLCPP_INFO(_ros_node->get_logger(), "Start stock input parameters");
         // We go get the information in the behavior tree
         _side = getInput<std::string>("Side");
         _cam = getInput<int>("Camera");
@@ -113,6 +115,7 @@ namespace vision {
         // I put those two parameter to do the test of witch one we're gonna use.
         _max_frame_before_failing = getInput<int>("Max_frame_number_before_failing");
         _max_time_before_failing = getInput<float>("Max_time_before_failing_sec");
+        RCLCPP_INFO(_ros_node->get_logger(), "Stop stock input parameters");
 
     }
 
