@@ -36,9 +36,9 @@ MissionServer::MissionServer()
         _node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;    
     }
 
-	void MissionServer::launchMission()
-    {
-		auto threadHandler = ->() {
+	std::shared_ptr<MissionControl::Result> MissionServer::launchMission(const std::shared_ptr<GoalHandle> goal, std_msgs::msg::String &rep) {
+		auto res = std::make_shared<MissionControl::Result>();
+		auto thread_handler = [&]() -> void {
 			RCLCPP_INFO(this->get_logger(), "Mission launched"); 
 
 			rep.data= "Mission launched....";
@@ -60,40 +60,20 @@ MissionServer::MissionServer()
 
 			RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(_result).c_str());
 			RCLCPP_INFO(this->get_logger(), "----------------");
-		}
+		};
 
-		std::thread missionThread(threadHandler);
+		std::thread mission_thread(thread_handler);
 
-		missionThread.join();
+		mission_thread.join();
+
+		return res;
     }
 
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal){
-        auto res = std::make_shared<MissionControl::Result>();
         std_msgs::msg::String rep;
         _result=NodeStatus::RUNNING;
         Tracker trac(_tree, goal); 
-
-		launchMission();
-
-        // RCLCPP_INFO(this->get_logger(), "Mission launched"); 
-        // rep.data= "Mission launched....";
-        // _pub_status->publish(rep);
-        // 
-        // while (!BT::isStatusCompleted(_result))
-        // { 
-        //     _result = _tree.tickExactlyOnce(); 
-        //   
-        //     if(goal->is_canceling()){
-        //         res->success = false;
-        //         goal->canceled(res);
-        //         clearFactory("Mission Cancelled");
-        //         return;
-        //     }
-        //     _tree.sleep(std::chrono::milliseconds(_TICK_SLEEP_TIME));
-        // }
-
-        // RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(_result).c_str());
-        // RCLCPP_INFO(this->get_logger(), "----------------");
+	auto res = launchMission(goal, rep);
 
         res->success = (_result == NodeStatus::SUCCESS);
         goal->succeed(res);
