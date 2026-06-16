@@ -29,6 +29,8 @@ namespace vision {
                 };
             }
 
+            BT::NodeStatus onStart() override;
+
 		protected:
 			std::vector<sonia_common_ros2::msg::Detection> _detection_array_white_slalom;
             BT::Expected<std::string> _side;

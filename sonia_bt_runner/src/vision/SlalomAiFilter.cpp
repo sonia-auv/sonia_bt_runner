@@ -9,6 +9,20 @@ namespace vision {
 {}
 
 
+    BT::NodeStatus SlalomAiFilter::onStart()
+    {
+        stock_input_parameters();
+
+        if (!initial_condition_verification()) {
+            return BT::NodeStatus::FAILURE;
+        }
+
+        initialize_subscriber();
+
+        return BT::NodeStatus::RUNNING;
+
+    }
+
     void SlalomAiFilter::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg)
     {
        RCLCPP_INFO(_ros_node->get_logger(), "SlalomAiFilter callback running");
@@ -98,7 +112,7 @@ namespace vision {
         // I put those two parameter to do the test of witch one we're gonna use.
         _max_frame_before_failing = getInput<int>("Max_frame_number_before_failing");
         _max_time_before_failing = getInput<float>("Max_time_before_failing_sec");
-        _object = "RED_SLALOM";
+
     }
 
     void SlalomAiFilter::setting_output()
