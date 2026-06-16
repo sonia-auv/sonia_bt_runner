@@ -12,3 +12,4 @@
 #include "sonia_bt_runner/navigation/SavePoint.hpp"
 #include "sonia_bt_runner/navigation/MoveToPoint.hpp"
 #include "sonia_bt_runner/navigation/ComputeTrajectoryBetweenDetections.hpp"
+#include "sonia_bt_runner/navigation/SplitTrajectory.hpp"
