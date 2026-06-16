@@ -58,6 +58,12 @@ class MissionServer : public rclcpp::Node{
          */
         void clearFactory(const std::string log);
 
+		/**
+		 *
+		 * @brief Execute the mission on a separated thread, to prevent crash from the mission take down the server.
+		 */
+		void launchMission();
+
         /**
          * @brief Executes the requested mission once its accepted by the handler.
          * @param goal mission to be executed.

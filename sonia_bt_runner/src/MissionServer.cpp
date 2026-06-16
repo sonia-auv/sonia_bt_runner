@@ -36,31 +36,64 @@ MissionServer::MissionServer()
         _node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;    
     }
 
+	void MissionServer::launchMission()
+    {
+		auto threadHandler = ->() {
+			RCLCPP_INFO(this->get_logger(), "Mission launched"); 
+
+			rep.data= "Mission launched....";
+			_pub_status->publish(rep);
+
+			while (!BT::isStatusCompleted(_result))
+			{
+				_result = _tree.tickExactlyOnce(); 
+
+				if(goal->is_canceling()) {
+					res->success = false;
+					goal->canceled(res);
+					clearFactory("Mission Cancelled");
+					return;
+				}
+
+				_tree.sleep(std::chrono::milliseconds(_TICK_SLEEP_TIME));
+			}
+
+			RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(_result).c_str());
+			RCLCPP_INFO(this->get_logger(), "----------------");
+		}
+
+		std::thread missionThread(threadHandler);
+
+		missionThread.join();
+    }
+
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal){
         auto res = std::make_shared<MissionControl::Result>();
         std_msgs::msg::String rep;
         _result=NodeStatus::RUNNING;
         Tracker trac(_tree, goal); 
 
-        RCLCPP_INFO(this->get_logger(), "Mission launched"); 
-        rep.data= "Mission launched....";
-        _pub_status->publish(rep);
-        
-        while (!BT::isStatusCompleted(_result))
-        { 
-            _result = _tree.tickExactlyOnce(); 
-          
-            if(goal->is_canceling()){
-                res->success = false;
-                goal->canceled(res);
-                clearFactory("Mission Cancelled");
-                return;
-            }
-            _tree.sleep(std::chrono::milliseconds(_TICK_SLEEP_TIME));
-        }
+		launchMission();
 
-        RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(_result).c_str());
-        RCLCPP_INFO(this->get_logger(), "----------------");
+        // RCLCPP_INFO(this->get_logger(), "Mission launched"); 
+        // rep.data= "Mission launched....";
+        // _pub_status->publish(rep);
+        // 
+        // while (!BT::isStatusCompleted(_result))
+        // { 
+        //     _result = _tree.tickExactlyOnce(); 
+        //   
+        //     if(goal->is_canceling()){
+        //         res->success = false;
+        //         goal->canceled(res);
+        //         clearFactory("Mission Cancelled");
+        //         return;
+        //     }
+        //     _tree.sleep(std::chrono::milliseconds(_TICK_SLEEP_TIME));
+        // }
+
+        // RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(_result).c_str());
+        // RCLCPP_INFO(this->get_logger(), "----------------");
 
         res->success = (_result == NodeStatus::SUCCESS);
         goal->succeed(res);
