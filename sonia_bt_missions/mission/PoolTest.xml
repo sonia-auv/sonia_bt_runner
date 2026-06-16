@@ -2,18 +2,21 @@
 <root BTCPP_format="4">
   <BehaviorTree ID="Pool000DriftMove">
     <Sequence>
-      <SubTree ID="AutomaticInitialSubmerge"
-               Depth="0.5"/>
-      <Repeat num_cycles="4">
-        <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="0.0"
-                 positionY="-1.57"
-                 positionZ="0.0"
-                 orientationX="0.0"
-                 orientationY="0.0"
-                 orientationZ="90"/>
-      </Repeat>
+      <InitializeTrajectory trajectory="{Traj}"/>
+      <AiActivation Model="0"
+                    Bottom="false"
+                    Front="true"/>
+      <SlalomAiFilter Confidence="0.600000"
+                      Max_depth="25.000000"
+                      Min_detections_before_success="2"
+                      Max_time_before_failing_sec="0.000000"
+                      Max_frame_before_failing="0"
+                      Red_slalom="{red_detection}"
+                      White_slalom="{white_detection}"/>
+      <ComputeTrajectoryBetweenDetections Trajectory="{traj}"
+                                          PositionX="10.000000"
+                                          DetectionB="{red_detection}"
+                                          DetectionA="{white_detection}"/>
     </Sequence>
   </BehaviorTree>
 
@@ -193,6 +196,21 @@
       <input_port name="Depth"
                   default="1">Depth that the sub will submerge</input_port>
     </SubTree>
+    <Action ID="ComputeTrajectoryBetweenDetections">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="PositionX"
+                  default="10.000000"
+                  type="float">Forward distance to travel after centering between the two detections</input_port>
+      <input_port name="DetectionB"
+                  type="AiDetection"/>
+      <input_port name="DetectionA"
+                  type="AiDetection"/>
+    </Action>
+    <Action ID="InitializeTrajectory">
+      <output_port name="trajectory"
+                   type="Trajectory"/>
+    </Action>
     <SubTree ID="MoveSinglePose"
              editable="true">
       <input_port name="frame"
@@ -225,6 +243,27 @@
       <input_port name="Max_depth"
                   default="25">Max distance to detect an object</input_port>
     </SubTree>
+    <Action ID="SlalomAiFilter">
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Ai confidence</input_port>
+      <input_port name="Max_depth"
+                  default="25.000000"
+                  type="float">Maximum allowed depth</input_port>
+      <input_port name="Min_detections_before_success"
+                  default="2"
+                  type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+      <input_port name="Max_time_before_failing_sec"
+                  default="0.000000"
+                  type="float">Maximum allowed time in ms before failing the object research</input_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0"
+                  type="int">Maximum allowed frames before failing the object research</input_port>
+      <output_port name="Red_slalom"
+                   type="AiDetection"/>
+      <output_port name="White_slalom"
+                   type="AiDetection"/>
+    </Action>
   </TreeNodesModel>
 
 </root>
