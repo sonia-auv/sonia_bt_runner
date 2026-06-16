@@ -5,7 +5,7 @@
 using std::placeholders::_1;
 namespace vision{
     AiFilter::AiFilter(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    :BT::StatefulActionNode(name, config), _ros_node(node), _detection_array(), _timout_counter{}, _launch_time()
+    :BT::StatefulActionNode(name, config), _launch_time(), _ros_node(node), _detection_array(), _timout_counter{}
     {
     }
 
@@ -24,34 +24,6 @@ namespace vision{
         initialize_subscriber();
 
         return BT::NodeStatus::RUNNING;
-    }
-
-    BT::NodeStatus AiFilter::get_detection_status(const std::string& object, const float confidence, const float max_depth)
-    {
-        //We set the value for the detection
-        _object_filter = object;
-        _confidence_filter = confidence;
-        _max_depth_filter = max_depth;
-        std::chrono::duration<double> diff = std::chrono::system_clock::now() - _start_time;
-        float time_diff = diff.count();
-        RCLCPP_INFO(_ros_node->get_logger(), "Get detection status");
-        RCLCPP_INFO(_ros_node->get_logger(), "detection_array_size = %ld, min_detection = %ld", _detection_array.size(), _detection_number_for_average.value());
-
-		if (_max_frame_before_failing.value() != 0 && _timout_counter > _max_frame_before_failing.value()) {
-			RCLCPP_INFO(_ros_node->get_logger(), "max frame = %d, We don't find what we are looking for.", _max_frame_before_failing.value());
-
-            return BT::NodeStatus::FAILURE;
-		} else if (_max_time_before_failing.value() != 0.0f && time_diff > _max_time_before_failing.value()) {
-			RCLCPP_INFO(_ros_node->get_logger(), "max time = %f, We don't find what we are looking for.", _max_time_before_failing.value());
-
-            return BT::NodeStatus::FAILURE;
-		} else if (_detection_array.size() < (size_t)_detection_number_for_average.value()) {
-			RCLCPP_INFO(_ros_node->get_logger(), "We don't have yet the number of detection we want");
-
-            return BT::NodeStatus::RUNNING;
-		}
-        
-		return BT::NodeStatus::SUCCESS;
     }
 
     BT::NodeStatus AiFilter::onRunning()
@@ -89,7 +61,7 @@ namespace vision{
 
     bool AiFilter::set_filter_parameter(const std::string& object, const float confidence, const float max_depth)
     {
-        if (!verifyObject(object).has_value()) {
+        if (!verifyObject(object)) {
             RCLCPP_INFO(_ros_node->get_logger(), "The detected object is not a valid name of type of detection. Syntaxe error");
             return false;
         }
@@ -132,14 +104,17 @@ namespace vision{
         // We now wait for the detection
         if (_detection_array.size() >= (size_t)_detection_number_for_average.value())
         {
+            RCLCPP_INFO(_ros_node->get_logger(), "Found enough detections: %ld", _detection_array.size());
             return BT::NodeStatus::SUCCESS;
         }
         else if (_max_time_before_failing.value() != 0.0f && time_diff >= _max_time_before_failing.value())
         {
+            RCLCPP_INFO(_ros_node->get_logger(), "max time = %f, We don't find what we are looking for.", _max_time_before_failing.value());
             return BT::NodeStatus::FAILURE;
         }
         else if (_max_frame_before_failing.value() != 0 && _timout_counter >= _max_frame_before_failing.value())
         {
+            RCLCPP_INFO(_ros_node->get_logger(), "max frame = %d, We don't find what we are looking for.", _max_frame_before_failing.value());
             return BT::NodeStatus::FAILURE;
         }
 

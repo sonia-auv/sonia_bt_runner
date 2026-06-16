@@ -36,8 +36,7 @@ namespace vision{
 
         private:
             rclcpp::Subscription<sonia_common_ros2::msg::DetectionArray>::SharedPtr _ai_filter_sub;
-            // std::chrono::_V2::system_clock::time_point _launch_time;
-            // float _time_diff;
+            std::chrono::_V2::system_clock::time_point _launch_time;
             
         protected:
             std::shared_ptr<rclcpp::Node> _ros_node;
@@ -45,7 +44,7 @@ namespace vision{
             float _confidence_filter;
             float _max_depth_filter;
             std::vector<sonia_common_ros2::msg::Detection> _detection_array;
-            int _timout_counter = 0;
+            int _timout_counter;
 			std::chrono::_V2::system_clock::time_point _start_time;
             BT::Expected<int> _cam;
             BT::Expected<std::string> _object;
