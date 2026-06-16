@@ -61,6 +61,12 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
     TrajectoryPose p3{};
     p2.positionX = getInput<float>("PositionX").value();
     p2.frame = 1;
+    RCLCPP_INFO(_ros_node->get_logger(),
+                "ComputeTrajectoryBetweenDetections: p0.positionX=%.2f p0.positionY=%.2f p0.positionZ=%.2f p0.orientationX=%.2f p0.orientationY=%.2f p0.orientationZ=%.2f",
+                p0.positionX, p0.positionY, p0.positionZ, p0.orientationX, p0.orientationY, p0.orientationZ);
+    RCLCPP_INFO(_ros_node->get_logger(),
+                "ComputeTrajectoryBetweenDetections: rot_to_cen_angle=%.2f cen_slalom_dist=%.2f slalom_orientation=%.2f",
+                rot_to_cen_angle, cen_slalom_dist, slalom_orientation);
 
     Trajectory traj = getInput<Trajectory>("Trajectory").value();
     traj.trajectory.push_back(p0);
