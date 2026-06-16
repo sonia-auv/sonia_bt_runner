@@ -11,6 +11,7 @@ namespace vision {
 
     BT::NodeStatus SlalomAiFilter::onStart()
     {
+        RCLCPP_INFO(_ros_node->get_logger(), "SlalomAiFilter onStart");
         stock_input_parameters();
 
         if (!initial_condition_verification()) {
