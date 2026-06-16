@@ -49,7 +49,7 @@ MissionServer::MissionServer()
 				try {
 					_result = _tree.tickExactlyOnce();
 				} catch (const std::exception& e) {
-					RCLCPP_INFO(this->get_logger(), "An exception during the execution of the mission occured: %s", e.what());
+					RCLCPP_INFO(this->get_logger(), "An exception occured during the execution of the mission: %s", e.what());
 					res->success = false;
 					_result = NodeStatus::FAILURE;
 
