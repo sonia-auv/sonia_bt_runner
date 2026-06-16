@@ -2,7 +2,7 @@
 <root BTCPP_format="4">
   <BehaviorTree ID="Pool000DriftMove">
     <Sequence>
-      <InitializeTrajectory trajectory="{Traj}"/>
+      <InitializeTrajectory trajectory="{traj}"/>
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"/>
