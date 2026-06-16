@@ -72,8 +72,8 @@ MissionServer::MissionServer()
     void MissionServer::execute(const std::shared_ptr<GoalHandle> goal){
         std_msgs::msg::String rep;
         _result=NodeStatus::RUNNING;
-        Tracker trac(_tree, goal); 
-	auto res = launchMission(goal, rep);
+        Tracker trac(_tree, goal);
+		auto res = launchMission(goal, rep);
 
         res->success = (_result == NodeStatus::SUCCESS);
         goal->succeed(res);
