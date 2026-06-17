@@ -36,7 +36,7 @@ namespace vision {
 
         for (auto msg_obj : msg.detected_object) {
             // We first detect the closest red slalom on the image
-            if (msg_obj.class_name.compare("RED_SLALOM") == 0
+            if (msg_obj.class_name.compare("COMPASS") == 0
              && msg_obj.confidence >= _confidence_filter
              && msg_obj.distance <= _max_depth_filter
              && (!closest_red_slalom || closest_red_slalom.value().distance >= msg_obj.distance))
@@ -45,7 +45,7 @@ namespace vision {
             }
 
             // We detect the whites slaloms
-            if (msg_obj.class_name.compare("WHITE_SLALOM") == 0
+            if (msg_obj.class_name.compare("TOOLS") == 0
                 && msg_obj.confidence >= _confidence_filter
                 && msg_obj.distance <= _max_depth_filter)
             {

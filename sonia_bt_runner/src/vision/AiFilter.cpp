@@ -11,6 +11,7 @@ namespace vision{
 
     BT::NodeStatus AiFilter::onStart()
     {
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter OnStart start");
         stock_input_parameters();
 
         if (!set_filter_parameter(_object.value(), _confidence.value(), _max_depth.value())) {
@@ -23,21 +24,32 @@ namespace vision{
 
         initialize_subscriber();
 
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter OnStart finish");
         return BT::NodeStatus::RUNNING;
     }
 
     BT::NodeStatus AiFilter::onRunning()
     {
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter OnRunning start");
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter get_detection_status start");
         BT::NodeStatus detection_status = get_detection_status();
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter get_detection_status stop");
         if(detection_status == BT::NodeStatus::SUCCESS) {
+            RCLCPP_INFO(_ros_node->get_logger(), "AiFilter detection success start");
+
+            
+            RCLCPP_INFO(_ros_node->get_logger(), "AiFilter delete subscriber start");
             delete_subscriber();
 
             RCLCPP_INFO(_ros_node->get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
 
             applicate_box_plot_to_detections();
+            RCLCPP_INFO(_ros_node->get_logger(), "AiFilter applicate_box_plot_to_detections stop");
 
             setting_output();
+            RCLCPP_INFO(_ros_node->get_logger(), "AiFilter setting_output start");
         }
+
         return detection_status;
     }
 
@@ -84,13 +96,11 @@ namespace vision{
 
     void AiFilter::initialize_subscriber()
     {
-        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter initialize_subscriber started");
         if(_cam.value())
             _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/front/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
         else
             _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/bottom/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
         _launch_time = std::chrono::system_clock::now();
-        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter initialize_subscriber stopped");
     }
 
     void AiFilter::delete_subscriber()

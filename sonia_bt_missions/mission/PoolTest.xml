@@ -1,159 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
-  <BehaviorTree ID="Pool000DriftMove">
+  <BehaviorTree ID="AirTestSlalom">
     <Sequence>
       <InitializeTrajectory trajectory="{traj}"/>
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"/>
-      <SlalomAiFilter White_slalom="{white_detection}"
+      <SlalomAiFilter White_slalom="{detA}"
                       Max_time_before_failing_sec="0.000000"
                       Max_frame_before_failing="0"
                       Min_detections_before_success="2"
                       Max_depth="25.000000"
-                      Red_slalom="{red_detection}"
+                      Red_slalom="{detB}"
                       Confidence="0.600000"
                       Side="left"
                       Camera="1"/>
       <ComputeTrajectoryBetweenDetections Trajectory="{traj}"
                                           PositionX="10.000000"
-                                          DetectionB="{red_detection}"
-                                          DetectionA="{white_detection}"/>
+                                          DetectionB="{detB}"
+                                          DetectionA="{detA}"/>
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="Pool00PreQual">
+  <BehaviorTree ID="AirTestTraj">
     <Sequence>
-      <SubTree ID="AutomaticInitialSubmerge"
-               Depth="1"/>
-      <Sequence name="Move towards to boey">
-        <Repeat num_cycles="4">
-          <SubTree ID="MoveSinglePose"
-                   frame="1.0"
-                   positionX="3"
-                   positionY="0.0"
-                   positionZ="0.0"
-                   orientationX="0.0"
-                   orientationY="0.0"
-                   orientationZ="0.0"/>
-        </Repeat>
-      </Sequence>
-      <Sequence name="Move arround the bowey">
-        <Sequence>
-          <Repeat num_cycles="3">
-            <Sequence>
-              <SubTree ID="MoveSinglePose"
-                       frame="1.0"
-                       positionX="1.5"
-                       positionY="0.0"
-                       positionZ="0.0"
-                       orientationX="0.0"
-                       orientationY="0.0"
-                       orientationZ="0.0"/>
-              <SubTree ID="MoveSinglePose"
-                       frame="1.0"
-                       positionX="0.0"
-                       positionY="0.0"
-                       positionZ="0.0"
-                       orientationX="0.0"
-                       orientationY="0.0"
-                       orientationZ="90"/>
-            </Sequence>
-          </Repeat>
-          <SubTree ID="MoveSinglePose"
-                   frame="1.0"
-                   positionX="1.5"
-                   positionY="0.0"
-                   positionZ="0.0"
-                   orientationX="0.0"
-                   orientationY="0.0"
-                   orientationZ="0.0"/>
-          <SubTree ID="MoveSinglePose"
-                   frame="1.0"
-                   positionX="0.0"
-                   positionY="0.0"
-                   positionZ="0.0"
-                   orientationX="0.0"
-                   orientationY="0.0"
-                   orientationZ="-90"/>
-        </Sequence>
-      </Sequence>
-      <Sequence name="Return Home">
-        <Repeat num_cycles="4">
-          <SubTree ID="MoveSinglePose"
-                   frame="1.0"
-                   positionX="3"
-                   positionY="0.0"
-                   positionZ="0.0"
-                   orientationX="0.0"
-                   orientationY="0.0"
-                   orientationZ="0.0"/>
-        </Repeat>
-      </Sequence>
-    </Sequence>
-  </BehaviorTree>
-
-  <BehaviorTree ID="Pool01AiFront">
-    <Sequence>
-      <SubTree ID="AutomaticInitialSubmerge"
-               Depth="0.2"/>
+      <InitializeTrajectory trajectory="{traj}"/>
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"/>
-      <IfThenElse>
-        <AiFilter Detected_object="{AiDetection}"
-                  Max_time_before_failing_sec="0.000000"
-                  Max_frame_before_failing="300"
-                  Min_detections_before_success="5"
-                  Confidence="0.60000"
-                  Max_depth="25"
-                  Object_class="gate-shark"
-                  Camera="1"/>
-        <SubTree ID="MissionSuccess"/>
-        <SubTree ID="MissionFailed"/>
-      </IfThenElse>
+      <AiFilter Detected_object="{AiDetection}"
+                Max_time_before_failing_sec="0.000000"
+                Max_frame_before_failing="0"
+                Min_detections_before_success="2"
+                Confidence="0.600000"
+                Max_depth="15.000000"
+                Object_class="COMPASS"
+                Camera="1"/>
+      <FaceTheObject Trajectory="{traj}"
+                     Detection="{AiDetection}"/>
+      <MoveToObject Offset="1"
+                    Trajectory="{traj}"
+                    Detection="{AiDetection}"/>
+      <ObjectDrifting Trajectory="{traj}"
+                      Detection="{AiDetection}"/>
+      <TorpedoAiming Trajectory="{traj}"
+                     TargetOffset="0.6"
+                     LaunchingSide="sub"
+                     Detection="{AiDetection}"/>
     </Sequence>
-  </BehaviorTree>
-
-  <BehaviorTree ID="Pool02AiBottom">
-    <Sequence>
-      <SubTree ID="AutomaticInitialSubmerge"
-               Depth="1"/>
-      <AiActivation Model="0"
-                    Bottom="true"
-                    Front="false"/>
-      <IfThenElse>
-        <AiFilter Detected_object="{AiDetection}"
-                  Max_time_before_failing_sec="0.000000"
-                  Max_frame_before_failing="300"
-                  Min_detections_before_success="5"
-                  Confidence="0.600000"
-                  Max_depth="25"
-                  Object_class="shark"
-                  Camera="0"/>
-        <SubTree ID="MissionSuccess"/>
-        <SubTree ID="MissionFailed"/>
-      </IfThenElse>
-    </Sequence>
-  </BehaviorTree>
-
-  <BehaviorTree ID="Pool03Search">
-    <IfThenElse>
-      <Sequence>
-        <SubTree ID="AutomaticInitialSubmerge"
-                 Depth="0.5"/>
-        <SubTree ID="SearchObjectByRotation"
-                 Object="gate-shark"
-                 FoundAiDetection="{AiDetection}"
-                 Max_time_before_failing_sec="5"
-                 Max_frame_before_failing="0.0"
-                 Min_detection_before_success="5"
-                 Confidence="0.60000"
-                 Max_depth="25"/>
-      </Sequence>
-      <SubTree ID="MissionSuccess"/>
-      <SubTree ID="MissionFailed"/>
-    </IfThenElse>
   </BehaviorTree>
 
   <!-- Description of Node Models (used by Groot) -->
@@ -193,11 +87,6 @@
                   default="1"
                   type="int">1: Front, 0: Bottom</input_port>
     </Action>
-    <SubTree ID="AutomaticInitialSubmerge"
-             editable="true">
-      <input_port name="Depth"
-                  default="1">Depth that the sub will submerge</input_port>
-    </SubTree>
     <Action ID="ComputeTrajectoryBetweenDetections">
       <inout_port name="Trajectory"
                   type="Trajectory"/>
@@ -209,42 +98,30 @@
       <input_port name="DetectionA"
                   type="AiDetection"/>
     </Action>
+    <Action ID="FaceTheObject">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
     <Action ID="InitializeTrajectory">
       <output_port name="trajectory"
                    type="Trajectory"/>
     </Action>
-    <SubTree ID="MoveSinglePose"
-             editable="true">
-      <input_port name="frame"
-                  default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
-      <input_port name="positionX"
-                  default="0.0">x value to go</input_port>
-      <input_port name="positionY"
-                  default="0.0">y value to go</input_port>
-      <input_port name="positionZ"
-                  default="0.0">z value to go</input_port>
-      <input_port name="orientationX"
-                  default="0.0">z orientation to go</input_port>
-      <input_port name="orientationY"
-                  default="0.0">y orientation to go</input_port>
-      <input_port name="orientationZ"
-                  default="0.0">rotation in Z to give to the sub</input_port>
-    </SubTree>
-    <SubTree ID="SearchObjectByRotation"
-             editable="true">
-      <input_port name="Object">Object we are looking for</input_port>
-      <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
-      <input_port name="Max_time_before_failing_sec"
-                  default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
-      <input_port name="Max_frame_before_failing"
-                  default="0">Number of frame that the sub will take to every 30 degree position to find the object</input_port>
-      <input_port name="Min_detection_before_success"
-                  default="5">Nombre of detected frame to call a found status</input_port>
-      <input_port name="Confidence"
-                  default="0.60000">Minimum confidence of the Ai</input_port>
-      <input_port name="Max_depth"
-                  default="25">Max distance to detect an object</input_port>
-    </SubTree>
+    <Action ID="MoveToObject">
+      <input_port name="Offset"
+                  type="float"/>
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
+    <Action ID="ObjectDrifting">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
     <Action ID="SlalomAiFilter">
       <output_port name="White_slalom"
                    type="AiDetection"/>
@@ -270,6 +147,16 @@
       <input_port name="Camera"
                   default="1"
                   type="int">1: Front, 0: Bottom</input_port>
+    </Action>
+    <Action ID="TorpedoAiming">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="TargetOffset"
+                  type="float"/>
+      <input_port name="LaunchingSide"
+                  type="std::string"/>
+      <input_port name="Detection"
+                  type="AiDetection"/>
     </Action>
   </TreeNodesModel>
 

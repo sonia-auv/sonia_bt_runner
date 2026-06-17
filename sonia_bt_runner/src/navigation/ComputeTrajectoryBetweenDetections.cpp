@@ -18,6 +18,8 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
         return BT::NodeStatus::FAILURE;
     }
 
+    RCLCPP_INFO(_ros_node->get_logger(), "Computing ComputeTrajectoryBetweenDetections trajectory");
+
     float a_det_dist{_det_a.distance};
     float b_det_dist{_det_b.distance};
     float delta_alpha{std::abs(_det_a.angle_alpha - _det_a.angle_alpha)};
