@@ -36,9 +36,14 @@ MissionServer::MissionServer()
         _node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;    
     }
 
-	std::shared_ptr<MissionControl::Result> MissionServer::launchMission(const std::shared_ptr<GoalHandle> goal, std_msgs::msg::String &rep) {
-		auto res = std::make_shared<MissionControl::Result>();
+    void MissionServer::execute(const std::shared_ptr<GoalHandle> goal){
 		auto thread_handler = [&]() -> void {
+			_result=NodeStatus::RUNNING;
+
+			Tracker trac(_tree, goal);
+			auto res = std::make_shared<MissionControl::Result>();
+			std_msgs::msg::String rep;
+
 			RCLCPP_INFO(this->get_logger(), "Mission launched"); 
 
 			rep.data= "Mission launched....";
@@ -68,29 +73,20 @@ MissionServer::MissionServer()
 
 			RCLCPP_INFO(this->get_logger(), "MISSION RESULT: %s", BT::toStr(_result).c_str());
 			RCLCPP_INFO(this->get_logger(), "----------------");
+
+			res->success = (_result == NodeStatus::SUCCESS);
+			goal->succeed(res);
+
+			RCLCPP_INFO(this->get_logger(), "Mission completed");
+			rep.data= "Mission completed....";
+			_pub_status->publish(rep);
+
+			_node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
 		};
 
 		std::thread mission_thread(thread_handler);
 
 		mission_thread.join();
-
-		return res;
-    }
-
-    void MissionServer::execute(const std::shared_ptr<GoalHandle> goal){
-        std_msgs::msg::String rep;
-        _result=NodeStatus::RUNNING;
-        Tracker trac(_tree, goal);
-		auto res = launchMission(goal, rep);
-
-        res->success = (_result == NodeStatus::SUCCESS);
-        goal->succeed(res);
-
-        RCLCPP_INFO(this->get_logger(), "Mission completed");
-        rep.data= "Mission completed....";
-        _pub_status->publish(rep);
-
-        _node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_IDLE;
     }
 
     rclcpp_action::GoalResponse MissionServer::handleGoal(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const MissionControl::Goal> goal){
