@@ -5,6 +5,15 @@
 #include "sonia_bt_runner/utils/AiDetection.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_A_PARAM "DetectionA"
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_A_TYPE AiDetection
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_B_PARAM "DetectionB"
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_B_TYPE AiDetection
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTION_POSITION_X_PARAM "PositionX"
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTION_POSITION_X_TYPE float
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_PARAM "Trajectory"
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_TYPE Trajectory
+
 namespace navigation {
 
 class ComputeTrajectoryBetweenDetections : public BT::SyncActionNode {
@@ -14,10 +23,10 @@ public:
 
     static BT::PortsList providedPorts() {
         return {
-            BT::InputPort<AiDetection>("DetectionA"),
-            BT::InputPort<AiDetection>("DetectionB"),
-            BT::InputPort<float>("PositionX", 10.0f, "Forward distance to travel after centering between the two detections"),
-            BT::BidirectionalPort<Trajectory>("Trajectory"),
+            BT::InputPort<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_A_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_A_PARAM),
+            BT::InputPort<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_B_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_B_PARAM),
+            BT::InputPort<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_POSITION_X_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_POSITION_X_PARAM, 10.0f, "Forward distance to travel after centering between the two detections"),
+            BT::BidirectionalPort<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_PARAM),
         };
     }
 
@@ -25,8 +34,8 @@ public:
 
 private:
     std::shared_ptr<rclcpp::Node> _ros_node;
-
-    AiDetection _det_a, _det_b;
+    COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_A_TYPE _det_a;
+    COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_B_TYPE _det_b;
 };
 
 }  // namespace navigation
