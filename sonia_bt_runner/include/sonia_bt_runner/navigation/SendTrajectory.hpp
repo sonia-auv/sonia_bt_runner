@@ -9,6 +9,12 @@
 #include "sonia_common_ros2/msg/pose_array.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 
+
+#define SEND_TRAJECTORY_INTERPOLATION_NAME "interpolation"
+#define SEND_TRAJECTORY_INTERPOLATION_TYPE int
+#define SEND_TRAJECTORY_TRAJECTORY_NAME "trajectory"
+#define SEND_TRAJECTORY_TRAJECTORY_TYPE Trajectory
+
 using namespace std::chrono_literals;
 namespace navigation{
     class SendTrajectory: public BT::StatefulActionNode{
@@ -19,8 +25,8 @@ namespace navigation{
             {
                 const int def_inter = 0;
                 return {
-                    BT::InputPort<int>("interpolation", def_inter, ""),
-                    BT::InputPort<Trajectory>("trajectory"),
+                    BT::InputPort<SEND_TRAJECTORY_INTERPOLATION_TYPE>(SEND_TRAJECTORY_INTERPOLATION_NAME, def_inter, ""),
+                    BT::InputPort<SEND_TRAJECTORY_TRAJECTORY_TYPE>(SEND_TRAJECTORY_TRAJECTORY_NAME),
                 };
             }
             BT::NodeStatus onStart() override;
