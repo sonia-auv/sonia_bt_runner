@@ -10,12 +10,9 @@ namespace navigation
     }
     BT::NodeStatus FaceTheObject::tick()
     {
-        AiDetection det;
+        auto det = getInput<FACE_THE_OBJECT_DETECTION_TYPE>(FACE_THE_OBJECT_DETECTION_NAME).value();
 
-        // We get the detected object by the AI
-        getInput("Detection", det);
-
-        if(!getInput<Trajectory>("Trajectory"))
+        if(!getInput<FACE_THE_OBJECT_TRAJECTORY_TYPE>(FACE_THE_OBJECT_TRAJECTORY_NAME))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
@@ -45,9 +42,9 @@ namespace navigation
         RCLCPP_INFO(_ros_node->get_logger(), "orientation en z: %f", t.orientationZ);
 
         // We append the new pose to the trajectory
-        Trajectory traj = getInput<Trajectory>("Trajectory").value();
+        auto traj = getInput<FACE_THE_OBJECT_TRAJECTORY_TYPE>(FACE_THE_OBJECT_TRAJECTORY_NAME).value();
         traj.trajectory.push_back(t);
-        setOutput<Trajectory>("Trajectory", traj);
+        setOutput<FACE_THE_OBJECT_TRAJECTORY_TYPE>(FACE_THE_OBJECT_TRAJECTORY_NAME, traj);
 
         return BT::NodeStatus::SUCCESS;
     }
