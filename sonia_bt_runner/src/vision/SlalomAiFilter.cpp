@@ -106,23 +106,23 @@ namespace vision {
     {
         RCLCPP_INFO(_ros_node->get_logger(), "Start stock input parameters");
         // We go get the information in the behavior tree
-        _side = getInput<std::string>("Side");
-        _cam = getInput<int>("Camera");
-        _confidence = getInput<float>("Confidence");
-        _max_depth = getInput<float>("Max_depth");
-        _detection_number_for_average = getInput<int>("Min_detections_before_success");
+        _side = getInput<SLALOM_AI_FILTER_SIDE_TYPE>(SLALOM_AI_FILTER_SIDE_NAME);
+        _cam = getInput<AI_FILTER_CAMERA_TYPE>(AI_FILTER_CAMERA_NAME);
+        _confidence = getInput<AI_FILTER_CONFIDENCE_TYPE>(AI_FILTER_CONFIDENCE_NAME);
+        _max_depth = getInput<AI_FILTER_MAX_DEPTH_TYPE>(AI_FILTER_MAX_DEPTH_NAME);
+        _detection_number_for_average = getInput<AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_TYPE>(AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_NAME);
 
         // I put those two parameter to do the test of witch one we're gonna use.
-        _max_frame_before_failing = getInput<int>("Max_frame_before_failing");
-        _max_time_before_failing = getInput<float>("Max_time_before_failing_sec");
+        _max_frame_before_failing = getInput<AI_FILTER_MAX_FRAME_BEFORE_FAILING_TYPE>(AI_FILTER_MAX_FRAME_BEFORE_FAILING_NAME);
+        _max_time_before_failing = getInput<AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_TYPE>(AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_NAME);
         RCLCPP_INFO(_ros_node->get_logger(), "Stop stock input parameters");
 
     }
 
     void SlalomAiFilter::setting_output()
     {
-        setOutput("Red_slalom", AiFilter::detection_average(_detection_array));
-        setOutput("White_slalom", AiFilter::detection_average(_detection_array_white_slalom));
+        setOutput(SLALOM_AI_FILTER_RED_SLALOM_NAME, detection_average(_detection_array));
+        setOutput(SLALOM_AI_FILTER_WHITE_SLALOM_NAME, detection_average(_detection_array_white_slalom));
     }
 
 }  // namespace vision
