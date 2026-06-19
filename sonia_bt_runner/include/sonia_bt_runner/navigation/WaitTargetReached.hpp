@@ -5,6 +5,9 @@
 #include "sonia_common_ros2/msg/mission_timer.hpp"
 #include "sonia_common_ros2/msg/mpc_info.hpp"
 
+#define WAIT_TARGET_REACHED_TIME_OUT_NAME "timeout"
+#define WAIT_TARGET_REACHED_TIME_OUT_TYPE float
+
 namespace navigation{
     class WaitTargetReached : public BT::StatefulActionNode
     {
@@ -13,9 +16,9 @@ namespace navigation{
         ~WaitTargetReached() override = default;
         static BT::PortsList providedPorts()
         {
-            const int def_timeout = 5;
+            const WAIT_TARGET_REACHED_TIME_OUT_TYPE def_timeout = 5.0f;
             return {
-                BT::InputPort<int>("timeout", def_timeout, "")
+                BT::InputPort<WAIT_TARGET_REACHED_TIME_OUT_TYPE>(WAIT_TARGET_REACHED_TIME_OUT_NAME, def_timeout, "")
             };
         }
         BT::NodeStatus onStart() override;
@@ -35,6 +38,6 @@ namespace navigation{
         bool _trajectory_done_prev;
         bool _trajectory_done;
         bool _is_alive;
-        float _param_timeout;
+        WAIT_TARGET_REACHED_TIME_OUT_TYPE _param_timeout;
     };
 }

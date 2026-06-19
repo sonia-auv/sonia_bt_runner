@@ -9,7 +9,7 @@ namespace navigation{
         _timeout_pub = _ros_node->create_publisher<sonia_common_ros2::msg::MissionTimer>("/sonia_behaviors/timeout",5);
     }
     
-     BT::NodeStatus WaitTargetReached::onStart(){
+    BT::NodeStatus WaitTargetReached::onStart(){
         
         _traj_complete = false;
         _time_diff = 0;
@@ -17,7 +17,7 @@ namespace navigation{
         _trajectory_done = true;
         _is_alive = true;
 
-        getInput<float>("timeout", _param_timeout);
+        _param_timeout = getInput<WAIT_TARGET_REACHED_TIME_OUT_TYPE>(WAIT_TARGET_REACHED_TIME_OUT_NAME).value();
     
         _launch_time = std::chrono::system_clock::now();
         _controller_sub =_ros_node->create_subscription<sonia_common_ros2::msg::MpcInfo>("/proc_control/controller_info", 1, std::bind(&WaitTargetReached::get_controller_info_callback, this,_1));
