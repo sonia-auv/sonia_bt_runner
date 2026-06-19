@@ -7,6 +7,12 @@
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 #include "sonia_bt_runner/utils/CONSTANT.hpp"
 
+
+#define MOVE_ABOVE_OBJECT_DETECTION_NAME "Detection"
+#define MOVE_ABOVE_OBJECT_DETECTION_TYPE AiDetection
+#define MOVE_ABOVE_OBJECT_TRAJECTORY_NAME "Trajectory"
+#define MOVE_ABOVE_OBJECT_TRAJECTORY_TYPE Trajectory
+
 namespace navigation
 {
 
@@ -19,10 +25,10 @@ namespace navigation
             {
                 return {
                     // Inputs
-                    BT::InputPort<AiDetection>("Detection"),
+                    BT::InputPort<MOVE_ABOVE_OBJECT_DETECTION_TYPE>(MOVE_ABOVE_OBJECT_DETECTION_NAME),
 
                     // Outputs
-                    BT::BidirectionalPort<Trajectory>("Trajectory"),
+                    BT::BidirectionalPort<MOVE_ABOVE_OBJECT_TRAJECTORY_TYPE>(MOVE_ABOVE_OBJECT_TRAJECTORY_NAME),
                 };
             }
 
