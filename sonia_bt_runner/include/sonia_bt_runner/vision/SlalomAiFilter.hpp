@@ -10,9 +10,9 @@
 #define SLALOM_AI_FILTER_SIDE_NAME "Side"
 #define SLALOM_AI_FILTER_SIDE_TYPE std::string
 #define SLALOM_AI_FILTER_RED_SLALOM_NAME "Red_slalom"
-#define SLALOM_AI_FILTER_RED_SLALOM_NAME AiDetection
+#define SLALOM_AI_FILTER_RED_SLALOM_TYPE AiDetection
 #define SLALOM_AI_FILTER_WHITE_SLALOM_NAME "White_slalom"
-#define SLALOM_AI_FILTER_WHITE_SLALOM_NAME AiDetection
+#define SLALOM_AI_FILTER_WHITE_SLALOM_TYPE AiDetection
 namespace vision {
 	class SlalomAiFilter : public AiFilter {
 		public:
@@ -32,8 +32,8 @@ namespace vision {
                     BT::InputPort<AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_TYPE>(AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_NAME, 0.0, "Maximum allowed time in ms before failing the object research"),
 
                     // Outputs
-                    BT::OutputPort<SLALOM_AI_FILTER_RED_SLALOM_NAME>(SLALOM_AI_FILTER_RED_SLALOM_NAME),
-                    BT::OutputPort<SLALOM_AI_FILTER_WHITE_SLALOM_NAME>(SLALOM_AI_FILTER_WHITE_SLALOM_NAME)
+                    BT::OutputPort<SLALOM_AI_FILTER_RED_SLALOM_TYPE>(SLALOM_AI_FILTER_RED_SLALOM_NAME),
+                    BT::OutputPort<SLALOM_AI_FILTER_WHITE_SLALOM_TYPE>(SLALOM_AI_FILTER_WHITE_SLALOM_NAME)
                 };
             }
 
@@ -41,7 +41,7 @@ namespace vision {
 
 		protected:
 			std::vector<sonia_common_ros2::msg::Detection> _detection_array_white_slalom;
-            BT::Expected<std::string> _side;
+            BT::Expected<SLALOM_AI_FILTER_SIDE_TYPE> _side;
             
 			void ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) override;
 			void stock_input_parameters() override;

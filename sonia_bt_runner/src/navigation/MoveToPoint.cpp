@@ -10,13 +10,13 @@ namespace navigation {
 
     BT::NodeStatus MoveToPoint::tick()
     {
-        if(!getInput<>("Point"))
+        if(!getInput<MOVE_TO_POINT_POINT_TYPE>(MOVE_TO_POINT_POINT_NAME))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The point is not specified");
 
             return BT::NodeStatus::FAILURE;
         }
-        if(!getInput<Trajectory>("Trajectory"))
+        if(!getInput<MOVE_TO_POINT_TRAJECTORY_TYPE>(MOVE_TO_POINT_TRAJECTORY_NAME))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 

@@ -10,7 +10,7 @@
 #define MOVE_TO_OBJECT_DETECTION_NAME "Detection"
 #define MOVE_TO_OBJECT_DETECTION_TYPE AiDetection
 #define MOVE_TO_OBJECT_OFFSET_NAME "Offset"
-#define MOVE_TO_OBJECT_OFFSET_NAME float
+#define MOVE_TO_OBJECT_OFFSET_TYPE float
 #define MOVE_TO_OBJECT_TRAJECTORY_NAME "Trajectory"
 #define MOVE_TO_OBJECT_TRAJECTORY_TYPE Trajectory
 
@@ -27,7 +27,7 @@ namespace navigation
                 return {
                     // Inputs
                     BT::InputPort<MOVE_TO_OBJECT_DETECTION_TYPE>(MOVE_TO_OBJECT_DETECTION_NAME),
-                    BT::InputPort<MOVE_TO_OBJECT_OFFSET_NAME>(MOVE_TO_OBJECT_OFFSET_NAME),
+                    BT::InputPort<MOVE_TO_OBJECT_OFFSET_TYPE>(MOVE_TO_OBJECT_OFFSET_NAME),
 
                     // Outputs
                     BT::BidirectionalPort<MOVE_TO_OBJECT_TRAJECTORY_TYPE>(MOVE_TO_OBJECT_TRAJECTORY_NAME),

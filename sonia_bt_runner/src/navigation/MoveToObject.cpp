@@ -11,7 +11,7 @@ namespace navigation
     BT::NodeStatus MoveToObject::tick()
     {
         auto det = getInput<MOVE_TO_OBJECT_DETECTION_TYPE>(MOVE_TO_OBJECT_DETECTION_NAME).value();
-        auto offset = getInput<MOVE_TO_OBJECT_OFFSET_NAME>(MOVE_TO_OBJECT_OFFSET_NAME).value();
+        auto offset = getInput<MOVE_TO_OBJECT_OFFSET_TYPE>(MOVE_TO_OBJECT_OFFSET_NAME).value();
 
         // We get the detected object by the AI
         if(!getInput<MOVE_TO_OBJECT_TRAJECTORY_TYPE>(MOVE_TO_OBJECT_TRAJECTORY_NAME))
