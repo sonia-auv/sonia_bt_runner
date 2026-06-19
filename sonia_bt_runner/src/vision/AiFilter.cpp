@@ -60,15 +60,15 @@ namespace vision{
     void AiFilter::stock_input_parameters()
     {
         // We go get the information in the behavior tree
-        _cam = getInput<int>("Camera");
-        _object = getInput<std::string>("Object_class");
-        _confidence = getInput<float>("Confidence");
-        _max_depth = getInput<float>("Max_depth");
-        _detection_number_for_average = getInput<int>("Min_detections_before_success");
+        _cam = getInput<AI_FILTER_CAMERA_TYPE>(AI_FILTER_CAMERA_NAME);
+        _object = getInput<AI_FILTER_OBJECT_CLASS_TYPE>(AI_FILTER_OBJECT_CLASS_NAME);
+        _confidence = getInput<AI_FILTER_CONFIDENCE_TYPE>(AI_FILTER_CONFIDENCE_NAME);
+        _max_depth = getInput<AI_FILTER_MAX_DEPTH_TYPE>(AI_FILTER_MAX_DEPTH_NAME);
+        _detection_number_for_average = getInput<AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_TYPE>(AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_NAME);
 
         // I put those two parameter to do the test of witch one we're gonna use.
-        _max_frame_before_failing = getInput<int>("Max_frame_before_failing");
-        _max_time_before_failing = getInput<float>("Max_time_before_failing_sec");
+        _max_frame_before_failing = getInput<AI_FILTER_MAX_FRAME_BEFORE_FAILING_TYPE>(AI_FILTER_MAX_FRAME_BEFORE_FAILING_NAME);
+        _max_time_before_failing = getInput<AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_TYPE>(AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_NAME);
     }
 
     bool AiFilter::set_filter_parameter(const std::string& object, const float confidence, const float max_depth)
@@ -233,10 +233,10 @@ namespace vision{
 
     }
 
-    AiDetection AiFilter::detection_average(const std::vector<sonia_common_ros2::msg::Detection>& detection_array)
+    AI_FILTER_DETECTED_OBJECT_TYPE AiFilter::detection_average(const std::vector<sonia_common_ros2::msg::Detection>& detection_array)
     {
         // We compute the new average of every parameter of the detection that we keep.
-        AiDetection output_detection{};
+        AI_FILTER_DETECTED_OBJECT_TYPE output_detection{};
         output_detection.classification = _object.value();
         for(auto detection : detection_array)
         {
@@ -259,7 +259,7 @@ namespace vision{
 
     void AiFilter::setting_output()
     {
-        setOutput("Detected_object", detection_average(_detection_array));
+        setOutput(AI_FILTER_DETECTED_OBJECT_NAME, detection_average(_detection_array));
     }
 
 }  // namespace vision
