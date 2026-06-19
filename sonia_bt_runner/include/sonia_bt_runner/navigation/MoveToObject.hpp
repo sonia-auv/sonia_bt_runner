@@ -7,6 +7,13 @@
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 
 
+#define MOVE_TO_OBJECT_DETECTION_NAME "Detection"
+#define MOVE_TO_OBJECT_DETECTION_TYPE AiDetection
+#define MOVE_TO_OBJECT_OFFSET_NAME "Offset"
+#define MOVE_TO_OBJECT_OFFSET_NAME float
+#define MOVE_TO_OBJECT_TRAJECTORY_NAME "Trajectory"
+#define MOVE_TO_OBJECT_TRAJECTORY_TYPE Trajectory
+
 namespace navigation
 {
 
@@ -19,11 +26,11 @@ namespace navigation
             {
                 return {
                     // Inputs
-                    BT::InputPort<AiDetection>("Detection"),
-                    BT::InputPort<float>("Offset"),
+                    BT::InputPort<MOVE_TO_OBJECT_DETECTION_TYPE>(MOVE_TO_OBJECT_DETECTION_NAME),
+                    BT::InputPort<MOVE_TO_OBJECT_OFFSET_NAME>(MOVE_TO_OBJECT_OFFSET_NAME),
 
                     // Outputs
-                    BT::BidirectionalPort<Trajectory>("Trajectory"),
+                    BT::BidirectionalPort<MOVE_TO_OBJECT_TRAJECTORY_TYPE>(MOVE_TO_OBJECT_TRAJECTORY_NAME),
                 };
             }
 

@@ -10,17 +10,13 @@ namespace navigation
     }
     BT::NodeStatus MoveToObject::tick()
     {
-        AiDetection det;
-        float offset;
+        auto det = getInput<MOVE_TO_OBJECT_DETECTION_TYPE>(MOVE_TO_OBJECT_DETECTION_NAME).value();
+        auto offset = getInput<MOVE_TO_OBJECT_OFFSET_NAME>(MOVE_TO_OBJECT_OFFSET_NAME).value();
 
         // We get the detected object by the AI
-        getInput("Detection", det);
-        getInput("Offset", offset);
-
-        if(!getInput<Trajectory>("Trajectory"))
+        if(!getInput<MOVE_TO_OBJECT_TRAJECTORY_TYPE>(MOVE_TO_OBJECT_TRAJECTORY_NAME))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
-
             return BT::NodeStatus::FAILURE;
         }
 
@@ -67,10 +63,10 @@ namespace navigation
         RCLCPP_INFO(_ros_node->get_logger(), "orientation en z: %f", t2.orientationZ);
 
         // We append the new pose to the trajectory
-        Trajectory traj = getInput<Trajectory>("Trajectory").value();
+        auto traj = getInput<MOVE_TO_OBJECT_TRAJECTORY_TYPE>(MOVE_TO_OBJECT_TRAJECTORY_NAME).value();
         traj.trajectory.push_back(t1);
         traj.trajectory.push_back(t2);
-        setOutput<Trajectory>("Trajectory", traj);
+        setOutput<MOVE_TO_OBJECT_TRAJECTORY_TYPE>(MOVE_TO_OBJECT_TRAJECTORY_NAME, traj);
 
         return BT::NodeStatus::SUCCESS;
     }
