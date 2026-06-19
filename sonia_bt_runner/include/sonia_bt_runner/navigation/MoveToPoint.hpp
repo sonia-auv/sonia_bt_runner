@@ -5,6 +5,12 @@
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 #include "sonia_bt_runner/utils/Point.hpp"
 
+
+#define MOVE_TO_POINT_POINT_NAME "Point"
+#define MOVE_TO_POINT_POINT_TYPE Point
+#define MOVE_TO_POINT_TRAJECTORY_NAME "Trajectory"
+#define MOVE_TO_POINT_TRAJECTORY_TYPE Trajectory
+
 namespace navigation {
 
     class MoveToPoint : public BT::SyncActionNode {
@@ -16,8 +22,8 @@ namespace navigation {
             static BT::PortsList providedPorts()
             {
                 return {
-                    BT::InputPort<Point>("Point"),
-                    BT::BidirectionalPort<Trajectory>("Trajectory"),
+                    BT::InputPort<MOVE_TO_POINT_POINT_TYPE>(MOVE_TO_POINT_POINT_NAME),
+                    BT::BidirectionalPort<MOVE_TO_POINT_TRAJECTORY_TYPE>(MOVE_TO_POINT_TRAJECTORY_NAME),
                 };
             }
 

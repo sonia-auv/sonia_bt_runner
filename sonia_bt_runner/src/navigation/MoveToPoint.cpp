@@ -10,25 +10,20 @@ namespace navigation {
 
     BT::NodeStatus MoveToPoint::tick()
     {
-        Point point_retour;
-        Trajectory traj;
-
-        
-        if(!getInput("Point", point_retour))
+        if(!getInput<>("Point"))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The point is not specified");
 
             return BT::NodeStatus::FAILURE;
         }
-
         if(!getInput<Trajectory>("Trajectory"))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
             return BT::NodeStatus::FAILURE;
         }
-        getInput("Trajectory", traj);
 
+        auto point_retour = getInput<MOVE_TO_POINT_POINT_TYPE>(MOVE_TO_POINT_POINT_NAME).value();
         TrajectoryPose point_retour_pose;
         point_retour_pose.orientationX = 0;
         point_retour_pose.orientationY = 0;
@@ -41,8 +36,9 @@ namespace navigation {
         point_retour_pose.precision = 0;
         point_retour_pose.long_rotation = false;
 
+        auto traj = getInput<MOVE_TO_POINT_TRAJECTORY_TYPE>(MOVE_TO_POINT_TRAJECTORY_NAME).value();
         traj.trajectory.push_back(point_retour_pose);
-        setOutput("Trajectory", traj);
+        setOutput(MOVE_TO_POINT_TRAJECTORY_NAME, traj);
         return BT::NodeStatus::SUCCESS;
     }
 }
