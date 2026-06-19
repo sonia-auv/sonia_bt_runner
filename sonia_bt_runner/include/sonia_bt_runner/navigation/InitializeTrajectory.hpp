@@ -2,8 +2,8 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 
-#define INITIALIZE_TRAJECTORY_TRAJECTORY_NAME "trajectory"
-#define INITIALIZE_TRAJECTORY_TRAJECTORY_TYPE Trajectory
+#define INITIALIZE_TRAJECTORY_TRAJECTORY_PARAM_NAME "trajectory"
+#define INITIALIZE_TRAJECTORY_TRAJECTORY_PARAM_TYPE Trajectory
 
 namespace navigation{
     class InitializeTrajectory : public BT::SyncActionNode
@@ -14,7 +14,7 @@ namespace navigation{
         static BT::PortsList providedPorts()
         {
             return {
-                BT::OutputPort<INITIALIZE_TRAJECTORY_TRAJECTORY_TYPE>(INITIALIZE_TRAJECTORY_TRAJECTORY_NAME),
+                BT::OutputPort<INITIALIZE_TRAJECTORY_TRAJECTORY_PARAM_TYPE>(INITIALIZE_TRAJECTORY_TRAJECTORY_PARAM_NAME),
             };
         }
 

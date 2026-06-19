@@ -30,24 +30,16 @@ namespace vision{
 
     BT::NodeStatus AiFilter::onRunning()
     {
-        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter OnRunning start");
-        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter get_detection_status start");
         BT::NodeStatus detection_status = get_detection_status();
-        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter get_detection_status stop");
         if(detection_status == BT::NodeStatus::SUCCESS) {
-            RCLCPP_INFO(_ros_node->get_logger(), "AiFilter detection success start");
 
-            
-            RCLCPP_INFO(_ros_node->get_logger(), "AiFilter delete subscriber start");
             delete_subscriber();
 
             RCLCPP_INFO(_ros_node->get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
 
             applicate_box_plot_to_detections();
-            RCLCPP_INFO(_ros_node->get_logger(), "AiFilter applicate_box_plot_to_detections stop");
 
             setting_output();
-            RCLCPP_INFO(_ros_node->get_logger(), "AiFilter setting_output start");
         }
 
         return detection_status;
@@ -60,15 +52,23 @@ namespace vision{
     void AiFilter::stock_input_parameters()
     {
         // We go get the information in the behavior tree
-        _cam = getInput<AI_FILTER_CAMERA_TYPE>(AI_FILTER_CAMERA_NAME);
-        _object = getInput<AI_FILTER_OBJECT_CLASS_TYPE>(AI_FILTER_OBJECT_CLASS_NAME);
-        _confidence = getInput<AI_FILTER_CONFIDENCE_TYPE>(AI_FILTER_CONFIDENCE_NAME);
-        _max_depth = getInput<AI_FILTER_MAX_DEPTH_TYPE>(AI_FILTER_MAX_DEPTH_NAME);
-        _detection_number_for_average = getInput<AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_TYPE>(AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_NAME);
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter camera");
+        _cam = getInput<AI_FILTER_CAMERA_PARAM_TYPE>(AI_FILTER_CAMERA_PARAM_NAME);
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter object_class");
+        _object = getInput<AI_FILTER_OBJECT_CLASS_PARAM_TYPE>(AI_FILTER_OBJECT_CLASS_PARAM_NAME);
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter confidence");
+        _confidence = getInput<AI_FILTER_CONFIDENCE_PARAM_TYPE>(AI_FILTER_CONFIDENCE_PARAM_NAME);
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter max_depth");
+        _max_depth = getInput<AI_FILTER_MAX_DEPTH_PARAM_TYPE>(AI_FILTER_MAX_DEPTH_PARAM_NAME);
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter min_detection_before_success");
+        _detection_number_for_average = getInput<AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_PARAM_TYPE>(AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_PARAM_NAME);
 
         // I put those two parameter to do the test of witch one we're gonna use.
-        _max_frame_before_failing = getInput<AI_FILTER_MAX_FRAME_BEFORE_FAILING_TYPE>(AI_FILTER_MAX_FRAME_BEFORE_FAILING_NAME);
-        _max_time_before_failing = getInput<AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_TYPE>(AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_NAME);
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter max_frame_before_failing");
+        _max_frame_before_failing = getInput<AI_FILTER_MAX_FRAME_BEFORE_FAILING_PARAM_TYPE>(AI_FILTER_MAX_FRAME_BEFORE_FAILING_PARAM_NAME);
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter max_time_before_failing_sec");
+        _max_time_before_failing = getInput<AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_PARAM_TYPE>(AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_PARAM_NAME);
+        RCLCPP_INFO(_ros_node->get_logger(), "AiFilter parameter setter done");
     }
 
     bool AiFilter::set_filter_parameter(const std::string& object, const float confidence, const float max_depth)
@@ -137,12 +137,12 @@ namespace vision{
        
         RCLCPP_INFO(_ros_node->get_logger(), "AiFilter callback running");
         _timout_counter++;
-         RCLCPP_INFO(_ros_node->get_logger(), "Start ai_filter_callback");
+        RCLCPP_INFO(_ros_node->get_logger(), "Start ai_filter_callback");
         for (auto msg_obj: msg.detected_object){
-         RCLCPP_INFO(_ros_node->get_logger(), "Received object: %s", msg_obj.class_name.c_str());
+            RCLCPP_INFO(_ros_node->get_logger(), "Received object: %s", msg_obj.class_name.c_str());
             if(msg_obj.class_name.compare(_object_filter) == 0)
             {
-		 RCLCPP_INFO(_ros_node->get_logger(), "Get the wanted object: %s!!!", msg_obj.class_name.c_str());
+		        RCLCPP_INFO(_ros_node->get_logger(), "Get the wanted object: %s!!!", msg_obj.class_name.c_str());
                 if(msg_obj.confidence >= _confidence_filter && msg_obj.distance <= _max_depth_filter)
                 {
                     //The detected object respect the confidence and the depth. We can put it in the filter array
@@ -233,10 +233,10 @@ namespace vision{
 
     }
 
-    AI_FILTER_DETECTED_OBJECT_TYPE AiFilter::detection_average(const std::vector<sonia_common_ros2::msg::Detection>& detection_array)
+    AI_FILTER_DETECTED_OBJECT_PARAM_TYPE AiFilter::detection_average(const std::vector<sonia_common_ros2::msg::Detection>& detection_array)
     {
         // We compute the new average of every parameter of the detection that we keep.
-        AI_FILTER_DETECTED_OBJECT_TYPE output_detection{};
+        AI_FILTER_DETECTED_OBJECT_PARAM_TYPE output_detection{};
         output_detection.classification = _object.value();
         for(auto detection : detection_array)
         {
@@ -259,7 +259,7 @@ namespace vision{
 
     void AiFilter::setting_output()
     {
-        setOutput(AI_FILTER_DETECTED_OBJECT_NAME, detection_average(_detection_array));
+        setOutput(AI_FILTER_DETECTED_OBJECT_PARAM_NAME, detection_average(_detection_array));
     }
 
 }  // namespace vision

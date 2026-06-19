@@ -17,7 +17,7 @@ namespace navigation{
         _trajectory_done = true;
         _is_alive = true;
 
-        _param_timeout = getInput<WAIT_TARGET_REACHED_TIME_OUT_TYPE>(WAIT_TARGET_REACHED_TIME_OUT_NAME).value();
+        _param_timeout = getInput<WAIT_TARGET_REACHED_TIME_OUT_PARAM_TYPE>(WAIT_TARGET_REACHED_TIME_OUT_PARAM_NAME).value();
     
         _launch_time = std::chrono::system_clock::now();
         _controller_sub =_ros_node->create_subscription<sonia_common_ros2::msg::MpcInfo>("/proc_control/controller_info", 1, std::bind(&WaitTargetReached::get_controller_info_callback, this,_1));

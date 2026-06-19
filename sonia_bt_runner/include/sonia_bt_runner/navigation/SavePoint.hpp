@@ -6,8 +6,8 @@
 #include "sonia_common_ros2/msg/pose.hpp"
 
 
-#define SAVE_POINT_POINT_NAME "Point"
-#define SAVE_POINT_POINT_TYPE Point
+#define SAVE_POINT_POINT_PARAM_NAME "Point"
+#define SAVE_POINT_POINT_PARAM_TYPE Point
 
 namespace navigation {
 
@@ -21,7 +21,7 @@ namespace navigation {
             static BT::PortsList providedPorts()
             {
                 return {
-                    BT::OutputPort<SAVE_POINT_POINT_TYPE>(SAVE_POINT_POINT_NAME),
+                    BT::OutputPort<SAVE_POINT_POINT_PARAM_TYPE>(SAVE_POINT_POINT_PARAM_NAME),
                 };
             }
 

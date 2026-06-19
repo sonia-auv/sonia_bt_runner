@@ -10,9 +10,9 @@ namespace vision{
         std::shared_ptr<sonia_common_ros2::srv::AiActivationService_Response> response;
         _request = std::make_shared<sonia_common_ros2::srv::AiActivationService_Request>();
 
-        auto front = getInput<AI_ACTIVATION_FRONT_TYPE>(AI_ACTIVATION_FRONT_NAME).value();
-        auto bottom = getInput<AI_ACTIVATION_BOTTOM_TYPE>(AI_ACTIVATION_BOTTOM_NAME).value();
-        auto model = getInput<AI_ACTIVATION_MODEL_TYPE>(AI_ACTIVATION_MODEL_NAME).value();
+        auto front = getInput<AI_ACTIVATION_FRONT_PARAM_TYPE>(AI_ACTIVATION_FRONT_PARAM_NAME).value();
+        auto bottom = getInput<AI_ACTIVATION_BOTTOM_PARAM_TYPE>(AI_ACTIVATION_BOTTOM_PARAM_NAME).value();
+        auto model = getInput<AI_ACTIVATION_MODEL_PARAM_TYPE>(AI_ACTIVATION_MODEL_PARAM_NAME).value();
 
         RCLCPP_INFO(_ros_node->get_logger(), "The front response is %d and The bottom response is %d", front, bottom);
 

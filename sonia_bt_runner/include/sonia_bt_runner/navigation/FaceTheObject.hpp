@@ -7,10 +7,10 @@
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 
 
-#define FACE_THE_OBJECT_DETECTION_NAME "Detection"
-#define FACE_THE_OBJECT_DETECTION_TYPE AiDetection
-#define FACE_THE_OBJECT_TRAJECTORY_NAME "Trajectory"
-#define FACE_THE_OBJECT_TRAJECTORY_TYPE Trajectory
+#define FACE_THE_OBJECT_DETECTION_PARAM_NAME "Detection"
+#define FACE_THE_OBJECT_DETECTION_PARAM_TYPE AiDetection
+#define FACE_THE_OBJECT_TRAJECTORY_PARAM_NAME "Trajectory"
+#define FACE_THE_OBJECT_TRAJECTORY_PARAM_TYPE Trajectory
 
 
 namespace navigation
@@ -25,10 +25,10 @@ namespace navigation
             {
                 return {
                     // Inputs
-                    BT::InputPort<FACE_THE_OBJECT_DETECTION_TYPE>(FACE_THE_OBJECT_DETECTION_NAME),
+                    BT::InputPort<FACE_THE_OBJECT_DETECTION_PARAM_TYPE>(FACE_THE_OBJECT_DETECTION_PARAM_NAME),
 
                     // Outputs
-                    BT::BidirectionalPort<FACE_THE_OBJECT_TRAJECTORY_TYPE>(FACE_THE_OBJECT_TRAJECTORY_NAME),
+                    BT::BidirectionalPort<FACE_THE_OBJECT_TRAJECTORY_PARAM_TYPE>(FACE_THE_OBJECT_TRAJECTORY_PARAM_NAME),
                 };
             }
 

@@ -12,7 +12,7 @@ namespace navigation
     BT::NodeStatus ObjectDrifting::tick()
     {
 
-        if(!getInput<OBJECT_DRIFTING_TRAJECTORY_TYPE>(OBJECT_DRIFTING_TRAJECTORY_NAME))
+        if(!getInput<OBJECT_DRIFTING_TRAJECTORY_PARAM_TYPE>(OBJECT_DRIFTING_TRAJECTORY_PARAM_NAME))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
@@ -21,7 +21,7 @@ namespace navigation
 
         RCLCPP_INFO(_ros_node->get_logger(), "Computing ObjectDrifting trajectory");
         
-        auto det = getInput<OBJECT_DRIFTING_DETECTION_TYPE>(OBJECT_DRIFTING_DETECTION_NAME).value();
+        auto det = getInput<OBJECT_DRIFTING_DETECTION_PARAM_TYPE>(OBJECT_DRIFTING_DETECTION_PARAM_NAME).value();
 
         // We compute a rotation to make the sub rotate at 90 degrees to the target
         TrajectoryPose t1;
@@ -64,10 +64,10 @@ namespace navigation
         RCLCPP_INFO(_ros_node->get_logger(), "orientation en z: %f", t2.orientationZ);
 
         // We append the two new trajectory points to the sending trajectory
-        auto traj = getInput<OBJECT_DRIFTING_TRAJECTORY_TYPE>(OBJECT_DRIFTING_TRAJECTORY_NAME).value();
+        auto traj = getInput<OBJECT_DRIFTING_TRAJECTORY_PARAM_TYPE>(OBJECT_DRIFTING_TRAJECTORY_PARAM_NAME).value();
         traj.trajectory.push_back(t1);
         traj.trajectory.push_back(t2);
-        setOutput<OBJECT_DRIFTING_TRAJECTORY_TYPE>(OBJECT_DRIFTING_TRAJECTORY_NAME, traj);
+        setOutput<OBJECT_DRIFTING_TRAJECTORY_PARAM_TYPE>(OBJECT_DRIFTING_TRAJECTORY_PARAM_NAME, traj);
 
         return BT::NodeStatus::SUCCESS;
     }

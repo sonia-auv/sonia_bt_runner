@@ -22,14 +22,14 @@ namespace vision {
             {
                 return {
                     // Inputs
-                    BT::InputPort<AI_FILTER_CAMERA_TYPE>(AI_FILTER_CAMERA_NAME, 1, "1: Front, 0: Bottom"),
+                    BT::InputPort<AI_FILTER_CAMERA_PARAM_TYPE>(AI_FILTER_CAMERA_PARAM_NAME, 1, "1: Front, 0: Bottom"),
                     BT::InputPort<SLALOM_AI_FILTER_SIDE_TYPE>(SLALOM_AI_FILTER_SIDE_NAME, "", "The passing side for the slalom"),
-                    BT::InputPort<AI_FILTER_CONFIDENCE_TYPE>(AI_FILTER_CONFIDENCE_NAME, 0.6, "Ai confidence"),
-                    BT::InputPort<AI_FILTER_MAX_DEPTH_TYPE>(AI_FILTER_MAX_DEPTH_NAME, 25.0, "Maximum allowed depth"),
-                    BT::InputPort<AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_TYPE>(AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_NAME, 2, "Minumum number of frames with at least one detection before sending results. Need to be heigher than 2"),
+                    BT::InputPort<AI_FILTER_CONFIDENCE_PARAM_TYPE>(AI_FILTER_CONFIDENCE_PARAM_NAME, 0.6, "Ai confidence"),
+                    BT::InputPort<AI_FILTER_MAX_DEPTH_PARAM_TYPE>(AI_FILTER_MAX_DEPTH_PARAM_NAME, 25.0, "Maximum allowed depth"),
+                    BT::InputPort<AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_PARAM_TYPE>(AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_PARAM_NAME, 2, "Minumum number of frames with at least one detection before sending results. Need to be heigher than 2"),
 
-                    BT::InputPort<AI_FILTER_MAX_FRAME_BEFORE_FAILING_TYPE>(AI_FILTER_MAX_FRAME_BEFORE_FAILING_NAME, 0, "Maximum allowed frames before failing the object research"),
-                    BT::InputPort<AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_TYPE>(AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_NAME, 0.0, "Maximum allowed time in ms before failing the object research"),
+                    BT::InputPort<AI_FILTER_MAX_FRAME_BEFORE_FAILING_PARAM_TYPE>(AI_FILTER_MAX_FRAME_BEFORE_FAILING_PARAM_NAME, 0, "Maximum allowed frames before failing the object research"),
+                    BT::InputPort<AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_PARAM_TYPE>(AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_PARAM_NAME, 0.0, "Maximum allowed time in ms before failing the object research"),
 
                     // Outputs
                     BT::OutputPort<SLALOM_AI_FILTER_RED_SLALOM_TYPE>(SLALOM_AI_FILTER_RED_SLALOM_NAME),

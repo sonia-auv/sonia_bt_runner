@@ -4,12 +4,12 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_common_ros2/srv/ai_activation_service.hpp"
 
-#define AI_ACTIVATION_FRONT_NAME "Front"
-#define AI_ACTIVATION_FRONT_TYPE bool
-#define AI_ACTIVATION_BOTTOM_NAME "Bottom"
-#define AI_ACTIVATION_BOTTOM_TYPE bool
-#define AI_ACTIVATION_MODEL_NAME "Model"
-#define AI_ACTIVATION_MODEL_TYPE int
+#define AI_ACTIVATION_FRONT_PARAM_NAME "Front"
+#define AI_ACTIVATION_FRONT_PARAM_TYPE bool
+#define AI_ACTIVATION_BOTTOM_PARAM_NAME "Bottom"
+#define AI_ACTIVATION_BOTTOM_PARAM_TYPE bool
+#define AI_ACTIVATION_MODEL_PARAM_NAME "Model"
+#define AI_ACTIVATION_MODEL_PARAM_TYPE int
 
 namespace vision{
     class AiActivation : public BT::SyncActionNode
@@ -21,9 +21,9 @@ namespace vision{
         static BT::PortsList providedPorts()
         {
             return {
-                BT::InputPort<AI_ACTIVATION_FRONT_TYPE>(AI_ACTIVATION_FRONT_NAME, false, "true: ON, talse: OFF"),
-                BT::InputPort<AI_ACTIVATION_BOTTOM_TYPE>(AI_ACTIVATION_BOTTOM_NAME, false, "true: ON, talse: OFF"),
-                BT::InputPort<AI_ACTIVATION_MODEL_TYPE>(AI_ACTIVATION_MODEL_NAME, 0, "model choice, default = 0")};
+                BT::InputPort<AI_ACTIVATION_FRONT_PARAM_TYPE>(AI_ACTIVATION_FRONT_PARAM_NAME, false, "true: ON, talse: OFF"),
+                BT::InputPort<AI_ACTIVATION_BOTTOM_PARAM_TYPE>(AI_ACTIVATION_BOTTOM_PARAM_NAME, false, "true: ON, talse: OFF"),
+                BT::InputPort<AI_ACTIVATION_MODEL_PARAM_TYPE>(AI_ACTIVATION_MODEL_PARAM_NAME, 0, "model choice, default = 0")};
         }
 
         BT::NodeStatus tick() override;

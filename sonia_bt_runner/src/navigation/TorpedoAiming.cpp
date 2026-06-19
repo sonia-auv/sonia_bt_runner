@@ -11,11 +11,11 @@ namespace navigation
 
     BT::NodeStatus TorpedoAiming::tick()
     {
-        auto det = getInput<TORPEDO_AIMING_DETECTION_TYPE>(TORPEDO_AIMING_DETECTION_NAME).value();
-        auto launching_side = getInput<TORPEDO_AIMING_LAUNCHING_SIDE_TYPE>(TORPEDO_AIMING_LAUNCHING_SIDE_NAME).value();
-        auto target_offset = getInput<TORPEDO_AIMING_TARGET_OFFSET_TYPE>(TORPEDO_AIMING_TARGET_OFFSET_NAME).value();
+        auto det = getInput<TORPEDO_AIMING_DETECTION_PARAM_TYPE>(TORPEDO_AIMING_DETECTION_PARAM_NAME).value();
+        auto launching_side = getInput<TORPEDO_AIMING_LAUNCHING_SIDE_PARAM_TYPE>(TORPEDO_AIMING_LAUNCHING_SIDE_PARAM_NAME).value();
+        auto target_offset = getInput<TORPEDO_AIMING_TARGET_OFFSET_PARAM_TYPE>(TORPEDO_AIMING_TARGET_OFFSET_PARAM_NAME).value();
 
-        if(!getInput<TORPEDO_AIMING_TRAJECTORY_TYPE>(TORPEDO_AIMING_TRAJECTORY_NAME))
+        if(!getInput<TORPEDO_AIMING_TRAJECTORY_PARAM_TYPE>(TORPEDO_AIMING_TRAJECTORY_PARAM_NAME))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
@@ -56,9 +56,9 @@ namespace navigation
         RCLCPP_INFO(_ros_node->get_logger(), "orientation en z: %f", t.orientationZ);
 
         // We append the new pose to the trajectory
-        auto traj = getInput<TORPEDO_AIMING_TRAJECTORY_TYPE>(TORPEDO_AIMING_TRAJECTORY_NAME).value();
+        auto traj = getInput<TORPEDO_AIMING_TRAJECTORY_PARAM_TYPE>(TORPEDO_AIMING_TRAJECTORY_PARAM_NAME).value();
         traj.trajectory.push_back(t);
-        setOutput<TORPEDO_AIMING_TRAJECTORY_TYPE>(TORPEDO_AIMING_TRAJECTORY_NAME, traj);
+        setOutput<TORPEDO_AIMING_TRAJECTORY_PARAM_TYPE>(TORPEDO_AIMING_TRAJECTORY_PARAM_NAME, traj);
         return BT::NodeStatus::SUCCESS;
     }
 

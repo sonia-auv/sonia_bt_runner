@@ -22,11 +22,11 @@ namespace navigation {
         std::chrono::duration<double> diff = std::chrono::system_clock::now() - _launch_time;
         _time_diff = diff.count();
         if (_msg_received) {
-            SAVE_POINT_POINT_TYPE point_retour;
+            SAVE_POINT_POINT_PARAM_TYPE point_retour;
             point_retour.x = _pose_msg.position.x;
             point_retour.y = _pose_msg.position.y;
             point_retour.z = _pose_msg.position.z;
-            setOutput(SAVE_POINT_POINT_NAME, point_retour);
+            setOutput(SAVE_POINT_POINT_PARAM_NAME, point_retour);
             return BT::NodeStatus::SUCCESS;
         }
         else if (_time_diff > 5.0)

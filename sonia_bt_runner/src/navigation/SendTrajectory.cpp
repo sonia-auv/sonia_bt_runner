@@ -12,9 +12,9 @@ namespace navigation{
 
     BT::NodeStatus SendTrajectory::onStart()
     {
-        auto t = getInput<SEND_TRAJECTORY_TRAJECTORY_TYPE>(SEND_TRAJECTORY_TRAJECTORY_NAME).value();
+        auto t = getInput<SEND_TRAJECTORY_TRAJECTORY_PARAM_TYPE>(SEND_TRAJECTORY_TRAJECTORY_PARAM_NAME).value();
         sonia_common_ros2::msg::PoseArray array_to_send;
-        auto interpolation = getInput<SEND_TRAJECTORY_INTERPOLATION_TYPE>(SEND_TRAJECTORY_INTERPOLATION_NAME).value();
+        auto interpolation = getInput<SEND_TRAJECTORY_INTERPOLATION_PARAM_TYPE>(SEND_TRAJECTORY_INTERPOLATION_PARAM_NAME).value();
         
         float max_depth=1.5;
 

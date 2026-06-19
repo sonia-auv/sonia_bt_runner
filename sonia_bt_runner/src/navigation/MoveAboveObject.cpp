@@ -11,9 +11,9 @@ namespace navigation
 
     BT::NodeStatus MoveAboveObject::tick()
     {
-        auto det = getInput<MOVE_ABOVE_OBJECT_DETECTION_TYPE>(MOVE_ABOVE_OBJECT_DETECTION_NAME).value();
+        auto det = getInput<MOVE_ABOVE_OBJECT_DETECTION_PARAM_TYPE>(MOVE_ABOVE_OBJECT_DETECTION_PARAM_NAME).value();
 
-        if(!getInput<MOVE_ABOVE_OBJECT_TRAJECTORY_TYPE>(MOVE_ABOVE_OBJECT_TRAJECTORY_NAME))
+        if(!getInput<MOVE_ABOVE_OBJECT_TRAJECTORY_PARAM_TYPE>(MOVE_ABOVE_OBJECT_TRAJECTORY_PARAM_NAME))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
@@ -45,9 +45,9 @@ namespace navigation
         RCLCPP_INFO(_ros_node->get_logger(), "orientation en z: %f", t.orientationZ);
 
         // We append the new trajectory point to the sending trajectory
-        auto traj = getInput<MOVE_ABOVE_OBJECT_TRAJECTORY_TYPE>(MOVE_ABOVE_OBJECT_TRAJECTORY_NAME).value();
+        auto traj = getInput<MOVE_ABOVE_OBJECT_TRAJECTORY_PARAM_TYPE>(MOVE_ABOVE_OBJECT_TRAJECTORY_PARAM_NAME).value();
         traj.trajectory.push_back(t);
-        setOutput<MOVE_ABOVE_OBJECT_TRAJECTORY_TYPE>(MOVE_ABOVE_OBJECT_TRAJECTORY_NAME, traj);
+        setOutput<MOVE_ABOVE_OBJECT_TRAJECTORY_PARAM_TYPE>(MOVE_ABOVE_OBJECT_TRAJECTORY_PARAM_NAME, traj);
 
         return BT::NodeStatus::SUCCESS;
     }

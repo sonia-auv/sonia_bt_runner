@@ -8,13 +8,13 @@ ComputeTrajectoryBetweenDetections::ComputeTrajectoryBetweenDetections(const std
 
 BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
 {
-    if (!getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_A_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_A_PARAM, _det_a)
-        || !getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_B_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_B_PARAM, _det_b)) {
+    if (!getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_A_PARAM_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_A_PARAM_NAME, _det_a)
+        || !getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_B_PARAM_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_DETECTION_B_PARAM_NAME, _det_b)) {
         RCLCPP_ERROR(_ros_node->get_logger(), "ComputeTrajectoryBetweenDetections: missing DetectionA or DetectionB");
         return BT::NodeStatus::FAILURE;
     }
 
-    if (!getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_PARAM)) {
+    if (!getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_PARAM_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_PARAM_NAME)) {
         RCLCPP_ERROR(_ros_node->get_logger(), "ComputeTrajectoryBetweenDetections: Trajectory is not initialized");
         return BT::NodeStatus::FAILURE;
     }
@@ -62,7 +62,7 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
     p2.frame = 1;
 
     TrajectoryPose p3{};
-    p2.positionX = getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_POSITION_X_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_POSITION_X_PARAM).value();
+    p2.positionX = getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_POSITION_X_PARAM_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_POSITION_X_PARAM_NAME).value();
     p2.frame = 1;
     RCLCPP_INFO(_ros_node->get_logger(),
                 "ComputeTrajectoryBetweenDetections: p0.positionX=%.2f p0.positionY=%.2f p0.positionZ=%.2f p0.orientationX=%.2f p0.orientationY=%.2f p0.orientationZ=%.2f",
@@ -71,12 +71,12 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
                 "ComputeTrajectoryBetweenDetections: rot_to_cen_angle=%.2f cen_slalom_dist=%.2f slalom_orientation=%.2f",
                 rot_to_cen_angle, cen_slalom_dist, slalom_orientation);
 
-    auto traj = getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_PARAM).value();
+    auto traj = getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_PARAM_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_PARAM_NAME).value();
     traj.trajectory.push_back(p0);
     traj.trajectory.push_back(p1);
     traj.trajectory.push_back(p2);
     traj.trajectory.push_back(p3);
-    setOutput<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_PARAM, traj);
+    setOutput<COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_PARAM_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTION_TRAJECTORY_PARAM_NAME, traj);
 
     return BT::NodeStatus::SUCCESS;
 }

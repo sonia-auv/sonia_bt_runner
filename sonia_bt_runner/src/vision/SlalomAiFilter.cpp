@@ -27,7 +27,7 @@ namespace vision {
 
     void SlalomAiFilter::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg)
     {
-       RCLCPP_INFO(_ros_node->get_logger(), "SlalomAiFilter callback running");
+        RCLCPP_INFO(_ros_node->get_logger(), "SlalomAiFilter callback running");
         std::optional<sonia_common_ros2::msg::Detection> closest_red_slalom;
         std::vector<sonia_common_ros2::msg::Detection> whites_slaloms;
         sonia_common_ros2::msg::Detection choosen_white_slalom;
@@ -104,17 +104,23 @@ namespace vision {
 
     void SlalomAiFilter::stock_input_parameters()
     {
-        RCLCPP_INFO(_ros_node->get_logger(), "Start stock input parameters");
         // We go get the information in the behavior tree
+        RCLCPP_INFO(_ros_node->get_logger(), "SlalomAiFilter side");
         _side = getInput<SLALOM_AI_FILTER_SIDE_TYPE>(SLALOM_AI_FILTER_SIDE_NAME);
-        _cam = getInput<AI_FILTER_CAMERA_TYPE>(AI_FILTER_CAMERA_NAME);
-        _confidence = getInput<AI_FILTER_CONFIDENCE_TYPE>(AI_FILTER_CONFIDENCE_NAME);
-        _max_depth = getInput<AI_FILTER_MAX_DEPTH_TYPE>(AI_FILTER_MAX_DEPTH_NAME);
-        _detection_number_for_average = getInput<AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_TYPE>(AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_NAME);
+        RCLCPP_INFO(_ros_node->get_logger(), "SlalomAiFilter camera");
+        _cam = getInput<AI_FILTER_CAMERA_PARAM_TYPE>(AI_FILTER_CAMERA_PARAM_NAME);
+        RCLCPP_INFO(_ros_node->get_logger(), "SlalomAiFilter confidence");
+        _confidence = getInput<AI_FILTER_CONFIDENCE_PARAM_TYPE>(AI_FILTER_CONFIDENCE_PARAM_NAME);
+        RCLCPP_INFO(_ros_node->get_logger(), "SlalomAiFilter max_depth");
+        _max_depth = getInput<AI_FILTER_MAX_DEPTH_PARAM_TYPE>(AI_FILTER_MAX_DEPTH_PARAM_NAME);
+        RCLCPP_INFO(_ros_node->get_logger(), "SlalomAiFilter min_detection_before_success");
+        _detection_number_for_average = getInput<AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_PARAM_TYPE>(AI_FILTER_MIN_DETECTIONS_BEFORE_SUCCESS_PARAM_NAME);
 
         // I put those two parameter to do the test of witch one we're gonna use.
-        _max_frame_before_failing = getInput<AI_FILTER_MAX_FRAME_BEFORE_FAILING_TYPE>(AI_FILTER_MAX_FRAME_BEFORE_FAILING_NAME);
-        _max_time_before_failing = getInput<AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_TYPE>(AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_NAME);
+        RCLCPP_INFO(_ros_node->get_logger(), "SlalomAiFilter max_frame_before_failing");
+        _max_frame_before_failing = getInput<AI_FILTER_MAX_FRAME_BEFORE_FAILING_PARAM_TYPE>(AI_FILTER_MAX_FRAME_BEFORE_FAILING_PARAM_NAME);
+        RCLCPP_INFO(_ros_node->get_logger(), "SlalomAiFilter max_frame_before_failing_sec");
+        _max_time_before_failing = getInput<AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_PARAM_TYPE>(AI_FILTER_MAX_TIME_BEFORE_FAILING_SEC_PARAM_NAME);
         RCLCPP_INFO(_ros_node->get_logger(), "Stop stock input parameters");
 
     }
