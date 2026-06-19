@@ -5,6 +5,10 @@
 #include "sonia_bt_runner/utils/Point.hpp"
 #include "sonia_common_ros2/msg/pose.hpp"
 
+
+#define SAVE_POINT_POINT_NAME "Point"
+#define SAVE_POINT_POINT_TYPE Point
+
 namespace navigation {
 
     class SavePoint : public BT::StatefulActionNode {
@@ -17,7 +21,7 @@ namespace navigation {
             static BT::PortsList providedPorts()
             {
                 return {
-                    BT::OutputPort<Point>("Point"),
+                    BT::OutputPort<SAVE_POINT_POINT_TYPE>(SAVE_POINT_POINT_NAME),
                 };
             }
 
