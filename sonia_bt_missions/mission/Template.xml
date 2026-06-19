@@ -392,18 +392,35 @@
                  _description="We need to sleep because, otherwise we are too fast for the control (target_reached variable in the control don&apos;t have the time to be updated)."/>
           <WaitTargetReached timeout="{TimeBeforeFailing}"/>
         </Sequence>
-        <ForceSuccess>
-          <Repeat num_cycles="-1">
-            <Sequence>
-              <AlwaysSuccess name="SplitTrajectory"/>
-              <SendTrajectory trajectory="{Trajectory}"
-                              interpolation="0"/>
-              <Sleep msec="1500"
-                     _description="We need to sleep because, otherwise we are too fast for the control (target_reached variable in the control don&apos;t have the time to be updated)."/>
-              <WaitTargetReached timeout="{TimeBeforeFailing}"/>
-            </Sequence>
-          </Repeat>
-        </ForceSuccess>
+        <Sequence>
+          <Script code="target_reached_failure:=false"/>
+          <ForceSuccess>
+            <Repeat num_cycles="-1">
+              <Sequence>
+                <SplitTrajectory splittedTrajectory="{splittedTrajectory}"
+                                 trajectory="{Trajectory}"
+                                 offset="{offset}"/>
+                <SendTrajectory trajectory="{splittedTrajectory}"
+                                interpolation="0"/>
+                <Sleep msec="1500"
+                       _description="We need to sleep because, otherwise we are too fast for the control (target_reached variable in the control don&apos;t have the time to be updated)."/>
+                <IfThenElse>
+                  <WaitTargetReached timeout="{TimeBeforeFailing}"/>
+                  <AlwaysSuccess/>
+                  <Sequence>
+                    <Script code="target_reached_failure:=true"/>
+                    <AlwaysFailure/>
+                  </Sequence>
+                </IfThenElse>
+              </Sequence>
+            </Repeat>
+          </ForceSuccess>
+          <IfThenElse>
+            <ScriptCondition code="target_reached_failure==true"/>
+            <AlwaysFailure/>
+            <AlwaysSuccess/>
+          </IfThenElse>
+        </Sequence>
       </IfThenElse>
     </Sequence>
   </BehaviorTree>
@@ -619,6 +636,14 @@
     <Action ID="ShootTorpedo">
       <input_port name="side"
                   type="std::string">port_side or starboard</input_port>
+    </Action>
+    <Action ID="SplitTrajectory">
+      <output_port name="splittedTrajectory"
+                   type="Trajectory"/>
+      <input_port name="trajectory"
+                  type="Trajectory"/>
+      <inout_port name="offset"
+                  type="unsigned long"/>
     </Action>
     <Action ID="Tare">
       <input_port name="sensor"
