@@ -15,6 +15,10 @@ namespace vision {
 
         stock_input_parameters();
 
+        if (!set_filter_parameter("COMPAS", _confidence.value(), _max_depth.value())) {
+            return BT::NodeStatus::FAILURE;
+        }
+
         if (!initial_condition_verification()) {
             return BT::NodeStatus::FAILURE;
         }
@@ -36,7 +40,7 @@ namespace vision {
 
         for (auto msg_obj : msg.detected_object) {
             // We first detect the closest red slalom on the image
-            if (msg_obj.class_name.compare("COMPASS") == 0
+            if (msg_obj.class_name.compare("COMPAS") == 0
              && msg_obj.confidence >= _confidence_filter
              && msg_obj.distance <= _max_depth_filter
              && (!closest_red_slalom || closest_red_slalom.value().distance >= msg_obj.distance))
@@ -58,6 +62,7 @@ namespace vision {
             return;
         }
 
+        
         // We push_back the red and white slalom
         _detection_array.push_back(closest_red_slalom.value());
         

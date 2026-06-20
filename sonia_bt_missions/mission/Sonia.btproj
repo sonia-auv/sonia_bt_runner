@@ -135,6 +135,15 @@
             <input_port name="Confidence" default="0.60000">Minimum confidence of the Ai</input_port>
             <input_port name="Max_depth" default="25">Max distance to detect an object</input_port>
         </SubTree>
+        <Action ID="SearchWhiteSlalom">
+            <output_port name="WhiteSlalomDetection" type="AiDetection"/>
+            <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Timeout in seconds, 0 = disabled</input_port>
+            <input_port name="Max_depth" default="25.000000" type="float">Maximum detection distance</input_port>
+            <input_port name="Confidence" default="0.600000" type="float">Minimum AI confidence</input_port>
+            <input_port name="Min_detections_before_success" default="5" type="int">Minimum valid detections before succeeding</input_port>
+            <input_port name="Side" default="Left" type="std::string">Left or Right</input_port>
+            <input_port name="RedSlalomDetection" type="AiDetection"/>
+        </Action>
         <SubTree ID="SearchWhiteSlalomByRotation" editable="true">
             <input_port name="RedSlalomDetection">The detection of the red slalom used as angular reference.</input_port>
             <input_port name="Side" default="Left">Which side the white slalom is on relative to the red slalom. Value: Left or Right</input_port>

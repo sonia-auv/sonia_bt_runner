@@ -31,10 +31,10 @@
       <AiFilter Detected_object="{AiDetection}"
                 Max_time_before_failing_sec="0.000000"
                 Max_frame_before_failing="0"
-                Min_detections_before_success="2"
+                Min_detections_before_success="5"
                 Confidence="0.600000"
                 Max_depth="15.000000"
-                Object_class="COMPASS"
+                Object_class="COMPAS"
                 Camera="1"/>
       <FaceTheObject Trajectory="{traj}"
                      Detection="{AiDetection}"/>
