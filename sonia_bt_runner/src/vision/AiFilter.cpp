@@ -1,6 +1,7 @@
 #include "sonia_bt_runner/vision/AiFilter.hpp"
 #include "sonia_bt_runner/vision/ObjectVerification.hpp"
 #include <cmath>
+#include <cassert>
 
 using std::placeholders::_1;
 namespace vision{
@@ -164,13 +165,15 @@ namespace vision{
         max = q3 + 1.5f * (q3 - q1);
 
         // We keep the detection inside the min and the max bound
-        for (std::vector<sonia_common_ros2::msg::Detection>::iterator it = _detection_array.begin(); it != _detection_array.end();) {
-            if (it->distance_teta < min || it->distance_teta > max) {
-                it = _detection_array.erase(it);
-            } else {
-                ++it;
-            }
-        }
+	if (_detection_array.size() > 2) {
+		for (std::vector<sonia_common_ros2::msg::Detection>::iterator it = _detection_array.begin(); it != _detection_array.end();) {
+		    if (it->distance_teta < min || it->distance_teta > max) {
+			it = _detection_array.erase(it);
+		    } else {
+			++it;
+		    }
+		}
+	}
 
         // We did the same thing with the distance_beta
         // We made a filtering in ascending order of the beta distance
@@ -215,6 +218,9 @@ namespace vision{
         // We compute the new average of every parameter of the detection that we keep.
         AiDetection output_detection{};
         output_detection.classification = _object.value();
+
+	assert(_detection_array.size() != 0 && "Something wrong in the code");
+
         for(auto detection : _detection_array)
         {
             output_detection.distance += detection.distance;
