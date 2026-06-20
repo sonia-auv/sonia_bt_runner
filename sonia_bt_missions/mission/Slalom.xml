@@ -100,12 +100,7 @@
     <Action ID="FaceTheObject">
       <inout_port name="Trajectory"
                   type="Trajectory"/>
-      <input_port name="PositionX"
-                  default="10.000000"
-                  type="float">Forward distance to travel after centering between the two detections</input_port>
-      <input_port name="DetectionB"
-                  type="AiDetection"/>
-      <input_port name="DetectionA"
+      <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
     <SubTree ID="InitialSubmerge"
