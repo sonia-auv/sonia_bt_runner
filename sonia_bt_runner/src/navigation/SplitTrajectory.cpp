@@ -1,8 +1,8 @@
 #include "sonia_bt_runner/navigation/SplitTrajectory.hpp"
 
 namespace navigation{
-    SplitTrajectory::SplitTrajectory(const std::string &name, const BT::NodeConfig &config)
-    : BT::SyncActionNode(name, config)
+    SplitTrajectory::SplitTrajectory(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
+    : BT::SyncActionNode(name, config), _ros_node(node)
     {
     }
 
@@ -19,8 +19,11 @@ namespace navigation{
 
         // We verify if the offset is valid for an other trajectory
         if (offset >= trajectory.trajectory.size()) {
+	    RCLCPP_INFO(_ros_node->get_logger(), "Over the offset, the block failed");
             return BT::NodeStatus::FAILURE;
         }
+
+	RCLCPP_INFO(_ros_node->get_logger(), "Pass the offset is valid");
 
         SPLIT_TRAJECTORY_SPLITTED_TRAJECTORY_TYPE output_trajectory{};
         output_trajectory.trajectory.push_back(trajectory.trajectory[offset]);

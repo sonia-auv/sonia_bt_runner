@@ -1,6 +1,7 @@
 #pragma once
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
+#include "rclcpp/rclcpp.hpp"
 
 #define SPLIT_TRAJECTORY_OFFSET_PARAM "offset"
 #define SPLIT_TRAJECTORY_RECEIVED_TRAJECTORY_PARAM "trajectory"
@@ -14,7 +15,7 @@ namespace navigation{
     class SplitTrajectory : public BT::SyncActionNode
     {
         public:
-            SplitTrajectory(const std::string &name, const BT::NodeConfig &config);
+            SplitTrajectory(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
             ~SplitTrajectory() override = default;
 
             static BT::PortsList providedPorts()
@@ -28,5 +29,7 @@ namespace navigation{
             }
 
             BT::NodeStatus tick() override;
+       private:
+            std::shared_ptr<rclcpp::Node> _ros_node;
     };
 }

@@ -39,7 +39,7 @@ static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::share
     factory.registerBuilder<navigation::SendTrajectory>("SendTrajectory", configBuilder<navigation::SendTrajectory>(node));
     factory.registerBuilder<navigation::WaitTargetReached>("WaitTargetReached", configBuilder<navigation::WaitTargetReached>(node));
     factory.registerBuilder<navigation::ComputeTrajectoryBetweenDetections>("ComputeTrajectoryBetweenDetections", configBuilder<navigation::ComputeTrajectoryBetweenDetections>(node));
-    factory.registerNodeType<navigation::SplitTrajectory>("SplitTrajectory");
+    factory.registerBuilder<navigation::SplitTrajectory>("SplitTrajectory", configBuilder<navigation::SplitTrajectory>(node));
 }
 
 static void registerSensorNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
