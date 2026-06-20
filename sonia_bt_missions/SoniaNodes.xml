@@ -62,6 +62,15 @@
         <Action ID="SavePoint">
             <output_port name="Point" type="Point"/>
         </Action>
+        <Action ID="SearchWhiteSlalom">
+            <output_port name="WhiteSlalomDetection" type="AiDetection"/>
+            <input_port name="Max_time_before_failing_sec" type="float" default="0.000000">Timeout in seconds, 0 = disabled</input_port>
+            <input_port name="Max_depth" type="float" default="25.000000">Maximum detection distance</input_port>
+            <input_port name="Confidence" type="float" default="0.600000">Minimum AI confidence</input_port>
+            <input_port name="Min_detections_before_success" type="int" default="5">Minimum valid detections before succeeding</input_port>
+            <input_port name="Side" type="std::string" default="Left">Left or Right</input_port>
+            <input_port name="RedSlalomDetection" type="AiDetection"/>
+        </Action>
         <Action ID="SendTrajectory">
             <input_port name="trajectory" type="Trajectory"/>
             <input_port name="interpolation" type="int" default="0"/>
@@ -79,6 +88,11 @@
             <input_port name="Confidence" type="float" default="0.600000">Ai confidence</input_port>
             <input_port name="Side" type="std::string" default="">The passing side for the slalom</input_port>
             <input_port name="Camera" type="int" default="1">1: Front, 0: Bottom</input_port>
+        </Action>
+        <Action ID="SplitTrajectory">
+            <output_port name="splittedTrajectory" type="Trajectory"/>
+            <input_port name="trajectory" type="Trajectory"/>
+            <inout_port name="offset" type="unsigned long"/>
         </Action>
         <Action ID="Tare">
             <input_port name="sensor" type="std::string">imu or depth</input_port>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4" project_name="Project">
+    <include path="../SoniaNodes.xml"/>
     <include path="Bin.xml"/>
     <include path="Gate.xml"/>
     <include path="PoolTest.xml"/>
@@ -174,6 +175,11 @@
         <SubTree ID="SlalomSimple" editable="true">
             <input_port name="Side">The side for passing the slalom</input_port>
         </SubTree>
+        <Action ID="SplitTrajectory">
+            <output_port name="splittedTrajectory" type="Trajectory"/>
+            <input_port name="trajectory" type="Trajectory"/>
+            <inout_port name="offset" type="unsigned long"/>
+        </Action>
         <Action ID="Tare">
             <input_port name="sensor" type="std::string">imu or depth</input_port>
         </Action>
