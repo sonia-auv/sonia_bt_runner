@@ -47,6 +47,7 @@
             <input_port name="Path">The path that the othor sub has choosen</input_port>
         </SubTree>
         <Action ID="ComputeTrajectoryBetweenDetections">
+            <input_port name="Side" type="std::string"/>
             <inout_port name="Trajectory" type="Trajectory"/>
             <input_port name="PositionX" default="10.000000" type="float">Forward distance to travel after centering between the two detections</input_port>
             <input_port name="DetectionB" type="AiDetection"/>
@@ -159,6 +160,9 @@
         </Action>
         <SubTree ID="SlalomRafinee" editable="true">
             <input_port name="Side">The</input_port>
+        </SubTree>
+        <SubTree ID="SlalomSemiFinal" editable="true">
+            <input_port name="Side" default="Left">The side that the sub take to passe the slalom</input_port>
         </SubTree>
         <SubTree ID="SlalomSimple" editable="true">
             <input_port name="Side">The side for passing the slalom</input_port>

@@ -16,7 +16,7 @@
         <SubTree ID="TrickshotLegacy"/>
       </ForceSuccess>
       <ForceSuccess>
-        <SubTree ID="SlalomSimple"
+        <SubTree ID="SlalomSemiFinal"
                  Side="{side}"/>
       </ForceSuccess>
       <ForceSuccess>
@@ -43,7 +43,7 @@
         <SubTree ID="TrickshotLegacy"/>
       </ForceSuccess>
       <ForceSuccess>
-        <SubTree ID="SlalomSimple"
+        <SubTree ID="SlalomSemiFinal"
                  Side="{side}"/>
       </ForceSuccess>
       <ForceSuccess>
@@ -70,9 +70,8 @@
         <SubTree ID="TrickshotLegacy"/>
       </ForceSuccess>
       <ForceSuccess>
-        <SubTree ID="SlalomSimple"
-                 Side="{side}"
-                 _autoremap="false"/>
+        <SubTree ID="SlalomSemiFinal"
+                 Side="{side}"/>
       </ForceSuccess>
       <ForceSuccess>
         <SubTree ID="BinOneBox"
@@ -106,9 +105,8 @@
         <SubTree ID="TrickshotLegacy"/>
       </ForceSuccess>
       <ForceSuccess>
-        <SubTree ID="SlalomSimple"
-                 Side="{side}"
-                 _autoremap="false"/>
+        <SubTree ID="SlalomSemiFinal"
+                 Side="{side}"/>
       </ForceSuccess>
       <ForceSuccess>
         <SubTree ID="BinOneBox"
@@ -142,7 +140,7 @@
         <SubTree ID="TrickshotLegacy"/>
       </ForceSuccess>
       <ForceSuccess>
-        <SubTree ID="SlalomSimple"
+        <SubTree ID="SlalomSemiFinal"
                  Side="{side}"/>
       </ForceSuccess>
       <ForceSuccess>
@@ -177,7 +175,7 @@
         <SubTree ID="TrickshotLegacy"/>
       </ForceSuccess>
       <ForceSuccess>
-        <SubTree ID="SlalomSimple"
+        <SubTree ID="SlalomSemiFinal"
                  Side="{side}"/>
       </ForceSuccess>
       <ForceSuccess>
@@ -212,7 +210,7 @@
         <SubTree ID="TrickshotLegacy"/>
       </ForceSuccess>
       <ForceSuccess>
-        <SubTree ID="SlalomSimple"
+        <SubTree ID="SlalomSemiFinal"
                  Side="{side}"/>
       </ForceSuccess>
       <ForceSuccess>
@@ -274,7 +272,7 @@
         <SubTree ID="TrickshotLegacy"/>
       </ForceSuccess>
       <ForceSuccess>
-        <SubTree ID="SlalomSimple"
+        <SubTree ID="SlalomSemiFinal"
                  Side="{side}"/>
       </ForceSuccess>
       <ForceSuccess>
@@ -314,9 +312,10 @@
       <output_port name="Point"
                    type="Point"/>
     </Action>
-    <SubTree ID="SlalomSimple"
+    <SubTree ID="SlalomSemiFinal"
              editable="true">
-      <input_port name="Side">The side for passing the slalom</input_port>
+      <input_port name="Side"
+                  default="Left">The side that the sub take to passe the slalom</input_port>
     </SubTree>
     <SubTree ID="Torpedos"
              editable="true">

@@ -90,8 +90,8 @@
                     Max_depth="25.000000"
                     Object_class="{NonTargetObject}"
                     Camera="1"/>
-          <Script code="Side:=&quot;left&quot;"/>
-          <Script code="Side:=&quot;right&quot;"/>
+          <Script code="Side:=&quot;Left&quot;"/>
+          <Script code="Side:=&quot;Right&quot;"/>
         </IfThenElse>
       </Sequence>
       <Sequence name="We pass the gate">
