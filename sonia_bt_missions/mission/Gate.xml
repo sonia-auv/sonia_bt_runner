@@ -13,16 +13,17 @@
     <AlwaysSuccess/>
   </BehaviorTree>
 
-  <BehaviorTree ID="GateSearchRescue">
+  <BehaviorTree ID="Gate">
     <Sequence name="Gate SearchRescue">
       <Sequence name="Looking for the SOS image">
-        <Script code="Path:=&quot;search-rescue&quot;"/>
+        <SubTree ID="InitialSubmerge"
+                 Depth="1.0"/>
         <AiActivation Model="0"
                       Bottom="false"
                       Front="true"/>
         <InitializeTrajectory trajectory="{Trajectory}"/>
         <SubTree ID="SearchObjectByRotation"
-                 Object="LIFE PRESERVER"
+                 Object="{TargetObject}"
                  FoundAiDetection="{Aidetection}"
                  Max_time_before_failing_sec="0.00"
                  Max_frame_before_failing="300"
@@ -43,7 +44,7 @@
                   Min_detections_before_success="10"
                   Confidence="0.600000"
                   Max_depth="25.000000"
-                  Object_class="LIFE PRESERVER"
+                  Object_class="{TargetObject}"
                   Camera="1"/>
         <ObjectDrifting Trajectory="{Trajectory}"
                         Detection="{Aidetection}"/>
@@ -59,7 +60,7 @@
                   Min_detections_before_success="10"
                   Confidence="0.600000"
                   Max_depth="25.000000"
-                  Object_class="LIFE PRESERVER"
+                  Object_class="{TargetObject}"
                   Camera="1"/>
         <MoveToObject Offset="-1.5"
                       Trajectory="{Trajectory}"
@@ -87,118 +88,7 @@
                     Min_detections_before_success="10"
                     Confidence="0.600000"
                     Max_depth="25.000000"
-                    Object_class="COMPAS"
-                    Camera="1"/>
-          <Script code="Side:=&quot;left&quot;"/>
-          <Script code="Side:=&quot;right&quot;"/>
-        </IfThenElse>
-      </Sequence>
-      <Sequence name="We pass the gate">
-        <InitializeTrajectory trajectory="{Trajectory}"/>
-        <TrajectoryAppendPose trajectory="{Trajectory}"
-                              positionX="0.000000"
-                              positionY="0.000000"
-                              positionZ="0.000000"
-                              orientationX="0.000000"
-                              orientationY="0.000000"
-                              orientationZ="-45.0"
-                              precision="0"
-                              speed="0"
-                              frame="1"
-                              longRotation="false"/>
-        <TrajectoryAppendPose trajectory="{Trajectory}"
-                              positionX="3.0"
-                              positionY="0.000000"
-                              positionZ="0.000000"
-                              orientationX="0.000000"
-                              orientationY="0.000000"
-                              orientationZ="0.000000"
-                              precision="0"
-                              speed="0"
-                              frame="1"
-                              longRotation="false"/>
-        <SubTree ID="SendTrajectoryOnly"
-                 Trajectory="{Trajectory}"
-                 TimeBeforeFailing="5"/>
-      </Sequence>
-    </Sequence>
-  </BehaviorTree>
-
-  <BehaviorTree ID="GateSurveyRepair">
-    <Sequence name="Gate SurveyRepair">
-      <Script code="Path:=&quot;survey-repair&quot;"/>
-      <Sequence name="Looking for the Compass image">
-        <AiActivation Model="0"
-                      Bottom="false"
-                      Front="true"/>
-        <InitializeTrajectory trajectory="{Trajectory}"/>
-        <SubTree ID="SearchObjectByRotation"
-                 Object="COMPAS"
-                 FoundAiDetection="{Aidetection}"
-                 Max_time_before_failing_sec="0.00"
-                 Max_frame_before_failing="300"
-                 Min_detection_before_success="5"
-                 Confidence="0.60000"
-                 Max_depth="25"/>
-        <FaceTheObject Trajectory="{Trajectory}"
-                       Detection="{Aidetection}"/>
-        <SubTree ID="SendTrajectoryOnly"
-                 Trajectory="{Trajectory}"
-                 TimeBeforeFailing="5"/>
-      </Sequence>
-      <Sequence name="Position the sub at 90 degree facing the Compass image">
-        <InitializeTrajectory trajectory="{Trajectory}"/>
-        <AiFilter Detected_object="{Aidetection}"
-                  Max_time_before_failing_sec="0.000000"
-                  Max_frame_before_failing="0"
-                  Min_detections_before_success="5"
-                  Confidence="0.600000"
-                  Max_depth="25.000000"
-                  Object_class="COMPAS"
-                  Camera="1"/>
-        <ObjectDrifting Trajectory="{Trajectory}"
-                        Detection="{Aidetection}"/>
-        <SubTree ID="SendTrajectoryOnly"
-                 Trajectory="{Trajectory}"
-                 TimeBeforeFailing="5"/>
-      </Sequence>
-      <Sequence name="Moving the sub at 1.5 m from the Compass image and we look to the left">
-        <InitializeTrajectory trajectory="{Trajectory}"/>
-        <AiFilter Detected_object="{Aidetection}"
-                  Max_time_before_failing_sec="0.000000"
-                  Max_frame_before_failing="300"
-                  Min_detections_before_success="5"
-                  Confidence="0.600000"
-                  Max_depth="25.000000"
-                  Object_class="COMPAS"
-                  Camera="1"/>
-        <MoveToObject Offset="-1.5"
-                      Trajectory="{Trajectory}"
-                      Detection="{Aidetection}"/>
-        <TrajectoryAppendPose trajectory="{Trajectory}"
-                              positionX="0.000000"
-                              positionY="0.000000"
-                              positionZ="0.000000"
-                              orientationX="0.000000"
-                              orientationY="0.000000"
-                              orientationZ="45.0"
-                              precision="0"
-                              speed="0"
-                              frame="1"
-                              longRotation="false"/>
-        <SubTree ID="SendTrajectoryOnly"
-                 Trajectory="{Trajectory}"
-                 TimeBeforeFailing="5"/>
-      </Sequence>
-      <Sequence name="Verify if the compass is on the right">
-        <IfThenElse>
-          <AiFilter Detected_object="{Aidetection}"
-                    Max_time_before_failing_sec="0.000000"
-                    Max_frame_before_failing="300"
-                    Min_detections_before_success="5"
-                    Confidence="0.600000"
-                    Max_depth="25.000000"
-                    Object_class="LIFE PRESERVER"
+                    Object_class="{NonTargetObject}"
                     Camera="1"/>
           <Script code="Side:=&quot;left&quot;"/>
           <Script code="Side:=&quot;right&quot;"/>

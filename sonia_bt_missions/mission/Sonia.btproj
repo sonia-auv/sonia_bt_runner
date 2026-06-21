@@ -67,16 +67,9 @@
             <input_port name="Detection" type="AiDetection"/>
         </Action>
         <SubTree ID="Gate" editable="true">
-            <output_port name="Path">The path that the sub as taken</output_port>
             <output_port name="Side">The left or right side that the sub as taken</output_port>
-        </SubTree>
-        <SubTree ID="GateSearchRescue" editable="true">
-            <output_port name="Path">The path that the sub as taken</output_port>
-            <output_port name="Side">The left or right side that the sub as taken</output_port>
-        </SubTree>
-        <SubTree ID="GateSurveyRepair" editable="true">
-            <output_port name="Path">The path that the sub has choosen at the beginning</output_port>
-            <output_port name="Side">The side that the sub has choosen at the beginning</output_port>
+            <input_port name="TargetObject">Object than the sub looking for.</input_port>
+            <input_port name="NonTargetObject">Object that the sub use to make sure it passes on the right side.</input_port>
         </SubTree>
         <SubTree ID="InitialSubmerge" editable="true">
             <input_port name="Depth" default="0.5"/>

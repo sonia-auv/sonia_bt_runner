@@ -6,9 +6,10 @@
                Depth="1"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="GateSearchRescue"
-                 Path="{path}"
-                 Side="{side}"/>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="LIFE PRESERVER"
+                 NonTargetObject="COMPAS"/>
       </ForceSuccess>
       <SavePoint Point="{point_retour}"/>
       <ForceSuccess>
@@ -32,9 +33,10 @@
                Depth="1"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="GateSurveyRepair"
-                 Path="{path}"
-                 Side="{side}"/>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="COMPAS"
+                 NonTargetObject="LIFE PRESERVER"/>
       </ForceSuccess>
       <SavePoint Point="{point_retour}"/>
       <ForceSuccess>
@@ -58,9 +60,10 @@
                Depth="0.5"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="GateSearchRescue"
-                 Path="{path}"
-                 Side="{side}"/>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="LIFE PRESERVER"
+                 NonTargetObject="COMPAS"/>
       </ForceSuccess>
       <SavePoint Point="{point_retour}"/>
       <ForceSuccess>
@@ -93,9 +96,10 @@
                Depth="0.5"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="GateSurveyRepair"
-                 Path="{path}"
-                 Side="{side}"/>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="COMPAS"
+                 NonTargetObject="LIFE PRESERVER"/>
       </ForceSuccess>
       <SavePoint Point="{point_retour}"/>
       <ForceSuccess>
@@ -128,9 +132,10 @@
                Depth="0.5"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="GateSearchRescue"
-                 Path="{path}"
-                 Side="{side}"/>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="LIFE PRESERVER"
+                 NonTargetObject="COMPAS"/>
       </ForceSuccess>
       <SavePoint Point="{point_retour}"/>
       <ForceSuccess>
@@ -162,9 +167,10 @@
                Depth="0.5"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="GateSurveyRepair"
-                 Path="{path}"
-                 Side="{side}"/>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="COMPAS"
+                 NonTargetObject="LIFE PRESERVER"/>
       </ForceSuccess>
       <SavePoint Point="{point_retour}"/>
       <ForceSuccess>
@@ -196,9 +202,10 @@
                Depth="0.5"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="GateSearchRescue"
-                 Path="{path}"
-                 Side="{side}"/>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="LIFE PRESERVER"
+                 NonTargetObject="COMPAS"/>
       </ForceSuccess>
       <SavePoint Point="{point_retour}"/>
       <ForceSuccess>
@@ -226,9 +233,10 @@
                Depth="0.5"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="GateSearchRescue"
-                 Path="{path}"
-                 Side="{side}"/>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="COMPAS"
+                 NonTargetObject="LIFE PRESERVER"/>
       </ForceSuccess>
       <SavePoint Point="{point_retour}"/>
       <ForceSuccess>
@@ -256,9 +264,10 @@
                Depth="0.5"/>
       <SubTree ID="CoinFlip"/>
       <ForceSuccess>
-        <SubTree ID="GateSearchRescue"
-                 Path="{path}"
-                 Side="{side}"/>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="LIFE PRESERVER"
+                 NonTargetObject="COMPAS"/>
       </ForceSuccess>
       <SavePoint Point="{point_retour}"/>
       <ForceSuccess>
@@ -286,15 +295,11 @@
              editable="true">
       <input_port name="ObjectToAim">The object in the bin that the sub needs to aim</input_port>
     </SubTree>
-    <SubTree ID="GateSearchRescue"
+    <SubTree ID="Gate"
              editable="true">
-      <output_port name="Path">The path that the sub as taken</output_port>
       <output_port name="Side">The left or right side that the sub as taken</output_port>
-    </SubTree>
-    <SubTree ID="GateSurveyRepair"
-             editable="true">
-      <output_port name="Path">The path that the sub has choosen at the beginning</output_port>
-      <output_port name="Side">The side that the sub has choosen at the beginning</output_port>
+      <input_port name="TargetObject">Object than the sub looking for.</input_port>
+      <input_port name="NonTargetObject">Object that the sub use to make sure it passes on the right side.</input_port>
     </SubTree>
     <SubTree ID="InitialSubmerge"
              editable="true">
