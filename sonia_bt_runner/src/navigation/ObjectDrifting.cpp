@@ -32,7 +32,7 @@ namespace navigation
         t1.positionZ = 0.0;
         t1.orientationX = 0.0;
         t1.orientationY = 0.0;
-        t1.orientationZ = -det.angle_teta;
+        t1.orientationZ = det.angle_teta;
         t1.frame = 1;
         t1.speed = 0;
         t1.precision = 0;
@@ -48,7 +48,10 @@ namespace navigation
         // We compute a translation in Y to go in front of the target
         TrajectoryPose t2;
         t2.positionX = 0.0;
-        t2.positionY = det.distance_teta;
+	// https://en.wikipedia.org/wiki/Radian
+#define DEG_TO_RAD(angle) ((angle) * M_PI / 180)
+	t2.positionY = std::sin(DEG_TO_RAD(det.angle_teta)) * det.distance * -1.0;
+#undef DEG_TO_RAD
         t2.positionZ = 0.0;
         t2.orientationX = 0.0;
         t2.orientationY = 0.0;
