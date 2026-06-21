@@ -31,19 +31,21 @@ namespace vision{
 
 		_start_time = std::chrono::system_clock::now();
 
+	auto status = BT::NodeStatus::RUNNING;
+
         // We verify if the object is valid
         if (!verifyObject(_object.value())) {
             RCLCPP_INFO(_ros_node->get_logger(), "The detected object is not a valid name of type of detection. Syntax error");
-            return BT::NodeStatus::FAILURE;
-        }
-
-        if (_detection_number_for_average.value() <= 1)
+	    status = BT::NodeStatus::FAILURE;
+        } else if (_detection_number_for_average.value() <= 1)
         {
             RCLCPP_INFO(_ros_node->get_logger(), "You have to set the Min_detections_before_success parameter to more than 1.");
-            return BT::NodeStatus::FAILURE;
+	    status = BT::NodeStatus::FAILURE;
         }
 
-        return BT::NodeStatus::RUNNING;
+	handle_exit_status(status);
+
+        return status;
     }
 
     BT::NodeStatus AiFilter::get_detection_status(const std::string& object, const float confidence, const float max_depth)
@@ -74,13 +76,8 @@ namespace vision{
 		return BT::NodeStatus::SUCCESS;
     }
 
-    BT::NodeStatus AiFilter::onRunning()
-    {
-         RCLCPP_INFO(_ros_node->get_logger(), "onRunning");
-
-		auto detection_status = get_detection_status(_object.value(), _confidence.value(), _max_depth.value());
-
-		switch (detection_status) {
+    void AiFilter::handle_exit_status(BT::NodeStatus &status) {
+	    switch (status) {
 			case BT::NodeStatus::SUCCESS: {
 		       		RCLCPP_INFO(_ros_node->get_logger(), "onRunning success!!!");
 			// We need to make some selection in the image array
@@ -104,6 +101,15 @@ namespace vision{
 			default:
 				break;
 		}
+    }
+
+    BT::NodeStatus AiFilter::onRunning()
+    {
+         RCLCPP_INFO(_ros_node->get_logger(), "onRunning");
+
+		auto detection_status = get_detection_status(_object.value(), _confidence.value(), _max_depth.value());	
+
+		handle_exit_status(detection_status);
 
 		return detection_status;
     }
