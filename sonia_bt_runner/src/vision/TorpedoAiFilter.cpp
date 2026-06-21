@@ -9,6 +9,8 @@ namespace vision {
 
     void TorpedoAiFilter::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) 
     {
+	AbstractAiFilter::ai_filter_callback(msg);
+
         sonia_common_ros2::msg::Detection object;
         std::vector<sonia_common_ros2::msg::Detection> target;
         bool detection_flag{false};
@@ -17,18 +19,17 @@ namespace vision {
         float beta{};
         float teta{};
 
-        _timout_counter++;
         for (auto msg_obj: msg.detected_object){
-            if(msg_obj.class_name.compare(_object_filter) == 0)
+            if(msg_obj.class_name.compare(_object_class) == 0)
             {
                 // The searching object has been detected
                 // RCLCPP_INFO(_ros_node->get_logger(), "Class OK");
                 // RCLCPP_INFO(_ros_node->get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name.c_str(), msg_obj.distance, msg_obj.confidence);
                 // RCLCPP_INFO(_ros_node->get_logger(), "Comparing %s and %s = %d", msg_obj.class_name.c_str(), _object.value().c_str(), msg_obj.class_name.compare(_object.value()));
-                if(msg_obj.confidence >= _confidence_filter && msg_obj.distance <= _max_depth_filter)
+                if(msg_obj.confidence >= confidence() && msg_obj.distance <= max_depth())
                 {
                     //The detected object respect the confidence and the depth. We can put it in the filter array
-                    RCLCPP_INFO(_ros_node->get_logger(), "Confidence and depth OK, a new object has been detected");
+                    RCLCPP_INFO(get_logger(), "Confidence and depth OK, a new object has been detected");
                     object = msg_obj;
                     detection_flag = true;
                     break;
@@ -44,10 +45,10 @@ namespace vision {
                     // RCLCPP_INFO(_ros_node->get_logger(), "Class OK");
                     // RCLCPP_INFO(_ros_node->get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name.c_str(), msg_obj.distance, msg_obj.confidence);
                     // RCLCPP_INFO(_ros_node->get_logger(), "Comparing %s and %s = %d", msg_obj.class_name.c_str(), _object.value().c_str(), msg_obj.class_name.compare(_object.value()));
-                    if(msg_obj.confidence >= _confidence_filter && msg_obj.distance <= _max_depth_filter)
+                    if(msg_obj.confidence >= confidence() && msg_obj.distance <= max_depth())
                     {
                         //The detected object respect the confidence and the depth. We can put it in the filter array
-                        RCLCPP_INFO(_ros_node->get_logger(), "Confidence and depth OK, a new object has been detected");
+                        RCLCPP_INFO(get_logger(), "Confidence and depth OK, a new object has been detected");
                         target.push_back(msg_obj);
                     }
                 }

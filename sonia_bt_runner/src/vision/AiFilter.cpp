@@ -6,136 +6,89 @@
 using std::placeholders::_1;
 namespace vision{
     AiFilter::AiFilter(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    :BT::StatefulActionNode(name, config), _ros_node(node), _detection_array()
+    : AbstractAiFilter(name, config, node)
     {
     }
-
+    
     BT::NodeStatus AiFilter::onStart()
     {
-        // We go get the information in the behavior tree
-        _cam = getInput<int>("Camera");
-        _object = getInput<std::string>("Object_class");
-        _confidence = getInput<float>("Confidence");
-        _max_depth = getInput<float>("Max_depth");
-        _detection_number_for_average = getInput<int>("Min_detections_before_success");
+	    auto status = AbstractAiFilter::onStart();
 
-        // I put those two parameter to do the test of witch one we're gonna use.
-        _max_frame_before_failing = getInput<int>("Max_frame_before_failing");
-        _max_time_before_failing = getInput<float>("Max_time_before_failing_sec");
-
-        // We create the subscriber to gather the information
-        if(_cam.value())
-            _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/front/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
-        else
-            _ai_filter_sub = _ros_node->create_subscription<sonia_common_ros2::msg::DetectionArray>("/proc_vision/bottom/classif", 1, std::bind(&AiFilter::ai_filter_callback, this, _1));
-
-		_start_time = std::chrono::system_clock::now();
-
-	auto status = BT::NodeStatus::RUNNING;
-
-        // We verify if the object is valid
-        if (!verifyObject(_object.value())) {
-            RCLCPP_INFO(_ros_node->get_logger(), "The detected object is not a valid name of type of detection. Syntax error");
-	    status = BT::NodeStatus::FAILURE;
-        } else if (_detection_number_for_average.value() <= 1)
-        {
-            RCLCPP_INFO(_ros_node->get_logger(), "You have to set the Min_detections_before_success parameter to more than 1.");
-	    status = BT::NodeStatus::FAILURE;
-        }
-
-	handle_exit_status(status);
-
-        return status;
-    }
-
-    BT::NodeStatus AiFilter::get_detection_status(const std::string& object, const float confidence, const float max_depth)
-    {
-        //We set the value for the detection
-        _object_filter = object;
-        _confidence_filter = confidence;
-        _max_depth_filter = max_depth;
-        std::chrono::duration<double> diff = std::chrono::system_clock::now() - _start_time;
-        float time_diff = diff.count();
-         RCLCPP_INFO(_ros_node->get_logger(), "Get detection status");
-         RCLCPP_INFO(_ros_node->get_logger(), "detection_array_size = %ld, min_detection = %ld", _detection_array.size(), _detection_number_for_average.value());
-
-		if (_max_frame_before_failing.value() != 0 && _timout_counter > _max_frame_before_failing.value()) {
-			RCLCPP_INFO(_ros_node->get_logger(), "max frame = %d, We don't find what we are looking for.", _max_frame_before_failing.value());
-
-            return BT::NodeStatus::FAILURE;
-		} else if (_max_time_before_failing.value() != 0.0f && time_diff > _max_time_before_failing.value()) {
-			RCLCPP_INFO(_ros_node->get_logger(), "max time = %f, We don't find what we are looking for.", _max_time_before_failing.value());
-
-            return BT::NodeStatus::FAILURE;
-		} else if (_detection_array.size() < (size_t)_detection_number_for_average.value()) {
-			RCLCPP_INFO(_ros_node->get_logger(), "We don't have yet the number of detection we want");
-
-            return BT::NodeStatus::RUNNING;
-		}
-        
-		return BT::NodeStatus::SUCCESS;
-    }
-
-    void AiFilter::handle_exit_status(BT::NodeStatus &status) {
 	    switch (status) {
-			case BT::NodeStatus::SUCCESS: {
-		       		RCLCPP_INFO(_ros_node->get_logger(), "onRunning success!!!");
-			// We need to make some selection in the image array
-			RCLCPP_INFO(_ros_node->get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
+		    case BT::NodeStatus::RUNNING: 
+			    _object_class = getInput<AI_FILTER_OBJECT_CLASS_TYPE>(AI_FILTER_OBJECT_CLASS).value();
 
-			// We select the detection that we want to use to compute the output
-			applicate_box_plot_to_detections();
-			
-			auto detected_object = detection_average();
+			    // We verify if the object is valid
+			    if (!verifyObject(_object_class)) {
+				    RCLCPP_INFO(get_logger(), "The detected object is not a valid name of type of detection. Syntax error");
+				    status = BT::NodeStatus::FAILURE;
+			    }
 
-			RCLCPP_INFO(_ros_node->get_logger(), "classification = %s, distance = %f, confidence = %f, angle_teta = %f, angle_alpha = %f", detected_object.classification.c_str(), detected_object.distance, detected_object.confidence, detected_object.angle_teta, detected_object.angle_alpha);
+			    handle_status(status);
 
+			    break;
+	            default:
+			    break;
+	    }
 
-			setOutput("Detected_object", detected_object);
-			[[fallthrough]];
-		      }
-			case BT::NodeStatus::FAILURE:
-				_ai_filter_sub.reset();
-
-				break;
-			default:
-				break;
-		}
+	    return status;
     }
 
-    BT::NodeStatus AiFilter::onRunning()
+    BT::NodeStatus AiFilter::get_detection_status()
     {
-         RCLCPP_INFO(_ros_node->get_logger(), "onRunning");
+	    switch (AbstractAiFilter::get_detection_status()) {
+		    case BT::NodeStatus::FAILURE:
+			    return BT::NodeStatus::FAILURE;
+		    case BT::NodeStatus::RUNNING:
+			    if (_detection_array.size() < detection_number_for_average()) {
+				    RCLCPP_INFO(get_logger(), "We don't have yet the number of detection we want");
+				    
+				    return BT::NodeStatus::RUNNING;
+			    }
 
-		auto detection_status = get_detection_status(_object.value(), _confidence.value(), _max_depth.value());	
-
-		handle_exit_status(detection_status);
-
-		return detection_status;
+			    return BT::NodeStatus::SUCCESS;
+		    default:
+			    assert(0 && "Not expected status");
+	    }
     }
-
-    void AiFilter::onHalted()
+    
+    void AiFilter::handle_success()
     {
+	    RCLCPP_INFO(get_logger(), "onRunning success!!!");
+	    // We need to make some selection in the image array
+	    RCLCPP_INFO(get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
+	    
+	    // We select the detection that we want to use to compute the output
+	    applicate_box_plot_to_detections();
+	    
+	    auto detected_object = detection_average();
+	    
+	    RCLCPP_INFO(get_logger(), "classification = %s, distance = %f, confidence = %f, angle_teta = %f, angle_alpha = %f", detected_object.classification.c_str(), detected_object.distance, detected_object.confidence, detected_object.angle_teta, detected_object.angle_alpha);
+	    
+	    setOutput("Detected_object", detected_object);
+
+	    AbstractAiFilter::handle_success();
     }
 
     void AiFilter::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) {
-       
-        _timout_counter++;
-         RCLCPP_INFO(_ros_node->get_logger(), "Start ai_filter_callback");
+	AbstractAiFilter::ai_filter_callback(msg);
+
+        RCLCPP_INFO(get_logger(), "Start ai_filter_callback");
+
         for (auto msg_obj: msg.detected_object){
-         RCLCPP_INFO(_ros_node->get_logger(), "Received object: %s", msg_obj.class_name.c_str());
-            if(msg_obj.class_name.compare(_object_filter) == 0)
+	    RCLCPP_INFO(get_logger(), "Received object: %s", msg_obj.class_name.c_str());
+
+            if(msg_obj.class_name.compare(_object_class) == 0)
             {
-		 RCLCPP_INFO(_ros_node->get_logger(), "Get the wanted object: %s!!!", msg_obj.class_name.c_str());
-                if(msg_obj.confidence >= _confidence_filter && msg_obj.distance <= _max_depth_filter)
+		 RCLCPP_INFO(get_logger(), "Get the wanted object: %s!!!", msg_obj.class_name.c_str());
+                if(msg_obj.confidence >= confidence() && msg_obj.distance <= max_depth())
                 {
                     //The detected object respect the confidence and the depth. We can put it in the filter array
-                    RCLCPP_INFO(_ros_node->get_logger(), "Confidence and depth OK, a new object has been detected");
+                    RCLCPP_INFO(get_logger(), "Confidence and depth OK, a new object has been detected");
                     _detection_array.push_back(msg_obj);
                 }
             }
         }
-
     }
 
     void AiFilter::applicate_box_plot_to_detections()
@@ -223,7 +176,7 @@ namespace vision{
     {
         // We compute the new average of every parameter of the detection that we keep.
         AiDetection output_detection{};
-        output_detection.classification = _object.value();
+        output_detection.classification = _object_class;
 
 	assert(_detection_array.size() != 0 && "Something wrong in the code");
 
