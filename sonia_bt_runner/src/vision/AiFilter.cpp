@@ -1,5 +1,6 @@
 #include "sonia_bt_runner/vision/AiFilter.hpp"
 #include "sonia_bt_runner/vision/ObjectVerification.hpp"
+#include "sonia_bt_runner/vision/utils/BoxPlotToDetection.hpp"
 #include <cmath>
 #include <cassert>
 
@@ -59,7 +60,7 @@ namespace vision{
 	    RCLCPP_INFO(get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
 	    
 	    // We select the detection that we want to use to compute the output
-	    applicate_box_plot_to_detections();
+	    boxPlotToDetection(_detection_array);
 	    
 	    auto detected_object = detection_average();
 	    
@@ -89,87 +90,6 @@ namespace vision{
                 }
             }
         }
-    }
-
-    void AiFilter::applicate_box_plot_to_detections()
-    {
-        float q1{};             // first quartile
-        float q3{};             // third quartile
-        float min{};            // min bound
-        float max{};            // max bound
-
-        // We made a filtering in ascending order of the teta distance
-        sonia_common_ros2::msg::Detection temp;
-        for (size_t i{}; i < _detection_array.size() - 1; ++i) {
-            for (size_t j{}; j < _detection_array.size() - i - 1; ++j) {
-                if (_detection_array[j].distance_teta > _detection_array[j + 1].distance_teta) {
-                    temp = _detection_array[j];
-                    _detection_array[j] = _detection_array[j + 1];
-                    _detection_array[j + 1] = temp;
-                }
-            }
-        }
-
-        // We compute the quartile
-        if (_detection_array.size() % 4) {
-            q1 = _detection_array[(size_t)std::floor((float)_detection_array.size()/4.0f)].distance_teta;
-            q3 = _detection_array[(size_t)std::floor((float)_detection_array.size()*3.0f/4.0f)].distance_teta;
-        } else {
-            q1 = (_detection_array[(size_t)(_detection_array.size()/4)].distance_teta + _detection_array[(size_t)(_detection_array.size()/4) + (size_t)1].distance_teta)/2.0f;
-            q3 = (_detection_array[(size_t)(_detection_array.size()*3/4)].distance_teta + _detection_array[(size_t)(_detection_array.size()*3/4) + (size_t)1].distance_teta)/2.0f;
-        }
-
-        // We compute the min and max bound where the data will be kept
-        min = q1 - 1.5f * (q3 - q1);
-        max = q3 + 1.5f * (q3 - q1);
-
-        // We keep the detection inside the min and the max bound
-	if (_detection_array.size() > 2) {
-		for (std::vector<sonia_common_ros2::msg::Detection>::iterator it = _detection_array.begin(); it != _detection_array.end();) {
-		    if (it->distance_teta < min || it->distance_teta > max) {
-			it = _detection_array.erase(it);
-		    } else {
-			++it;
-		    }
-		}
-	}
-
-        // We did the same thing with the distance_beta
-        // We made a filtering in ascending order of the beta distance
-        for (size_t i{}; i < _detection_array.size() - 1; ++i) {
-            for (size_t j{}; j < _detection_array.size() - i - 1; ++j) {
-                if (_detection_array[j].distance_beta > _detection_array[j + 1].distance_beta) {
-                    temp = _detection_array[j];
-                    _detection_array[j] = _detection_array[j + 1];
-                    _detection_array[j + 1] = temp;
-                }
-            }
-        }
-
-        // We compute the quartile
-        if (_detection_array.size() % 4) {
-            q1 = _detection_array[(size_t)std::floor((float)_detection_array.size()/4.0f)].distance_beta;
-            q3 = _detection_array[(size_t)std::floor((float)_detection_array.size()*3.0f/4.0f)].distance_beta;
-        } else {
-            q1 = (_detection_array[(size_t)(_detection_array.size()/4)].distance_beta + _detection_array[(size_t)(_detection_array.size()/4) + (size_t)1].distance_beta)/2.0f;
-            q3 = (_detection_array[(size_t)(_detection_array.size()*3/4)].distance_beta + _detection_array[(size_t)(_detection_array.size()*3/4) + (size_t)1].distance_beta)/2.0f;
-        }
-
-        // We compute the min and max bound where the data will be kept
-        min = q1 - 1.5f * (q3 - q1);
-        max = q3 + 1.5f * (q3 - q1);
-
-        // We keep the detection inside the min and the max bound
-        for (std::vector<sonia_common_ros2::msg::Detection>::iterator it = _detection_array.begin(); it != _detection_array.end();) {
-            if (it->distance_beta < min || it->distance_beta > max) {
-                it = _detection_array.erase(it);
-            } else {
-                ++it;
-            }
-        }
-
-        // Will propably do the same thing with the depth
-
     }
 
     AiDetection AiFilter::detection_average()

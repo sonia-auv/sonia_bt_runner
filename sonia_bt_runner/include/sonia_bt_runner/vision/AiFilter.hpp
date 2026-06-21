@@ -35,8 +35,6 @@ namespace vision{
 	    void handle_success() override;
 	    BT::NodeStatus get_detection_status() override;
             void ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) override;
-
-            void applicate_box_plot_to_detections();
             AiDetection detection_average();         
 
 	    AI_FILTER_OBJECT_CLASS_TYPE _object_class;
