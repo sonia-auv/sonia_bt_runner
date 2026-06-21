@@ -17,6 +17,7 @@ public:
             BT::InputPort<AiDetection>("DetectionA"),
             BT::InputPort<AiDetection>("DetectionB"),
             BT::InputPort<float>("PositionX", 10.0f, "Forward distance to travel after centering between the two detections"),
+            BT::InputPort<std::string>("Side"),  // This port will be used to output the computed trajectory
             BT::BidirectionalPort<Trajectory>("Trajectory"),
         };
     }
