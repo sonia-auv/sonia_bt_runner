@@ -92,7 +92,7 @@ void SearchWhiteSlalom::onHalted()
 
 void SearchWhiteSlalom::detection_callback(const sonia_common_ros2::msg::DetectionArray &msg)
 {
-    float red_angle = _red_detection.value().angle_teta;
+    float red_angle = _red_detection.value().angle_alpha;
     bool want_left = (_side.value() == "Left");
 
     for (const auto &obj : msg.detected_object) {
@@ -102,7 +102,7 @@ void SearchWhiteSlalom::detection_callback(const sonia_common_ros2::msg::Detecti
 
         // Accept the detection only if it is on the requested side of the red slalom.
         // angle_teta < 0 means left of center, > 0 means right of center.
-        bool is_left_of_red = (obj.angle_teta < red_angle);
+        bool is_left_of_red = (obj.angle_alpha > red_angle);
         if (want_left != is_left_of_red) continue;
 
         _valid_detections.push_back(obj);
