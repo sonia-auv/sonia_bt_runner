@@ -16,7 +16,7 @@
         <Sequence>
           <SubTree ID="TorpedoShootingSequence"
                    TorpedoSide="starboard"
-                   ObjectToAim="AMPULANCE"/>
+                   ObjectToAim="AMBULANCE"/>
           <SubTree ID="TorpedoShootingSequence"
                    TorpedoSide="port_side"
                    ObjectToAim="BLOOD"/>
