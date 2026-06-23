@@ -60,7 +60,7 @@ namespace vision{
 	    RCLCPP_INFO(get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
 	    
 	    // We select the detection that we want to use to compute the output
-	    boxPlotToDetection(_detection_array);
+	    // boxPlotToDetection(_detection_array); // FIX_ME!!!!
 	    
 	    auto detected_object = detection_average();
 	    
