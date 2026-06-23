@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
   <BehaviorTree ID="TEST">
-    <SubTree ID="Gate"
-             Side="{side}"
-             TargetObject="COMPAS"
-             NonTargetObject="LIFE PRESERVER"/>
+    <SubTree ID="SlalomSemiFinal"
+             Side="Right"/>
   </BehaviorTree>
 
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
-    <SubTree ID="Gate"
+    <SubTree ID="SlalomSemiFinal"
              editable="true">
-      <output_port name="Side">The left or right side that the sub as taken</output_port>
-      <input_port name="TargetObject">Object than the sub looking for.</input_port>
-      <input_port name="NonTargetObject">Object that the sub use to make sure it passes on the right side.</input_port>
+      <input_port name="Side"
+                  default="Left">The side that the sub take to passe the slalom</input_port>
     </SubTree>
   </TreeNodesModel>
 
