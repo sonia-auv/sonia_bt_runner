@@ -15,7 +15,7 @@
       <SubTree ID="SearchObjectByRotation"
                Object="RED_SLALOM"
                FoundAiDetection="{RedSlalomDetection}"
-               Max_time_before_failing_sec="0.0"
+               Max_time_before_failing_sec="10"
                Max_frame_before_failing="0"
                Min_detection_before_success="5"
                Confidence="0.60000"
@@ -38,7 +38,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="-10.0"/>
+                 orientationZ="-15.0"/>
         <SubTree ID="MoveSinglePose"
                  frame="1.0"
                  positionX="0.0"
@@ -46,7 +46,7 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="10.0"/>
+                 orientationZ="15.0"/>
       </IfThenElse>
       <SearchWhiteSlalom WhiteSlalomDetection="{WhiteSlalomDetection}"
                          Max_time_before_failing_sec="5.000000"
