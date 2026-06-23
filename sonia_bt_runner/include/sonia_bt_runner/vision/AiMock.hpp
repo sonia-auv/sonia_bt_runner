@@ -13,7 +13,7 @@
 #define AI_MOCK_CAMERA_TYPE int
 
 #define AI_MOCK_CLASSIFICATION "Classification"
-#define AI_MOCK_CLASSIFICATION_PARAMS AI_MOCK_CLASSIFICATION, "gate", "Class name of the mocked detections"
+#define AI_MOCK_CLASSIFICATION_PARAMS AI_MOCK_CLASSIFICATION, "SOS", "Class name of the mocked detections"
 #define AI_MOCK_CLASSIFICATION_TYPE std::string
 
 #define AI_MOCK_NUMBER_OF_DETECTIONS "Number_of_detections"
@@ -37,7 +37,7 @@
 #define AI_MOCK_CONFIDENCE_MAX_TYPE float
 
 #define AI_MOCK_DISTANCE "Distance"
-#define AI_MOCK_DISTANCE_PARAMS AI_MOCK_DISTANCE, 2.0, "Distance to the mocked object in meters"
+#define AI_MOCK_DISTANCE_PARAMS AI_MOCK_DISTANCE, 0.0, "Distance to the mocked object in meters"
 #define AI_MOCK_DISTANCE_TYPE double
 
 #define AI_MOCK_ANGLE_TETA "Angle_teta"
