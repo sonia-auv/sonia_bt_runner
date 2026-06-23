@@ -49,17 +49,17 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
                                        ))/2.0f};
 
     // We compute the angle made on the furtest detection between the sub and the nearest detection
-    float det_angle{std::asin((furthest_det_dist*std::sin(delta_alpha))/(2.0f*half_dist_betw_det))};
+    float furthest_angle{std::asin((nearest_det_dist*std::sin(delta_alpha))/(2.0f*half_dist_betw_det))};
     
     // We compute the travaling distance that the sub need to do to go between the two detection
-    float moving_dist{std::sqrt(half_dist_betw_det*half_dist_betw_det + nearest_det_dist*nearest_det_dist
-                                - 2.0f*half_dist_betw_det*nearest_det_dist*std::cos(det_angle))};
+    float moving_dist{std::sqrt(half_dist_betw_det*half_dist_betw_det + furthest_det_dist*furthest_det_dist
+                                - 2.0f*half_dist_betw_det*furthest_det_dist*std::cos(furthest_angle))};
     
     // We compute the angle between the furtest detection and the direction that cross between the 2 detection
-    float furthest_sub_angle {std::asin((half_dist_betw_det*std::sin(det_angle))/moving_dist)};
+    float furthest_sub_angle {std::asin((half_dist_betw_det*std::sin(furthest_angle))/moving_dist)};
     
     // We compute the angle that the sub need to do to be perpendicular with the slalom
-    float angle_to_be_perp {M_PI_2-det_angle-furthest_sub_angle};
+    float angle_to_be_perp {M_PI_2-furthest_angle-furthest_sub_angle};
 
     // Pose 1: rotate the sub to aim it at half distance 
     TrajectoryPose p0{};
@@ -76,7 +76,7 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
     p2.orientationZ = angle_to_be_perp*RAD_TO_DEG;
     p2.frame = 1;
 
-    if (nearest_det_angle < furthest_det_angle) {
+    if (nearest_det_angle > furthest_det_angle) {
         p2.orientationZ *= -1.0f;
     }
 
