@@ -1,5 +1,8 @@
 #include "sonia_bt_runner/navigation/ComputeTrajectoryBetweenDetections.hpp"
 
+#define RAD_TO_DEG 180.0f/M_PI
+#define DEG_TO_RAD M_PI/180.0f
+
 namespace navigation {
 
 ComputeTrajectoryBetweenDetections::ComputeTrajectoryBetweenDetections(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
@@ -19,51 +22,63 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
         return BT::NodeStatus::FAILURE;
     }
 
-    // THe B detection is the shortest detection
-    float distanceA, distanceB;
+    // We put the detection angle in good named variable
+    float nearest_det_dist, furthest_det_dist, nearest_det_angle, furthest_det_angle;
     if (detA.distance > detB.distance) {
-        distanceA = detA.distance;
-        distanceB = detB.distance;
+        furthest_det_dist = detA.distance;
+        furthest_det_angle = DEG_TO_RAD*detA.angle_alpha;
+        nearest_det_dist = detB.distance;
+        nearest_det_angle = DEG_TO_RAD*detB.angle_alpha;
     } else {
-        distanceA = detB.distance;
-        distanceB = detA.distance;
+        furthest_det_dist = detB.distance;
+        furthest_det_angle = DEG_TO_RAD*detB.angle_alpha;
+        nearest_det_dist = detA.distance;
+        nearest_det_angle = DEG_TO_RAD*detA.angle_alpha;
     }
-    float delta_alpha = std::abs(detA.angle_alpha - detB.angle_alpha) ;
-
-    RCLCPP_INFO(_ros_node->get_logger(),
-                "ComputeTrajectoryBetweenDetections: distanceA = %f, distanceB = %f, delta_alpha = %f",
-                distanceA, distanceB, delta_alpha);
-
-    float half_cen_dist_betw_det {std::sqrt(distanceA*distanceA + distanceB*distanceB - 2.0f*distanceA*distanceB*std::cos(delta_alpha*(float)M_PI/180.0f))/2.0f};
-    float opposite_b_angle {std::asin((distanceB*std::sin(delta_alpha*(float)M_PI/180.0f))/(2.0f*half_cen_dist_betw_det))*180.0f/(float)M_PI};
-    // d
-    float cen_slalom_dist{std::sqrt(half_cen_dist_betw_det*half_cen_dist_betw_det + distanceA*distanceA - 2.0f*half_cen_dist_betw_det*distanceA*std::cos(opposite_b_angle*180.0f/(float)M_PI))};
     
-    float mid_center_det_angle{std::asin(half_cen_dist_betw_det*std::sin(opposite_b_angle*(float)M_PI/180.0f)*180.0f/(float)M_PI)};
-    float det_cen_a_angle{180.0f-mid_center_det_angle-opposite_b_angle};
-    float rot_to_cen_angle, slalom_orientation;
-    if (getInput<std::string>("Side").value() == "Right") {
-        rot_to_cen_angle = -(det_cen_a_angle-(delta_alpha - 10.0f));
-        slalom_orientation = -mid_center_det_angle+90.0f;
-    } else {
-        rot_to_cen_angle = det_cen_a_angle-(delta_alpha - 10.0f);
-        slalom_orientation = mid_center_det_angle-90.0f;
-    }
+    // We compute the rotation angle to aim the sub at mid distance between the two detections
+    float rot_angle_to_aim_betw_two_det{(furthest_det_angle + nearest_det_angle)/(-2.0f)};
 
-    // Pose 1: orient the sub to face the midpoint between the two detections.
+    // We compute the angle between the two detection angle
+    float delta_alpha{std::abs(furthest_det_angle - nearest_det_angle)};
+
+    // We compute the half of the distance between the 2 detection
+    float half_dist_betw_det{std::sqrt(furthest_det_dist*furthest_det_dist + nearest_det_dist*nearest_det_dist 
+                                       - 2.0f*furthest_det_dist*nearest_det_dist*std::cos(
+                                           delta_alpha
+                                       ))/2.0f};
+
+    // We compute the angle made on the furtest detection between the sub and the nearest detection
+    float furthest_det_angle{std::asin((furthest_det_dist*std::sin(delta_alpha))/(2.0f*half_dist_betw_det))};
+    
+    // We compute the travaling distance that the sub need to do to go between the two detection
+    float moving_dist{std::sqrt(half_dist_betw_det*half_dist_betw_det + nearest_det_dist*nearest_det_dist
+                                - 2.0f*half_dist_betw_det*nearest_det_dist*std::cos(furthest_det_angle))};
+    
+    // We compute the angle between the furtest detection and the direction that cross between the 2 detection
+    float furthest_sub_angle {std::asin((half_dist_betw_det*std::sin(furthest_det_angle))/moving_dist)};
+    
+    // We compute the angle that the sub need to do to be perpendicular with the slalom
+    float angle_to_be_perp {M_PI_2-furthest_det_angle-furthest_sub_angle};
+
+    // Pose 1: rotate the sub to aim it at half distance 
     TrajectoryPose p0{};
-    p0.orientationZ = rot_to_cen_angle;
+    p0.orientationZ = rot_angle_to_aim_betw_two_det*RAD_TO_DEG;
     p0.frame = 1;
 
-    // Pose 2: drift laterally to the midpoint between the two detections.
+    // Pose 2: Move forward to be between the 2 detections
     TrajectoryPose p1{};
-    p1.positionX = cen_slalom_dist;
+    p1.positionX = moving_dist;
     p1.frame = 1;
 
-    // Pose 2: drift laterally to the midpoint between the two detections.
+    // Pose 2: We rotate the sub to be perpendicar with the two detection.
     TrajectoryPose p2{};
-    p2.orientationZ = slalom_orientation;
+    p2.orientationZ = angle_to_be_perp*RAD_TO_DEG;
     p2.frame = 1;
+
+    if (nearest_det_angle < furthest_det_angle) {
+        p2.orientationZ *= -1.0f;
+    }
 
     float positionX = getInput<float>("PositionX").value_or(10.0f);
     // Pose 3: move forward through the gap.
