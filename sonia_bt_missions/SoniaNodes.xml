@@ -15,6 +15,20 @@
             <input_port name="Max_frame_before_failing" type="int" default="0">Maximum allowed frames before failing the object research</input_port>
             <input_port name="Max_time_before_failing_sec" type="float" default="0.000000">Maximum allowed frames before failing the object research</input_port>
         </Action>
+        <Action ID="AiMock">
+            <input_port name="Angle_alpha" type="double" default="0.000000">Vertical angle to the mocked object</input_port>
+            <input_port name="Distance_teta" type="double" default="0.000000">Distance associated with the teta angle</input_port>
+            <input_port name="Distance" type="double" default="0.000000">Distance to the mocked object in meters</input_port>
+            <input_port name="Number_of_messages" type="int" default="10">Number of messages to publish before succeeding. 0 means publish forever</input_port>
+            <input_port name="Confidence_max" type="float" default="1.000000">Upper bound of the random confidence</input_port>
+            <input_port name="Publish_period_ms" type="int" default="100">Delay between two published messages in milliseconds</input_port>
+            <input_port name="Number_of_detections" type="int" default="1">Number of detections published in each message</input_port>
+            <input_port name="Confidence_min" type="float" default="0.700000">Lower bound of the random confidence</input_port>
+            <input_port name="Classification" type="std::string" default="SOS">Class name of the mocked detections</input_port>
+            <input_port name="Distance_beta" type="double" default="0.000000">Distance associated with the alpha angle</input_port>
+            <input_port name="Angle_teta" type="double" default="0.000000">Horizontal angle to the mocked object</input_port>
+            <input_port name="Camera" type="int" default="1">1: Front, 0: Bottom</input_port>
+        </Action>
         <Action ID="ComputeTrajectoryBetweenDetections">
             <input_port name="Side" type="std::string"/>
             <inout_port name="Trajectory" type="Trajectory"/>
