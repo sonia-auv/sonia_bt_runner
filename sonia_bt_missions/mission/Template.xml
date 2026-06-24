@@ -437,7 +437,7 @@
                  Min_detection_before_success="5"
                  Confidence="0.60000"
                  Max_depth="25"/>
-        <MoveToObject Offset="-2"
+        <MoveToObject Offset="-1.5"
                       Trajectory="{Trajectory}"
                       Detection="{AiDetection}"/>
         <SubTree ID="SendTrajectoryOnly"
@@ -487,7 +487,7 @@
                   Object_class="FIRETRUCK"
                   Camera="1"/>
         <TorpedoAiming Trajectory="{Trajectory}"
-                       TargetOffset="1.2"
+                       TargetOffset="0.6"
                        LaunchingSide="sub"
                        Detection="{AiDetection}"/>
         <SubTree ID="SendTrajectoryOnly"
