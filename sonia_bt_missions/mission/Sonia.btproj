@@ -31,13 +31,13 @@
         <Action ID="AiMock">
             <input_port name="Angle_alpha" default="0.000000" type="double">Vertical angle to the mocked object</input_port>
             <input_port name="Distance_teta" default="0.000000" type="double">Distance associated with the teta angle</input_port>
-            <input_port name="Distance" default="2.000000" type="double">Distance to the mocked object in meters</input_port>
+            <input_port name="Distance" default="0.000000" type="double">Distance to the mocked object in meters</input_port>
             <input_port name="Number_of_messages" default="10" type="int">Number of messages to publish before succeeding. 0 means publish forever</input_port>
             <input_port name="Confidence_max" default="1.000000" type="float">Upper bound of the random confidence</input_port>
             <input_port name="Publish_period_ms" default="100" type="int">Delay between two published messages in milliseconds</input_port>
             <input_port name="Number_of_detections" default="1" type="int">Number of detections published in each message</input_port>
             <input_port name="Confidence_min" default="0.700000" type="float">Lower bound of the random confidence</input_port>
-            <input_port name="Classification" default="gate" type="std::string">Class name of the mocked detections</input_port>
+            <input_port name="Classification" default="SOS" type="std::string">Class name of the mocked detections</input_port>
             <input_port name="Distance_beta" default="0.000000" type="double">Distance associated with the alpha angle</input_port>
             <input_port name="Angle_teta" default="0.000000" type="double">Horizontal angle to the mocked object</input_port>
             <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
