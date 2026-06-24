@@ -22,6 +22,8 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
         return BT::NodeStatus::FAILURE;
     }
 
+    std::string side = getInput<std::string>("Side").value();
+
     // We put the detection angle in good named variable
     float nearest_det_dist, furthest_det_dist, nearest_det_angle, furthest_det_angle;
     if (detA.distance > detB.distance) {
@@ -72,25 +74,32 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
     p1.frame = 1;
 
     // Pose 2: We rotate the sub to be perpendicar with the two detection.
-    TrajectoryPose p2{};
-    p2.orientationZ = angle_to_be_perp*RAD_TO_DEG;
-    p2.frame = 1;
+    // TrajectoryPose p2{};
+    // p2.orientationZ = angle_to_be_perp*RAD_TO_DEG;
 
-    if (nearest_det_angle > furthest_det_angle) {
-        p2.orientationZ *= -1.0f;
-    }
+    // p2.frame = 1;
+
+    // if (nearest_det_angle > furthest_det_angle) {
+    //     p2.orientationZ *= -1.0f;
+    // }
+
+    // Pose 3: turn to make the sub streight
+    TrajectoryPose p3{};
+    p3.orientationZ = 0;
+    p3.frame = 2;
 
     float positionX = getInput<float>("PositionX").value_or(10.0f);
-    // Pose 3: move forward through the gap.
-    TrajectoryPose p3{};
-    p3.positionX = positionX;
-    p3.frame = 1;
+    // Pose 4: move forward through the gap.
+    TrajectoryPose p4{};
+    p4.positionX = positionX;
+    p4.frame = 1;
 
     Trajectory traj = getInput<Trajectory>("Trajectory").value();
     traj.trajectory.push_back(p0);
     traj.trajectory.push_back(p1);
-    traj.trajectory.push_back(p2);
+    // traj.trajectory.push_back(p2);
     traj.trajectory.push_back(p3);
+    traj.trajectory.push_back(p4);
     setOutput<Trajectory>("Trajectory", traj);
 
     return BT::NodeStatus::SUCCESS;
