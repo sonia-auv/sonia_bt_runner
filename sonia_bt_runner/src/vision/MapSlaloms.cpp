@@ -223,7 +223,7 @@ bool MapSlaloms::compute_row_aligned_step(const sonia_common_ros2::msg::Detectio
 
 void MapSlaloms::handle_success()
 {
-	sonia_common_ros2::msg::Detection grid[SLALOM_LAYER][SLALOM_PER_LAYER] = {};
+	sonia_common_ros2::msg::Detection grid[SLALOM_LAYER][SLALOM_PER_LAYER];
 	classify_detections(grid);
 
 	int position = estimate_position(grid[0]);
