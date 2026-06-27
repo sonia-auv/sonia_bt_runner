@@ -501,7 +501,7 @@
     <Sequence name="We aim the taget detecter closer to the aiming object">
       <InitializeTrajectory trajectory="{Trajectory}"/>
       <TorpedoAiFilter Detected_object="{AiDetection}"
-                       Max_time_before_failing_sec="0.000000"
+                       Max_time_before_failing_sec="5.0"
                        Max_frame_before_failing="0"
                        Min_detections_before_success="5"
                        Confidence="0.600000"
