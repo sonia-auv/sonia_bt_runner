@@ -168,16 +168,10 @@
       <inout_port name="Trajectory"
                   type="Trajectory"/>
     </Action>
-<<<<<<< HEAD
     <SubTree ID="MapSlalomsToStart"
              editable="true">
       <input_port name="Side">Side the sub should take (Left or Right)</input_port>
       <input_port name="Slalom_side">Side the slalom is on relative to the sub (Left or Right)</input_port>
-=======
-    <SubTree ID="RotateToAbsoluteAngle"
-             editable="true">
-      <input_port name="Angle">Angle to put to the sub</input_port>
->>>>>>> slalom_search_closest_white_slalom
     </SubTree>
     <Action ID="SearchClosestSlalom">
       <input_port name="Object_class"
