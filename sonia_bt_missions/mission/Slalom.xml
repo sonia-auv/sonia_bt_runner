@@ -57,6 +57,10 @@
                 Object_class="RED_SLALOM"
                 Camera="1"
                 _description="Refresh the red slalom detection."/>
+      <SubTree ID="MapSlalomsToStart"
+               Side="{Side}"
+               Slalom_side="{Slalom_side}"
+               _description="Drive the sub to position 2 (Left) or 4 (Right) so the red and a white are on the same line."/>
       <SearchWhiteSlalom WhiteSlalomDetection="{WhiteSlalomDetection}"
                          Max_time_before_failing_sec="5.000000"
                          Max_depth="2.000000"
@@ -73,6 +77,36 @@
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
                TimeBeforeFailing="15"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="MapSlalomsToStart">
+    <Sequence>
+      <Script code="Position := -1"/>
+      <RetryUntilSuccessful num_attempts="10">
+        <Sequence>
+          <InitializeTrajectory trajectory="{Trajectory}"/>
+          <MapSlaloms Camera="1"
+                      Confidence="0.600000"
+                      Max_depth="3.000000"
+                      Min_detections_before_success="5"
+                      Max_frame_before_failing="0"
+                      Max_time_before_failing_sec="5.000000"
+                      Side="{Side}"
+                      Slalom_side="{Slalom_side}"
+                      Step_distance="0.500000"
+                      Position="{Position}"
+                      Trajectory="{Trajectory}"/>
+          <Fallback>
+            <ScriptCondition code="(Side=='Left' &amp;&amp; Position==2) || (Side=='Right' &amp;&amp; Position==4)"/>
+            <ForceFailure>
+              <SubTree ID="SendTrajectoryOnly"
+                       Trajectory="{Trajectory}"
+                       TimeBeforeFailing="10"/>
+            </ForceFailure>
+          </Fallback>
+        </Sequence>
+      </RetryUntilSuccessful>
     </Sequence>
   </BehaviorTree>
 
@@ -201,6 +235,43 @@
       <input_port name="Trajectory">The trajectory to do to the sub</input_port>
       <input_port name="TimeBeforeFailing"
                   default="5">The time before the sub movement fail</input_port>
+    </SubTree>
+    <Action ID="MapSlaloms">
+      <input_port name="Camera"
+                  default="1"
+                  type="int">1: Front, 0: Bottom</input_port>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Ai confidence</input_port>
+      <input_port name="Max_depth"
+                  default="25.000000"
+                  type="float">Maximum allowed depth</input_port>
+      <input_port name="Min_detections_before_success"
+                  default="2"
+                  type="int">Minimum frames with a detection before mapping</input_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0"
+                  type="int">Maximum allowed frames before failing</input_port>
+      <input_port name="Max_time_before_failing_sec"
+                  default="0.000000"
+                  type="float">Timeout in seconds, 0 = disabled</input_port>
+      <input_port name="Side"
+                  type="std::string">Side the sub should take (Left or Right)</input_port>
+      <input_port name="Slalom_side"
+                  type="std::string">Side the slalom is on relative to the sub (Left or Right)</input_port>
+      <input_port name="Step_distance"
+                  default="0.500000"
+                  type="float">Lateral distance in meters per position step</input_port>
+      <inout_port name="Position"
+                  default="-1"
+                  type="int">Estimated position around the slalom (1..5, -1 = unknown)</inout_port>
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+    </Action>
+    <SubTree ID="MapSlalomsToStart"
+             editable="true">
+      <input_port name="Side">Side the sub should take (Left or Right)</input_port>
+      <input_port name="Slalom_side">Side the slalom is on relative to the sub (Left or Right)</input_port>
     </SubTree>
   </TreeNodesModel>
 
