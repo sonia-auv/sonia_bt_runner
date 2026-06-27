@@ -25,8 +25,8 @@
         <SubTree ID="SearchObjectByRotation"
                  Object="{TargetObject}"
                  FoundAiDetection="{Aidetection}"
-                 Max_time_before_failing_sec="0.00"
-                 Max_frame_before_failing="300"
+                 Max_time_before_failing_sec="5.0"
+                 Max_frame_before_failing="0"
                  Min_detection_before_success="10"
                  Confidence="0.60000"
                  Max_depth="25"/>
@@ -55,8 +55,8 @@
       <Sequence name="Moving the sub at 1.5 m from the SOS image and we look to the left">
         <InitializeTrajectory trajectory="{Trajectory}"/>
         <AiFilter Detected_object="{Aidetection}"
-                  Max_time_before_failing_sec="0.000000"
-                  Max_frame_before_failing="300"
+                  Max_time_before_failing_sec="5.000000"
+                  Max_frame_before_failing="0"
                   Min_detections_before_success="10"
                   Confidence="0.600000"
                   Max_depth="25.000000"
@@ -83,8 +83,8 @@
       <Sequence name="Verify if the compass is on the right">
         <IfThenElse>
           <AiFilter Detected_object="{Aidetection}"
-                    Max_time_before_failing_sec="0.000000"
-                    Max_frame_before_failing="300"
+                    Max_time_before_failing_sec="5.000000"
+                    Max_frame_before_failing="0"
                     Min_detections_before_success="10"
                     Confidence="0.600000"
                     Max_depth="25.000000"
@@ -108,7 +108,7 @@
                               frame="1"
                               longRotation="false"/>
         <TrajectoryAppendPose trajectory="{Trajectory}"
-                              positionX="3.0"
+                              positionX="5.0"
                               positionY="0.000000"
                               positionZ="0.000000"
                               orientationX="0.000000"
@@ -216,7 +216,7 @@
   <BehaviorTree ID="TrickshotLegacy">
     <Sequence>
       <SubTree ID="InitialSubmerge"
-               Depth="1"/>
+               Depth="0.8"/>
       <InitializeTrajectory trajectory="{traj}"/>
       <TrajectoryAppendPose trajectory="{traj}"
                             positionX="0.000000"
@@ -275,7 +275,7 @@
                             longRotation="false"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{traj}"
-               TimeBeforeFailing="10"/>
+               TimeBeforeFailing="20"/>
       <ControlSetMode set_mode="false"/>
     </Sequence>
   </BehaviorTree>
