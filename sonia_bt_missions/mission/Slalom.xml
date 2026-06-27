@@ -1,5 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
+  <BehaviorTree ID="SearchClosestWhiteSlalom">
+    <Sequence>
+      <SubTree ID="RotateToAbsoluteAngle"
+               Angle="0"/>
+      <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                           Closest_object="{ClosestObject}"
+                           Camera="1"
+                           Confidence="0.600000"
+                           Closest_object_angle="{ClosestObjectAngle}"
+                           Max_depth="25.000000"
+                           Actual_angle="0"
+                           Min_detections_before_success="5"
+                           Max_frame_before_failing="0"
+                           Max_time_before_failing_sec="5.00000"/>
+      <SubTree ID="MoveSinglePose"
+               frame="1.0"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="-25"/>
+      <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                           Closest_object="{ClosestObject}"
+                           Camera="1"
+                           Confidence="0.600000"
+                           Closest_object_angle="{ClosestObjectAngle}"
+                           Max_depth="25.000000"
+                           Actual_angle="-25"
+                           Min_detections_before_success="5"
+                           Max_frame_before_failing="0"
+                           Max_time_before_failing_sec="5.00000"/>
+      <SubTree ID="MoveSinglePose"
+               frame="1.0"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="-25"/>
+      <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                           Closest_object="{ClosestObject}"
+                           Camera="1"
+                           Confidence="0.600000"
+                           Closest_object_angle="{ClosestObjectAngle}"
+                           Max_depth="25.000000"
+                           Actual_angle="-50"
+                           Min_detections_before_success="5"
+                           Max_frame_before_failing="0"
+                           Max_time_before_failing_sec="5.00000"/>
+      <SubTree ID="MoveSinglePose"
+               frame="1.0"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="75"/>
+      <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                           Closest_object="{ClosestObject}"
+                           Camera="1"
+                           Confidence="0.600000"
+                           Closest_object_angle="{ClosestObjectAngle}"
+                           Max_depth="25.000000"
+                           Actual_angle="25"
+                           Min_detections_before_success="5"
+                           Max_frame_before_failing="0"
+                           Max_time_before_failing_sec="5.00000"/>
+      <SubTree ID="MoveSinglePose"
+               frame="1.0"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="25"/>
+      <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                           Closest_object="{ClosestObject}"
+                           Camera="1"
+                           Confidence="0.600000"
+                           Closest_object_angle="{ClosestObjectAngle}"
+                           Max_depth="25.000000"
+                           Actual_angle="50"
+                           Min_detections_before_success="5"
+                           Max_frame_before_failing="0"
+                           Max_time_before_failing_sec="5.00000"/>
+      <SubTree ID="RotateToAbsoluteAngle"
+               Angle="MoveSinglePose"/>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <MoveToObject Offset="-2"
+                    Trajectory="{Trajectory}"
+                    Detection="{ClosestObject}"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="10"/>
+      <IfThenElse>
+        <ScriptCondition code="ClosestObjectAngle&gt;0"/>
+        <Script code="SlalomSideFromGate:=&quot;Right&quot;"/>
+        <Script code="SlalomSideFromGate:=&quot;Left&quot;"/>
+      </IfThenElse>
+    </Sequence>
+  </BehaviorTree>
+
   <BehaviorTree ID="SlalomFinal">
     <AlwaysSuccess/>
   </BehaviorTree>
@@ -12,15 +115,6 @@
                     Bottom="false"
                     Front="true"
                     _description="Activate the AI.&#10;&#10;I have no idea which model to choose to be defined."/>
-      <SubTree ID="SearchObjectByRotation"
-               Object="RED_SLALOM"
-               FoundAiDetection="{RedSlalomDetection}"
-               Max_time_before_failing_sec="10"
-               Max_frame_before_failing="0"
-               Min_detection_before_success="5"
-               Confidence="0.60000"
-               Max_depth="25"
-               _description="Detect the red slalom."/>
       <InitializeTrajectory trajectory="{Trajectory}"
                             _description="Prepare trajectory to face the red slalom."/>
       <MoveToObject Offset="-2"
@@ -160,21 +254,38 @@
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
-    <SubTree ID="SearchObjectByRotation"
+    <SubTree ID="RotateToAbsoluteAngle"
              editable="true">
-      <input_port name="Object">Object we are looking for</input_port>
-      <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
-      <input_port name="Max_time_before_failing_sec"
-                  default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
-      <input_port name="Max_frame_before_failing"
-                  default="0">Number of frame that the sub will take to every 30 degree position to find the object</input_port>
-      <input_port name="Min_detection_before_success"
-                  default="5">Nombre of detected frame to call a found status</input_port>
-      <input_port name="Confidence"
-                  default="0.60000">Minimum confidence of the Ai</input_port>
-      <input_port name="Max_depth"
-                  default="25">Max distance to detect an object</input_port>
+      <input_port name="Angle">Angle to put to the sub</input_port>
     </SubTree>
+    <Action ID="SearchClosestSlalom">
+      <input_port name="Object_class"
+                  type="std::string">Searched object</input_port>
+      <inout_port name="Closest_object"
+                  type="AiDetection">The closest detected object</inout_port>
+      <input_port name="Camera"
+                  default="1"
+                  type="int">1: Front, 0: Bottom</input_port>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Ai confidence</input_port>
+      <inout_port name="Closest_object_angle"
+                  type="float">The closest detection angle</inout_port>
+      <input_port name="Max_depth"
+                  default="25.000000"
+                  type="float">Maximum allowed depth</input_port>
+      <input_port name="Actual_angle"
+                  type="float">The actual angle of the sub</input_port>
+      <input_port name="Min_detections_before_success"
+                  default="2"
+                  type="unsigned long">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0"
+                  type="int">Maximum allowed frames before failing the object research</input_port>
+      <input_port name="Max_time_before_failing_sec"
+                  default="0.000000"
+                  type="float">Maximum allowed frames before failing the object research</input_port>
+    </Action>
     <Action ID="SearchWhiteSlalom">
       <output_port name="WhiteSlalomDetection"
                    type="AiDetection"/>
