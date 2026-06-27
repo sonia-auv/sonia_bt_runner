@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
+  <BehaviorTree ID="MapSlalomsToStart">
+    <Sequence>
+      <Script code="Position := -1"/>
+      <RetryUntilSuccessful num_attempts="10">
+        <Sequence>
+          <InitializeTrajectory trajectory="{Trajectory}"/>
+          <MapSlaloms Camera="1"
+                      Confidence="0.600000"
+                      Max_depth="3.000000"
+                      Min_detections_before_success="30"
+                      Max_frame_before_failing="0"
+                      Max_time_before_failing_sec="20.000000"
+                      Side="{Side}"
+                      Slalom_side="{Slalom_side}"
+                      Step_distance="1.0"
+                      Position="{Position}"
+                      Trajectory="{Trajectory}"/>
+          <Fallback>
+            <ScriptCondition code="(Side==&apos;Left&apos; &amp;&amp; Position==2) || (Side==&apos;Right&apos; &amp;&amp; Position==4)"/>
+            <ForceFailure>
+              <SubTree ID="SendTrajectoryOnly"
+                       Trajectory="{Trajectory}"
+                       TimeBeforeFailing="10"/>
+            </ForceFailure>
+          </Fallback>
+        </Sequence>
+      </RetryUntilSuccessful>
+    </Sequence>
+  </BehaviorTree>
+
   <BehaviorTree ID="SlalomFinal">
     <AlwaysSuccess/>
   </BehaviorTree>
@@ -12,42 +42,13 @@
                     Bottom="false"
                     Front="true"
                     _description="Activate the AI.&#10;&#10;I have no idea which model to choose to be defined."/>
-      <SubTree ID="SearchObjectByRotation"
-               Object="RED_SLALOM"
-               FoundAiDetection="{RedSlalomDetection}"
-               Max_time_before_failing_sec="10"
-               Max_frame_before_failing="0"
-               Min_detection_before_success="5"
-               Confidence="0.60000"
-               Max_depth="25"
-               _description="Detect the red slalom."/>
-      <InitializeTrajectory trajectory="{Trajectory}"
-                            _description="Prepare trajectory to face the red slalom."/>
-      <MoveToObject Offset="-2"
-                    Trajectory="{Trajectory}"
-                    Detection="{RedSlalomDetection}"/>
+      <SubTree ID="MapSlalomsToStart"
+               Side="{Side}"
+               Slalom_side="{Slalom_side}"
+               _description="Drive the sub to position 2 (Left) or 4 (Right) so the red and a white are on the same line."/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
                TimeBeforeFailing="5"/>
-      <IfThenElse>
-        <ScriptCondition code="Side==&quot;Left&quot;"/>
-        <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="0.0"
-                 positionY="0.0"
-                 positionZ="0.0"
-                 orientationX="0.0"
-                 orientationY="0.0"
-                 orientationZ="-20.0"/>
-        <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="0.0"
-                 positionY="0.0"
-                 positionZ="0.0"
-                 orientationX="0.0"
-                 orientationY="0.0"
-                 orientationZ="20.0"/>
-      </IfThenElse>
       <AiFilter Detected_object="{RedSlalomDetection}"
                 Max_time_before_failing_sec="5.0"
                 Max_frame_before_failing="0"
@@ -57,10 +58,6 @@
                 Object_class="RED_SLALOM"
                 Camera="1"
                 _description="Refresh the red slalom detection."/>
-      <SubTree ID="MapSlalomsToStart"
-               Side="{Side}"
-               Slalom_side="{Slalom_side}"
-               _description="Drive the sub to position 2 (Left) or 4 (Right) so the red and a white are on the same line."/>
       <SearchWhiteSlalom WhiteSlalomDetection="{WhiteSlalomDetection}"
                          Max_time_before_failing_sec="5.000000"
                          Max_depth="2.000000"
@@ -77,36 +74,6 @@
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
                TimeBeforeFailing="15"/>
-    </Sequence>
-  </BehaviorTree>
-
-  <BehaviorTree ID="MapSlalomsToStart">
-    <Sequence>
-      <Script code="Position := -1"/>
-      <RetryUntilSuccessful num_attempts="10">
-        <Sequence>
-          <InitializeTrajectory trajectory="{Trajectory}"/>
-          <MapSlaloms Camera="1"
-                      Confidence="0.600000"
-                      Max_depth="3.000000"
-                      Min_detections_before_success="5"
-                      Max_frame_before_failing="0"
-                      Max_time_before_failing_sec="5.000000"
-                      Side="{Side}"
-                      Slalom_side="{Slalom_side}"
-                      Step_distance="0.500000"
-                      Position="{Position}"
-                      Trajectory="{Trajectory}"/>
-          <Fallback>
-            <ScriptCondition code="(Side=='Left' &amp;&amp; Position==2) || (Side=='Right' &amp;&amp; Position==4)"/>
-            <ForceFailure>
-              <SubTree ID="SendTrajectoryOnly"
-                       Trajectory="{Trajectory}"
-                       TimeBeforeFailing="10"/>
-            </ForceFailure>
-          </Fallback>
-        </Sequence>
-      </RetryUntilSuccessful>
     </Sequence>
   </BehaviorTree>
 
@@ -169,73 +136,6 @@
       <output_port name="trajectory"
                    type="Trajectory"/>
     </Action>
-    <SubTree ID="MoveSinglePose"
-             editable="true">
-      <input_port name="frame"
-                  default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
-      <input_port name="positionX"
-                  default="0.0">x value to go</input_port>
-      <input_port name="positionY"
-                  default="0.0">y value to go</input_port>
-      <input_port name="positionZ"
-                  default="0.0">z value to go</input_port>
-      <input_port name="orientationX"
-                  default="0.0">z orientation to go</input_port>
-      <input_port name="orientationY"
-                  default="0.0">y orientation to go</input_port>
-      <input_port name="orientationZ"
-                  default="0.0">rotation in Z to give to the sub</input_port>
-    </SubTree>
-    <Action ID="MoveToObject">
-      <input_port name="Offset"
-                  type="float"/>
-      <inout_port name="Trajectory"
-                  type="Trajectory"/>
-      <input_port name="Detection"
-                  type="AiDetection"/>
-    </Action>
-    <SubTree ID="SearchObjectByRotation"
-             editable="true">
-      <input_port name="Object">Object we are looking for</input_port>
-      <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
-      <input_port name="Max_time_before_failing_sec"
-                  default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
-      <input_port name="Max_frame_before_failing"
-                  default="0">Number of frame that the sub will take to every 30 degree position to find the object</input_port>
-      <input_port name="Min_detection_before_success"
-                  default="5">Nombre of detected frame to call a found status</input_port>
-      <input_port name="Confidence"
-                  default="0.60000">Minimum confidence of the Ai</input_port>
-      <input_port name="Max_depth"
-                  default="25">Max distance to detect an object</input_port>
-    </SubTree>
-    <Action ID="SearchWhiteSlalom">
-      <output_port name="WhiteSlalomDetection"
-                   type="AiDetection"/>
-      <input_port name="Max_time_before_failing_sec"
-                  default="0.000000"
-                  type="float">Timeout in seconds, 0 = disabled</input_port>
-      <input_port name="Max_depth"
-                  default="25.000000"
-                  type="float">Maximum detection distance</input_port>
-      <input_port name="Confidence"
-                  default="0.600000"
-                  type="float">Minimum AI confidence</input_port>
-      <input_port name="Min_detections_before_success"
-                  default="5"
-                  type="int">Minimum valid detections before succeeding</input_port>
-      <input_port name="Side"
-                  default="Left"
-                  type="std::string">Left or Right</input_port>
-      <input_port name="RedSlalomDetection"
-                  type="AiDetection"/>
-    </Action>
-    <SubTree ID="SendTrajectoryOnly"
-             editable="true">
-      <input_port name="Trajectory">The trajectory to do to the sub</input_port>
-      <input_port name="TimeBeforeFailing"
-                  default="5">The time before the sub movement fail</input_port>
-    </SubTree>
     <Action ID="MapSlaloms">
       <input_port name="Camera"
                   default="1"
@@ -272,6 +172,33 @@
              editable="true">
       <input_port name="Side">Side the sub should take (Left or Right)</input_port>
       <input_port name="Slalom_side">Side the slalom is on relative to the sub (Left or Right)</input_port>
+    </SubTree>
+    <Action ID="SearchWhiteSlalom">
+      <output_port name="WhiteSlalomDetection"
+                   type="AiDetection"/>
+      <input_port name="Max_time_before_failing_sec"
+                  default="0.000000"
+                  type="float">Timeout in seconds, 0 = disabled</input_port>
+      <input_port name="Max_depth"
+                  default="25.000000"
+                  type="float">Maximum detection distance</input_port>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Minimum AI confidence</input_port>
+      <input_port name="Min_detections_before_success"
+                  default="5"
+                  type="int">Minimum valid detections before succeeding</input_port>
+      <input_port name="Side"
+                  default="Left"
+                  type="std::string">Left or Right</input_port>
+      <input_port name="RedSlalomDetection"
+                  type="AiDetection"/>
+    </Action>
+    <SubTree ID="SendTrajectoryOnly"
+             editable="true">
+      <input_port name="Trajectory">The trajectory to do to the sub</input_port>
+      <input_port name="TimeBeforeFailing"
+                  default="5">The time before the sub movement fail</input_port>
     </SubTree>
   </TreeNodesModel>
 
