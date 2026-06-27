@@ -289,14 +289,19 @@ BT::NodeStatus MapSlaloms::get_detection_status()
 	switch (AbstractAiFilter::get_detection_status()) {
 		case BT::NodeStatus::FAILURE:
 			return BT::NodeStatus::FAILURE;
-		case BT::NodeStatus::RUNNING:
+		case BT::NodeStatus::RUNNING: {
+			auto status = BT::NodeStatus::RUNNING;
+
 			if (_detection_array.size() < detection_number_for_average()) {
 				RCLCPP_INFO(get_logger(), "MapSlaloms: not enough detections yet (%ld)", _detection_array.size());
-
-				return BT::NodeStatus::RUNNING;
+			} else {
+				status = BT::NodeStatus::SUCCESS;
 			}
 
-			return BT::NodeStatus::SUCCESS;
+			handle_status(status);
+
+			return status;
+		}
 		default:
 			assert(0 && "Not expected status");
 	}
