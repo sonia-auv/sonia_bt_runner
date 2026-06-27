@@ -12,10 +12,10 @@ namespace actuator{
         _request->action= _request->ACTION_LAUNCH;
         _request->element= _request->ELEMENT_TORPEDO;
         BT::Expected<std::string> side(getInput<std::string>("side"));
-        if(side = "port_side"){
+        if(side == "port_side"){
             _request->side = _request->SIDE_PORT;
         }
-        if(side = "starboard"){
+        if(side == "starboard"){
             _request->side = _request->SIDE_STARBOARD;
         }
         return BT::NodeStatus::RUNNING;
