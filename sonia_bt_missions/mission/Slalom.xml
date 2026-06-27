@@ -42,18 +42,10 @@
                     Bottom="false"
                     Front="true"
                     _description="Activate the AI.&#10;&#10;I have no idea which model to choose to be defined."/>
-<<<<<<< HEAD
       <SubTree ID="MapSlalomsToStart"
                Side="{Side}"
                Slalom_side="{Slalom_side}"
                _description="Drive the sub to position 2 (Left) or 4 (Right) so the red and a white are on the same line."/>
-=======
-      <InitializeTrajectory trajectory="{Trajectory}"
-                            _description="Prepare trajectory to face the red slalom."/>
-      <MoveToObject Offset="-2"
-                    Trajectory="{Trajectory}"
-                    Detection="{RedSlalomDetection}"/>
->>>>>>> slalom_search_closest_white_slalom
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{Trajectory}"
                TimeBeforeFailing="5"/>
