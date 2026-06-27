@@ -1,5 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
+  <BehaviorTree ID="SearchClosestWhiteSlalom">
+    <Sequence>
+      <SubTree ID="RotateToAbsoluteAngle"
+               Angle="0"/>
+      <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                           Closest_object="{ClosestObject}"
+                           Camera="1"
+                           Confidence="0.600000"
+                           Closest_object_angle="{ClosestObjectAngle}"
+                           Max_depth="25.000000"
+                           Actual_angle="0"
+                           Min_detections_before_success="5"
+                           Max_frame_before_failing="0"
+                           Max_time_before_failing_sec="5.00000"/>
+      <SubTree ID="MoveSinglePose"
+               frame="1.0"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="-25"/>
+      <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                           Closest_object="{ClosestObject}"
+                           Camera="1"
+                           Confidence="0.600000"
+                           Closest_object_angle="{ClosestObjectAngle}"
+                           Max_depth="25.000000"
+                           Actual_angle="-25"
+                           Min_detections_before_success="5"
+                           Max_frame_before_failing="0"
+                           Max_time_before_failing_sec="5.00000"/>
+      <SubTree ID="MoveSinglePose"
+               frame="1.0"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="-25"/>
+      <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                           Closest_object="{ClosestObject}"
+                           Camera="1"
+                           Confidence="0.600000"
+                           Closest_object_angle="{ClosestObjectAngle}"
+                           Max_depth="25.000000"
+                           Actual_angle="-50"
+                           Min_detections_before_success="5"
+                           Max_frame_before_failing="0"
+                           Max_time_before_failing_sec="5.00000"/>
+      <SubTree ID="MoveSinglePose"
+               frame="1.0"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="75"/>
+      <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                           Closest_object="{ClosestObject}"
+                           Camera="1"
+                           Confidence="0.600000"
+                           Closest_object_angle="{ClosestObjectAngle}"
+                           Max_depth="25.000000"
+                           Actual_angle="25"
+                           Min_detections_before_success="5"
+                           Max_frame_before_failing="0"
+                           Max_time_before_failing_sec="5.00000"/>
+      <SubTree ID="MoveSinglePose"
+               frame="1.0"
+               positionX="0.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="25"/>
+      <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                           Closest_object="{ClosestObject}"
+                           Camera="1"
+                           Confidence="0.600000"
+                           Closest_object_angle="{ClosestObjectAngle}"
+                           Max_depth="25.000000"
+                           Actual_angle="50"
+                           Min_detections_before_success="5"
+                           Max_frame_before_failing="0"
+                           Max_time_before_failing_sec="5.00000"/>
+      <SubTree ID="RotateToAbsoluteAngle"
+               Angle="MoveSinglePose"/>
+      <InitializeTrajectory trajectory="{Trajectory}"/>
+      <MoveToObject Offset="-2"
+                    Trajectory="{Trajectory}"
+                    Detection="{ClosestObject}"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{Trajectory}"
+               TimeBeforeFailing="10"/>
+      <IfThenElse>
+        <ScriptCondition code="ClosestObjectAngle&gt;0"/>
+        <Script code="SlalomSideFromGate:=&quot;Right&quot;"/>
+        <Script code="SlalomSideFromGate:=&quot;Left&quot;"/>
+      </IfThenElse>
+    </Sequence>
+  </BehaviorTree>
+
   <BehaviorTree ID="MapSlalomsToStart">
     <Sequence>
       <Script code="Position := -1"/>
