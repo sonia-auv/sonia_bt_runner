@@ -150,6 +150,21 @@
         <Action ID="SavePoint">
             <output_port name="Point" type="Point"/>
         </Action>
+        <Action ID="SearchClosestSlalom">
+            <input_port name="Object_class" type="std::string">Searched object</input_port>
+            <inout_port name="Closest_object" type="AiDetection">The closest detected object</inout_port>
+            <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
+            <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
+            <inout_port name="Closest_object_angle" type="float">The closest detection angle</inout_port>
+            <input_port name="Max_depth" default="25.000000" type="float">Maximum allowed depth</input_port>
+            <input_port name="Actual_angle" type="float">The actual angle of the sub</input_port>
+            <input_port name="Min_detections_before_success" default="2" type="unsigned long">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+            <input_port name="Max_frame_before_failing" default="0" type="int">Maximum allowed frames before failing the object research</input_port>
+            <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Maximum allowed frames before failing the object research</input_port>
+        </Action>
+        <SubTree ID="SearchClosestWhiteSlalom" editable="true">
+            <output_port name="SlalomSideFromGate">The side of the position of the slalom with the gate</output_port>
+        </SubTree>
         <SubTree ID="SearchObjectByRotation" editable="true">
             <input_port name="Object">Object we are looking for</input_port>
             <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
