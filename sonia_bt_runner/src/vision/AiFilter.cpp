@@ -1,6 +1,7 @@
 #include "sonia_bt_runner/vision/AiFilter.hpp"
 #include "sonia_bt_runner/vision/ObjectVerification.hpp"
 #include "sonia_bt_runner/vision/utils/BoxPlotToDetection.hpp"
+#include "sonia_bt_runner/utils/NormalizeDetection.hpp"
 #include <cmath>
 #include <cassert>
 
@@ -78,7 +79,7 @@ namespace vision{
 
         for (auto msg_obj: msg.detected_object){
 	    RCLCPP_INFO(get_logger(), "Received object: %s", msg_obj.class_name.c_str());
-
+	    
             if(msg_obj.class_name.compare(_object_class) == 0)
             {
 		 RCLCPP_INFO(get_logger(), "Get the wanted object: %s!!!", msg_obj.class_name.c_str());
@@ -86,6 +87,7 @@ namespace vision{
                 {
                     //The detected object respect the confidence and the depth. We can put it in the filter array
                     RCLCPP_INFO(get_logger(), "Confidence and depth OK, a new object has been detected");
+		    utils::normalize_detection(msg_obj);
                     _detection_array.push_back(msg_obj);
                 }
             }
