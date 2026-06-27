@@ -39,7 +39,7 @@ namespace vision {
         if (detection_flag) {
             for (auto msg_obj: msg.detected_object)
             {
-                if(msg_obj.class_name.compare("target") == 0)
+                if(msg_obj.class_name.compare("CIRCLE") == 0)
                 {
                     // The searching object has been detected
                     // RCLCPP_INFO(_ros_node->get_logger(), "Class OK");
