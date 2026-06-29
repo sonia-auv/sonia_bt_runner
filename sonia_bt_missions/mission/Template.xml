@@ -501,7 +501,7 @@
     <Sequence name="We aim the taget detecter closer to the aiming object">
       <InitializeTrajectory trajectory="{Trajectory}"/>
       <TorpedoAiFilter Detected_object="{AiDetection}"
-                       Max_time_before_failing_sec="5.0"
+                       Max_time_before_failing_sec="15.0"
                        Max_frame_before_failing="0"
                        Min_detections_before_success="5"
                        Confidence="0.600000"
@@ -516,14 +516,6 @@
                Trajectory="{Trajectory}"
                TimeBeforeFailing="5"/>
       <ShootTorpedo side="{TorpedoSide}"/>
-      <SubTree ID="MoveSinglePose"
-               frame="1.0"
-               positionX="-0.9"
-               positionY="0.0"
-               positionZ="0.0"
-               orientationX="0.0"
-               orientationY="0.0"
-               orientationZ="0.0"/>
     </Sequence>
   </BehaviorTree>
 
