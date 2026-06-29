@@ -34,16 +34,18 @@
     <Sequence>
       <SubTree ID="RotateToAbsoluteAngle"
                Angle="0"/>
-      <SearchClosestSlalom Object_class="WHITE_SLALOM"
-                           Closest_object="{ClosestObject}"
-                           Camera="1"
-                           Confidence="0.600000"
-                           Closest_object_angle="{ClosestObjectAngle}"
-                           Max_depth="25.000000"
-                           Actual_angle="0"
-                           Min_detections_before_success="5"
-                           Max_frame_before_failing="0"
-                           Max_time_before_failing_sec="5.00000"/>
+      <ForceSuccess>
+        <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                             Closest_object="{ClosestObject}"
+                             Camera="1"
+                             Confidence="0.600000"
+                             Closest_object_angle="{ClosestObjectAngle}"
+                             Max_depth="25.000000"
+                             Actual_angle="0"
+                             Min_detections_before_success="5"
+                             Max_frame_before_failing="0"
+                             Max_time_before_failing_sec="5.00000"/>
+      </ForceSuccess>
       <SubTree ID="MoveSinglePose"
                frame="1.0"
                positionX="0.0"
@@ -52,16 +54,18 @@
                orientationX="0.0"
                orientationY="0.0"
                orientationZ="-25"/>
-      <SearchClosestSlalom Object_class="WHITE_SLALOM"
-                           Closest_object="{ClosestObject}"
-                           Camera="1"
-                           Confidence="0.600000"
-                           Closest_object_angle="{ClosestObjectAngle}"
-                           Max_depth="25.000000"
-                           Actual_angle="-25"
-                           Min_detections_before_success="5"
-                           Max_frame_before_failing="0"
-                           Max_time_before_failing_sec="5.00000"/>
+      <ForceSuccess>
+        <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                             Closest_object="{ClosestObject}"
+                             Camera="1"
+                             Confidence="0.600000"
+                             Closest_object_angle="{ClosestObjectAngle}"
+                             Max_depth="25.000000"
+                             Actual_angle="-25"
+                             Min_detections_before_success="5"
+                             Max_frame_before_failing="0"
+                             Max_time_before_failing_sec="5.00000"/>
+      </ForceSuccess>
       <SubTree ID="MoveSinglePose"
                frame="1.0"
                positionX="0.0"
@@ -70,16 +74,18 @@
                orientationX="0.0"
                orientationY="0.0"
                orientationZ="-25"/>
-      <SearchClosestSlalom Object_class="WHITE_SLALOM"
-                           Closest_object="{ClosestObject}"
-                           Camera="1"
-                           Confidence="0.600000"
-                           Closest_object_angle="{ClosestObjectAngle}"
-                           Max_depth="25.000000"
-                           Actual_angle="-50"
-                           Min_detections_before_success="5"
-                           Max_frame_before_failing="0"
-                           Max_time_before_failing_sec="5.00000"/>
+      <ForceSuccess>
+        <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                             Closest_object="{ClosestObject}"
+                             Camera="1"
+                             Confidence="0.600000"
+                             Closest_object_angle="{ClosestObjectAngle}"
+                             Max_depth="25.000000"
+                             Actual_angle="-50"
+                             Min_detections_before_success="5"
+                             Max_frame_before_failing="0"
+                             Max_time_before_failing_sec="5.00000"/>
+      </ForceSuccess>
       <SubTree ID="MoveSinglePose"
                frame="1.0"
                positionX="0.0"
@@ -88,16 +94,18 @@
                orientationX="0.0"
                orientationY="0.0"
                orientationZ="75"/>
-      <SearchClosestSlalom Object_class="WHITE_SLALOM"
-                           Closest_object="{ClosestObject}"
-                           Camera="1"
-                           Confidence="0.600000"
-                           Closest_object_angle="{ClosestObjectAngle}"
-                           Max_depth="25.000000"
-                           Actual_angle="25"
-                           Min_detections_before_success="5"
-                           Max_frame_before_failing="0"
-                           Max_time_before_failing_sec="5.00000"/>
+      <ForceSuccess>
+        <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                             Closest_object="{ClosestObject}"
+                             Camera="1"
+                             Confidence="0.600000"
+                             Closest_object_angle="{ClosestObjectAngle}"
+                             Max_depth="25.000000"
+                             Actual_angle="25"
+                             Min_detections_before_success="5"
+                             Max_frame_before_failing="0"
+                             Max_time_before_failing_sec="5.00000"/>
+      </ForceSuccess>
       <SubTree ID="MoveSinglePose"
                frame="1.0"
                positionX="0.0"
@@ -106,18 +114,20 @@
                orientationX="0.0"
                orientationY="0.0"
                orientationZ="25"/>
-      <SearchClosestSlalom Object_class="WHITE_SLALOM"
-                           Closest_object="{ClosestObject}"
-                           Camera="1"
-                           Confidence="0.600000"
-                           Closest_object_angle="{ClosestObjectAngle}"
-                           Max_depth="25.000000"
-                           Actual_angle="50"
-                           Min_detections_before_success="5"
-                           Max_frame_before_failing="0"
-                           Max_time_before_failing_sec="5.00000"/>
+      <ForceSuccess>
+        <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                             Closest_object="{ClosestObject}"
+                             Camera="1"
+                             Confidence="0.600000"
+                             Closest_object_angle="{ClosestObjectAngle}"
+                             Max_depth="25.000000"
+                             Actual_angle="50"
+                             Min_detections_before_success="5"
+                             Max_frame_before_failing="0"
+                             Max_time_before_failing_sec="5.00000"/>
+      </ForceSuccess>
       <SubTree ID="RotateToAbsoluteAngle"
-               Angle="MoveSinglePose"/>
+               Angle="{ClosestObjectAngle}"/>
       <InitializeTrajectory trajectory="{Trajectory}"/>
       <MoveToObject Offset="-2"
                     Trajectory="{Trajectory}"
