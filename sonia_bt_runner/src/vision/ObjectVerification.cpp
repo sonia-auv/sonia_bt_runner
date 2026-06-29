@@ -19,7 +19,7 @@ static std::vector<std::string> parseConfig()
 
     std::stringstream st;
 
-    st << ws << "/src/proc_vision_ros2/models/IA2026AUV8/data.yaml";
+    st << ws << "/src/proc_vision_ros2/models/IAFRONT/data.yaml";
 
     auto configPath = st.str();
     std::vector<std::string> definedObjectsValue;
