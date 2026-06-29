@@ -23,9 +23,9 @@ namespace vision {
             if(msg_obj.class_name.compare(_object_class) == 0)
             {
                 // The searching object has been detected
-                // RCLCPP_INFO(_ros_node->get_logger(), "Class OK");
-                // RCLCPP_INFO(_ros_node->get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name.c_str(), msg_obj.distance, msg_obj.confidence);
-                // RCLCPP_INFO(_ros_node->get_logger(), "Comparing %s and %s = %d", msg_obj.class_name.c_str(), _object.value().c_str(), msg_obj.class_name.compare(_object.value()));
+                RCLCPP_INFO(get_logger(), "Class OK");
+                RCLCPP_INFO(get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name.c_str(), msg_obj.distance, msg_obj.confidence);
+                RCLCPP_INFO(get_logger(), "Comparing %s and %s = %d", msg_obj.class_name.c_str(), _object_class.c_str(), msg_obj.class_name.compare(_object_class));
                 if(msg_obj.confidence >= confidence() && msg_obj.distance <= max_depth())
                 {
                     //The detected object respect the confidence and the depth. We can put it in the filter array
@@ -42,9 +42,9 @@ namespace vision {
                 if(msg_obj.class_name.compare("CIRCLE") == 0)
                 {
                     // The searching object has been detected
-                    // RCLCPP_INFO(_ros_node->get_logger(), "Class OK");
-                    // RCLCPP_INFO(_ros_node->get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name.c_str(), msg_obj.distance, msg_obj.confidence);
-                    // RCLCPP_INFO(_ros_node->get_logger(), "Comparing %s and %s = %d", msg_obj.class_name.c_str(), _object.value().c_str(), msg_obj.class_name.compare(_object.value()));
+                    RCLCPP_INFO(get_logger(), "Class OK");
+                    RCLCPP_INFO(get_logger(), "Detection before filter %s : dist = %f | conf = %f", msg_obj.class_name.c_str(), msg_obj.distance, msg_obj.confidence);
+                    RCLCPP_INFO(get_logger(), "Comparing %s and %s = %d", msg_obj.class_name.c_str(), "CIRCLE", msg_obj.class_name.compare("CIRCLE"));
                     if(msg_obj.confidence >= confidence() && msg_obj.distance <= max_depth())
                     {
                         //The detected object respect the confidence and the depth. We can put it in the filter array
