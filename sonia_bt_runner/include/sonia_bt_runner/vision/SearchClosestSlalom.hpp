@@ -44,7 +44,7 @@ namespace vision{
 
         protected:
             SEARCH_CLOSEST_SLALOM_OBJECT_CLASS_TYPE _object_class;
-            SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT_TYPE _closest_object_detected;
+	    std::optional<SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT_TYPE> _closest_object_detected;
             SEARCH_CLOSEST_SLALOM_CLOSEST_OBJECT_ANGLE_TYPE _closest_object_angle;
             SEARCH_CLOSEST_SLALOM_ACTUAL_ANGLE_TYPE _actual_angle;
             AiDetection detection_average();

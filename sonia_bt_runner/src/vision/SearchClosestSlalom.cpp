@@ -17,7 +17,7 @@ namespace vision{
         auto status = AbstractAiFilter::onStart();
 
 	    switch (status) {
-		    case BT::NodeStatus::RUNNING:
+		    case BT::NodeStatus::RUNNING: {
 			    _object_class = getInput<SEARCH_CLOSEST_SLALOM_OBJECT_CLASS_TYPE>(SEARCH_CLOSEST_SLALOM_OBJECT_CLASS).value();
                 _actual_angle = getInput<SEARCH_CLOSEST_SLALOM_ACTUAL_ANGLE_TYPE>(SEARCH_CLOSEST_SLALOM_ACTUAL_ANGLE).value();
 
@@ -27,10 +27,12 @@ namespace vision{
                     _closest_object_angle = getInput<SEARCH_CLOSEST_SLALOM_CLOSEST_OBJECT_ANGLE_TYPE>(SEARCH_CLOSEST_SLALOM_CLOSEST_OBJECT_ANGLE).value();
                 }
 
-                if (!getInput<SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT_TYPE>(SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT)) {
-                    _closest_object_detected = AiDetection();
+		auto detected_object = getInput<SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT_TYPE>(SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT);
+
+                if (detected_object) {
+                    _closest_object_detected = detected_object.value(); 
                 } else {
-                    _closest_object_detected = getInput<SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT_TYPE>(SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT).value();
+                    _closest_object_detected = {};
                 }
 
 			    // We verify if the object is valid
@@ -42,6 +44,7 @@ namespace vision{
 			    handle_status(status);
 
 			    break;
+		    }
 	            default:
 			    break;
 	    }
@@ -75,23 +78,29 @@ namespace vision{
 	    // boxPlotToDetection(_detection_array); // FIX_ME!!!!
 	    
 	    auto detected_object = detection_average();
-
-        if (detected_object.distance < _closest_object_detected.distance) {
-
-            // A new detection has been detected much further than the last one
-            _closest_object_detected = detected_object;
-            _closest_object_angle = _actual_angle;
-        }
+	    auto detected_object_fn = [&]() {
+		    // A new detection has been detected much further than the last one
+		    _closest_object_detected = detected_object;
+		    _closest_object_angle = _actual_angle;
+		    
+		    RCLCPP_INFO(get_logger(), "New closest detection classification = %s, distance = %f, confidence = %f, angle_teta = %f, angle_alpha = %f",
+				    _closest_object_detected.value().classification.c_str(),
+        _closest_object_detected.value().distance,
+        _closest_object_detected.value().confidence,
+        _closest_object_detected.value().angle_teta,
+        _closest_object_detected.value().angle_alpha);
 	    
-	    RCLCPP_INFO(get_logger(), "New closest detection classification = %s, distance = %f, confidence = %f, angle_teta = %f, angle_alpha = %f",
-        _closest_object_detected.classification.c_str(),
-        _closest_object_detected.distance,
-        _closest_object_detected.confidence,
-        _closest_object_detected.angle_teta,
-        _closest_object_detected.angle_alpha);
-	    
-	    setOutput(SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT, _closest_object_detected);
+	    setOutput(SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT, _closest_object_detected.value());
         setOutput(SEARCH_CLOSEST_SLALOM_CLOSEST_OBJECT_ANGLE, _closest_object_angle);
+	    };
+
+	    if (_closest_object_detected.has_value()) {
+		    if (detected_object.distance < _closest_object_detected.value().distance) {
+			    detected_object_fn();
+		    }
+	    } else {
+		    detected_object_fn();
+	    } 
 
 	    AbstractAiFilter::handle_success();
     }
