@@ -84,9 +84,9 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
     // }
 
     // Pose 3: turn to make the sub streight
-    TrajectoryPose p3{};
-    p3.orientationZ = 0;
-    p3.frame = 2;
+    // TrajectoryPose p3{};
+    // p3.orientationZ = 0;
+    // p3.frame = 2;
 
     float positionX = getInput<float>("PositionX").value_or(10.0f);
     // Pose 4: move forward through the gap.
@@ -98,7 +98,7 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
     traj.trajectory.push_back(p0);
     traj.trajectory.push_back(p1);
     // traj.trajectory.push_back(p2);
-    traj.trajectory.push_back(p3);
+    // traj.trajectory.push_back(p3);
     traj.trajectory.push_back(p4);
     setOutput<Trajectory>("Trajectory", traj);
 
