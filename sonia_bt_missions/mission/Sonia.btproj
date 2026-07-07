@@ -150,6 +150,9 @@
         <Action ID="SavePoint">
             <output_port name="Point" type="Point"/>
         </Action>
+        <SubTree ID="SearchClosestRedSlalom" editable="true">
+            <input_port name="SlalomSideFromGate">THe side that the sub need to pass the slalom</input_port>
+        </SubTree>
         <Action ID="SearchClosestSlalom">
             <input_port name="Object_class" type="std::string">Searched object</input_port>
             <inout_port name="Closest_object" type="AiDetection">The closest detected object</inout_port>
