@@ -394,9 +394,11 @@
         </Sequence>
         <Sequence>
           <Script code="target_reached_failure:=false"/>
+          <Script code="offset := 0"/>
           <ForceSuccess>
             <Repeat num_cycles="-1">
               <Sequence>
+                <InitializeTrajectory trajectory="{splittedTrajectory}"/>
                 <SplitTrajectory splittedTrajectory="{splittedTrajectory}"
                                  trajectory="{Trajectory}"
                                  offset="{offset}"/>
