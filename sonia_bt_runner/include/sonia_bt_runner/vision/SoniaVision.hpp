@@ -5,5 +5,4 @@
 #include "sonia_bt_runner/vision/AiFilter.hpp"
 #include "sonia_bt_runner/vision/TorpedoAiFilter.hpp"
 #include "sonia_bt_runner/vision/SearchWhiteSlalom.hpp"
-#include "sonia_bt_runner/vision/MapSlaloms.hpp"
 #include "sonia_bt_runner/vision/SearchClosestSlalom.hpp"

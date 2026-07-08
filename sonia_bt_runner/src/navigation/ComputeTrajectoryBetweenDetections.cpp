@@ -11,18 +11,20 @@ ComputeTrajectoryBetweenDetections::ComputeTrajectoryBetweenDetections(const std
 
 BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
 {
-    AiDetection detA, detB;
-    if (!getInput<AiDetection>("DetectionA", detA) || !getInput<AiDetection>("DetectionB", detB)) {
+    COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_DETECTION_A_TYPE detA;
+    COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_DETECTION_B_TYPE detB;
+    if (!getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_DETECTION_A_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_DETECTION_A, detA) ||
+        !getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_DETECTION_B_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_DETECTION_B, detB)) {
         RCLCPP_ERROR(_ros_node->get_logger(), "ComputeTrajectoryBetweenDetections: missing DetectionA or DetectionB");
         return BT::NodeStatus::FAILURE;
     }
 
-    if (!getInput<Trajectory>("Trajectory")) {
+    if (!getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_TRAJECTORY_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_TRAJECTORY)) {
         RCLCPP_ERROR(_ros_node->get_logger(), "ComputeTrajectoryBetweenDetections: Trajectory is not initialized");
         return BT::NodeStatus::FAILURE;
     }
 
-    std::string side = getInput<std::string>("Side").value();
+    [[maybe_unused]] auto side = getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_SIDE_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_SIDE).value();
 
     // We put the detection angle in good named variable
     float nearest_det_dist, furthest_det_dist, nearest_det_angle, furthest_det_angle;
@@ -88,19 +90,19 @@ BT::NodeStatus ComputeTrajectoryBetweenDetections::tick()
     // p3.orientationZ = 0;
     // p3.frame = 2;
 
-    float positionX = getInput<float>("PositionX").value_or(10.0f);
+    auto positionX = getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_POSITION_X_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_POSITION_X).value_or(10.0f);
     // Pose 4: move forward through the gap.
     TrajectoryPose p4{};
     p4.positionX = positionX;
     p4.frame = 1;
 
-    Trajectory traj = getInput<Trajectory>("Trajectory").value();
+    auto traj = getInput<COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_TRAJECTORY_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_TRAJECTORY).value();
     traj.trajectory.push_back(p0);
     traj.trajectory.push_back(p1);
     // traj.trajectory.push_back(p2);
     // traj.trajectory.push_back(p3);
     traj.trajectory.push_back(p4);
-    setOutput<Trajectory>("Trajectory", traj);
+    setOutput<COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_TRAJECTORY_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_TRAJECTORY, traj);
 
     return BT::NodeStatus::SUCCESS;
 }

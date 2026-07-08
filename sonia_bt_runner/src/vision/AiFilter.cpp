@@ -67,7 +67,7 @@ namespace vision{
 	    
 	    RCLCPP_INFO(get_logger(), "classification = %s, distance = %f, confidence = %f, angle_teta = %f, angle_alpha = %f", detected_object.classification.c_str(), detected_object.distance, detected_object.confidence, detected_object.angle_teta, detected_object.angle_alpha);
 	    
-	    setOutput("Detected_object", detected_object);
+	    setOutput(AI_FILTER_DETECTED_OBJECT, detected_object);
 
 	    AbstractAiFilter::handle_success();
     }

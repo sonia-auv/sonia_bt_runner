@@ -4,6 +4,10 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_common_ros2/srv/actuator_service.hpp"
 
+#define SHOOT_TORPEDO_SIDE "side"
+#define SHOOT_TORPEDO_SIDE_PARAMS SHOOT_TORPEDO_SIDE, "port_side or starboard"
+#define SHOOT_TORPEDO_SIDE_TYPE std::string
+
 namespace actuator{
     class ShootTorpedo: public BT::StatefulActionNode{
         public:
@@ -12,7 +16,7 @@ namespace actuator{
             static BT::PortsList providedPorts()
             {
                 // Options for 'side' are 'port_side' or 'starboard'
-                return {BT::InputPort<std::string>("side", "port_side or starboard")};
+                return {BT::InputPort<SHOOT_TORPEDO_SIDE_TYPE>(SHOOT_TORPEDO_SIDE_PARAMS)};
             }
             BT::NodeStatus onStart() override;
             BT::NodeStatus onRunning() override;
@@ -23,6 +27,6 @@ namespace actuator{
             std::shared_ptr<sonia_common_ros2::srv::ActuatorService::Request> _request;
             rclcpp::Client<sonia_common_ros2::srv::ActuatorService>::SharedPtr _torpedo_client;
 
-            BT::Expected<std::string> _side;
+            BT::Expected<SHOOT_TORPEDO_SIDE_TYPE> _side;
     };
 }

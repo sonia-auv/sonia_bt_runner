@@ -11,7 +11,7 @@ namespace actuator{
         _request = std::make_shared<sonia_common_ros2::srv::ActuatorService::Request>();
         _request->action= _request->ACTION_LAUNCH;
         _request->element= _request->ELEMENT_TORPEDO;
-        BT::Expected<std::string> side(getInput<std::string>("side"));
+        BT::Expected<SHOOT_TORPEDO_SIDE_TYPE> side(getInput<SHOOT_TORPEDO_SIDE_TYPE>(SHOOT_TORPEDO_SIDE));
         if(side == "port_side"){
             _request->side = _request->SIDE_PORT;
         }

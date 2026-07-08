@@ -12,7 +12,7 @@ namespace init{
     }
     BT::NodeStatus EnableDisableDVL::tick(){
         std_msgs::msg::Bool dvl_state;
-        BT::Expected<bool> data(getInput<bool>("dvl_input"));
+        BT::Expected<ENABLE_DISABLE_DVL_INPUT_TYPE> data(getInput<ENABLE_DISABLE_DVL_INPUT_TYPE>(ENABLE_DISABLE_DVL_INPUT));
 
         dvl_state.data=data.value();
         _dvl_pub->publish(dvl_state);

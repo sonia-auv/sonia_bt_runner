@@ -13,8 +13,8 @@ namespace sensors
 
     BT::NodeStatus DepthCheck::tick()
     {
-        BT::Expected<float> target = getInput<float>("Target");
-        BT::Expected<bool> is_smaller = getInput<bool>("IsSmaller");
+        BT::Expected<DEPTH_CHECK_TARGET_TYPE> target = getInput<DEPTH_CHECK_TARGET_TYPE>(DEPTH_CHECK_TARGET);
+        BT::Expected<DEPTH_CHECK_IS_SMALLER_TYPE> is_smaller = getInput<DEPTH_CHECK_IS_SMALLER_TYPE>(DEPTH_CHECK_IS_SMALLER);
 
         if (is_smaller.value())
         {

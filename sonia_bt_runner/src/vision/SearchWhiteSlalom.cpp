@@ -11,12 +11,12 @@ SearchWhiteSlalom::SearchWhiteSlalom(const std::string &name, const BT::NodeConf
 
 BT::NodeStatus SearchWhiteSlalom::onStart()
 {
-    _red_detection = getInput<AiDetection>("RedSlalomDetection");
-    _side = getInput<std::string>("Side");
-    _confidence = getInput<float>("Confidence");
-    _min_detections = getInput<int>("Min_detections_before_success");
-    _max_time = getInput<float>("Max_time_before_failing_sec");
-    _max_depth = getInput<float>("Max_depth");
+    _red_detection = getInput<SEARCH_WHITE_SLALOM_RED_SLALOM_DETECTION_TYPE>(SEARCH_WHITE_SLALOM_RED_SLALOM_DETECTION);
+    _side = getInput<SEARCH_WHITE_SLALOM_SIDE_TYPE>(SEARCH_WHITE_SLALOM_SIDE);
+    _confidence = getInput<SEARCH_WHITE_SLALOM_CONFIDENCE_TYPE>(SEARCH_WHITE_SLALOM_CONFIDENCE);
+    _min_detections = getInput<SEARCH_WHITE_SLALOM_MIN_DETECTIONS_BEFORE_SUCCESS_TYPE>(SEARCH_WHITE_SLALOM_MIN_DETECTIONS_BEFORE_SUCCESS);
+    _max_time = getInput<SEARCH_WHITE_SLALOM_MAX_TIME_BEFORE_FAILING_SEC_TYPE>(SEARCH_WHITE_SLALOM_MAX_TIME_BEFORE_FAILING_SEC);
+    _max_depth = getInput<SEARCH_WHITE_SLALOM_MAX_DEPTH_TYPE>(SEARCH_WHITE_SLALOM_MAX_DEPTH);
 
     if (!_red_detection || !_side || !_confidence || !_min_detections || !_max_time || !_max_depth) {
         RCLCPP_ERROR(_ros_node->get_logger(), "SearchWhiteSlalom: missing required input port");
@@ -78,7 +78,7 @@ BT::NodeStatus SearchWhiteSlalom::onRunning()
     output.distance_teta /= n;
     output.distance_beta /= n;
 
-    setOutput("WhiteSlalomDetection", output);
+    setOutput(SEARCH_WHITE_SLALOM_WHITE_SLALOM_DETECTION, output);
 
     RCLCPP_INFO(_ros_node->get_logger(), "SearchWhiteSlalom: found white slalom at angle_teta=%.2f after %zu detections",
                 output.angle_teta, _valid_detections.size());

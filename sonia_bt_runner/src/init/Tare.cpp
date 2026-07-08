@@ -12,7 +12,7 @@ namespace init{
 
     BT::NodeStatus Tare::onStart()
     {
-        BT::Expected<std::string> sensor(getInput<std::string>("sensor"));
+        BT::Expected<TARE_SENSOR_TYPE> sensor(getInput<TARE_SENSOR_TYPE>(TARE_SENSOR));
         if(sensor.value()=="imu"){
             _response= _imu_client->async_send_request(_request).get();
         }

@@ -8,7 +8,7 @@ namespace navigation{
 
     BT::NodeStatus InitializeTrajectory::tick()
     {
-        setOutput("trajectory", "");
+        setOutput(INITIALIZE_TRAJECTORY_TRAJECTORY, "");
         return BT::NodeStatus::SUCCESS;
     }
 }

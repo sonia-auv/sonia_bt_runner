@@ -8,26 +8,26 @@ namespace navigation{
 
     BT::NodeStatus TrajectoryAppendPose::tick()
     {
-        float positionX = 0.0;
-        getInput<float>("positionX", positionX);
-        float positionY = 0.0;
-        getInput<float>("positionY", positionY);
-        float positionZ = 0.0;
-        getInput<float>("positionZ", positionZ);
-        float orientationX = 0.0;
-        getInput<float>("orientationX", orientationX);
-        float orientationY = 0.0;
-        getInput<float>("orientationY", orientationY);
-        float orientationZ = 0.0;
-        getInput<float>("orientationZ", orientationZ);
-        int frame = 1;
-        getInput<int>("frame", frame);
-        int speed = 0;
-        getInput<int>("speed", speed);
-        int precision = 0;
-        getInput<int>("precision", precision);
-        bool long_rotation = false;
-        getInput<bool>("longRotation", long_rotation);
+        TRAJECTORY_APPEND_POSE_POSITION_X_TYPE positionX = 0.0;
+        getInput<TRAJECTORY_APPEND_POSE_POSITION_X_TYPE>(TRAJECTORY_APPEND_POSE_POSITION_X, positionX);
+        TRAJECTORY_APPEND_POSE_POSITION_Y_TYPE positionY = 0.0;
+        getInput<TRAJECTORY_APPEND_POSE_POSITION_Y_TYPE>(TRAJECTORY_APPEND_POSE_POSITION_Y, positionY);
+        TRAJECTORY_APPEND_POSE_POSITION_Z_TYPE positionZ = 0.0;
+        getInput<TRAJECTORY_APPEND_POSE_POSITION_Z_TYPE>(TRAJECTORY_APPEND_POSE_POSITION_Z, positionZ);
+        TRAJECTORY_APPEND_POSE_ORIENTATION_X_TYPE orientationX = 0.0;
+        getInput<TRAJECTORY_APPEND_POSE_ORIENTATION_X_TYPE>(TRAJECTORY_APPEND_POSE_ORIENTATION_X, orientationX);
+        TRAJECTORY_APPEND_POSE_ORIENTATION_Y_TYPE orientationY = 0.0;
+        getInput<TRAJECTORY_APPEND_POSE_ORIENTATION_Y_TYPE>(TRAJECTORY_APPEND_POSE_ORIENTATION_Y, orientationY);
+        TRAJECTORY_APPEND_POSE_ORIENTATION_Z_TYPE orientationZ = 0.0;
+        getInput<TRAJECTORY_APPEND_POSE_ORIENTATION_Z_TYPE>(TRAJECTORY_APPEND_POSE_ORIENTATION_Z, orientationZ);
+        TRAJECTORY_APPEND_POSE_FRAME_TYPE frame = 1;
+        getInput<TRAJECTORY_APPEND_POSE_FRAME_TYPE>(TRAJECTORY_APPEND_POSE_FRAME, frame);
+        TRAJECTORY_APPEND_POSE_SPEED_TYPE speed = 0;
+        getInput<TRAJECTORY_APPEND_POSE_SPEED_TYPE>(TRAJECTORY_APPEND_POSE_SPEED, speed);
+        TRAJECTORY_APPEND_POSE_PRECISION_TYPE precision = 0;
+        getInput<TRAJECTORY_APPEND_POSE_PRECISION_TYPE>(TRAJECTORY_APPEND_POSE_PRECISION, precision);
+        TRAJECTORY_APPEND_POSE_LONG_ROTATION_TYPE long_rotation = false;
+        getInput<TRAJECTORY_APPEND_POSE_LONG_ROTATION_TYPE>(TRAJECTORY_APPEND_POSE_LONG_ROTATION, long_rotation);
 
         TrajectoryPose tp;
         tp.positionX = positionX;
@@ -41,10 +41,10 @@ namespace navigation{
         tp.precision = precision;
         tp.long_rotation = long_rotation;
 
-        Trajectory t;
-        getInput<Trajectory>("trajectory", t);
+        TRAJECTORY_APPEND_POSE_TRAJECTORY_TYPE t;
+        getInput<TRAJECTORY_APPEND_POSE_TRAJECTORY_TYPE>(TRAJECTORY_APPEND_POSE_TRAJECTORY, t);
         t.trajectory.push_back(tp);
-        setOutput("trajectory", t);
+        setOutput(TRAJECTORY_APPEND_POSE_TRAJECTORY, t);
 
         return BT::NodeStatus::SUCCESS;
     }

@@ -7,6 +7,12 @@
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 #include "sonia_bt_runner/utils/CONSTANT.hpp"
 
+#define OBJECT_DRIFTING_DETECTION "Detection"
+#define OBJECT_DRIFTING_DETECTION_TYPE AiDetection
+
+#define OBJECT_DRIFTING_TRAJECTORY "Trajectory"
+#define OBJECT_DRIFTING_TRAJECTORY_TYPE Trajectory
+
 namespace navigation
 {
 
@@ -19,10 +25,10 @@ namespace navigation
             {
                 return {
                     // Inputs
-                    BT::InputPort<AiDetection>("Detection"),
+                    BT::InputPort<OBJECT_DRIFTING_DETECTION_TYPE>(OBJECT_DRIFTING_DETECTION),
 
                     // Outputs
-                    BT::BidirectionalPort<Trajectory>("Trajectory"),
+                    BT::BidirectionalPort<OBJECT_DRIFTING_TRAJECTORY_TYPE>(OBJECT_DRIFTING_TRAJECTORY),
                 };
             }
             BT::NodeStatus tick() override;
