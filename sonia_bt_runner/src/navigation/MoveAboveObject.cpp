@@ -11,12 +11,12 @@ namespace navigation
 
     BT::NodeStatus MoveAboveObject::tick()
     {
-        AiDetection det;
+        MOVE_ABOVE_OBJECT_DETECTION_TYPE det;
 
         // We get the detected object by the AI
-        getInput("Detection", det);
+        getInput(MOVE_ABOVE_OBJECT_DETECTION, det);
 
-        if(!getInput<Trajectory>("Trajectory"))
+        if(!getInput<MOVE_ABOVE_OBJECT_TRAJECTORY_TYPE>(MOVE_ABOVE_OBJECT_TRAJECTORY))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
@@ -48,9 +48,9 @@ namespace navigation
         RCLCPP_INFO(_ros_node->get_logger(), "orientation en z: %f", t.orientationZ);
 
         // We append the new trajectory point to the sending trajectory
-        Trajectory traj = getInput<Trajectory>("Trajectory").value();
+        auto traj = getInput<MOVE_ABOVE_OBJECT_TRAJECTORY_TYPE>(MOVE_ABOVE_OBJECT_TRAJECTORY).value();
         traj.trajectory.push_back(t);
-        setOutput<Trajectory>("Trajectory", traj);
+        setOutput<MOVE_ABOVE_OBJECT_TRAJECTORY_TYPE>(MOVE_ABOVE_OBJECT_TRAJECTORY, traj);
 
         return BT::NodeStatus::SUCCESS;
     }

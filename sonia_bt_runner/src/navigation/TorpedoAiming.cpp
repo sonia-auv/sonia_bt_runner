@@ -11,16 +11,16 @@ namespace navigation
 
     BT::NodeStatus TorpedoAiming::tick()
     {
-        AiDetection det;
-        std::string launching_side;
-        float target_offset;
+        TORPEDO_AIMING_DETECTION_TYPE det;
+        TORPEDO_AIMING_LAUNCHING_SIDE_TYPE launching_side;
+        TORPEDO_AIMING_TARGET_OFFSET_TYPE target_offset;
 
         // We get the detected object by the AI
-        getInput("Detection", det);
-        getInput("LaunchingSide", launching_side);
-        getInput("TargetOffset", target_offset);
+        getInput(TORPEDO_AIMING_DETECTION, det);
+        getInput(TORPEDO_AIMING_LAUNCHING_SIDE, launching_side);
+        getInput(TORPEDO_AIMING_TARGET_OFFSET, target_offset);
 
-        if(!getInput<Trajectory>("Trajectory"))
+        if(!getInput<TORPEDO_AIMING_TRAJECTORY_TYPE>(TORPEDO_AIMING_TRAJECTORY))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
@@ -61,9 +61,9 @@ namespace navigation
         RCLCPP_INFO(_ros_node->get_logger(), "orientation en z: %f", t.orientationZ);
 
         // We append the new pose to the trajectory
-        Trajectory traj = getInput<Trajectory>("Trajectory").value();
+        auto traj = getInput<TORPEDO_AIMING_TRAJECTORY_TYPE>(TORPEDO_AIMING_TRAJECTORY).value();
         traj.trajectory.push_back(t);
-        setOutput<Trajectory>("Trajectory", traj);
+        setOutput<TORPEDO_AIMING_TRAJECTORY_TYPE>(TORPEDO_AIMING_TRAJECTORY, traj);
 
         return BT::NodeStatus::SUCCESS;
     }

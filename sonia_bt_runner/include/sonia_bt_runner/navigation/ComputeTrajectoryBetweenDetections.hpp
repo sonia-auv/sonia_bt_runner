@@ -5,6 +5,22 @@
 #include "sonia_bt_runner/utils/AiDetection.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_DETECTION_A "DetectionA"
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_DETECTION_A_TYPE AiDetection
+
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_DETECTION_B "DetectionB"
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_DETECTION_B_TYPE AiDetection
+
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_POSITION_X "PositionX"
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_POSITION_X_PARAMS COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_POSITION_X, 10.0f, "Forward distance to travel after centering between the two detections"
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_POSITION_X_TYPE float
+
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_SIDE "Side"
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_SIDE_TYPE std::string
+
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_TRAJECTORY "Trajectory"
+#define COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_TRAJECTORY_TYPE Trajectory
+
 namespace navigation {
 
 class ComputeTrajectoryBetweenDetections : public BT::SyncActionNode {
@@ -14,11 +30,11 @@ public:
 
     static BT::PortsList providedPorts() {
         return {
-            BT::InputPort<AiDetection>("DetectionA"),
-            BT::InputPort<AiDetection>("DetectionB"),
-            BT::InputPort<float>("PositionX", 10.0f, "Forward distance to travel after centering between the two detections"),
-            BT::InputPort<std::string>("Side"),  // This port will be used to output the computed trajectory
-            BT::BidirectionalPort<Trajectory>("Trajectory"),
+            BT::InputPort<COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_DETECTION_A_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_DETECTION_A),
+            BT::InputPort<COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_DETECTION_B_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_DETECTION_B),
+            BT::InputPort<COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_POSITION_X_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_POSITION_X_PARAMS),
+            BT::InputPort<COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_SIDE_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_SIDE),
+            BT::BidirectionalPort<COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_TRAJECTORY_TYPE>(COMPUTE_TRAJECTORY_BETWEEN_DETECTIONS_TRAJECTORY),
         };
     }
 

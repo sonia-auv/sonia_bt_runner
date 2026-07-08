@@ -9,9 +9,9 @@ namespace vision{
     BT::NodeStatus AiActivation::tick(){
         std::shared_ptr<sonia_common_ros2::srv::AiActivationService_Response> response;
         _request = std::make_shared<sonia_common_ros2::srv::AiActivationService_Request>();
-        BT::Expected<bool> front = getInput<bool>("Front");
-        BT::Expected<bool> bottom = getInput<bool>("Bottom");
-        BT::Expected<int> model = getInput<int>("Model");
+        BT::Expected<AI_ACTIVATION_FRONT_TYPE> front = getInput<AI_ACTIVATION_FRONT_TYPE>(AI_ACTIVATION_FRONT);
+        BT::Expected<AI_ACTIVATION_BOTTOM_TYPE> bottom = getInput<AI_ACTIVATION_BOTTOM_TYPE>(AI_ACTIVATION_BOTTOM);
+        BT::Expected<AI_ACTIVATION_MODEL_TYPE> model = getInput<AI_ACTIVATION_MODEL_TYPE>(AI_ACTIVATION_MODEL);
 
         // We activate the selected AI on the requested camera(s)
         if(front.value()&&bottom.value()){

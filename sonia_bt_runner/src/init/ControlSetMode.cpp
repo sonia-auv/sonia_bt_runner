@@ -11,7 +11,7 @@ namespace init{
 
         std_msgs::msg::UInt8 msg;
         
-        BT::Expected<bool> data(getInput<bool>("set_mode"));
+        BT::Expected<CONTROL_SET_MODE_SET_MODE_TYPE> data(getInput<CONTROL_SET_MODE_SET_MODE_TYPE>(CONTROL_SET_MODE_SET_MODE));
         if(data.value()){
             msg.data = 10;
             _mode_pub->publish(msg);
