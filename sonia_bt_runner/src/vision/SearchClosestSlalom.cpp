@@ -1,6 +1,7 @@
 #include "sonia_bt_runner/vision/SearchClosestSlalom.hpp"
 #include "sonia_bt_runner/vision/ObjectVerification.hpp"
 #include "sonia_bt_runner/vision/utils/BoxPlotToDetection.hpp"
+#include "sonia_bt_runner/utils/NormalizeDetection.hpp"
 
 #include <optional>
 
@@ -27,7 +28,7 @@ namespace vision{
                     _closest_object_angle = getInput<SEARCH_CLOSEST_SLALOM_CLOSEST_OBJECT_ANGLE_TYPE>(SEARCH_CLOSEST_SLALOM_CLOSEST_OBJECT_ANGLE).value();
                 }
 
-		auto detected_object = getInput<SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT_TYPE>(SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT);
+		        auto detected_object = getInput<SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT_TYPE>(SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT);
 
                 if (detected_object) {
                     _closest_object_detected = detected_object.value(); 
@@ -40,6 +41,12 @@ namespace vision{
 				    RCLCPP_INFO(get_logger(), "The detected object is not a valid name of type of detection. Syntax error");
 				    status = BT::NodeStatus::FAILURE;
 			    }
+
+			    if (_object_class != "RED_SLALOM" && _object_class != "WHITE_SLALOM") {
+				    status = BT::NodeStatus::FAILURE;
+			    }
+
+			    _side = getInput<SEARCH_CLOSEST_SLALOM_SIDE_TYPE>(SEARCH_CLOSEST_SLALOM_SIDE).value();
 
 			    handle_status(status);
 
@@ -144,6 +151,17 @@ namespace vision{
             if(msg_obj.class_name.compare(_object_class) == 0)
             {
                 RCLCPP_INFO(get_logger(), "Get the wanted object: %s!!!", msg_obj.class_name.c_str());
+
+                if (_object_class == "WHITE_SLALOM") {
+                    if ((_actual_angle - msg_obj.angle_alpha < 0 && _side == "Right") 
+                     || (_actual_angle - msg_obj.angle_alpha > 0 && _side == "Left")) {
+                        RCLCPP_INFO(get_logger(), "The white slalom is on the wrong side");
+                        continue;
+                    }
+                }
+
+		utils::normalize_detection(msg_obj);
+
                 if(msg_obj.confidence >= confidence() && msg_obj.distance <= max_depth())
                 {
                     RCLCPP_INFO(get_logger(), "Confidence and depth OK");

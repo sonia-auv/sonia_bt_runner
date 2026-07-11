@@ -60,10 +60,12 @@
             <input_port name="Path">The path that the othor sub has choosen</input_port>
         </SubTree>
         <Action ID="ComputeTrajectoryBetweenDetections">
-            <input_port name="Side" type="std::string"/>
             <inout_port name="Trajectory" type="Trajectory"/>
-            <input_port name="PositionX" default="10.000000" type="float">Forward distance to travel after centering between the two detections</input_port>
+            <input_port name="OffsetAngle" type="float"/>
+            <input_port name="Side" type="std::string"/>
+            <input_port name="Angle" type="float"/>
             <input_port name="DetectionB" type="AiDetection"/>
+            <input_port name="PositionX" default="10.000000" type="float">Forward distance to travel after centering between the two detections</input_port>
             <input_port name="DetectionA" type="AiDetection"/>
         </Action>
         <Action ID="ControlSetMode">
@@ -150,23 +152,25 @@
         <Action ID="SavePoint">
             <output_port name="Point" type="Point"/>
         </Action>
-        <SubTree ID="SearchClosestRedSlalom" editable="true">
-            <input_port name="SlalomSideFromGate">THe side that the sub need to pass the slalom</input_port>
-        </SubTree>
         <Action ID="SearchClosestSlalom">
             <input_port name="Object_class" type="std::string">Searched object</input_port>
-            <inout_port name="Closest_object" type="AiDetection">The closest detected object</inout_port>
-            <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
-            <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
-            <inout_port name="Closest_object_angle" type="float">The closest detection angle</inout_port>
-            <input_port name="Max_depth" default="25.000000" type="float">Maximum allowed depth</input_port>
+            <input_port name="Side" type="std::string">Side that the white slalom should be from the red slalom</input_port>
             <input_port name="Actual_angle" type="float">The actual angle of the sub</input_port>
-            <input_port name="Min_detections_before_success" default="2" type="unsigned long">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+            <inout_port name="Closest_object_angle" type="float">The closest detection angle</inout_port>
+            <inout_port name="Closest_object" type="AiDetection">The closest detected object</inout_port>
             <input_port name="Max_frame_before_failing" default="0" type="int">Maximum allowed frames before failing the object research</input_port>
+            <input_port name="Min_detections_before_success" default="2" type="unsigned long">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+            <input_port name="Max_depth" default="25.000000" type="float">Maximum allowed depth</input_port>
+            <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
             <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Maximum allowed frames before failing the object research</input_port>
+            <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
         </Action>
         <SubTree ID="SearchClosestWhiteSlalom" editable="true">
-            <output_port name="SlalomSideFromGate">The side of the position of the slalom with the gate</output_port>
+            <input_port name="Side"/>
+            <input_port name="RedDetection"/>
+            <output_port name="WhiteDetection"/>
+            <output_port name="WhiteDetectionAngle"/>
+            <output_port name="OffsetAngle"/>
         </SubTree>
         <SubTree ID="SearchObjectByRotation" editable="true">
             <input_port name="Object">Object we are looking for</input_port>
@@ -180,10 +184,10 @@
         <Action ID="SearchWhiteSlalom">
             <output_port name="WhiteSlalomDetection" type="AiDetection"/>
             <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Timeout in seconds, 0 = disabled</input_port>
-            <input_port name="Max_depth" default="25.000000" type="float">Maximum detection distance</input_port>
-            <input_port name="Confidence" default="0.600000" type="float">Minimum AI confidence</input_port>
             <input_port name="Min_detections_before_success" default="5" type="int">Minimum valid detections before succeeding</input_port>
+            <input_port name="Confidence" default="0.600000" type="float">Minimum AI confidence</input_port>
             <input_port name="Side" default="Left" type="std::string">Left or Right</input_port>
+            <input_port name="Max_depth" default="25.000000" type="float">Maximum detection distance</input_port>
             <input_port name="RedSlalomDetection" type="AiDetection"/>
         </Action>
         <SubTree ID="SearchWhiteSlalomByRotation" editable="true">

@@ -19,6 +19,10 @@
 #define SEARCH_CLOSEST_SLALOM_ACTUAL_ANGLE_PARAMS SEARCH_CLOSEST_SLALOM_ACTUAL_ANGLE, "The actual angle of the sub"
 #define SEARCH_CLOSEST_SLALOM_ACTUAL_ANGLE_TYPE float
 
+#define SEARCH_CLOSEST_SLALOM_SIDE "Side"
+#define SEARCH_CLOSEST_SLALOM_SIDE_PARAMS SEARCH_CLOSEST_SLALOM_SIDE, "Side that the white slalom should be from the red slalom"
+#define SEARCH_CLOSEST_SLALOM_SIDE_TYPE std::string
+
 namespace vision{
     class SearchClosestSlalom: public AbstractAiFilter {
         public:
@@ -31,6 +35,7 @@ namespace vision{
                     // Inputs
                     BT::InputPort<SEARCH_CLOSEST_SLALOM_OBJECT_CLASS_TYPE>(SEARCH_CLOSEST_SLALOM_CLASS_PARAMS),
                     BT::InputPort<SEARCH_CLOSEST_SLALOM_ACTUAL_ANGLE_TYPE>(SEARCH_CLOSEST_SLALOM_ACTUAL_ANGLE_PARAMS),
+		            BT::InputPort<SEARCH_CLOSEST_SLALOM_SIDE_TYPE>(SEARCH_CLOSEST_SLALOM_SIDE_PARAMS),
                     // Bidirectionnals
                     BT::BidirectionalPort<SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT_TYPE>(SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT_PARAMS),
                     BT::BidirectionalPort<SEARCH_CLOSEST_SLALOM_CLOSEST_OBJECT_ANGLE_TYPE>(SEARCH_CLOSEST_SLALOM_CLOSEST_OBJECT_ANGLE_PARAMS)
@@ -47,6 +52,7 @@ namespace vision{
 	    std::optional<SEARCH_CLOSEST_SLALOM_CLOSEST_DETECTED_OBJECT_TYPE> _closest_object_detected;
             SEARCH_CLOSEST_SLALOM_CLOSEST_OBJECT_ANGLE_TYPE _closest_object_angle;
             SEARCH_CLOSEST_SLALOM_ACTUAL_ANGLE_TYPE _actual_angle;
+	        SEARCH_CLOSEST_SLALOM_SIDE_TYPE _side;
             AiDetection detection_average();
             virtual void handle_success();
             std::vector<sonia_common_ros2::msg::Detection> _detection_array;
