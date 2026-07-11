@@ -14,9 +14,11 @@ namespace actuator{
         BT::Expected<SHOOT_TORPEDO_SIDE_TYPE> side(getInput<SHOOT_TORPEDO_SIDE_TYPE>(SHOOT_TORPEDO_SIDE));
         if(side == "port_side"){
             _request->side = _request->SIDE_PORT;
+            RCLCPP_INFO(_ros_node->get_logger(), "PortSide torpedo has been shot!");
         }
         if(side == "starboard"){
             _request->side = _request->SIDE_STARBOARD;
+            RCLCPP_INFO(_ros_node->get_logger(), "Starboard torpedo has been shot!");
         }
         return BT::NodeStatus::RUNNING;
         

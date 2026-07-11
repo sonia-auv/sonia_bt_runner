@@ -352,6 +352,7 @@
                                                               Max_depth="{Max_depth}"
                                                               Object_class="{Object}"
                                                               Camera="1"/>
+                                                    <AlwaysSuccess/>
                                                     <AlwaysFailure/>
                                                   </IfThenElse>
                                                 </Sequence>
@@ -489,7 +490,7 @@
                   Object_class="FIRETRUCK"
                   Camera="1"/>
         <TorpedoAiming Trajectory="{Trajectory}"
-                       TargetOffset="0.6"
+                       TargetOffset="1.2"
                        LaunchingSide="sub"
                        Detection="{AiDetection}"/>
         <SubTree ID="SendTrajectoryOnly"

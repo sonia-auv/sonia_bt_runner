@@ -1,4 +1,5 @@
 #include "sonia_bt_runner/vision/TorpedoAiFilter.hpp"
+#include "sonia_bt_runner/utils/NormalizeDetection.hpp"
 
 namespace vision {
     TorpedoAiFilter::TorpedoAiFilter(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
@@ -20,6 +21,7 @@ namespace vision {
         float teta{};
 
         for (auto msg_obj: msg.detected_object){
+            utils::normalize_detection(msg_obj);
             if(msg_obj.class_name.compare(_object_class) == 0)
             {
                 // The searching object has been detected

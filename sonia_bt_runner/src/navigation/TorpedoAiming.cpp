@@ -34,16 +34,16 @@ namespace navigation
         t.positionY = det.distance_teta; // We move on the y axis
         if (launching_side == "port_side")
         {
-            t.positionY -= CAMERA_TO_TORPIDO_PEPPER_OFFSET_X / 2; // We move on the x axis
+            t.positionY -= CAMERA_TO_TORPIDO_PEPPER_OFFSET_X; // We move on the x axis
         }
         else if(launching_side == "starboard")
         {
-            // t.positionY -= CAMERA_TO_TORPIDO_SALT_OFFSET_X; // We move on the x axis
+            t.positionY -= CAMERA_TO_TORPIDO_SALT_OFFSET_X; // We move on the x axis
         }
         t.positionZ = -det.distance_beta; // We move on the z axis
         if (launching_side == "port_side" || launching_side == "starboard")
         {
-            t.positionZ += CAMERA_TO_TORPEDO_OFFSET_Y / 4;
+            t.positionZ += CAMERA_TO_TORPEDO_OFFSET_Y;
         }
         t.orientationX = 0.0;       // We don't rotate on the x axis
         t.orientationY = 0.0;       // We don't rotate on the y axis
