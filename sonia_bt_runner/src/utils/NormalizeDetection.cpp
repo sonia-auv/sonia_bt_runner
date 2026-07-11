@@ -5,9 +5,9 @@
 #include "sonia_bt_runner/utils/NormalizeDetection.hpp"
 
 namespace utils {
-#define AUV8_WATER_REFRACTION 1.17
+#define AUV8_WATER_REFRACTION 1.33
 // TODO: Check water refraction for LITE1
-#define LITE1_WATER_REFRACTION 1.17
+#define LITE1_WATER_REFRACTION 1.33
 
 #define SUB_AUV8 0
 #define SUB_LITE1 1
