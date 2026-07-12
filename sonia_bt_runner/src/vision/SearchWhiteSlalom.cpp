@@ -1,5 +1,6 @@
 #include "sonia_bt_runner/vision/SearchWhiteSlalom.hpp"
 #include "sonia_bt_runner/utils/NormalizeDetection.hpp"
+#include "sonia_bt_runner/utils/CONSTANT.hpp"
 
 using std::placeholders::_1;
 
@@ -106,7 +107,7 @@ void SearchWhiteSlalom::detection_callback(const sonia_common_ros2::msg::Detecti
         bool is_left_of_red = (obj.angle_alpha > red_angle);
         if (want_left != is_left_of_red) continue;
 
-	utils::normalize_detection(obj);
+	utils::normalize_detection(obj, utils::get_camera_to_middle());
         _valid_detections.push_back(obj);
         RCLCPP_INFO(_ros_node->get_logger(), "SearchWhiteSlalom: valid detection #%zu — angle_teta=%.2f conf=%.2f dist=%.2f",
                     _valid_detections.size(), obj.angle_teta, obj.confidence, obj.distance);

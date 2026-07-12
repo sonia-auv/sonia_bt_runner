@@ -2,6 +2,7 @@
 #include "sonia_bt_runner/vision/ObjectVerification.hpp"
 #include "sonia_bt_runner/vision/utils/BoxPlotToDetection.hpp"
 #include "sonia_bt_runner/utils/NormalizeDetection.hpp"
+#include "sonia_bt_runner/utils/CONSTANT.hpp"
 
 #include <optional>
 
@@ -160,7 +161,7 @@ namespace vision{
                     }
                 }
 
-		utils::normalize_detection(msg_obj);
+		utils::normalize_detection(msg_obj, utils::get_camera_to_middle());
 
                 if(msg_obj.confidence >= confidence() && msg_obj.distance <= max_depth())
                 {

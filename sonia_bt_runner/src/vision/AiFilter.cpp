@@ -2,6 +2,8 @@
 #include "sonia_bt_runner/vision/ObjectVerification.hpp"
 #include "sonia_bt_runner/vision/utils/BoxPlotToDetection.hpp"
 #include "sonia_bt_runner/utils/NormalizeDetection.hpp"
+#include "sonia_bt_runner/utils/CONSTANT.hpp"
+#include "sonia_bt_runner/utils/AUV.hpp"
 #include <cmath>
 #include <cassert>
 
@@ -87,7 +89,7 @@ namespace vision{
                 {
                     //The detected object respect the confidence and the depth. We can put it in the filter array
                     RCLCPP_INFO(get_logger(), "Confidence and depth OK, a new object has been detected");
-		    utils::normalize_detection(msg_obj);
+		    utils::normalize_detection(msg_obj, utils::get_camera_to_middle());
                     _detection_array.push_back(msg_obj);
                 }
             }

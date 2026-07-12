@@ -10,3 +10,10 @@ const float CAMERA_TO_TORPEDO_OFFSET_Y = 0.17;
 
 enum class Side {left, right};
 enum class Path {ServeyRepair, SearchRescue};
+
+const float AUV8_CAMERA_TO_MIDDLE = 0.4;
+const float LITE1_CAMERA_TO_MIDDLE = 0.2;
+
+namespace utils {
+float get_camera_to_middle();
+}
