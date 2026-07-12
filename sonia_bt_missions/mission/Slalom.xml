@@ -108,8 +108,8 @@
         <SubTree ID="RotateToAbsoluteAngle"
                  Angle="{ClosestObjectAngle}"/>
         <InitializeTrajectory trajectory="{Trajectory}"/>
-        <MoveToObject Trajectory="{Trajectory}"
-                      Offset="-1.5"
+        <MoveToObject Offset="-1.5"
+                      Trajectory="{Trajectory}"
                       Detection="{ClosestObjectDetection}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{Trajectory}"
@@ -121,7 +121,7 @@
           <SubTree ID="MoveSinglePose"
                    frame="1.0"
                    positionX="0.0"
-                   positionY="0.5"
+                   positionY="1.0"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
@@ -133,13 +133,13 @@
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
-                   orientationZ="-18"/>
+                   orientationZ="-25"/>
         </Sequence>
         <Sequence>
           <SubTree ID="MoveSinglePose"
                    frame="1.0"
                    positionX="0.0"
-                   positionY="-0.5"
+                   positionY="-1.0"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
@@ -151,7 +151,7 @@
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
-                   orientationZ="18"/>
+                   orientationZ="25"/>
         </Sequence>
       </IfThenElse>
     </Sequence>
@@ -278,58 +278,62 @@
   <BehaviorTree ID="SlalomSemiFinal">
     <Sequence>
       <SubTree ID="InitialSubmerge"
-               Depth="0.5"/>
-      <AiActivation Bottom="false"
-                    Model="0"
+               Depth="0.8"/>
+      <AiActivation Model="0"
+                    Bottom="false"
                     Front="true"
                     _description="Activate the AI.&#10;&#10;I have no idea which model to choose to be defined."/>
-      <SubTree ID="SearchClosestRedSlalom"/>
-      <SearchClosestSlalom Object_class="RED_SLALOM"
-                           Side="&quot;&quot;"
-                           Actual_angle="-1"
-                           Closest_object_angle="{_a}"
-                           Closest_object="{RedSlalomDetection}"
-                           Max_frame_before_failing="0"
-                           Min_detections_before_success="5"
-                           Max_depth="25.000000"
-                           Confidence="0.600000"
-                           Max_time_before_failing_sec="5.00000"
-                           Camera="1"/>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
-      <FaceTheObject Trajectory="{Trajectory}"
-                     Detection="{RedSlalomDetection}"/>
-      <SubTree ID="SendTrajectoryOnly"
-               Trajectory="{Trajectory}"
-               TimeBeforeFailing="5"/>
-      <SubTree ID="SearchClosestWhiteSlalom"
-               Side="{Side}"
-               RedDetection="{RedSlalomDetection}"
-               WhiteDetection="{WhiteSlalomDetection}"
-               WhiteDetectionAngle="{DetectionAngle}"
-               OffsetAngle="{OffsetAngle}"/>
-      <InitializeTrajectory trajectory="{Trajectory}"/>
-      <ComputeTrajectoryBetweenDetections Trajectory="{Trajectory}"
-                                          OffsetAngle="{OffsetAngle}"
-                                          Side="{Side}"
-                                          Angle="{DetectionAngle}"
-                                          DetectionB="{RedSlalomDetection}"
-                                          PositionX="5.000000"
-                                          DetectionA="{WhiteSlalomDetection}"/>
-      <SubTree ID="SendTrajectoryOnly"
-               Trajectory="{Trajectory}"
-               TimeBeforeFailing="15"/>
+      <Repeat num_cycles="3">
+        <Sequence>
+          <SubTree ID="SearchClosestRedSlalom"/>
+          <SearchClosestSlalom Object_class="RED_SLALOM"
+                               Side="&quot;&quot;"
+                               Actual_angle="-1"
+                               Closest_object_angle="{_a}"
+                               Closest_object="{RedSlalomDetection}"
+                               Max_frame_before_failing="0"
+                               Min_detections_before_success="5"
+                               Max_depth="25.000000"
+                               Confidence="0.600000"
+                               Max_time_before_failing_sec="5.00000"
+                               Camera="1"/>
+          <InitializeTrajectory trajectory="{Trajectory}"/>
+          <FaceTheObject Trajectory="{Trajectory}"
+                         Detection="{RedSlalomDetection}"/>
+          <SubTree ID="SendTrajectoryOnly"
+                   Trajectory="{Trajectory}"
+                   TimeBeforeFailing="5"/>
+          <SubTree ID="SearchClosestWhiteSlalom"
+                   Side="{Side}"
+                   RedDetection="{RedSlalomDetection}"
+                   WhiteDetection="{WhiteSlalomDetection}"
+                   WhiteDetectionAngle="{DetectionAngle}"
+                   OffsetAngle="{OffsetAngle}"/>
+          <InitializeTrajectory trajectory="{Trajectory}"/>
+          <ComputeTrajectoryBetweenDetections Trajectory="{Trajectory}"
+                                              OffsetAngle="{OffsetAngle}"
+                                              Side="{Side}"
+                                              Angle="{DetectionAngle}"
+                                              DetectionB="{RedSlalomDetection}"
+                                              PositionX="1.500000"
+                                              DetectionA="{WhiteSlalomDetection}"/>
+          <SubTree ID="SendTrajectoryOnly"
+                   Trajectory="{Trajectory}"
+                   TimeBeforeFailing="15"/>
+        </Sequence>
+      </Repeat>
     </Sequence>
   </BehaviorTree>
 
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
     <Action ID="AiActivation">
-      <input_port name="Bottom"
-                  default="false"
-                  type="bool">true: ON, talse: OFF</input_port>
       <input_port name="Model"
                   default="0"
                   type="int">model choice, default = 0</input_port>
+      <input_port name="Bottom"
+                  default="false"
+                  type="bool">true: ON, talse: OFF</input_port>
       <input_port name="Front"
                   default="false"
                   type="bool">true: ON, talse: OFF</input_port>
@@ -388,10 +392,10 @@
                   default="0.0">rotation in Z to give to the sub</input_port>
     </SubTree>
     <Action ID="MoveToObject">
-      <inout_port name="Trajectory"
-                  type="Trajectory"/>
       <input_port name="Offset"
                   type="float"/>
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
