@@ -104,11 +104,12 @@
         </ForceSuccess>
       </Sequence>
       <Sequence>
+        <HasDetection Detected_object="{ClosestObjectDetection}"/>
         <SubTree ID="RotateToAbsoluteAngle"
                  Angle="{ClosestObjectAngle}"/>
         <InitializeTrajectory trajectory="{Trajectory}"/>
-        <MoveToObject Offset="-1.5"
-                      Trajectory="{Trajectory}"
+        <MoveToObject Trajectory="{Trajectory}"
+                      Offset="-1.5"
                       Detection="{ClosestObjectDetection}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{Trajectory}"
@@ -265,6 +266,7 @@
             <Script code="OffsetAngle := 50"/>
           </Sequence>
         </IfThenElse>
+        <HasDetection Detected_object="{WhiteDetection}"/>
       </Sequence>
     </Sequence>
   </BehaviorTree>
@@ -277,8 +279,8 @@
     <Sequence>
       <SubTree ID="InitialSubmerge"
                Depth="0.5"/>
-      <AiActivation Model="0"
-                    Bottom="false"
+      <AiActivation Bottom="false"
+                    Model="0"
                     Front="true"
                     _description="Activate the AI.&#10;&#10;I have no idea which model to choose to be defined."/>
       <SubTree ID="SearchClosestRedSlalom"/>
@@ -322,12 +324,12 @@
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
     <Action ID="AiActivation">
-      <input_port name="Model"
-                  default="0"
-                  type="int">model choice, default = 0</input_port>
       <input_port name="Bottom"
                   default="false"
                   type="bool">true: ON, talse: OFF</input_port>
+      <input_port name="Model"
+                  default="0"
+                  type="int">model choice, default = 0</input_port>
       <input_port name="Front"
                   default="false"
                   type="bool">true: ON, talse: OFF</input_port>
@@ -353,6 +355,10 @@
       <inout_port name="Trajectory"
                   type="Trajectory"/>
       <input_port name="Detection"
+                  type="AiDetection"/>
+    </Action>
+    <Action ID="HasDetection">
+      <input_port name="Detected_object"
                   type="AiDetection"/>
     </Action>
     <SubTree ID="InitialSubmerge"
@@ -382,10 +388,10 @@
                   default="0.0">rotation in Z to give to the sub</input_port>
     </SubTree>
     <Action ID="MoveToObject">
-      <input_port name="Offset"
-                  type="float"/>
       <inout_port name="Trajectory"
                   type="Trajectory"/>
+      <input_port name="Offset"
+                  type="float"/>
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
