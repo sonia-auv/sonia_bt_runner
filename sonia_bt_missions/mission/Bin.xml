@@ -168,14 +168,14 @@
                       Bottom="false"
                       Front="true"/>
         <SubTree ID="SearchObjectByRotation"
-                 Object="bin"
+                 Object="BIN_BOX"
                  FoundAiDetection="{FrontAidetection}"
                  Max_time_before_failing_sec="0.0"
                  Max_frame_before_failing="300"
                  Min_detection_before_success="5"
                  Confidence="0.60000"
                  Max_depth="25"/>
-        <MoveToObject Offset="0"
+        <MoveToObject Offset="-1.5"
                       Trajectory="{Trajectory}"
                       Detection="{FrontAidetection}"/>
         <SubTree ID="SendTrajectoryOnly"
