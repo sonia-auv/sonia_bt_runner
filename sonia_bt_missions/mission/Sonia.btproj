@@ -149,6 +149,13 @@
         <SubTree ID="Octogon" editable="true">
             <input_port name="Path">The path that the sub choose</input_port>
         </SubTree>
+        <SubTree ID="QuickSearchClosestWhiteSlalom" editable="true">
+            <input_port name="Side"/>
+            <input_port name="RedDetection"/>
+            <output_port name="WhiteDetection"/>
+            <output_port name="WhiteDetectionAngle"/>
+            <output_port name="OffsetAngle"/>
+        </SubTree>
         <SubTree ID="ReturnHome" editable="true">
             <input_port name="point_retour">The register point after the gate</input_port>
         </SubTree>
