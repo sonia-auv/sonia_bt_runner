@@ -59,9 +59,8 @@ namespace utils{
 		    case BT::NodeStatus::FAILURE:
 			    return BT::NodeStatus::FAILURE;
 		    case BT::NodeStatus::RUNNING:
-			    if (_detection_array.size() < ) {
+			    if (_bin_array.size() < 4) {
 				    RCLCPP_INFO(get_logger(), "We don't have yet the number of detection we want");
-				    
 				    return BT::NodeStatus::RUNNING;
 			    }
 
