@@ -1,5 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
+  <BehaviorTree ID="Bin">
+    <Sequence _description="Initial Box approach">
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+      <AiActivation Model="0"
+                    Bottom="false"
+                    Front="true"/>
+      <SubTree ID="SearchObjectByRotation"
+               Object="BOX_BIN"
+               FoundAiDetection="{DetectedBox}"
+               Max_time_before_failing_sec="0.0"
+               Max_frame_before_failing="0"
+               Min_detection_before_success="5"
+               Confidence="0.60000"
+               Max_depth="25"/>
+      <InitializeTrajectory trajectory="{BoxApproachTrajectory}"/>
+      <MoveToObject Offset="-2.0"
+                    Trajectory="{BoxApproachTrajectory}"
+                    Detection="{DetectedBox}"/>
+      <SubTree ID="SendTrajectoryOnly"
+               Trajectory="{BoxApproachTrajectory}"
+               TimeBeforeFailing="5"/>
+      <Sequence _description="Pitch to be able to see the four boxes.">
+        <InitializeTrajectory trajectory="{BoxPitchTrajectory}"/>
+        <TrajectoryAppendPose trajectory="{BoxPitchTrajectory}"
+                              positionX="0.000000"
+                              positionY="0.000000"
+                              positionZ="0.000000"
+                              orientationX="0.000000"
+                              orientationY="-30.0"
+                              orientationZ="0.000000"
+                              precision="0"
+                              speed="0"
+                              frame="1"
+                              longRotation="false"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{BoxPitchTrajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <Sequence _description="Detect the four boxes.">
+        <SubTree ID="Nop"/>
+      </Sequence>
+      <Sequence _description="Back to the initial position (unpitch).">
+        <InitializeTrajectory trajectory="{BoxUnpitchTrajectory}"/>
+        <TrajectoryAppendPose trajectory="{BoxUnpitchTrajectory}"
+                              positionX="0.000000"
+                              positionY="0.000000"
+                              positionZ="0.000000"
+                              orientationX="0.000000"
+                              orientationY="30.0"
+                              orientationZ="0.000000"
+                              precision="0"
+                              speed="0"
+                              frame="1"
+                              longRotation="false"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{BoxUnpitchTrajectory}"
+                 TimeBeforeFailing="5"/>
+      </Sequence>
+      <Sequence _description="Save the origin point and drop all bins in boxes.">
+        <SavePoint Point="{BoxOriginPoint}"/>
+        <Script code="detection_offset := 0"/>
+        <Repeat num_cycles="4">
+          <Sequence _description="Drop all bins in the boxes.">
+            <Sequence _description="Advance above the first box.">
+              <InitializeTrajectory trajectory="{MoveAboveBox}"/>
+              <MoveAboveObject Trajectory="{MoveAboveBox}"
+                               Detection="{Det}"/>
+              <SubTree ID="SendTrajectoryOnly"
+                       Trajectory="{MoveAboveBox}"
+                       TimeBeforeFailing="5"/>
+            </Sequence>
+            <Sequence _description="Approach bin.">
+              <AiActivation Model="0"
+                            Bottom="true"
+                            Front="false"/>
+              <SubTree ID="Nop"
+                       _description="Approach bin and position onto the image and go down to maximum of 30cm."/>
+            </Sequence>
+            <Sequence _description="Back to the origin point.">
+              <InitializeTrajectory trajectory="{BoxOriginPointTrajectory}"/>
+              <MoveToPoint Trajectory="{BoxOriginPointTrajectory}"
+                           OffsetPositionZ="0.000000"
+                           OffsetPositionY="0.000000"
+                           OffsetPositionX="0.000000"
+                           Point="{BoxOriginPoint}"/>
+              <SubTree ID="SendTrajectoryOnly"
+                       Trajectory="{BoxOriginPointTrajectory}"
+                       TimeBeforeFailing="5"/>
+            </Sequence>
+            <Script code="detection_offset := detection_offset + 1"/>
+          </Sequence>
+        </Repeat>
+      </Sequence>
+    </Sequence>
+  </BehaviorTree>
+
   <BehaviorTree ID="BinOneBox">
     <Sequence name="Dropping in 1 bin">
       <Sequence name="Move above the bin">
@@ -205,6 +302,11 @@
                   default="1"
                   type="int">1: Front, 0: Bottom</input_port>
     </Action>
+    <SubTree ID="InitialSubmerge"
+             editable="true">
+      <input_port name="Depth"
+                  default="0.5"/>
+    </SubTree>
     <Action ID="InitializeTrajectory">
       <output_port name="trajectory"
                    type="Trajectory"/>
@@ -244,6 +346,25 @@
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
+    <Action ID="MoveToPoint">
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+      <input_port name="OffsetPositionZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="OffsetPositionY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="OffsetPositionX"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="Point"
+                  type="Point"/>
+    </Action>
+    <Action ID="SavePoint">
+      <output_port name="Point"
+                   type="Point"/>
+    </Action>
     <SubTree ID="SearchObjectByRotation"
              editable="true">
       <input_port name="Object">Object we are looking for</input_port>
@@ -265,6 +386,40 @@
       <input_port name="TimeBeforeFailing"
                   default="5">The time before the sub movement fail</input_port>
     </SubTree>
+    <Action ID="TrajectoryAppendPose">
+      <inout_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="positionX"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationX"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="precision"
+                  default="0"
+                  type="int"/>
+      <input_port name="speed"
+                  default="0"
+                  type="int"/>
+      <input_port name="frame"
+                  default="1"
+                  type="int"/>
+      <input_port name="longRotation"
+                  default="false"
+                  type="bool"/>
+    </Action>
   </TreeNodesModel>
 
 </root>
