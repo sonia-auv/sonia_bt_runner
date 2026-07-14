@@ -1,6 +1,9 @@
 #include "sonia_bt_runner/vision/BinAiFilter.hpp"
 #include "sonia_bt_runner/utils/NormalizeDetection.hpp"
 
+#include <algorithm>
+#include <tuple>
+
 namespace vision{
 
     BinAiFilter::BinAiFilter(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
@@ -21,37 +24,52 @@ namespace vision{
     void BinAiFilter::ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg)
     {
         AbstractAiFilter::ai_filter_callback(msg);
-        BIN_AI_FILTER_DETECTIONS_TYPE bin;
+        // BIN_AI_FILTER_DETECTIONS_TYPE bin;
+	std::vector<std::tuple<AiDetection, Point>> all_bins;
         for (auto msg_obj : msg.detected_object) {
             if (msg_obj.class_name == "BOX_BIN") {
                 utils::normalize_detection(msg_obj);
+		AiDetection detection;
+		detection.distance = msg_obj.distance;
+		detection.confidence = msg_obj.confidence;
+		detection.angle_teta = msg_obj.angle_teta;
+		detection.angle_alpha = msg_obj.angle_alpha;
+		detection.distance_teta = msg_obj.distance_teta;
+		detection.distance_beta = msg_obj.distance_beta;
                 Point point;
                 point.x = msg_obj.distance * std::cos(msg_obj.angle_alpha * DEG_TO_RAD);
                 point.y = msg_obj.distance * std::sin(-msg_obj.angle_alpha * DEG_TO_RAD);
-                bin.push_back(point);
+		point.z = 0;
+                all_bins.push_back(std::make_tuple(detection, point));
             }
         }
 
         // We verify if we have more bins that in the array or we have to much detection
-        if (bin.size() <= _bin_array.size() || bin.size() > 4) {
+        if (all_bins.size() <= _bin_array.size() || all_bins.size() > 4) {
             return;
         }
 
         // We sort the detection by y value
-        std::sort(bin.begin(), bin.end(), [](const Point& a, const Point& b) {
-            return a.y < b.y;
+        std::sort(all_bins.begin(), all_bins.end(), [](const auto& a, const auto& b) {
+	    return std::get<1>(a).y < std::get<1>(b).y;
         });
 
         // We compute the distance between the detection to verify if they are valid
-        for (size_t i{};i < bin.size() - 1;i++) {
-            double ddistance{(bin[i + 1].x - bin[i].x) * (bin[i + 1].x - bin[i].x) + (bin[i + 1].y - bin[i].y) * (bin[i + 1].y - bin[i].y)};
+        for (size_t i{};i < all_bins.size() - 1;i++) {
+	    const auto& current_bin_point = std::get<1>(all_bins[i]);
+	    const auto& next_bin_point = std::get<1>(all_bins[i + 1]);
+            double ddistance{(next_bin_point.x - current_bin_point.x) * (next_bin_point.x - current_bin_point.x) + (next_bin_point.y - current_bin_point.y) * (next_bin_point.y - current_bin_point.y)};
             float fdistance= static_cast<float>(ddistance);
+
             if (std::sqrt(fdistance) > DISTANCE_BETWEEN_BIN) {
-                return;
+		   return;
             }
         }
-        
-        _bin_array = bin;
+
+	_bin_array.reserve(all_bins.size());
+	std::transform(all_bins.begin(), all_bins.end(), _bin_array.begin(), [](const auto &a) {
+		return std::get<0>(a);
+	});
     }
 
     BT::NodeStatus BinAiFilter::get_detection_status()

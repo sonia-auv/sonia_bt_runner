@@ -1,5 +1,6 @@
 #include "sonia_bt_runner/vision/AbstractAiFilter.hpp"
 #include "sonia_bt_runner/utils/Point.hpp"
+#include "sonia_bt_runner/utils/AiDetection.hpp"
 
 #define DISTANCE_BETWEEN_BIN 3
 
@@ -8,7 +9,7 @@
 
 #define BIN_AI_FILTER_DETECTIONS "Detections"
 #define BIN_AI_FILTER_DETECTIONS_PARAMS BIN_AI_FILTER_DETECTIONS, "The detected bin"
-#define BIN_AI_FILTER_DETECTIONS_TYPE std::vector<Point>
+#define BIN_AI_FILTER_DETECTIONS_TYPE std::vector<AiDetection>
 
 namespace vision {
 
