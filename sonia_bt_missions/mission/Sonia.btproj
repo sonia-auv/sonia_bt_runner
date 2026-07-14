@@ -44,9 +44,6 @@
         <SubTree ID="AutomaticInitialSubmerge" editable="true">
             <input_port name="Depth" default="1">Depth that the sub will submerge</input_port>
         </SubTree>
-        <SubTree ID="Bin" editable="true">
-            <input_port name="ObjectToAim">The object in the bin that the sub needs to aim</input_port>
-        </SubTree>
         <SubTree ID="BinOneBox" editable="true">
             <input_port name="ObjectToAim"/>
         </SubTree>
