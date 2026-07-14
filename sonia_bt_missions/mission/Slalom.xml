@@ -13,7 +13,7 @@
                                Min_detections_before_success="5"
                                Max_depth="25.000000"
                                Confidence="0.600000"
-                               Max_time_before_failing_sec="2.5"
+                               Max_time_before_failing_sec="5.0"
                                Camera="1"/>
         </ForceSuccess>
         <SubTree ID="MoveSinglePose"
@@ -34,7 +34,7 @@
                                Min_detections_before_success="5"
                                Max_depth="25.000000"
                                Confidence="0.600000"
-                               Max_time_before_failing_sec="2.5"
+                               Max_time_before_failing_sec="5.0"
                                Camera="1"/>
         </ForceSuccess>
         <SubTree ID="MoveSinglePose"
@@ -55,7 +55,7 @@
                                Min_detections_before_success="5"
                                Max_depth="25.000000"
                                Confidence="0.600000"
-                               Max_time_before_failing_sec="2.5"
+                               Max_time_before_failing_sec="5.0"
                                Camera="1"/>
         </ForceSuccess>
       </Sequence>
@@ -72,11 +72,11 @@
                    orientationX="0.0"
                    orientationY="0"
                    orientationZ="{rotate}"/>
+          <AlwaysSuccess/>
         </IfThenElse>
         <InitializeTrajectory trajectory="{Trajectory}"/>
-        <MoveToObject Offset="-1.5"
-                      Trajectory="{Trajectory}"
-                      Detection="{ClosestObjectDetection}"/>
+        <FaceTheObject Trajectory="{Trajectory}"
+                       Detection="{ClosestObjectDetection}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{Trajectory}"
                  TimeBeforeFailing="10"/>
@@ -446,7 +446,7 @@
                              Min_detections_before_success="5"
                              Max_depth="25.000000"
                              Confidence="0.600000"
-                             Max_time_before_failing_sec="2.5"
+                             Max_time_before_failing_sec="5.0"
                              Camera="1"/>
         <InitializeTrajectory trajectory="{Trajectory}"/>
         <FaceTheObject Trajectory="{Trajectory}"
@@ -484,7 +484,7 @@
                                Min_detections_before_success="5"
                                Max_depth="25.000000"
                                Confidence="0.600000"
-                               Max_time_before_failing_sec="2.5"
+                               Max_time_before_failing_sec="5.0"
                                Camera="1"/>
           <InitializeTrajectory trajectory="{Trajectory}"/>
           <FaceTheObject Trajectory="{Trajectory}"
@@ -504,7 +504,7 @@
                                               Side="{Side}"
                                               Angle="{DetectionAngle}"
                                               DetectionB="{RedSlalomDetection}"
-                                              PositionX="1.500000"
+                                              PositionX="0.2"
                                               DetectionA="{WhiteSlalomDetection}"/>
           <SubTree ID="SendTrajectoryOnly"
                    Trajectory="{Trajectory}"
