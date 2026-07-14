@@ -8,7 +8,7 @@ namespace navigation {
         : BT::StatefulActionNode(name, config), _ros_node(node), _pose_msg(), _msg_received{false}
     {
         rclcpp::QoS qos(10);
-        _pose_sub = _ros_node->create_subscription<sonia_common_ros2::msg::Pose>("/proc_control/current_target", qos, std::bind(&SavePoint::pose_call_back,this, _1));
+        _pose_sub = _ros_node->create_subscription<geometry_msgs::msg::Pose>("/proc_control/current_target", qos, std::bind(&SavePoint::pose_call_back,this, _1));
     }
 
     BT::NodeStatus SavePoint::onStart()
@@ -42,7 +42,7 @@ namespace navigation {
 
     }
 
-    void SavePoint::pose_call_back(const sonia_common_ros2::msg::Pose &msg)
+    void SavePoint::pose_call_back(const geometry_msgs::msg::Pose &msg)
     {
         _pose_msg = msg;
         _msg_received = true;

@@ -3,7 +3,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/Point.hpp"
-#include "sonia_common_ros2/msg/pose.hpp"
+
+#include <geometry_msgs/msg/pose.hpp>
 
 #define SAVE_POINT_POINT "Point"
 #define SAVE_POINT_POINT_TYPE Point
@@ -27,12 +28,12 @@ namespace navigation {
             BT::NodeStatus onStart() override;
             BT::NodeStatus onRunning() override;
             void onHalted() override;
-            void pose_call_back(const sonia_common_ros2::msg::Pose &msg);
+            void pose_call_back(const geometry_msgs::msg::Pose &msg);
 
         private:
             std::shared_ptr<rclcpp::Node> _ros_node;
-            rclcpp::Subscription<sonia_common_ros2::msg::Pose>::SharedPtr _pose_sub;
-            sonia_common_ros2::msg::Pose _pose_msg;
+            rclcpp::Subscription<geometry_msgs::msg::Pose>::SharedPtr _pose_sub;
+            geometry_msgs::msg::Pose _pose_msg;
             std::chrono::_V2::system_clock::time_point _launch_time;
             float _time_diff;
             bool _msg_received;

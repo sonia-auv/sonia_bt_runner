@@ -16,6 +16,7 @@ find_package(sonia_common_ros2 REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(yaml-cpp REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -70,9 +71,9 @@ install(TARGETS
     ${TARGET_NAME_GEN}
     DESTINATION lib/${PROJECT_NAME})
 
-ament_target_dependencies(${TARGET_NAME_MAIN} rclcpp rclcpp_action sonia_common_ros2 tinyxml2 std_msgs std_srvs behaviortree_cpp)
+ament_target_dependencies(${TARGET_NAME_MAIN} rclcpp rclcpp_action sonia_common_ros2 tinyxml2 std_msgs std_srvs geometry_msgs behaviortree_cpp)
 target_link_libraries(${TARGET_NAME_MAIN} yaml-cpp)
-ament_target_dependencies(${TARGET_NAME_GEN} rclcpp rclcpp_action sonia_common_ros2 tinyxml2 std_msgs std_srvs behaviortree_cpp)
+ament_target_dependencies(${TARGET_NAME_GEN} rclcpp rclcpp_action sonia_common_ros2 tinyxml2 std_msgs std_srvs geometry_msgs behaviortree_cpp)
 target_link_libraries(${TARGET_NAME_GEN} yaml-cpp)
 
 ament_package()
