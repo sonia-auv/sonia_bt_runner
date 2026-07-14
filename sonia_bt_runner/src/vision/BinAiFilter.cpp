@@ -1,7 +1,7 @@
 #include "sonia_bt_runner/vision/BinAiFilter.hpp"
 #include "sonia_bt_runner/utils/NormalizeDetection.hpp"
 
-namespace utils{
+namespace vision{
 
     BinAiFilter::BinAiFilter(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
     : AbstractAiFilter(name, config, node)
@@ -11,7 +11,7 @@ namespace utils{
     {
         RCLCPP_INFO(get_logger(), "onRunning success!!!");
         // We need to make some selection in the image array
-        RCLCPP_INFO(get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _detection_array.size());
+        RCLCPP_INFO(get_logger(), "Getting the information because enough detection have been made : %ld detection(s)", _bin_array.size());
         
         setOutput(BIN_AI_FILTER_DETECTIONS, _bin_array);
 
@@ -23,12 +23,12 @@ namespace utils{
         AbstractAiFilter::ai_filter_callback(msg);
         BIN_AI_FILTER_DETECTIONS_TYPE bin;
         for (auto msg_obj : msg.detected_object) {
-            if (msg_obj.object_class == "BOX_BIN") {
+            if (msg_obj.class_name == "BOX_BIN") {
                 utils::normalize_detection(msg_obj);
                 Point point;
                 point.x = msg_obj.distance * std::cos(msg_obj.angle_alpha * DEG_TO_RAD);
                 point.y = msg_obj.distance * std::sin(-msg_obj.angle_alpha * DEG_TO_RAD);
-                detection.push_back(point);
+                bin.push_back(point);
             }
         }
 
@@ -44,8 +44,9 @@ namespace utils{
 
         // We compute the distance between the detection to verify if they are valid
         for (size_t i{};i < bin.size() - 1;i++) {
-            float distance{(bin[i + 1].x - bin[i].x) * (bin[i + 1].x - bin[i].x) + (bin[i + 1].y - bin[i].y) * (bin[i + 1].y - bin[i].y)};
-            if (std::sqrt(distance) > DISTANCE_BETWEEN_BIN) {
+            double ddistance{(bin[i + 1].x - bin[i].x) * (bin[i + 1].x - bin[i].x) + (bin[i + 1].y - bin[i].y) * (bin[i + 1].y - bin[i].y)};
+            float fdistance= static_cast<float>(ddistance);
+            if (std::sqrt(fdistance) > DISTANCE_BETWEEN_BIN) {
                 return;
             }
         }
@@ -53,7 +54,7 @@ namespace utils{
         _bin_array = bin;
     }
 
-    BT::NodeStatus get_detection_status()
+    BT::NodeStatus BinAiFilter::get_detection_status()
     {
         switch (AbstractAiFilter::get_detection_status()) {
 		    case BT::NodeStatus::FAILURE:

@@ -1,4 +1,4 @@
-#include "sonia_bt_mission/vision/AbstractAiFilter.hpp"
+#include "sonia_bt_runner/vision/AbstractAiFilter.hpp"
 #include "sonia_bt_runner/utils/Point.hpp"
 
 #define DISTANCE_BETWEEN_BIN 3
@@ -33,6 +33,6 @@ namespace vision {
 
         private:
             BIN_AI_FILTER_DETECTIONS_TYPE _bin_array;
-    }
+    };
 
 }
