@@ -490,7 +490,7 @@
                   Object_class="FIRETRUCK"
                   Camera="1"/>
         <TorpedoAiming Trajectory="{Trajectory}"
-                       TargetOffset="1.2"
+                       TargetOffset="1.5"
                        LaunchingSide="sub"
                        Detection="{AiDetection}"/>
         <SubTree ID="SendTrajectoryOnly"
