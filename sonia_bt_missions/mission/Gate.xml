@@ -2,6 +2,8 @@
 <root BTCPP_format="4">
   <BehaviorTree ID="CoinFlip">
     <Sequence>
+      <SubTree ID="InitialSubmerge"
+               Depth="0.3"/>
       <SubTree ID="RotateToAbsoluteAngle"
                Angle="0"/>
       <SubTree ID="MoveSinglePose"

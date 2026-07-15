@@ -2,8 +2,6 @@
 <root BTCPP_format="4">
   <BehaviorTree ID="Run26Strategy1SearchRescue">
     <Sequence name="Strategy 1 : Easy Strategy that every sub can do for Survey&amp;Repair">
-      <SubTree ID="InitialSubmerge"
-               Depth="1.0"/>
       <SubTree ID="CoinFlip"
                _autoremap="false"/>
       <ForceSuccess>
@@ -26,8 +24,6 @@
 
   <BehaviorTree ID="Run26Strategy1ServeyRepair">
     <Sequence name="Strategy 1 : Easy Strategy that every sub can do for Survey&amp;Repair">
-      <SubTree ID="InitialSubmerge"
-               Depth="1.0"/>
       <SubTree ID="CoinFlip"
                _autoremap="false"/>
       <ForceSuccess>
