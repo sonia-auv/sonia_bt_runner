@@ -120,7 +120,7 @@
                               frame="1"
                               longRotation="false"/>
         <TrajectoryAppendPose trajectory="{Trajectory}"
-                              positionX="3.0"
+                              positionX="2.0"
                               positionY="0.000000"
                               positionZ="0.000000"
                               orientationX="0.000000"
