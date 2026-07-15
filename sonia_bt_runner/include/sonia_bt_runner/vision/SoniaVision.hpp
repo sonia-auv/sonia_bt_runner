@@ -8,3 +8,4 @@
 #include "sonia_bt_runner/vision/SearchClosestSlalom.hpp"
 #include "sonia_bt_runner/vision/HasDetection.hpp"
 #include "sonia_bt_runner/vision/BinAiFilter.hpp"
+#include "sonia_bt_runner/vision/OctogoneAiFilter.hpp"

@@ -58,6 +58,7 @@ static void registerVisionNodes(BT::BehaviorTreeFactory &factory, std::shared_pt
     factory.registerBuilder<vision::SearchClosestSlalom>("SearchClosestSlalom", configBuilder<vision::SearchClosestSlalom>(node));
     factory.registerBuilder<vision::HasDetection>("HasDetection", configBuilder<vision::HasDetection>(node));
     factory.registerBuilder<vision::BinAiFilter>("BinAiFilter", configBuilder<vision::BinAiFilter>(node));
+    factory.registerBuilder<vision::OctogoneAiFilter>("OctogoneAiFilter", configBuilder<vision::OctogoneAiFilter>(node));
 }
 
 [[maybe_unused]] static void registerNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
