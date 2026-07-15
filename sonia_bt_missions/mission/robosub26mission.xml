@@ -15,6 +15,39 @@
         <SubTree ID="TrickshotLegacy"/>
       </ForceSuccess>
       <ForceSuccess>
+        <IfThenElse>
+          <SubTree ID="SlalomSemiFinal"
+                   Side="{side}"/>
+          <AlwaysSuccess/>
+          <Sequence>
+            <SubTree ID="InitialSubmerge"
+                     Depth="0.3"/>
+            <SubTree ID="RotateToAbsoluteAngle"
+                     Angle="0"/>
+            <SubTree ID="MoveSinglePose"
+                     frame="1.0"
+                     positionX="3.0"
+                     positionY="0.0"
+                     positionZ="0.0"
+                     orientationX="0.0"
+                     orientationY="0.0"
+                     orientationZ="0.0"/>
+            <SubTree ID="MoveSinglePose"
+                     frame="1.0"
+                     positionX="2.0"
+                     positionY="0.0"
+                     positionZ="0.0"
+                     orientationX="0.0"
+                     orientationY="0.0"
+                     orientationZ="0.0"/>
+          </Sequence>
+        </IfThenElse>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="Octogon"
+                 Path="search-rescue"/>
+      </ForceSuccess>
+      <ForceSuccess>
         <SubTree ID="ReturnHome"
                  point_retour="{point_retour}"/>
       </ForceSuccess>
@@ -35,6 +68,39 @@
       <SavePoint Point="{point_retour}"/>
       <ForceSuccess>
         <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <IfThenElse>
+          <SubTree ID="SlalomSemiFinal"
+                   Side="{side}"/>
+          <AlwaysSuccess/>
+          <Sequence>
+            <SubTree ID="InitialSubmerge"
+                     Depth="0.3"/>
+            <SubTree ID="RotateToAbsoluteAngle"
+                     Angle="0"/>
+            <SubTree ID="MoveSinglePose"
+                     frame="1.0"
+                     positionX="3.0"
+                     positionY="0.0"
+                     positionZ="0.0"
+                     orientationX="0.0"
+                     orientationY="0.0"
+                     orientationZ="0.0"/>
+            <SubTree ID="MoveSinglePose"
+                     frame="1.0"
+                     positionX="2.0"
+                     positionY="0.0"
+                     positionZ="0.0"
+                     orientationX="0.0"
+                     orientationY="0.0"
+                     orientationZ="0.0"/>
+          </Sequence>
+        </IfThenElse>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="Octogon"
+                 Path="servey-repair"/>
       </ForceSuccess>
       <ForceSuccess>
         <SubTree ID="ReturnHome"
@@ -290,9 +356,34 @@
       <input_port name="Depth"
                   default="0.5"/>
     </SubTree>
+    <SubTree ID="MoveSinglePose"
+             editable="true">
+      <input_port name="frame"
+                  default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
+      <input_port name="positionX"
+                  default="0.0">x value to go</input_port>
+      <input_port name="positionY"
+                  default="0.0">y value to go</input_port>
+      <input_port name="positionZ"
+                  default="0.0">z value to go</input_port>
+      <input_port name="orientationX"
+                  default="0.0">z orientation to go</input_port>
+      <input_port name="orientationY"
+                  default="0.0">y orientation to go</input_port>
+      <input_port name="orientationZ"
+                  default="0.0">rotation in Z to give to the sub</input_port>
+    </SubTree>
+    <SubTree ID="Octogon"
+             editable="true">
+      <input_port name="Path">The path that the sub choose</input_port>
+    </SubTree>
     <SubTree ID="ReturnHome"
              editable="true">
       <input_port name="point_retour">The register point after the gate</input_port>
+    </SubTree>
+    <SubTree ID="RotateToAbsoluteAngle"
+             editable="true">
+      <input_port name="Angle">Angle to put to the sub</input_port>
     </SubTree>
     <Action ID="SavePoint">
       <output_port name="Point"
