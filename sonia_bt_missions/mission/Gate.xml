@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
   <BehaviorTree ID="CoinFlip">
-    <SubTree ID="RotateToAbsoluteAngle"
-             Angle="0"/>
+    <Sequence>
+      <SubTree ID="RotateToAbsoluteAngle"
+               Angle="0"/>
+      <SubTree ID="MoveSinglePose"
+               frame="1.0"
+               positionX="1.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"/>
+    </Sequence>
   </BehaviorTree>
 
   <BehaviorTree ID="CommunicationEmitter">
@@ -337,6 +347,23 @@
       <output_port name="trajectory"
                    type="Trajectory"/>
     </Action>
+    <SubTree ID="MoveSinglePose"
+             editable="true">
+      <input_port name="frame"
+                  default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
+      <input_port name="positionX"
+                  default="0.0">x value to go</input_port>
+      <input_port name="positionY"
+                  default="0.0">y value to go</input_port>
+      <input_port name="positionZ"
+                  default="0.0">z value to go</input_port>
+      <input_port name="orientationX"
+                  default="0.0">z orientation to go</input_port>
+      <input_port name="orientationY"
+                  default="0.0">y orientation to go</input_port>
+      <input_port name="orientationZ"
+                  default="0.0">rotation in Z to give to the sub</input_port>
+    </SubTree>
     <Action ID="MoveToObject">
       <input_port name="Offset"
                   type="float"/>
@@ -377,38 +404,38 @@
                   default="5">The time before the sub movement fail</input_port>
     </SubTree>
     <Action ID="TrajectoryAppendPose">
-      <input_port name="precision"
-                  default="0"
-                  type="int"/>
-      <input_port name="speed"
-                  default="0"
-                  type="int"/>
-      <input_port name="orientationZ"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="orientationY"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="orientationX"
-                  default="0.000000"
-                  type="float"/>
       <inout_port name="trajectory"
                   type="Trajectory"/>
-      <input_port name="longRotation"
-                  default="false"
-                  type="bool"/>
       <input_port name="positionX"
                   default="0.000000"
                   type="float"/>
       <input_port name="positionY"
                   default="0.000000"
                   type="float"/>
-      <input_port name="frame"
-                  default="1"
-                  type="int"/>
       <input_port name="positionZ"
                   default="0.000000"
                   type="float"/>
+      <input_port name="orientationX"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="precision"
+                  default="0"
+                  type="int"/>
+      <input_port name="speed"
+                  default="0"
+                  type="int"/>
+      <input_port name="frame"
+                  default="1"
+                  type="int"/>
+      <input_port name="longRotation"
+                  default="false"
+                  type="bool"/>
     </Action>
   </TreeNodesModel>
 
