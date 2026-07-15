@@ -44,6 +44,15 @@
         <SubTree ID="AutomaticInitialSubmerge" editable="true">
             <input_port name="Depth" default="1">Depth that the sub will submerge</input_port>
         </SubTree>
+        <Action ID="BinAiFilter">
+            <input_port name="Max_frame_before_failing" default="0" type="int">Maximum allowed frames before failing the object research</input_port>
+            <input_port name="Min_detections_before_success" default="2" type="unsigned long">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+            <input_port name="Max_depth" default="25.000000" type="float">Maximum allowed depth</input_port>
+            <output_port name="Detections" type="std::vector&lt;AiDetection, std::allocator&lt;AiDetection&gt; &gt;">The detected bin</output_port>
+            <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
+            <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Maximum allowed frames before failing the object research</input_port>
+            <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
+        </Action>
         <SubTree ID="BinOneBox" editable="true">
             <input_port name="ObjectToAim"/>
         </SubTree>
@@ -229,6 +238,11 @@
         <SubTree ID="SlalomSimple" editable="true">
             <input_port name="Side">The side for passing the slalom</input_port>
         </SubTree>
+        <Action ID="SplitAiDetection">
+            <output_port name="splittedDetections" type="Point"/>
+            <input_port name="detection" type="std::vector&lt;Point, std::allocator&lt;Point&gt; &gt;"/>
+            <inout_port name="offset" type="unsigned long"/>
+        </Action>
         <Action ID="SplitTrajectory">
             <output_port name="splittedTrajectory" type="Trajectory"/>
             <input_port name="trajectory" type="Trajectory"/>
