@@ -4,8 +4,8 @@
     <Sequence _description="Initial Box approach">
       <SubTree ID="InitialSubmerge"
                Depth="0.5"/>
-      <AiActivation Model="0"
-                    Bottom="false"
+      <AiActivation Bottom="false"
+                    Model="0"
                     Front="true"/>
       <SubTree ID="SearchObjectByRotation"
                Object="BOX_BIN"
@@ -16,45 +16,51 @@
                Confidence="0.60000"
                Max_depth="25"/>
       <InitializeTrajectory trajectory="{BoxApproachTrajectory}"/>
-      <MoveToObject Offset="-2.0"
-                    Trajectory="{BoxApproachTrajectory}"
+      <MoveToObject Trajectory="{BoxApproachTrajectory}"
+                    Offset="-2.0"
                     Detection="{DetectedBox}"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{BoxApproachTrajectory}"
                TimeBeforeFailing="5"/>
       <Sequence _description="Pitch to be able to see the four boxes.">
         <InitializeTrajectory trajectory="{BoxPitchTrajectory}"/>
-        <TrajectoryAppendPose trajectory="{BoxPitchTrajectory}"
+        <TrajectoryAppendPose precision="0"
+                              speed="0"
+                              orientationZ="0.000000"
+                              orientationY="-30.0"
+                              orientationX="0.000000"
+                              trajectory="{BoxPitchTrajectory}"
+                              longRotation="false"
                               positionX="0.000000"
                               positionY="0.000000"
-                              positionZ="0.000000"
-                              orientationX="0.000000"
-                              orientationY="-30.0"
-                              orientationZ="0.000000"
-                              precision="0"
-                              speed="0"
                               frame="1"
-                              longRotation="false"/>
+                              positionZ="0.000000"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{BoxPitchTrajectory}"
                  TimeBeforeFailing="5"/>
       </Sequence>
       <Sequence _description="Detect the four boxes.">
-        <SubTree ID="Nop"/>
+        <BinAiFilter Max_frame_before_failing="0"
+                     Min_detections_before_success="0"
+                     Max_depth="25.000000"
+                     Detections="{BinDetections}"
+                     Confidence="0.600000"
+                     Max_time_before_failing_sec="20.0"
+                     Camera="1"/>
       </Sequence>
       <Sequence _description="Back to the initial position (unpitch).">
         <InitializeTrajectory trajectory="{BoxUnpitchTrajectory}"/>
-        <TrajectoryAppendPose trajectory="{BoxUnpitchTrajectory}"
+        <TrajectoryAppendPose precision="0"
+                              speed="0"
+                              orientationZ="0.000000"
+                              orientationY="30.0"
+                              orientationX="0.000000"
+                              trajectory="{BoxUnpitchTrajectory}"
+                              longRotation="false"
                               positionX="0.000000"
                               positionY="0.000000"
-                              positionZ="0.000000"
-                              orientationX="0.000000"
-                              orientationY="30.0"
-                              orientationZ="0.000000"
-                              precision="0"
-                              speed="0"
                               frame="1"
-                              longRotation="false"/>
+                              positionZ="0.000000"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{BoxUnpitchTrajectory}"
                  TimeBeforeFailing="5"/>
@@ -73,11 +79,29 @@
                        TimeBeforeFailing="5"/>
             </Sequence>
             <Sequence _description="Approach bin.">
-              <AiActivation Model="0"
-                            Bottom="true"
+              <AiActivation Bottom="true"
+                            Model="0"
                             Front="false"/>
-              <SubTree ID="Nop"
-                       _description="Approach bin and position onto the image and go down to maximum of 30cm."/>
+              <SplitAiDetection splittedDetections="{BinDetections}"
+                                detection="{BinDetection}"
+                                offset="{detection_offset}"/>
+            </Sequence>
+            <Sequence _description="Move above current detection">
+              <MoveAboveObject Trajectory="{CurrentDetectionTrajectory}"
+                               Detection="{BinDetection}"/>
+              <SubTree ID="SendTrajectoryOnly"
+                       Trajectory="{BinDetection}"
+                       TimeBeforeFailing="5"/>
+            </Sequence>
+            <Sequence _description="Check with the bottom camera">
+              <AiFilter Object_class=""
+                        Max_frame_before_failing="0"
+                        Detected_object=""
+                        Min_detections_before_success="2"
+                        Max_depth="25.000000"
+                        Confidence="0.600000"
+                        Max_time_before_failing_sec="0.000000"
+                        Camera="0"/>
             </Sequence>
             <Sequence _description="Back to the origin point.">
               <InitializeTrajectory trajectory="{BoxOriginPointTrajectory}"/>
@@ -101,8 +125,8 @@
     <Sequence name="Dropping in 1 bin">
       <Sequence name="Move above the bin">
         <InitializeTrajectory trajectory="{Trajectory}"/>
-        <AiActivation Model="0"
-                      Bottom="false"
+        <AiActivation Bottom="false"
+                      Model="0"
                       Front="true"/>
         <SubTree ID="SearchObjectByRotation"
                  Object="bin"
@@ -112,37 +136,37 @@
                  Min_detection_before_success="5"
                  Confidence="0.60000"
                  Max_depth="25"/>
-        <MoveToObject Offset="0"
-                      Trajectory="{Trajectory}"
+        <MoveToObject Trajectory="{Trajectory}"
+                      Offset="0"
                       Detection="{FrontAidetection}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{Trajectory}"
                  TimeBeforeFailing="5"/>
       </Sequence>
       <Sequence name="Align the dropper with the bin">
-        <AiActivation Model="0"
-                      Bottom="true"
+        <AiActivation Bottom="true"
+                      Model="0"
                       Front="false"/>
         <Repeat num_cycles="3">
           <Sequence>
             <InitializeTrajectory trajectory="{Trajectory}"/>
             <IfThenElse>
               <ScriptCondition code="ObjectToAim==&quot;gate-shark&quot;"/>
-              <AiFilter Detected_object="{AiDetection}"
-                        Max_time_before_failing_sec="0.000000"
+              <AiFilter Object_class="shark"
                         Max_frame_before_failing="300"
+                        Detected_object="{AiDetection}"
                         Min_detections_before_success="5"
-                        Confidence="0.600000"
                         Max_depth="25"
-                        Object_class="shark"
+                        Confidence="0.600000"
+                        Max_time_before_failing_sec="0.000000"
                         Camera="0"/>
-              <AiFilter Detected_object="{AiDetection}"
-                        Max_time_before_failing_sec="0.000000"
+              <AiFilter Object_class="sawfish"
                         Max_frame_before_failing="300"
+                        Detected_object="{AiDetection}"
                         Min_detections_before_success="5"
-                        Confidence="0.600000"
                         Max_depth="25"
-                        Object_class="sawfish"
+                        Confidence="0.600000"
+                        Max_time_before_failing_sec="0.000000"
                         Camera="0"/>
             </IfThenElse>
             <MoveAboveObject Trajectory="{Trajectory}"
@@ -154,8 +178,8 @@
         </Repeat>
       </Sequence>
       <LaunchDropper side="port_side"/>
-      <AiActivation Model="0"
-                    Bottom="false"
+      <AiActivation Bottom="false"
+                    Model="0"
                     Front="true"/>
     </Sequence>
   </BehaviorTree>
@@ -164,8 +188,8 @@
     <Sequence name="Dropping in 2 bins">
       <Sequence name="Move above the bin">
         <InitializeTrajectory trajectory="{Trajectory}"/>
-        <AiActivation Model="0"
-                      Bottom="false"
+        <AiActivation Bottom="false"
+                      Model="0"
                       Front="true"/>
         <SubTree ID="SearchObjectByRotation"
                  Object="BIN_BOX"
@@ -175,37 +199,37 @@
                  Min_detection_before_success="5"
                  Confidence="0.60000"
                  Max_depth="25"/>
-        <MoveToObject Offset="-1.5"
-                      Trajectory="{Trajectory}"
+        <MoveToObject Trajectory="{Trajectory}"
+                      Offset="-1.5"
                       Detection="{FrontAidetection}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{Trajectory}"
                  TimeBeforeFailing="5"/>
       </Sequence>
       <Sequence name="Align the dropper with the bin">
-        <AiActivation Model="0"
-                      Bottom="true"
+        <AiActivation Bottom="true"
+                      Model="0"
                       Front="false"/>
         <Repeat num_cycles="3">
           <Sequence>
             <InitializeTrajectory trajectory="{Trajectory}"/>
             <IfThenElse>
               <ScriptCondition code="ObjectToAim==&quot;gate-shark&quot;"/>
-              <AiFilter Detected_object="{AiDetection}"
-                        Max_time_before_failing_sec="0.000000"
+              <AiFilter Object_class="shark"
                         Max_frame_before_failing="300"
+                        Detected_object="{AiDetection}"
                         Min_detections_before_success="5"
-                        Confidence="0.600000"
                         Max_depth="25"
-                        Object_class="shark"
+                        Confidence="0.600000"
+                        Max_time_before_failing_sec="0.000000"
                         Camera="0"/>
-              <AiFilter Detected_object="{AiDetection}"
-                        Max_time_before_failing_sec="0.000000"
+              <AiFilter Object_class="sawfish"
                         Max_frame_before_failing="300"
+                        Detected_object="{AiDetection}"
                         Min_detections_before_success="5"
-                        Confidence="0.600000"
                         Max_depth="25"
-                        Object_class="sawfish"
+                        Confidence="0.600000"
+                        Max_time_before_failing_sec="0.000000"
                         Camera="0"/>
             </IfThenElse>
             <MoveAboveObject Trajectory="{Trajectory}"
@@ -233,21 +257,21 @@
             <InitializeTrajectory trajectory="{Trajectory}"/>
             <IfThenElse>
               <ScriptCondition code="ObjectToAim==&quot;gate-shark&quot;"/>
-              <AiFilter Detected_object="{AiDetection}"
-                        Max_time_before_failing_sec="0.000000"
+              <AiFilter Object_class="shark"
                         Max_frame_before_failing="300"
+                        Detected_object="{AiDetection}"
                         Min_detections_before_success="5"
-                        Confidence="0.600000"
                         Max_depth="25"
-                        Object_class="shark"
+                        Confidence="0.600000"
+                        Max_time_before_failing_sec="0.000000"
                         Camera="0"/>
-              <AiFilter Detected_object="{AiDetection}"
-                        Max_time_before_failing_sec="0.000000"
+              <AiFilter Object_class="sawfish"
                         Max_frame_before_failing="300"
+                        Detected_object="{AiDetection}"
                         Min_detections_before_success="5"
-                        Confidence="0.600000"
                         Max_depth="25"
-                        Object_class="sawfish"
+                        Confidence="0.600000"
+                        Max_time_before_failing_sec="0.000000"
                         Camera="0"/>
             </IfThenElse>
             <MoveAboveObject Trajectory="{Trajectory}"
@@ -259,8 +283,8 @@
         </Repeat>
       </Sequence>
       <LaunchDropper side="starboard"/>
-      <AiActivation Model="0"
-                    Bottom="false"
+      <AiActivation Bottom="false"
+                    Model="0"
                     Front="true"/>
     </Sequence>
   </BehaviorTree>
@@ -268,36 +292,58 @@
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
     <Action ID="AiActivation">
-      <input_port name="Model"
-                  default="0"
-                  type="int">model choice, default = 0</input_port>
       <input_port name="Bottom"
                   default="false"
                   type="bool">true: ON, talse: OFF</input_port>
+      <input_port name="Model"
+                  default="0"
+                  type="int">model choice, default = 0</input_port>
       <input_port name="Front"
                   default="false"
                   type="bool">true: ON, talse: OFF</input_port>
     </Action>
     <Action ID="AiFilter">
+      <input_port name="Object_class"
+                  type="std::string">Searched object</input_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0"
+                  type="int">Maximum allowed frames before failing the object research</input_port>
       <output_port name="Detected_object"
                    type="AiDetection"/>
+      <input_port name="Min_detections_before_success"
+                  default="2"
+                  type="unsigned long">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+      <input_port name="Max_depth"
+                  default="25.000000"
+                  type="float">Maximum allowed depth</input_port>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Ai confidence</input_port>
       <input_port name="Max_time_before_failing_sec"
                   default="0.000000"
-                  type="float">Maximum allowed time in ms before failing the object research</input_port>
+                  type="float">Maximum allowed frames before failing the object research</input_port>
+      <input_port name="Camera"
+                  default="1"
+                  type="int">1: Front, 0: Bottom</input_port>
+    </Action>
+    <Action ID="BinAiFilter">
       <input_port name="Max_frame_before_failing"
                   default="0"
                   type="int">Maximum allowed frames before failing the object research</input_port>
       <input_port name="Min_detections_before_success"
                   default="2"
-                  type="int">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
-      <input_port name="Confidence"
-                  default="0.600000"
-                  type="float">Ai confidence</input_port>
+                  type="unsigned long">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
       <input_port name="Max_depth"
                   default="25.000000"
                   type="float">Maximum allowed depth</input_port>
-      <input_port name="Object_class"
-                  type="std::string">Searched object</input_port>
+      <output_port name="Detections"
+                   type="std::vector&lt;AiDetection, std::allocator&lt;AiDetection&gt; &gt;">The detected bin</output_port>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Ai confidence</input_port>
+      <input_port name="Max_time_before_failing_sec"
+                  default="0.000000"
+                  type="float">Maximum allowed frames before failing the object research</input_port>
       <input_port name="Camera"
                   default="1"
                   type="int">1: Front, 0: Bottom</input_port>
@@ -339,10 +385,10 @@
                   default="0.0">rotation in Z to give to the sub</input_port>
     </SubTree>
     <Action ID="MoveToObject">
-      <input_port name="Offset"
-                  type="float"/>
       <inout_port name="Trajectory"
                   type="Trajectory"/>
+      <input_port name="Offset"
+                  type="float"/>
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
@@ -386,39 +432,47 @@
       <input_port name="TimeBeforeFailing"
                   default="5">The time before the sub movement fail</input_port>
     </SubTree>
+    <Action ID="SplitAiDetection">
+      <output_port name="splittedDetections"
+                   type="Point"/>
+      <input_port name="detection"
+                  type="std::vector&lt;Point, std::allocator&lt;Point&gt; &gt;"/>
+      <inout_port name="offset"
+                  type="unsigned long"/>
+    </Action>
     <Action ID="TrajectoryAppendPose">
-      <inout_port name="trajectory"
-                  type="Trajectory"/>
-      <input_port name="positionX"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="positionY"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="positionZ"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="orientationX"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="orientationY"
-                  default="0.000000"
-                  type="float"/>
-      <input_port name="orientationZ"
-                  default="0.000000"
-                  type="float"/>
       <input_port name="precision"
                   default="0"
                   type="int"/>
       <input_port name="speed"
                   default="0"
                   type="int"/>
-      <input_port name="frame"
-                  default="1"
-                  type="int"/>
+      <input_port name="orientationZ"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="orientationX"
+                  default="0.000000"
+                  type="float"/>
+      <inout_port name="trajectory"
+                  type="Trajectory"/>
       <input_port name="longRotation"
                   default="false"
                   type="bool"/>
+      <input_port name="positionX"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="positionY"
+                  default="0.000000"
+                  type="float"/>
+      <input_port name="frame"
+                  default="1"
+                  type="int"/>
+      <input_port name="positionZ"
+                  default="0.000000"
+                  type="float"/>
     </Action>
   </TreeNodesModel>
 
