@@ -154,6 +154,51 @@
     </Sequence>
   </BehaviorTree>
 
+  <BehaviorTree ID="ScanSlalomLayer">
+    <Sequence _description="Rotate from From to To by steps of 30 degrees (absolute angles) and accumulate every slalom detection (color ignored) as a point relative to the scan position.">
+      <Script code="scan_angle := From"/>
+      <Script code="scan_step := 30"/>
+      <SubTree ID="RotateToAbsoluteAngle"
+               Angle="{scan_angle}"/>
+      <ForceSuccess>
+        <SlalomScan Actual_angle="{scan_angle}"
+                    Invert_camera_angle="false"
+                    Points="{Points}"
+                    Max_frame_before_failing="0"
+                    Min_detections_before_success="5"
+                    Max_depth="25.000000"
+                    Confidence="0.600000"
+                    Max_time_before_failing_sec="3.0"
+                    Camera="1"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <Repeat num_cycles="-1">
+          <Sequence>
+            <ScriptCondition code="(From &lt; To &amp;&amp; scan_angle &lt; To) || (From &gt; To &amp;&amp; scan_angle &gt; To)"/>
+            <IfThenElse>
+              <ScriptCondition code="From &lt; To"/>
+              <Script code="scan_angle += scan_step"/>
+              <Script code="scan_angle -= scan_step"/>
+            </IfThenElse>
+            <SubTree ID="RotateToAbsoluteAngle"
+                     Angle="{scan_angle}"/>
+            <ForceSuccess>
+              <SlalomScan Actual_angle="{scan_angle}"
+                          Invert_camera_angle="false"
+                          Points="{Points}"
+                          Max_frame_before_failing="0"
+                          Min_detections_before_success="5"
+                          Max_depth="25.000000"
+                          Confidence="0.600000"
+                          Max_time_before_failing_sec="3.0"
+                          Camera="1"/>
+            </ForceSuccess>
+          </Sequence>
+        </Repeat>
+      </ForceSuccess>
+    </Sequence>
+  </BehaviorTree>
+
   <BehaviorTree ID="SearchClosestRedSlalom">
     <Sequence>
       <Sequence>
@@ -423,6 +468,66 @@
     </Sequence>
   </BehaviorTree>
 
+  <BehaviorTree ID="SlalomCompetition">
+    <Sequence _description="The slalom at the competition. Scan a layer color-blind, assume the middle pipe of the 3 closest ones is the red one, then cross the gap on the wanted side. Repeat for the 3 layers.">
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+      <AiActivation Model="0"
+                    Bottom="false"
+                    Front="true"/>
+      <Script code="ScanFrom := 0"/>
+      <IfThenElse _description="The path we took from the gate tells us on which side the slalom is, so which way to sweep.">
+        <ScriptCondition code="Path==&quot;search-rescue&quot;"/>
+        <Script code="ScanTo := -180"/>
+        <Script code="ScanTo := 180"/>
+      </IfThenElse>
+      <Sequence _description="First layer: full half sweep because we only roughly know where the slalom is.">
+        <InitializeSlalomPoints Points="{SlalomPoints}"/>
+        <SubTree ID="ScanSlalomLayer"
+                 From="{ScanFrom}"
+                 To="{ScanTo}"
+                 Points="{SlalomPoints}"/>
+        <InitializeTrajectory trajectory="{Trajectory}"/>
+        <ComputeSlalomGateTrajectory Points="{SlalomPoints}"
+                                     Side="{Side}"
+                                     ClusterTolerance="0.7"
+                                     MinPointsPerCluster="3"
+                                     MaxGateRange="10.0"
+                                     ApproachStandoff="1.0"
+                                     PassDistance="2.0"
+                                     GateHeading="{GateHeading}"
+                                     Trajectory="{Trajectory}"/>
+        <SubTree ID="SendTrajectoryOnly"
+                 Trajectory="{Trajectory}"
+                 TimeBeforeFailing="20"/>
+      </Sequence>
+      <Repeat num_cycles="2">
+        <Sequence _description="Next layers: they are roughly in front of us after crossing a gate, so a narrow sweep around the gate heading is enough.">
+          <Script code="ScanFrom := GateHeading - 60"/>
+          <Script code="ScanTo := GateHeading + 60"/>
+          <InitializeSlalomPoints Points="{SlalomPoints}"/>
+          <SubTree ID="ScanSlalomLayer"
+                   From="{ScanFrom}"
+                   To="{ScanTo}"
+                   Points="{SlalomPoints}"/>
+          <InitializeTrajectory trajectory="{Trajectory}"/>
+          <ComputeSlalomGateTrajectory Points="{SlalomPoints}"
+                                       Side="{Side}"
+                                       ClusterTolerance="0.7"
+                                       MinPointsPerCluster="3"
+                                       MaxGateRange="10.0"
+                                       ApproachStandoff="1.0"
+                                       PassDistance="2.0"
+                                       GateHeading="{GateHeading}"
+                                       Trajectory="{Trajectory}"/>
+          <SubTree ID="SendTrajectoryOnly"
+                   Trajectory="{Trajectory}"
+                   TimeBeforeFailing="20"/>
+        </Sequence>
+      </Repeat>
+    </Sequence>
+  </BehaviorTree>
+
   <BehaviorTree ID="SlalomFinal">
     <AlwaysSuccess/>
   </BehaviorTree>
@@ -527,6 +632,31 @@
                   default="false"
                   type="bool">true: ON, talse: OFF</input_port>
     </Action>
+    <Action ID="ComputeSlalomGateTrajectory">
+      <input_port name="Points"
+                  type="SlalomPointArray">The points accumulated by the scan</input_port>
+      <input_port name="Side"
+                  type="std::string">Left or Right, the side of the red pipe where the sub must pass</input_port>
+      <input_port name="ClusterTolerance"
+                  default="0.700000"
+                  type="float">Maximum distance in meters between two points of the same pipe</input_port>
+      <input_port name="MinPointsPerCluster"
+                  default="3"
+                  type="int">Minimum number of points for a cluster to count as a pipe</input_port>
+      <input_port name="MaxGateRange"
+                  default="10.000000"
+                  type="float">Pipes further than this distance in meters are ignored</input_port>
+      <input_port name="ApproachStandoff"
+                  default="1.000000"
+                  type="float">Distance in meters before the gap where the sub stops to align itself</input_port>
+      <input_port name="PassDistance"
+                  default="2.000000"
+                  type="float">Forward distance in meters to travel after the gap</input_port>
+      <output_port name="GateHeading"
+                   type="float">Absolute heading perpendicular to the gate, used to scan the next layer</output_port>
+      <inout_port name="Trajectory"
+                  type="Trajectory"/>
+    </Action>
     <Action ID="ComputeTrajectoryBetweenDetections">
       <inout_port name="Trajectory"
                   type="Trajectory"/>
@@ -559,6 +689,10 @@
       <input_port name="Depth"
                   default="0.5"/>
     </SubTree>
+    <Action ID="InitializeSlalomPoints">
+      <output_port name="Points"
+                   type="SlalomPointArray"/>
+    </Action>
     <Action ID="InitializeTrajectory">
       <output_port name="trajectory"
                    type="Trajectory"/>
@@ -599,6 +733,15 @@
     <SubTree ID="RotateToAbsoluteAngle"
              editable="true">
       <input_port name="Angle">Angle to put to the sub</input_port>
+    </SubTree>
+    <SubTree ID="ScanSlalomLayer"
+             editable="true">
+      <input_port name="From"
+                  type="double">Absolute angle where the sweep starts</input_port>
+      <input_port name="To"
+                  type="double">Absolute angle where the sweep ends</input_port>
+      <inout_port name="Points"
+                  type="SlalomPointArray">Accumulated slalom points, relative to the scan position</inout_port>
     </SubTree>
     <Action ID="SearchClosestSlalom">
       <input_port name="Object_class"
@@ -644,6 +787,33 @@
       <input_port name="TimeBeforeFailing"
                   default="5">The time before the sub movement fail</input_port>
     </SubTree>
+    <Action ID="SlalomScan">
+      <input_port name="Actual_angle"
+                  type="float">The actual absolute angle of the sub</input_port>
+      <input_port name="Invert_camera_angle"
+                  default="false"
+                  type="bool">Flip the sign convention of the camera angle if the computed points are mirrored</input_port>
+      <inout_port name="Points"
+                  type="SlalomPointArray">The accumulated slalom points, relative to the sub position during the scan</inout_port>
+      <input_port name="Max_frame_before_failing"
+                  default="0"
+                  type="int">Maximum allowed frames before failing the object research</input_port>
+      <input_port name="Min_detections_before_success"
+                  default="2"
+                  type="unsigned long">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+      <input_port name="Max_depth"
+                  default="25.000000"
+                  type="float">Maximum allowed depth</input_port>
+      <input_port name="Confidence"
+                  default="0.600000"
+                  type="float">Ai confidence</input_port>
+      <input_port name="Max_time_before_failing_sec"
+                  default="0.000000"
+                  type="float">Maximum allowed frames before failing the object research</input_port>
+      <input_port name="Camera"
+                  default="1"
+                  type="int">1: Front, 0: Bottom</input_port>
+    </Action>
   </TreeNodesModel>
 
 </root>

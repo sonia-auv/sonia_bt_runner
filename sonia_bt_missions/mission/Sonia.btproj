@@ -65,6 +65,17 @@
         <SubTree ID="CommunicationReceiver" editable="true">
             <input_port name="Path">The path that the othor sub has choosen</input_port>
         </SubTree>
+        <Action ID="ComputeSlalomGateTrajectory">
+            <input_port name="Points" type="SlalomPointArray">The points accumulated by the scan</input_port>
+            <input_port name="Side" type="std::string">Left or Right, the side of the red pipe where the sub must pass</input_port>
+            <input_port name="ClusterTolerance" default="0.700000" type="float">Maximum distance in meters between two points of the same pipe</input_port>
+            <input_port name="MinPointsPerCluster" default="3" type="int">Minimum number of points for a cluster to count as a pipe</input_port>
+            <input_port name="MaxGateRange" default="10.000000" type="float">Pipes further than this distance in meters are ignored</input_port>
+            <input_port name="ApproachStandoff" default="1.000000" type="float">Distance in meters before the gap where the sub stops to align itself</input_port>
+            <input_port name="PassDistance" default="2.000000" type="float">Forward distance in meters to travel after the gap</input_port>
+            <output_port name="GateHeading" type="float">Absolute heading perpendicular to the gate, used to scan the next layer</output_port>
+            <inout_port name="Trajectory" type="Trajectory"/>
+        </Action>
         <Action ID="ComputeTrajectoryBetweenDetections">
             <inout_port name="Trajectory" type="Trajectory"/>
             <input_port name="OffsetAngle" type="float"/>
@@ -99,6 +110,9 @@
         <SubTree ID="InitialSubmerge" editable="true">
             <input_port name="Depth" default="0.5"/>
         </SubTree>
+        <Action ID="InitializeSlalomPoints">
+            <output_port name="Points" type="SlalomPointArray"/>
+        </Action>
         <Action ID="InitializeTrajectory">
             <output_port name="trajectory" type="Trajectory"/>
         </Action>
@@ -171,6 +185,11 @@
         <Action ID="SavePoint">
             <output_port name="Point" type="Point"/>
         </Action>
+        <SubTree ID="ScanSlalomLayer" editable="true">
+            <input_port name="From" type="double">Absolute angle where the sweep starts</input_port>
+            <input_port name="To" type="double">Absolute angle where the sweep ends</input_port>
+            <inout_port name="Points" type="SlalomPointArray">Accumulated slalom points, relative to the scan position</inout_port>
+        </SubTree>
         <Action ID="SearchClosestSlalom">
             <input_port name="Object_class" type="std::string">Searched object</input_port>
             <input_port name="Side" type="std::string">Side that the white slalom should be from the red slalom</input_port>
@@ -229,9 +248,24 @@
         <Action ID="ShootTorpedo">
             <input_port name="side" type="std::string">port_side or starboard</input_port>
         </Action>
+        <SubTree ID="SlalomCompetition" editable="true">
+            <input_port name="Side" type="std::string"/>
+            <input_port name="Path" type="std::string"/>
+        </SubTree>
         <SubTree ID="SlalomRafinee" editable="true">
             <input_port name="Side">The</input_port>
         </SubTree>
+        <Action ID="SlalomScan">
+            <input_port name="Actual_angle" type="float">The actual absolute angle of the sub</input_port>
+            <input_port name="Invert_camera_angle" default="false" type="bool">Flip the sign convention of the camera angle if the computed points are mirrored</input_port>
+            <inout_port name="Points" type="SlalomPointArray">The accumulated slalom points, relative to the sub position during the scan</inout_port>
+            <input_port name="Max_frame_before_failing" default="0" type="int">Maximum allowed frames before failing the object research</input_port>
+            <input_port name="Min_detections_before_success" default="2" type="unsigned long">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+            <input_port name="Max_depth" default="25.000000" type="float">Maximum allowed depth</input_port>
+            <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
+            <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Maximum allowed frames before failing the object research</input_port>
+            <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
+        </Action>
         <SubTree ID="SlalomSemiFinal" editable="true">
             <input_port name="Side" default="Left">The side that the sub take to passe the slalom</input_port>
         </SubTree>
