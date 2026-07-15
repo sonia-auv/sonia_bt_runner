@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
   <BehaviorTree ID="Run26Strategy1SearchRescue">
-    <Sequence name="Strategy 1 : Easy Strategy that every sub for Search&amp;Rescue">
-      <SubTree ID="InitialSubmerge"/>
+    <Sequence name="Strategy 1 : Easy Strategy that every sub can do for Survey&amp;Repair">
+      <SubTree ID="InitialSubmerge"
+               Depth="1.0"/>
+      <SubTree ID="CoinFlip"
+               _autoremap="false"/>
       <ForceSuccess>
         <SubTree ID="Gate"
                  Side="{side}"
                  TargetObject="LIFE PRESERVER"
                  NonTargetObject="COMPAS"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
       </ForceSuccess>
       <SubTree ID="Done"/>
     </Sequence>
@@ -16,7 +27,7 @@
   <BehaviorTree ID="Run26Strategy1ServeyRepair">
     <Sequence name="Strategy 1 : Easy Strategy that every sub can do for Survey&amp;Repair">
       <SubTree ID="InitialSubmerge"
-               Depth="1"/>
+               Depth="1.0"/>
       <SubTree ID="CoinFlip"
                _autoremap="false"/>
       <ForceSuccess>
@@ -28,10 +39,6 @@
       <SavePoint Point="{point_retour}"/>
       <ForceSuccess>
         <SubTree ID="TrickshotLegacy"/>
-      </ForceSuccess>
-      <ForceSuccess>
-        <SubTree ID="SlalomSemiFinal"
-                 Side="{side}"/>
       </ForceSuccess>
       <ForceSuccess>
         <SubTree ID="ReturnHome"
@@ -90,10 +97,6 @@
       <SavePoint Point="{point_retour}"/>
       <ForceSuccess>
         <SubTree ID="TrickshotLegacy"/>
-      </ForceSuccess>
-      <ForceSuccess>
-        <SubTree ID="SlalomSemiFinal"
-                 Side="{side}"/>
       </ForceSuccess>
       <ForceSuccess>
         <SubTree ID="BinOneBox"
