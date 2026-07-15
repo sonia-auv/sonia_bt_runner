@@ -5,15 +5,8 @@
       <Sequence name="Move in direction of the gate">
         <SubTree ID="InitialSubmerge"
                  Depth="0.3"/>
-        <InitializeTrajectory trajectory="{trajectory}"/>
-        <MoveToPoint Trajectory="{trajectory}"
-                     OffsetPositionZ="0.000000"
-                     OffsetPositionY="2.0"
-                     OffsetPositionX="0.000000"
-                     Point="{point_retour}"/>
-        <SubTree ID="SendTrajectoryOnly"
-                 Trajectory="{trajectory}"
-                 TimeBeforeFailing="15"/>
+        <SubTree ID="RotateToAbsoluteAngle"
+                 Angle="180"/>
         <InitializeTrajectory trajectory="{trajectory}"/>
         <MoveToPoint Trajectory="{trajectory}"
                      OffsetPositionZ="0.000000"
@@ -81,6 +74,10 @@
       <input_port name="Point"
                   type="Point"/>
     </Action>
+    <SubTree ID="RotateToAbsoluteAngle"
+             editable="true">
+      <input_port name="Angle">Angle to put to the sub</input_port>
+    </SubTree>
     <SubTree ID="SendTrajectoryOnly"
              editable="true">
       <input_port name="Trajectory">The trajectory to do to the sub</input_port>
