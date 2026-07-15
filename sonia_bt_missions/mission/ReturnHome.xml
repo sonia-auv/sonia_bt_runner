@@ -3,6 +3,8 @@
   <BehaviorTree ID="ReturnHome">
     <Sequence>
       <Sequence name="Move in direction of the gate">
+        <SubTree ID="InitialSubmerge"
+                 Depth="0.3"/>
         <InitializeTrajectory trajectory="{trajectory}"/>
         <MoveToPoint Trajectory="{trajectory}"
                      OffsetPositionZ="0.000000"
@@ -55,6 +57,11 @@
 
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
+    <SubTree ID="InitialSubmerge"
+             editable="true">
+      <input_port name="Depth"
+                  default="0.5"/>
+    </SubTree>
     <Action ID="InitializeTrajectory">
       <output_port name="trajectory"
                    type="Trajectory"/>

@@ -44,7 +44,28 @@
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="50"/>
+                 orientationZ="-25"/>
+        <ForceSuccess>
+          <SearchClosestSlalom Object_class="RED_SLALOM"
+                               Side="&quot;&quot;"
+                               Actual_angle="-50"
+                               Closest_object_angle="{ClosestObjectAngle}"
+                               Closest_object="{ClosestObjectDetection}"
+                               Max_frame_before_failing="0"
+                               Min_detections_before_success="5"
+                               Max_depth="25.000000"
+                               Confidence="0.600000"
+                               Max_time_before_failing_sec="5.0"
+                               Camera="1"/>
+        </ForceSuccess>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="75"/>
         <ForceSuccess>
           <SearchClosestSlalom Object_class="RED_SLALOM"
                                Side="&quot;&quot;"
@@ -58,10 +79,31 @@
                                Max_time_before_failing_sec="5.0"
                                Camera="1"/>
         </ForceSuccess>
+        <SubTree ID="MoveSinglePose"
+                 frame="1.0"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="25"/>
+        <ForceSuccess>
+          <SearchClosestSlalom Object_class="RED_SLALOM"
+                               Side="&quot;&quot;"
+                               Actual_angle="50"
+                               Closest_object_angle="{ClosestObjectAngle}"
+                               Closest_object="{ClosestObjectDetection}"
+                               Max_frame_before_failing="0"
+                               Min_detections_before_success="5"
+                               Max_depth="25.000000"
+                               Confidence="0.600000"
+                               Max_time_before_failing_sec="5.0"
+                               Camera="1"/>
+        </ForceSuccess>
       </Sequence>
       <Sequence>
         <HasDetection Detected_object="{ClosestObjectDetection}"/>
-        <Script code="rotate:=25 - ClosestObjectAngle"/>
+        <Script code="rotate:=50 - ClosestObjectAngle"/>
         <IfThenElse>
           <ScriptCondition code="rotate != 0"/>
           <SubTree ID="MoveSinglePose"
@@ -147,7 +189,28 @@
                                  Max_time_before_failing_sec="5.00000"
                                  Camera="1"/>
           </ForceSuccess>
-          <Script code="OffsetAngle := 25"/>
+          <SubTree ID="MoveSinglePose"
+                   frame="1.0"
+                   positionX="0.0"
+                   positionY="0.0"
+                   positionZ="0.0"
+                   orientationX="0.0"
+                   orientationY="0.0"
+                   orientationZ="25"/>
+          <ForceSuccess>
+            <SearchClosestSlalom Object_class="WHITE_SLALOM"
+                                 Side="{Side}"
+                                 Actual_angle="50"
+                                 Closest_object_angle="{WhiteDetectionAngle}"
+                                 Closest_object="{WhiteDetection}"
+                                 Max_frame_before_failing="0"
+                                 Min_detections_before_success="5"
+                                 Max_depth="25.000000"
+                                 Confidence="0.600000"
+                                 Max_time_before_failing_sec="5.00000"
+                                 Camera="1"/>
+          </ForceSuccess>
+          <Script code="OffsetAngle := 50"/>
         </Sequence>
       </IfThenElse>
       <HasDetection Detected_object="{WhiteDetection}"/>
@@ -293,7 +356,7 @@
           <SubTree ID="MoveSinglePose"
                    frame="1.0"
                    positionX="0.0"
-                   positionY="-1.0"
+                   positionY="-10"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
@@ -466,7 +529,7 @@
                                             Side="{Side}"
                                             Angle="{DetectionAngle}"
                                             DetectionB="{RedSlalomDetection}"
-                                            PositionX="1.500000"
+                                            PositionX="0"
                                             DetectionA="{WhiteSlalomDetection}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{Trajectory}"

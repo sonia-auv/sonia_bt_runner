@@ -5,8 +5,64 @@
              Side="Right"/>
   </BehaviorTree>
 
+  <BehaviorTree ID="TEST2">
+    <Sequence>
+      <SubTree ID="InitialSubmerge"
+               Depth="0.3"/>
+      <SubTree ID="MoveSinglePose"
+               frame="1.0"
+               positionX="1.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"/>
+      <SavePoint Point="{Point}"/>
+      <SubTree ID="MoveSinglePose"
+               frame="1.0"
+               positionX="1.0"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"/>
+      <SubTree ID="ReturnHome"
+               point_retour="{Point}"/>
+    </Sequence>
+  </BehaviorTree>
+
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
+    <SubTree ID="InitialSubmerge"
+             editable="true">
+      <input_port name="Depth"
+                  default="0.5"/>
+    </SubTree>
+    <SubTree ID="MoveSinglePose"
+             editable="true">
+      <input_port name="frame"
+                  default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
+      <input_port name="positionX"
+                  default="0.0">x value to go</input_port>
+      <input_port name="positionY"
+                  default="0.0">y value to go</input_port>
+      <input_port name="positionZ"
+                  default="0.0">z value to go</input_port>
+      <input_port name="orientationX"
+                  default="0.0">z orientation to go</input_port>
+      <input_port name="orientationY"
+                  default="0.0">y orientation to go</input_port>
+      <input_port name="orientationZ"
+                  default="0.0">rotation in Z to give to the sub</input_port>
+    </SubTree>
+    <SubTree ID="ReturnHome"
+             editable="true">
+      <input_port name="point_retour">The register point after the gate</input_port>
+    </SubTree>
+    <Action ID="SavePoint">
+      <output_port name="Point"
+                   type="Point"/>
+    </Action>
     <SubTree ID="SlalomSemiFinal"
              editable="true">
       <input_port name="Side"
