@@ -325,8 +325,8 @@
         <SubTree ID="RotateToAbsoluteAngle"
                  Angle="{ClosestObjectAngle}"/>
         <InitializeTrajectory trajectory="{Trajectory}"/>
-        <MoveToObject Offset="-1.5"
-                      Trajectory="{Trajectory}"
+        <MoveToObject Trajectory="{Trajectory}"
+                      Offset="-1.5"
                       Detection="{ClosestObjectDetection}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{Trajectory}"
@@ -493,7 +493,7 @@
   <BehaviorTree ID="SlalomSemiFinal">
     <Sequence>
       <SubTree ID="InitialSubmerge"
-               Depth="0.8"/>
+               Depth="0.5"/>
       <AiActivation Model="0"
                     Bottom="false"
                     Front="true"
@@ -644,10 +644,10 @@
                   default="0.0">rotation in Z to give to the sub</input_port>
     </SubTree>
     <Action ID="MoveToObject">
-      <input_port name="Offset"
-                  type="float"/>
       <inout_port name="Trajectory"
                   type="Trajectory"/>
+      <input_port name="Offset"
+                  type="float"/>
       <input_port name="Detection"
                   type="AiDetection"/>
     </Action>
