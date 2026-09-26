@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4" project_name="Project">
     <include path="Bin.xml"/>
+    <include path="DebugDemo.xml"/>
     <include path="Gate.xml"/>
     <include path="PoolTest.xml"/>
     <include path="PreQualification.xml"/>

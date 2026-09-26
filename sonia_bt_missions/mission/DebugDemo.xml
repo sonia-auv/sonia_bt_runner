@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <!-- Runs without the robot: only builtin nodes, it waits instead of moving.
+       Made to follow a mission with a debugger, about 30 seconds long. -->
+  <BehaviorTree ID="DebugDemo">
+    <Sequence name="debug_demo">
+      <Script name="init"
+              code="step := 0; total := 0; distance := 0.0; attempts := 0; rounds := 5; delay := 2000; label := 'starting'"/>
+      <Repeat name="rounds"
+              num_cycles="{rounds}">
+        <Sequence name="round">
+          <Script name="next_step"
+                  code="step += 1; label := 'round'"/>
+          <Sleep name="wait"
+                 msec="{delay}"/>
+          <SubTree ID="DebugDemoCompute"
+                   name="compute"
+                   value="{step}"
+                   result="{total}"/>
+          <Fallback name="check_or_recover">
+            <ScriptCondition name="is_third_round"
+                             code="step == 3"/>
+            <Sequence name="recover">
+              <Sleep name="recover_wait"
+                     msec="500"/>
+              <Script name="recovered"
+                      code="label := 'recovered'"/>
+            </Sequence>
+          </Fallback>
+        </Sequence>
+      </Repeat>
+      <LoopDouble name="speeds"
+                  queue="0.5;1.0;1.5"
+                  value="{speed}">
+        <Sequence name="at_speed">
+          <Sleep name="cruise"
+                 msec="1500"/>
+          <Script name="accumulate"
+                  code="distance += speed"/>
+        </Sequence>
+      </LoopDouble>
+      <RetryUntilSuccessful name="retry"
+                            num_attempts="4">
+        <Sequence name="attempt">
+          <Script name="count_attempt"
+                  code="attempts += 1"/>
+          <Sleep name="try_wait"
+                 msec="1000"/>
+          <ScriptCondition name="third_time_lucky"
+                           code="attempts &gt;= 3"/>
+        </Sequence>
+      </RetryUntilSuccessful>
+      <Fallback name="timeout_or_skip">
+        <Timeout name="too_slow"
+                 msec="2000">
+          <Sleep name="long_wait"
+                 msec="10000"/>
+        </Timeout>
+        <AlwaysSuccess name="skipped"/>
+      </Fallback>
+      <Script name="finish"
+              code="label := 'done'"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="DebugDemoCompute">
+    <Sequence name="compute">
+      <Sleep name="think"
+             msec="1000"/>
+      <Script name="multiply"
+              code="result := value * 10"/>
+    </Sequence>
+  </BehaviorTree>
+</root>
