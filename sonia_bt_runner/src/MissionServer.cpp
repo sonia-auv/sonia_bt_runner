@@ -8,6 +8,12 @@ MissionServer::MissionServer()
     {
         //set mission path
         const char *ws = std::getenv("SONIA_WS");
+
+		if (ws == NULL) {
+			std::cerr << "env var SONIA_WS not set" << std::endl;
+			return EXIT_FAILURE;
+		}
+
         _search_directory.assign(ws);
         _search_directory.append("/src/sonia_bt_runner/sonia_bt_missions/mission/");
 
