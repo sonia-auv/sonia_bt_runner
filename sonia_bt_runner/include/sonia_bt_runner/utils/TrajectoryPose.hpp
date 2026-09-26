@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "behaviortree_cpp/behavior_tree.h"
+#include "behaviortree_cpp/json_export.h"
 
 struct TrajectoryPose
 {
@@ -16,6 +17,21 @@ struct TrajectoryPose
     int precision;
     bool long_rotation;
 };
+
+// Lets Groot2 and opengroot show the value while debugging
+BT_JSON_CONVERTER(TrajectoryPose, pose)
+{
+    add_field("positionX", &pose.positionX);
+    add_field("positionY", &pose.positionY);
+    add_field("positionZ", &pose.positionZ);
+    add_field("orientationX", &pose.orientationX);
+    add_field("orientationY", &pose.orientationY);
+    add_field("orientationZ", &pose.orientationZ);
+    add_field("frame", &pose.frame);
+    add_field("speed", &pose.speed);
+    add_field("precision", &pose.precision);
+    add_field("long_rotation", &pose.long_rotation);
+}
 
 namespace BT
 {

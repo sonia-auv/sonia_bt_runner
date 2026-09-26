@@ -5,6 +5,9 @@
 #include "sonia_bt_runner/init/SoniaInit.hpp"
 #include "sonia_bt_runner/actuator/SoniaActuator.hpp"
 #include "sonia_bt_runner/sensors/SoniaSensor.hpp"
+#include "sonia_bt_runner/utils/AiDetection.hpp"
+#include "sonia_bt_runner/utils/Point.hpp"
+#include "sonia_bt_runner/utils/Trajectory.hpp"
 
 using namespace BT;
 template <typename T>
@@ -12,6 +15,15 @@ BT::NodeBuilder configBuilder(std::shared_ptr<rclcpp::Node> node);
 
 template <typename T>
 BT::NodeBuilder simpleBuilder(std::shared_ptr<rclcpp::Node> node);
+
+// The types of the ports, so that a debugger can show their values. The vectors of them come along
+static void registerJsonConverters()
+{
+    BT::RegisterJsonDefinition<Point>();
+    BT::RegisterJsonDefinition<AiDetection>();
+    BT::RegisterJsonDefinition<TrajectoryPose>();
+    BT::RegisterJsonDefinition<Trajectory>();
+}
 
 static void registerInitNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
@@ -63,6 +75,7 @@ static void registerVisionNodes(BT::BehaviorTreeFactory &factory, std::shared_pt
 
 [[maybe_unused]] static void registerNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
+    registerJsonConverters();
     registerInitNodes(factory, node);
     registerActuatorNodes(factory, node);
     registerNavigationNodes(factory, node);

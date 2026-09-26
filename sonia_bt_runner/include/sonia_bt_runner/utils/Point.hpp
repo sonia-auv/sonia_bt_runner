@@ -1,6 +1,7 @@
 #pragma once
 
 #include "behaviortree_cpp/behavior_tree.h"
+#include "behaviortree_cpp/json_export.h"
 
 struct Point
 {
@@ -8,6 +9,14 @@ struct Point
     double y;
     double z;
 };
+
+// Lets Groot2 and opengroot show the value while debugging
+BT_JSON_CONVERTER(Point, point)
+{
+    add_field("x", &point.x);
+    add_field("y", &point.y);
+    add_field("z", &point.z);
+}
 
 namespace BT
 {
