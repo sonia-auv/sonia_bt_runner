@@ -51,7 +51,8 @@ namespace BT
         {
             throw RuntimeError("Invalid Input");
         }
-        AiDetection output;
+        // The angles are not in the text: they must be zero, not whatever was in memory
+        AiDetection output{};
         output.classification = parts[0];
         output.confidence = convertFromString<float>(parts[1]);
         output.distance = convertFromString<float>(parts[2]);
