@@ -105,5 +105,6 @@ class MissionServer : public rclcpp::Node{
         sonia_common_ros2::msg::NodeStatus _node_status;
 
         const uint64_t _TICK_SLEEP_TIME = 66;
+        const unsigned _GROOT_PORT = 1667;
         
 };

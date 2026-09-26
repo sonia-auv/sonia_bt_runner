@@ -41,6 +41,8 @@ MissionServer::MissionServer()
 			_result=NodeStatus::RUNNING;
 
 			Tracker trac(_tree, goal);
+			// Lets Groot2 or opengroot follow the mission, on this port and the next one
+			BT::Groot2Publisher publisher(_tree, _GROOT_PORT);
 			auto res = std::make_shared<MissionControl::Result>();
 			std_msgs::msg::String rep;
 
