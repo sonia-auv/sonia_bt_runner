@@ -1,41 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root BTCPP_format="4" project_name="Sonia">
-    <include path="Kanye.xml"/>
-    <include path="Test1.xml"/>
+<root BTCPP_format="4" project_name="Project">
+    <include path="Bin.xml"/>
+    <include path="DebugDemo.xml"/>
+    <include path="Gate.xml"/>
+    <include path="PoolTest.xml"/>
+    <include path="PreQualification.xml"/>
+    <include path="ReturnHome.xml"/>
+    <include path="Slalom.xml"/>
+    <include path="TableOctogon.xml"/>
+    <include path="Template.xml"/>
+    <include path="Torpedo.xml"/>
+    <include path="robosub26mission.xml"/>
     <!-- Description of Node Models (used by Groot) -->
     <TreeNodesModel>
         <Action ID="AiActivation">
-            <input_port name="Bottom" default="false" type="bool">true: ON, talse: OFF</input_port>
             <input_port name="Model" default="0" type="int">model choice, default = 0</input_port>
+            <input_port name="Bottom" default="false" type="bool">true: ON, talse: OFF</input_port>
             <input_port name="Front" default="false" type="bool">true: ON, talse: OFF</input_port>
         </Action>
         <Action ID="AiFilter">
-            <output_port name="detected_object_array" type="AiDetectionArray"/>
-            <input_port name="Max_frame" type="int">maximum allowed frames</input_port>
-            <input_port name="Max_depth" type="float">Maximum allowed depth</input_port>
-            <input_port name="Min_detection" type="int">minumum number of frames with at least one detection before sending results</input_port>
-            <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
             <input_port name="Object_class" type="std::string">Searched object</input_port>
-            <input_port name="Max_size_output" type="int">Max size of the output array</input_port>
-            <input_port name="Camera" default="1" type="int">0: Front, 1: Bottom</input_port>
+            <input_port name="Max_frame_before_failing" default="0" type="int">Maximum allowed frames before failing the object research</input_port>
+            <output_port name="Detected_object" type="AiDetection"/>
+            <input_port name="Min_detections_before_success" default="2" type="unsigned long">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+            <input_port name="Max_depth" default="25.000000" type="float">Maximum allowed depth</input_port>
+            <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
+            <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Maximum allowed frames before failing the object research</input_port>
+            <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
         </Action>
-        <SubTree ID="AlignSlalom" editable="true">
-            <input_port name="direction" default="left">Side of slalom to move</input_port>
+        <Action ID="AiMock">
+            <input_port name="Angle_alpha" default="0.000000" type="double">Vertical angle to the mocked object</input_port>
+            <input_port name="Distance_teta" default="0.000000" type="double">Distance associated with the teta angle</input_port>
+            <input_port name="Distance" default="0.000000" type="double">Distance to the mocked object in meters</input_port>
+            <input_port name="Number_of_messages" default="10" type="int">Number of messages to publish before succeeding. 0 means publish forever</input_port>
+            <input_port name="Confidence_max" default="1.000000" type="float">Upper bound of the random confidence</input_port>
+            <input_port name="Publish_period_ms" default="100" type="int">Delay between two published messages in milliseconds</input_port>
+            <input_port name="Number_of_detections" default="1" type="int">Number of detections published in each message</input_port>
+            <input_port name="Confidence_min" default="0.700000" type="float">Lower bound of the random confidence</input_port>
+            <input_port name="Classification" default="SOS" type="std::string">Class name of the mocked detections</input_port>
+            <input_port name="Distance_beta" default="0.000000" type="double">Distance associated with the alpha angle</input_port>
+            <input_port name="Angle_teta" default="0.000000" type="double">Horizontal angle to the mocked object</input_port>
+            <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
+        </Action>
+        <SubTree ID="AutomaticInitialSubmerge" editable="true">
+            <input_port name="Depth" default="1">Depth that the sub will submerge</input_port>
         </SubTree>
-        <Action ID="Alignment">
-            <output_port name="has_metric" type="int"/>
-            <output_port name="norm_x" type="float"/>
-            <output_port name="bearing_rad" type="float"/>
-            <inout_port name="traj" type="Trajectory"/>
-            <output_port name="lateral_m" type="float"/>
-            <input_port name="alignement_by_translation" type="bool"/>
-            <input_port name="alpha" type="float"/>
-            <input_port name="normalized_coords" type="bool"/>
-            <input_port name="detections" type="AiDetectionArray"/>
+        <Action ID="BinAiFilter">
+            <input_port name="Max_frame_before_failing" default="0" type="int">Maximum allowed frames before failing the object research</input_port>
+            <input_port name="Min_detections_before_success" default="2" type="unsigned long">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+            <input_port name="Max_depth" default="25.000000" type="float">Maximum allowed depth</input_port>
+            <output_port name="Detections" type="std::vector&lt;AiDetection, std::allocator&lt;AiDetection&gt; &gt;">The detected bin</output_port>
+            <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
+            <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Maximum allowed frames before failing the object research</input_port>
+            <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
         </Action>
-        <Action ID="CheckDistance">
-            <output_port name="TranslationX" type="float"/>
-            <input_port name="Object" type="sonia_common_ros2::msg::Detection_&lt;std::allocator&lt;void&gt; &gt;"/>
+        <SubTree ID="BinOneBox" editable="true">
+            <input_port name="ObjectToAim"/>
+        </SubTree>
+        <SubTree ID="BinTwoBox" editable="true">
+            <input_port name="ObjectToAim">The object in the bin that the sub needs to aim</input_port>
+        </SubTree>
+        <SubTree ID="CommunicationEmitter" editable="true">
+            <input_port name="Path">The choosen path that the sub want to communicate</input_port>
+        </SubTree>
+        <SubTree ID="CommunicationReceiver" editable="true">
+            <input_port name="Path">The path that the othor sub has choosen</input_port>
+        </SubTree>
+        <Action ID="ComputeTrajectoryBetweenDetections">
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="OffsetAngle" type="float"/>
+            <input_port name="Side" type="std::string"/>
+            <input_port name="Angle" type="float"/>
+            <input_port name="DetectionB" type="AiDetection"/>
+            <input_port name="PositionX" default="10.000000" type="float">Forward distance to travel after centering between the two detections</input_port>
+            <input_port name="DetectionA" type="AiDetection"/>
         </Action>
         <Action ID="ControlSetMode">
             <input_port name="set_mode" default="false" type="bool"/>
@@ -44,77 +82,231 @@
             <input_port name="IsSmaller" default="false" type="bool">true: ON, talse: OFF</input_port>
             <input_port name="Target" default="0.100000" type="float">true: ON, talse: OFF</input_port>
         </Condition>
-        <Action ID="Dropper">
-            <input_port name="side" type="std::string">port_side or starboard</input_port>
-        </Action>
         <Action ID="EnableDisableDVL">
             <input_port name="dvl_input" default="false" type="bool">true: start, false: stop</input_port>
         </Action>
+        <Action ID="FaceTheObject">
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="Detection" type="AiDetection"/>
+        </Action>
+        <SubTree ID="Gate" editable="true">
+            <output_port name="Side">The left or right side that the sub as taken</output_port>
+            <input_port name="TargetObject">Object than the sub looking for.</input_port>
+            <input_port name="NonTargetObject">Object that the sub use to make sure it passes on the right side.</input_port>
+        </SubTree>
+        <Action ID="HasDetection">
+            <input_port name="Detected_object" type="AiDetection"/>
+        </Action>
+        <SubTree ID="InitialSubmerge" editable="true">
+            <input_port name="Depth" default="0.5"/>
+        </SubTree>
         <Action ID="InitializeTrajectory">
             <output_port name="trajectory" type="Trajectory"/>
         </Action>
-        <Condition ID="MissionSwitchStatus"/>
-        <SubTree ID="MoveSinglePose" editable="true">
-            <input_port name="positionX" default="0.0"/>
-            <input_port name="positionY" default="0.0"/>
-            <input_port name="positionZ" default="0.0"/>
-            <input_port name="orientationX" default="0.0"/>
-            <input_port name="orientationY" default="0.0"/>
-            <input_port name="orientationZ" default="0.0"/>
-            <input_port name="frame" default="1.0"/>
+        <Action ID="LaunchDropper">
+            <input_port name="side" type="std::string">port_side or starboard</input_port>
+        </Action>
+        <Action ID="MapSlaloms">
+            <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
+            <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
+            <input_port name="Max_depth" default="25.000000" type="float">Maximum allowed depth</input_port>
+            <input_port name="Min_detections_before_success" default="2" type="int">Minimum frames with a detection before mapping</input_port>
+            <input_port name="Max_frame_before_failing" default="0" type="int">Maximum allowed frames before failing</input_port>
+            <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Timeout in seconds, 0 = disabled</input_port>
+            <input_port name="Side" type="std::string">Side the sub should take (Left or Right)</input_port>
+            <input_port name="Slalom_side" type="std::string">Side the slalom is on relative to the sub (Left or Right)</input_port>
+            <input_port name="Step_distance" default="0.500000" type="float">Lateral distance in meters per position step</input_port>
+            <inout_port name="Position" default="-1" type="int">Estimated position around the slalom (1..5, -1 = unknown)</inout_port>
+            <inout_port name="Trajectory" type="Trajectory"/>
+        </Action>
+        <SubTree ID="MapSlalomsToStart" editable="true">
+            <input_port name="Side">Side the sub should take (Left or Right)</input_port>
+            <input_port name="Slalom_side">Side the slalom is on relative to the sub (Left or Right)</input_port>
         </SubTree>
-        <SubTree ID="PositionAbsolutAngle" editable="true">
-            <input_port name="angle"/>
+        <Condition ID="MissionSwitchStatus"/>
+        <Action ID="MoveAboveObject">
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="Detection" type="AiDetection"/>
+        </Action>
+        <SubTree ID="MoveSinglePose" editable="true">
+            <input_port name="frame" default="1.0">0 : Abs, 1 : Rot and Trans Rel, 2 : Rot Abs and Trans Rel, 3 : Rot Rel and Trans Abs, 4 : Prof Abs</input_port>
+            <input_port name="positionX" default="0.0">x value to go</input_port>
+            <input_port name="positionY" default="0.0">y value to go</input_port>
+            <input_port name="positionZ" default="0.0">z value to go</input_port>
+            <input_port name="orientationX" default="0.0">z orientation to go</input_port>
+            <input_port name="orientationY" default="0.0">y orientation to go</input_port>
+            <input_port name="orientationZ" default="0.0">rotation in Z to give to the sub</input_port>
+        </SubTree>
+        <Action ID="MoveToObject">
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="Offset" type="float"/>
+            <input_port name="Detection" type="AiDetection"/>
+        </Action>
+        <Action ID="MoveToPoint">
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="OffsetPositionZ" default="0.000000" type="float"/>
+            <input_port name="OffsetPositionY" default="0.000000" type="float"/>
+            <input_port name="OffsetPositionX" default="0.000000" type="float"/>
+            <input_port name="Point" type="Point"/>
+        </Action>
+        <Action ID="ObjectDrifting">
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="Detection" type="AiDetection"/>
+        </Action>
+        <SubTree ID="Octogon" editable="true">
+            <input_port name="Path">The path that the sub choose</input_port>
+        </SubTree>
+        <Action ID="OctogoneAiFilter">
+            <input_port name="Max_frame_before_failing" default="0" type="int">Maximum allowed frames before failing the object research</input_port>
+            <output_port name="Detected_object" type="AiDetection"/>
+            <input_port name="Min_detections_before_success" default="2" type="unsigned long">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+            <input_port name="Max_depth" default="25.000000" type="float">Maximum allowed depth</input_port>
+            <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
+            <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Maximum allowed frames before failing the object research</input_port>
+            <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
+        </Action>
+        <SubTree ID="OctogoneSearchByRotation" editable="true">
+            <output_port name="FoundAiDetection"/>
+            <input_port name="Max_time_before_failing_sec"/>
+            <input_port name="Max_frame_before_failing"/>
+            <input_port name="Min_detection_before_success"/>
+            <input_port name="Confidence"/>
+            <input_port name="Max_depth"/>
+        </SubTree>
+        <SubTree ID="QuickSearchClosestWhiteSlalom" editable="true">
+            <input_port name="Side"/>
+            <input_port name="RedDetection"/>
+            <output_port name="WhiteDetection"/>
+            <output_port name="WhiteDetectionAngle"/>
+            <output_port name="OffsetAngle"/>
+        </SubTree>
+        <SubTree ID="ReturnHome" editable="true">
+            <input_port name="point_retour">The register point after the gate</input_port>
+        </SubTree>
+        <SubTree ID="RotateToAbsoluteAngle" editable="true">
+            <input_port name="Angle">Angle to put to the sub</input_port>
+        </SubTree>
+        <Action ID="SavePoint">
+            <output_port name="Point" type="Point"/>
+        </Action>
+        <Action ID="SearchClosestSlalom">
+            <input_port name="Object_class" type="std::string">Searched object</input_port>
+            <input_port name="Side" type="std::string">Side that the white slalom should be from the red slalom</input_port>
+            <input_port name="Actual_angle" type="float">The actual angle of the sub</input_port>
+            <inout_port name="Closest_object_angle" type="float">The closest detection angle</inout_port>
+            <inout_port name="Closest_object" type="AiDetection">The closest detected object</inout_port>
+            <input_port name="Max_frame_before_failing" default="0" type="int">Maximum allowed frames before failing the object research</input_port>
+            <input_port name="Min_detections_before_success" default="2" type="unsigned long">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+            <input_port name="Max_depth" default="25.000000" type="float">Maximum allowed depth</input_port>
+            <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
+            <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Maximum allowed frames before failing the object research</input_port>
+            <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
+        </Action>
+        <SubTree ID="SearchClosestWhiteSlalom" editable="true">
+            <input_port name="Side"/>
+            <input_port name="RedDetection"/>
+            <output_port name="WhiteDetection"/>
+            <output_port name="WhiteDetectionAngle"/>
+            <output_port name="OffsetAngle"/>
+        </SubTree>
+        <SubTree ID="SearchObjectByRotation" editable="true">
+            <input_port name="Object">Object we are looking for</input_port>
+            <output_port name="FoundAiDetection">The AiDetection found during the research</output_port>
+            <input_port name="Max_time_before_failing_sec" default="0.0">Time that the sub will take to every 30 degree position to find the object</input_port>
+            <input_port name="Max_frame_before_failing" default="0">Number of frame that the sub will take to every 30 degree position to find the object</input_port>
+            <input_port name="Min_detection_before_success" default="5">Nombre of detected frame to call a found status</input_port>
+            <input_port name="Confidence" default="0.60000">Minimum confidence of the Ai</input_port>
+            <input_port name="Max_depth" default="25">Max distance to detect an object</input_port>
+        </SubTree>
+        <Action ID="SearchWhiteSlalom">
+            <output_port name="WhiteSlalomDetection" type="AiDetection"/>
+            <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Timeout in seconds, 0 = disabled</input_port>
+            <input_port name="Min_detections_before_success" default="5" type="int">Minimum valid detections before succeeding</input_port>
+            <input_port name="Confidence" default="0.600000" type="float">Minimum AI confidence</input_port>
+            <input_port name="Side" default="Left" type="std::string">Left or Right</input_port>
+            <input_port name="Max_depth" default="25.000000" type="float">Maximum detection distance</input_port>
+            <input_port name="RedSlalomDetection" type="AiDetection"/>
+        </Action>
+        <SubTree ID="SearchWhiteSlalomByRotation" editable="true">
+            <input_port name="RedSlalomDetection">The detection of the red slalom used as angular reference.</input_port>
+            <input_port name="Side" default="Left">Which side the white slalom is on relative to the red slalom. Value: Left or Right</input_port>
+            <output_port name="WhiteSlalomDetection">The detection of the white slalom found during the search.</output_port>
+            <input_port name="Confidence" default="0.60000">Minimum confidence of the AI</input_port>
+            <input_port name="Min_detections_before_success" default="5">Minimum valid detections before succeeding at each rotation step</input_port>
+            <input_port name="Max_time_before_failing_sec" default="5.0">Timeout per rotation step in seconds</input_port>
+            <input_port name="Max_depth" default="25.0">Maximum detection distance</input_port>
         </SubTree>
         <Action ID="SendTrajectory">
             <input_port name="trajectory" type="Trajectory"/>
             <input_port name="interpolation" default="0" type="int"/>
         </Action>
+        <SubTree ID="SendTrajectoryOnly" editable="true">
+            <input_port name="Trajectory">The trajectory to do to the sub</input_port>
+            <input_port name="TimeBeforeFailing" default="5">The time before the sub movement fail</input_port>
+        </SubTree>
+        <Action ID="ShootTorpedo">
+            <input_port name="side" type="std::string">port_side or starboard</input_port>
+        </Action>
+        <SubTree ID="SlalomRafinee" editable="true">
+            <input_port name="Side">The</input_port>
+        </SubTree>
+        <SubTree ID="SlalomSemiFinal" editable="true">
+            <input_port name="Side" default="Left">The side that the sub take to passe the slalom</input_port>
+        </SubTree>
+        <SubTree ID="SlalomSimple" editable="true">
+            <input_port name="Side">The side for passing the slalom</input_port>
+        </SubTree>
+        <Action ID="SplitAiDetection">
+            <output_port name="splittedDetections" type="Point"/>
+            <input_port name="detection" type="std::vector&lt;Point, std::allocator&lt;Point&gt; &gt;"/>
+            <inout_port name="offset" type="unsigned long"/>
+        </Action>
+        <Action ID="SplitTrajectory">
+            <output_port name="splittedTrajectory" type="Trajectory"/>
+            <input_port name="trajectory" type="Trajectory"/>
+            <inout_port name="offset" type="unsigned long"/>
+        </Action>
         <Action ID="Tare">
             <input_port name="sensor" type="std::string">imu or depth</input_port>
         </Action>
-        <Action ID="Torpedo">
-            <input_port name="side" type="std::string">port_side or starboard</input_port>
+        <Action ID="TorpedoAiFilter">
+            <input_port name="Object_class" type="std::string">Searched object</input_port>
+            <input_port name="Max_frame_before_failing" default="0" type="int">Maximum allowed frames before failing the object research</input_port>
+            <output_port name="Detected_object" type="AiDetection"/>
+            <input_port name="Min_detections_before_success" default="2" type="unsigned long">Minumum number of frames with at least one detection before sending results. Need to be heigher than 2</input_port>
+            <input_port name="Max_depth" default="25.000000" type="float">Maximum allowed depth</input_port>
+            <input_port name="Confidence" default="0.600000" type="float">Ai confidence</input_port>
+            <input_port name="Max_time_before_failing_sec" default="0.000000" type="float">Maximum allowed frames before failing the object research</input_port>
+            <input_port name="Camera" default="1" type="int">1: Front, 0: Bottom</input_port>
         </Action>
+        <Action ID="TorpedoAiming">
+            <inout_port name="Trajectory" type="Trajectory"/>
+            <input_port name="TargetOffset" type="float"/>
+            <input_port name="LaunchingSide" type="std::string"/>
+            <input_port name="Detection" type="AiDetection"/>
+        </Action>
+        <SubTree ID="TorpedoShootingSequence" editable="true">
+            <input_port name="TorpedoSide">The torpedo side to launch</input_port>
+            <input_port name="ObjectToAim">The object closest to the torpedo target</input_port>
+        </SubTree>
+        <SubTree ID="Torpedos" editable="true">
+            <input_port name="Path">The object that the sub needs to aim first</input_port>
+        </SubTree>
         <Action ID="TrajectoryAppendPose">
             <input_port name="precision" default="0" type="int"/>
             <input_port name="speed" default="0" type="int"/>
             <input_port name="orientationZ" default="0.000000" type="float"/>
             <input_port name="orientationY" default="0.000000" type="float"/>
             <input_port name="orientationX" default="0.000000" type="float"/>
-            <input_port name="frame" default="1" type="int"/>
-            <input_port name="positionZ" default="0.000000" type="float"/>
             <inout_port name="trajectory" type="Trajectory"/>
             <input_port name="longRotation" default="false" type="bool"/>
-            <input_port name="positionY" default="0.000000" type="float"/>
             <input_port name="positionX" default="0.000000" type="float"/>
+            <input_port name="positionY" default="0.000000" type="float"/>
+            <input_port name="frame" default="1" type="int"/>
+            <input_port name="positionZ" default="0.000000" type="float"/>
         </Action>
         <Action ID="WaitTargetReached">
-            <input_port name="timeout" default="5" type="int"/>
+            <input_port name="timeout" default="5.000000" type="float"/>
         </Action>
-        <SubTree ID="bin_position_bottom" editable="true">
-            <input_port name="object_class"/>
-            <output_port name="y_found"/>
-            <output_port name="x_found"/>
-        </SubTree>
-        <SubTree ID="bin_position_front" editable="true">
-            <input_port name="object_class"/>
-            <output_port name="object_distance"/>
-        </SubTree>
-        <SubTree ID="bin_search_bottom" editable="true">
-            <input_port name="object_class"/>
-            <output_port name="y_found"/>
-            <output_port name="x_found"/>
-        </SubTree>
-        <SubTree ID="bin_search_front" editable="true">
-            <input_port name="object_class"/>
-            <output_port name="object_distance"/>
-        </SubTree>
-        <SubTree ID="gate_solo" editable="true">
-            <input_port name="choix_translation" default="true"/>
-        </SubTree>
-        <SubTree ID="search_rot" editable="true">
-            <input_port name="object_class"/>
-        </SubTree>
     </TreeNodesModel>
 </root>

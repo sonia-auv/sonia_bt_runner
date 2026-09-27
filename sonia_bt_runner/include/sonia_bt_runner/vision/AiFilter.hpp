@@ -1,51 +1,43 @@
 #pragma once
 
-#include "rclcpp/rclcpp.hpp"
-#include "behaviortree_cpp/behavior_tree.h"
+#include "sonia_bt_runner/vision/AbstractAiFilter.hpp"
 #include "sonia_bt_runner/utils/AiDetection.hpp"
-#include "sonia_bt_runner/utils/AiDetectionArray.hpp"
-#include "sonia_common_ros2/msg/detection.hpp"
-#include "sonia_common_ros2/msg/detection_array.hpp"
 
+#define AI_FILTER_OBJECT_CLASS "Object_class"
+#define AI_FILTER_OBJECT_CLASS_PARAMS AI_FILTER_OBJECT_CLASS, "Searched object"
+#define AI_FILTER_OBJECT_CLASS_TYPE std::string
+
+#define AI_FILTER_DETECTED_OBJECT "Detected_object"
+#define AI_FILTER_DETECTED_OBJECT_TYPE AiDetection
 
 namespace vision{
-    class AiFilter: public BT::StatefulActionNode{
+    class AiFilter: public AbstractAiFilter {
         public:
             AiFilter(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~AiFilter() = default;
+            ~AiFilter() override = default;
             static BT::PortsList providedPorts()
             {
-                return {
-                    BT::InputPort<int>("Camera", 1, "1: Front, 0: Bottom"),
-                    BT::InputPort<std::string>("Object_class", "Searched object"),
-                    BT::InputPort<float>("Confidence", 0.6, "Ai confidence"),
-                    BT::InputPort<int>("Min_detection", "minumum number of frames with at least one detection before sending results"),
-                    BT::InputPort<int>("Max_frame", "maximum allowed frames"),
-                    BT::InputPort<float>("Max_depth", "Maximum allowed depth"),
-                    BT::InputPort<int>("Max_size_output", "Max size of the output array"),
-                    BT::OutputPort<AiDetectionArray>("detected_object_array")};
+	       auto default_ports = AbstractAiFilter::providedPorts();
+	       BT::PortsList new_ports = {
+		    // Inputs
+		    BT::InputPort<AI_FILTER_OBJECT_CLASS_TYPE>(AI_FILTER_OBJECT_CLASS_PARAMS),
+		    // Outputs
+                    BT::OutputPort<AI_FILTER_DETECTED_OBJECT_TYPE>(AI_FILTER_DETECTED_OBJECT)
+	       };
+
+	       default_ports.merge(new_ports);
+
+	       return default_ports;
             }
 
             BT::NodeStatus onStart() override;
-            BT::NodeStatus onRunning() override;
-            void onHalted() override;
-        private:
-            void ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg);
-            std::shared_ptr<rclcpp::Node> ros_node;
-            rclcpp::Subscription<sonia_common_ros2::msg::DetectionArray>::SharedPtr ai_filter_sub;
+        protected: 
+	    void handle_success() override;
+	    BT::NodeStatus get_detection_status() override;
+            void ai_filter_callback(const sonia_common_ros2::msg::DetectionArray &msg) override;
+            AiDetection detection_average();         
 
+	    AI_FILTER_OBJECT_CLASS_TYPE _object_class;
             std::vector<sonia_common_ros2::msg::Detection> _detection_array;
-            int counter;
-            int nb_detection;
-
-            BT::Expected<std::string> _object;
-            BT::Expected<int> max_frame;
-            BT::Expected<int> max_size_output;
-            BT::Expected<float> confidence;
-            BT::Expected<float> max_depth;
-            BT::Expected<int> min_detection;
-            BT::Expected<int> cam;
-            
     };
-
 }

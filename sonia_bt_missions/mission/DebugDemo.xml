@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <!-- Runs without the robot: builtin nodes, and Sonia nodes that only compute, it waits
+       instead of moving. Made to follow a mission with a debugger, about 40 seconds long. -->
+  <BehaviorTree ID="DebugDemo">
+    <Sequence name="debug_demo">
+      <Script name="init"
+              code="step := 0; total := 0; distance := 0.0; attempts := 0; rounds := 5; delay := 2000; label := 'starting'"/>
+      <Repeat name="rounds"
+              num_cycles="{rounds}">
+        <Sequence name="round">
+          <Script name="next_step"
+                  code="step += 1; label := 'round'"/>
+          <Sleep name="wait"
+                 msec="{delay}"/>
+          <SubTree ID="DebugDemoCompute"
+                   name="compute"
+                   value="{step}"
+                   result="{total}"/>
+          <Fallback name="check_or_recover">
+            <ScriptCondition name="is_third_round"
+                             code="step == 3"/>
+            <Sequence name="recover">
+              <Sleep name="recover_wait"
+                     msec="500"/>
+              <Script name="recovered"
+                      code="label := 'recovered'"/>
+            </Sequence>
+          </Fallback>
+        </Sequence>
+      </Repeat>
+      <LoopDouble name="speeds"
+                  queue="0.5;1.0;1.5"
+                  value="{speed}">
+        <Sequence name="at_speed">
+          <Sleep name="cruise"
+                 msec="1500"/>
+          <Script name="accumulate"
+                  code="distance += speed"/>
+        </Sequence>
+      </LoopDouble>
+      <RetryUntilSuccessful name="retry"
+                            num_attempts="4">
+        <Sequence name="attempt">
+          <Script name="count_attempt"
+                  code="attempts += 1"/>
+          <Sleep name="try_wait"
+                 msec="1000"/>
+          <ScriptCondition name="third_time_lucky"
+                           code="attempts &gt;= 3"/>
+        </Sequence>
+      </RetryUntilSuccessful>
+      <Fallback name="timeout_or_skip">
+        <Timeout name="too_slow"
+                 msec="2000">
+          <Sleep name="long_wait"
+                 msec="10000"/>
+        </Timeout>
+        <AlwaysSuccess name="skipped"/>
+      </Fallback>
+      <SubTree ID="DebugDemoSlalomPlan"
+               name="slalom_plan"/>
+      <Script name="finish"
+              code="label := 'done'"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Plans a path between two made up poles, the way the slalom does from real detections.
+       Nothing is sent: the trajectory is only built, then read back one pose at a time. -->
+  <BehaviorTree ID="DebugDemoSlalomPlan">
+    <Sequence name="plan">
+      <!-- classification,confidence,distance,then the corners of the box: top left x,y,
+           top right x,y, bottom left x,y, bottom right x,y -->
+      <SetBlackboard name="see_red_pole"
+                     value="red,0.92,6.0,100,50,140,50,100,300,140,300"
+                     output_key="red_pole"/>
+      <SetBlackboard name="see_white_pole"
+                     value="white,0.87,7.5,400,60,430,60,400,280,430,280"
+                     output_key="white_pole"/>
+      <Sleep name="look"
+             msec="1500"/>
+      <InitializeTrajectory name="new_path"
+                            trajectory="{path}"/>
+      <TrajectoryAppendPose name="face_poles"
+                            positionX="0.0"
+                            positionY="0.0"
+                            positionZ="0.0"
+                            orientationX="0.0"
+                            orientationY="0.0"
+                            orientationZ="15.0"
+                            frame="1"
+                            speed="2"
+                            precision="1"
+                            longRotation="false"
+                            trajectory="{path}"/>
+      <Sleep name="think"
+             msec="1000"/>
+      <ComputeTrajectoryBetweenDetections name="between_poles"
+                                          DetectionA="{red_pole}"
+                                          DetectionB="{white_pole}"
+                                          PositionX="3.0"
+                                          Side="left"
+                                          Angle="20.0"
+                                          OffsetAngle="0.0"
+                                          Trajectory="{path}"/>
+      <Sleep name="check"
+             msec="1000"/>
+      <Repeat name="each_pose"
+              num_cycles="5">
+        <Sequence name="follow_pose">
+          <SplitTrajectory name="next_pose"
+                           offset="{pose_index}"
+                           trajectory="{path}"
+                           splittedTrajectory="{current_pose}"/>
+          <Sleep name="go"
+                 msec="1200"/>
+        </Sequence>
+      </Repeat>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="DebugDemoCompute">
+    <Sequence name="compute">
+      <Sleep name="think"
+             msec="1000"/>
+      <Script name="multiply"
+              code="result := value * 10"/>
+    </Sequence>
+  </BehaviorTree>
+</root>

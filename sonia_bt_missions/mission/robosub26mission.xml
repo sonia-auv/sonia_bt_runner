@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="Run26Strategy1SearchRescue">
+    <Sequence name="Strategy 1 : Easy Strategy that every sub can do for Survey&amp;Repair">
+      <SubTree ID="CoinFlip"
+               _autoremap="false"/>
+      <ForceSuccess>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="LIFE PRESERVER"
+                 NonTargetObject="COMPAS"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <IfThenElse>
+          <SubTree ID="SlalomSemiFinal"
+                   Side="{side}"/>
+          <AlwaysSuccess/>
+          <SubTree ID="InitialSubmerge"
+                   Depth="0.3"/>
+        </IfThenElse>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy1ServeyRepair">
+    <Sequence name="Strategy 1 : Easy Strategy that every sub can do for Survey&amp;Repair">
+      <SubTree ID="CoinFlip"
+               _autoremap="false"/>
+      <ForceSuccess>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="COMPAS"
+                 NonTargetObject="LIFE PRESERVER"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <IfThenElse>
+          <SubTree ID="SlalomSemiFinal"
+                   Side="{side}"/>
+          <AlwaysSuccess/>
+          <SubTree ID="InitialSubmerge"
+                   Depth="0.3"/>
+        </IfThenElse>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy2SearchRescue">
+    <Sequence name="Strategy 2 : AUV8 alone strategy for Search&amp;Rescue">
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+      <SubTree ID="CoinFlip"/>
+      <ForceSuccess>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="LIFE PRESERVER"
+                 NonTargetObject="COMPAS"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="SlalomSemiFinal"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="BinOneBox"
+                 ObjectToAim="{path}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="Torpedos"
+                 Path="{path}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy2ServeyRepair">
+    <Sequence name="Strategy 2 : AUV8 alone strategy for Servey&amp;Repair">
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+      <SubTree ID="CoinFlip"/>
+      <ForceSuccess>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="COMPAS"
+                 NonTargetObject="LIFE PRESERVER"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="BinOneBox"
+                 ObjectToAim="{path}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="Torpedos"
+                 Path="{path}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy3AUV8SearchRescue">
+    <Sequence name="Strategy for AUV8 with combo sub for Search&amp;Rescue">
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+      <SubTree ID="CoinFlip"/>
+      <ForceSuccess>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="LIFE PRESERVER"
+                 NonTargetObject="COMPAS"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="SlalomSemiFinal"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="BinOneBox"
+                 ObjectToAim="{path}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="Torpedos"
+                 Path="{path}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy3AUV8ServeyRepair">
+    <Sequence name="Strategy for AUV8 with combo sub for Servey&amp;Repair">
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+      <SubTree ID="CoinFlip"/>
+      <ForceSuccess>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="COMPAS"
+                 NonTargetObject="LIFE PRESERVER"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="SlalomSemiFinal"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="BinOneBox"
+                 ObjectToAim="{path}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="Torpedos"
+                 Path="{path}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy3LITESearchRescue">
+    <Sequence name="Strategy for LITE with combo sub for Search&amp;Rescue">
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+      <SubTree ID="CoinFlip"/>
+      <ForceSuccess>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="LIFE PRESERVER"
+                 NonTargetObject="COMPAS"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="SlalomSemiFinal"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy3LITEServeyRepair">
+    <AlwaysSuccess/>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy4AUV8">
+    <Sequence name="Hard Strategy for AUV8 with combo sub">
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+      <SubTree ID="CoinFlip"/>
+      <ForceSuccess>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="COMPAS"
+                 NonTargetObject="LIFE PRESERVER"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="BinTwoBox"
+                 ObjectToAim="{path}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="Torpedos"
+                 Path="{path}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run26Strategy4LITE">
+    <Sequence name="Hard Strategy for LITE with combo sub">
+      <SubTree ID="InitialSubmerge"
+               Depth="0.5"/>
+      <SubTree ID="CoinFlip"/>
+      <ForceSuccess>
+        <SubTree ID="Gate"
+                 Side="{side}"
+                 TargetObject="LIFE PRESERVER"
+                 NonTargetObject="COMPAS"/>
+      </ForceSuccess>
+      <SavePoint Point="{point_retour}"/>
+      <ForceSuccess>
+        <SubTree ID="TrickshotLegacy"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="SlalomSemiFinal"
+                 Side="{side}"/>
+      </ForceSuccess>
+      <ForceSuccess>
+        <SubTree ID="ReturnHome"
+                 point_retour="{point_retour}"/>
+      </ForceSuccess>
+      <SubTree ID="Done"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <SubTree ID="BinOneBox"
+             editable="true">
+      <input_port name="ObjectToAim"/>
+    </SubTree>
+    <SubTree ID="BinTwoBox"
+             editable="true">
+      <input_port name="ObjectToAim">The object in the bin that the sub needs to aim</input_port>
+    </SubTree>
+    <SubTree ID="Gate"
+             editable="true">
+      <output_port name="Side">The left or right side that the sub as taken</output_port>
+      <input_port name="TargetObject">Object than the sub looking for.</input_port>
+      <input_port name="NonTargetObject">Object that the sub use to make sure it passes on the right side.</input_port>
+    </SubTree>
+    <SubTree ID="InitialSubmerge"
+             editable="true">
+      <input_port name="Depth"
+                  default="0.5"/>
+    </SubTree>
+    <SubTree ID="ReturnHome"
+             editable="true">
+      <input_port name="point_retour">The register point after the gate</input_port>
+    </SubTree>
+    <Action ID="SavePoint">
+      <output_port name="Point"
+                   type="Point"/>
+    </Action>
+    <SubTree ID="SlalomSemiFinal"
+             editable="true">
+      <input_port name="Side"
+                  default="Left">The side that the sub take to passe the slalom</input_port>
+    </SubTree>
+    <SubTree ID="Torpedos"
+             editable="true">
+      <input_port name="Path">The object that the sub needs to aim first</input_port>
+    </SubTree>
+  </TreeNodesModel>
+
+</root>

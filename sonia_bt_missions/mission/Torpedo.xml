@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="Torpedos">
+    <Sequence>
+      <SubTree ID="InitialSubmerge"
+               Depth="0.4"/>
+      <AiActivation Model="1"
+                    Bottom="false"
+                    Front="true"/>
+      <SubTree ID="TorpedoApproachSequence"/>
+      <IfThenElse>
+        <ScriptCondition code="Path==&quot;survey-repair&quot;"/>
+        <Sequence>
+          <SubTree ID="TorpedoShootingSequence"
+                   TorpedoSide="port_side"
+                   ObjectToAim="FIRETRUCK"/>
+          <SubTree ID="TorpedoShootingSequence"
+                   TorpedoSide="starboard"
+                   ObjectToAim="FIRE"/>
+        </Sequence>
+        <Sequence>
+          <SubTree ID="TorpedoShootingSequence"
+                   TorpedoSide="starboard"
+                   ObjectToAim="AMBULANCE"/>
+          <SubTree ID="TorpedoShootingSequence"
+                   TorpedoSide="port_side"
+                   ObjectToAim="BLOOD"/>
+        </Sequence>
+      </IfThenElse>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Action ID="AiActivation">
+      <input_port name="Model"
+                  default="0"
+                  type="int">model choice, default = 0</input_port>
+      <input_port name="Bottom"
+                  default="false"
+                  type="bool">true: ON, talse: OFF</input_port>
+      <input_port name="Front"
+                  default="false"
+                  type="bool">true: ON, talse: OFF</input_port>
+    </Action>
+    <SubTree ID="InitialSubmerge"
+             editable="true">
+      <input_port name="Depth"
+                  default="0.5"/>
+    </SubTree>
+    <SubTree ID="TorpedoShootingSequence"
+             editable="true">
+      <input_port name="TorpedoSide">The torpedo side to launch</input_port>
+      <input_port name="ObjectToAim">The object closest to the torpedo target</input_port>
+    </SubTree>
+  </TreeNodesModel>
+
+</root>

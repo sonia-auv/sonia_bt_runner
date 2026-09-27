@@ -4,6 +4,13 @@
 #include "behaviortree_cpp/behavior_tree.h"
 #include "rclcpp/rclcpp.hpp"
 
+#define DEPTH_CHECK_TARGET "Target"
+#define DEPTH_CHECK_TARGET_PARAMS DEPTH_CHECK_TARGET, 0.1, "true: ON, talse: OFF"
+#define DEPTH_CHECK_TARGET_TYPE float
+
+#define DEPTH_CHECK_IS_SMALLER "IsSmaller"
+#define DEPTH_CHECK_IS_SMALLER_PARAMS DEPTH_CHECK_IS_SMALLER, false, "true: ON, talse: OFF"
+#define DEPTH_CHECK_IS_SMALLER_TYPE bool
 
 namespace sensors
 {
@@ -11,13 +18,13 @@ namespace sensors
     {
         public:
             DepthCheck(const std::string &name, std::shared_ptr<rclcpp::Node> node);
-            ~DepthCheck() = default;
+            ~DepthCheck() override = default;
             static BT::PortsList providedPorts()
             {
                 return
                 {
-                    BT::InputPort<float>("Target", 0.1, "true: ON, talse: OFF"),
-                        BT::InputPort<bool>("IsSmaller", false, "true: ON, talse: OFF"),
+                    BT::InputPort<DEPTH_CHECK_TARGET_TYPE>(DEPTH_CHECK_TARGET_PARAMS),
+                    BT::InputPort<DEPTH_CHECK_IS_SMALLER_TYPE>(DEPTH_CHECK_IS_SMALLER_PARAMS),
                 };
             }
             BT::NodeStatus tick() override;
@@ -25,8 +32,8 @@ namespace sensors
         private:
             void update_status(const std_msgs::msg::Float32::ConstSharedPtr &msg);
 
-            std::shared_ptr<rclcpp::Node> ros_node;
-            rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr depth_sub;
+            std::shared_ptr<rclcpp::Node> _ros_node;
+            rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr _depth_sub;
             float _depth_val;
     };
 }  // namespace sensors
