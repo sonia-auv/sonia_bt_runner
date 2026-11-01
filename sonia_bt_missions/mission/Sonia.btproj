@@ -11,6 +11,7 @@
     <include path="Template.xml"/>
     <include path="Torpedo.xml"/>
     <include path="robosub26mission.xml"/>
+    <include path="Simulation.xml"/>
     <!-- Description of Node Models (used by Groot) -->
     <TreeNodesModel>
         <Action ID="AiActivation">
@@ -60,6 +61,9 @@
         <SubTree ID="BinTwoBox" editable="true">
             <input_port name="ObjectToAim">The object in the bin that the sub needs to aim</input_port>
         </SubTree>
+        <SubTree ID="CoinFlip" editable="true">
+            <input_port name="depth">Initial depth</input_port>
+        </SubTree>
         <SubTree ID="CommunicationEmitter" editable="true">
             <input_port name="Path">The choosen path that the sub want to communicate</input_port>
         </SubTree>
@@ -91,6 +95,7 @@
         </Action>
         <SubTree ID="Gate" editable="true">
             <output_port name="Side">The left or right side that the sub as taken</output_port>
+            <input_port name="Depth">Initial depth</input_port>
             <input_port name="TargetObject">Object than the sub looking for.</input_port>
             <input_port name="NonTargetObject">Object that the sub use to make sure it passes on the right side.</input_port>
         </SubTree>
@@ -172,6 +177,19 @@
             <input_port name="Min_detection_before_success"/>
             <input_port name="Confidence"/>
             <input_port name="Max_depth"/>
+        </SubTree>
+        <SubTree ID="ParseOptions" editable="true">
+            <input_port name="option" type="std::string">Option is for customize a given run with the defined available options</input_port>
+            <output_port name="hasCoinFlip" type="bool">Run the coin flip mission</output_port>
+            <output_port name="hasGate" type="bool">Run the gate mission</output_port>
+            <output_port name="hasTrickshot" type="bool">Run the trickshot mission</output_port>
+            <output_port name="hasSlalom" type="bool">Run the slalom mission</output_port>
+            <output_port name="hasBin" type="bool">Run the bin mission</output_port>
+            <output_port name="hasTorpedo" type="bool">Run the torpedo mission</output_port>
+            <output_port name="hasOctogon" type="bool">Run the octogon mission</output_port>
+            <output_port name="hasReturnHome" type="bool">Run the return home mission</output_port>
+            <output_port name="hasRescue" type="bool">Run the rescue path</output_port>
+            <output_port name="hasRepair" type="bool">Run the repair path</output_port>
         </SubTree>
         <SubTree ID="QuickSearchClosestWhiteSlalom" editable="true">
             <input_port name="Side"/>

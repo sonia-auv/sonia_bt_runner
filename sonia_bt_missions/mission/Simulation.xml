@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+    <BehaviorTree ID="SimulationAbstract">
+        <Sequence>
+            <Sequence>
+                <Script code="initialDepth := 0.5"/>
+                <Script code="option := &quot;&quot;"/>
+                <ParseOptions hasBin="{{hasBin}}" hasCoinFlip="{{hasCoinFlip}}" hasGate="{{hasGate}}" hasOctogon="{{hasOctogon}}" hasRepair="{{hasRepair}}" hasRescue="{{hasRescue}}" hasReturnHome="{{hasReturnHome}}" hasSlalom="{{hasSlalom}}" hasTorpedo="{{hasTorpedo}}" hasTrickshot="{{hasTrickshot}}" option="{{option}}"/>
+            </Sequence>
+            <InitialSubmerge Depth="{{initialDepth}}"/>
+            <ForceSuccess>
+                <Sequence>
+                    <IfThenElse>
+                        <ScriptCondition code="hasCoinFlip"/>
+                        <CoinFlip depth="{initialDepth}"/>
+                        <AlwaysSuccess/>
+                    </IfThenElse>
+                </Sequence>
+            </ForceSuccess>
+            <ForceSuccess>
+                <Sequence>
+                    <IfThenElse>
+                        <ScriptCondition code="hasGate"/>
+                        <AlwaysSuccess/>
+                        <AlwaysSuccess/>
+                    </IfThenElse>
+                </Sequence>
+            </ForceSuccess>
+            <ForceSuccess>
+                <Sequence>
+                    <IfThenElse>
+                        <ScriptCondition code="hasReturnHome"/>
+                        <SavePoint Point="{{returnHomePoint}}"/>
+                        <AlwaysSuccess/>
+                    </IfThenElse>
+                </Sequence>
+            </ForceSuccess>
+            <ForceSuccess>
+                <Sequence>
+                    <IfThenElse>
+                        <ScriptCondition code="hasTrickshot"/>
+                        <AlwaysSuccess/>
+                        <AlwaysSuccess/>
+                    </IfThenElse>
+                </Sequence>
+            </ForceSuccess>
+            <ForceSuccess>
+                <Sequence>
+                    <IfThenElse>
+                        <ScriptCondition code="hasSlalom"/>
+                        <AlwaysSuccess/>
+                        <AlwaysSuccess/>
+                    </IfThenElse>
+                </Sequence>
+            </ForceSuccess>
+            <ForceSuccess>
+                <Sequence>
+                    <IfThenElse>
+                        <ScriptCondition code="hasTorpedo"/>
+                        <AlwaysSuccess/>
+                        <AlwaysSuccess/>
+                    </IfThenElse>
+                </Sequence>
+            </ForceSuccess>
+            <ForceSuccess>
+                <Sequence>
+                    <IfThenElse>
+                        <ScriptCondition code="hasOctogon"/>
+                        <AlwaysSuccess/>
+                        <AlwaysSuccess/>
+                    </IfThenElse>
+                </Sequence>
+            </ForceSuccess>
+            <ForceSuccess>
+                <Sequence>
+                    <IfThenElse>
+                        <ScriptCondition code="hasBin"/>
+                        <AlwaysSuccess/>
+                        <AlwaysSuccess/>
+                    </IfThenElse>
+                </Sequence>
+            </ForceSuccess>
+            <ForceSuccess>
+                <Sequence>
+                    <IfThenElse>
+                        <ScriptCondition code="hasReturnHome"/>
+                        <AlwaysSuccess/>
+                        <AlwaysSuccess/>
+                    </IfThenElse>
+                </Sequence>
+            </ForceSuccess>
+        </Sequence>
+    </BehaviorTree>
+</root>

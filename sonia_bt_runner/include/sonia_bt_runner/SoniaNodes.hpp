@@ -32,6 +32,7 @@ static void registerInitNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<
     factory.registerBuilder<init::EnableDisableDVL>("EnableDisableDVL", configBuilder<init::EnableDisableDVL>(node));
     factory.registerBuilder<init::ControlSetMode>("ControlSetMode", configBuilder<init::ControlSetMode>(node));
     factory.registerBuilder<init::Tare>("Tare", configBuilder<init::Tare>(node));
+    factory.registerBuilder<init::ParseOptions>("ParseOptions", configBuilder<init::ParseOptions>(node));
 }
 static void registerActuatorNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
