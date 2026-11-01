@@ -1,16 +1,19 @@
 #pragma once
 
 #include <vector>
+
 #include "behaviortree_cpp/behavior_tree.h"
 #include "sonia_bt_runner/utils/AiDetection.hpp"
 
-struct AiDetectionArray {
+struct AiDetectionArray
+{
     std::vector<AiDetection> detection_array;
 };
 
 namespace BT
 {
-    template <> inline AiDetectionArray convertFromString(StringView str)
+    template <>
+    inline AiDetectionArray convertFromString(StringView str)
     {
         auto parts = splitString(str, ';');
         AiDetectionArray output;
@@ -20,4 +23,4 @@ namespace BT
         }
         return output;
     }
-} // namespace BT
+}  // namespace BT

@@ -3,11 +3,10 @@
 namespace navigation
 {
 
-    MoveAboveObject::MoveAboveObject(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    : BT::SyncActionNode(name, config), _ros_node(node)
-    {
-        
-    }
+    MoveAboveObject::MoveAboveObject(const std::string &name, const BT::NodeConfig &config,
+                                     std::shared_ptr<rclcpp::Node> node)
+        : BT::SyncActionNode(name, config), _ros_node(node)
+    {}
 
     BT::NodeStatus MoveAboveObject::tick()
     {
@@ -16,7 +15,7 @@ namespace navigation
         // We get the detected object by the AI
         getInput(MOVE_ABOVE_OBJECT_DETECTION, det);
 
-        if(!getInput<MOVE_ABOVE_OBJECT_TRAJECTORY_TYPE>(MOVE_ABOVE_OBJECT_TRAJECTORY))
+        if (!getInput<MOVE_ABOVE_OBJECT_TRAJECTORY_TYPE>(MOVE_ABOVE_OBJECT_TRAJECTORY))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
@@ -24,7 +23,7 @@ namespace navigation
         }
 
         RCLCPP_INFO(_ros_node->get_logger(), "Computing MoveAboveObject trajectory");
-        
+
         // We compute the trajectory to do
         TrajectoryPose t;
 

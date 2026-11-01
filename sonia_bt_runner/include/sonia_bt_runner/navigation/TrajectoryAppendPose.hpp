@@ -45,30 +45,31 @@
 #define TRAJECTORY_APPEND_POSE_TRAJECTORY "trajectory"
 #define TRAJECTORY_APPEND_POSE_TRAJECTORY_TYPE Trajectory
 
-namespace navigation{
+namespace navigation
+{
     class TrajectoryAppendPose : public BT::SyncActionNode
     {
         public:
-            TrajectoryAppendPose(const std::string &name, const BT::NodeConfig &config);
-            ~TrajectoryAppendPose() override = default;
+        TrajectoryAppendPose(const std::string &name, const BT::NodeConfig &config);
+        ~TrajectoryAppendPose() override = default;
 
-            static BT::PortsList providedPorts()
-            {
-                return {
-                    BT::InputPort<TRAJECTORY_APPEND_POSE_POSITION_Z_TYPE>(TRAJECTORY_APPEND_POSE_POSITION_Z_PARAMS),
-                    BT::InputPort<TRAJECTORY_APPEND_POSE_POSITION_Y_TYPE>(TRAJECTORY_APPEND_POSE_POSITION_Y_PARAMS),
-                    BT::InputPort<TRAJECTORY_APPEND_POSE_ORIENTATION_X_TYPE>(TRAJECTORY_APPEND_POSE_ORIENTATION_X_PARAMS),
-                    BT::InputPort<TRAJECTORY_APPEND_POSE_ORIENTATION_Y_TYPE>(TRAJECTORY_APPEND_POSE_ORIENTATION_Y_PARAMS),
-                    BT::InputPort<TRAJECTORY_APPEND_POSE_ORIENTATION_Z_TYPE>(TRAJECTORY_APPEND_POSE_ORIENTATION_Z_PARAMS),
-                    BT::InputPort<TRAJECTORY_APPEND_POSE_POSITION_X_TYPE>(TRAJECTORY_APPEND_POSE_POSITION_X_PARAMS),
-                    BT::InputPort<TRAJECTORY_APPEND_POSE_FRAME_TYPE>(TRAJECTORY_APPEND_POSE_FRAME_PARAMS),
-                    BT::InputPort<TRAJECTORY_APPEND_POSE_SPEED_TYPE>(TRAJECTORY_APPEND_POSE_SPEED_PARAMS),
-                    BT::InputPort<TRAJECTORY_APPEND_POSE_PRECISION_TYPE>(TRAJECTORY_APPEND_POSE_PRECISION_PARAMS),
-                    BT::InputPort<TRAJECTORY_APPEND_POSE_LONG_ROTATION_TYPE>(TRAJECTORY_APPEND_POSE_LONG_ROTATION_PARAMS),
-                    BT::BidirectionalPort<TRAJECTORY_APPEND_POSE_TRAJECTORY_TYPE>(TRAJECTORY_APPEND_POSE_TRAJECTORY),
-                };
-            }
+        static BT::PortsList providedPorts()
+        {
+            return {
+                BT::InputPort<TRAJECTORY_APPEND_POSE_POSITION_Z_TYPE>(TRAJECTORY_APPEND_POSE_POSITION_Z_PARAMS),
+                BT::InputPort<TRAJECTORY_APPEND_POSE_POSITION_Y_TYPE>(TRAJECTORY_APPEND_POSE_POSITION_Y_PARAMS),
+                BT::InputPort<TRAJECTORY_APPEND_POSE_ORIENTATION_X_TYPE>(TRAJECTORY_APPEND_POSE_ORIENTATION_X_PARAMS),
+                BT::InputPort<TRAJECTORY_APPEND_POSE_ORIENTATION_Y_TYPE>(TRAJECTORY_APPEND_POSE_ORIENTATION_Y_PARAMS),
+                BT::InputPort<TRAJECTORY_APPEND_POSE_ORIENTATION_Z_TYPE>(TRAJECTORY_APPEND_POSE_ORIENTATION_Z_PARAMS),
+                BT::InputPort<TRAJECTORY_APPEND_POSE_POSITION_X_TYPE>(TRAJECTORY_APPEND_POSE_POSITION_X_PARAMS),
+                BT::InputPort<TRAJECTORY_APPEND_POSE_FRAME_TYPE>(TRAJECTORY_APPEND_POSE_FRAME_PARAMS),
+                BT::InputPort<TRAJECTORY_APPEND_POSE_SPEED_TYPE>(TRAJECTORY_APPEND_POSE_SPEED_PARAMS),
+                BT::InputPort<TRAJECTORY_APPEND_POSE_PRECISION_TYPE>(TRAJECTORY_APPEND_POSE_PRECISION_PARAMS),
+                BT::InputPort<TRAJECTORY_APPEND_POSE_LONG_ROTATION_TYPE>(TRAJECTORY_APPEND_POSE_LONG_ROTATION_PARAMS),
+                BT::BidirectionalPort<TRAJECTORY_APPEND_POSE_TRAJECTORY_TYPE>(TRAJECTORY_APPEND_POSE_TRAJECTORY),
+            };
+        }
 
-            BT::NodeStatus tick() override;
+        BT::NodeStatus tick() override;
     };
-}
+}  // namespace navigation

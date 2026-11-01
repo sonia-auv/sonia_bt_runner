@@ -3,11 +3,10 @@
 namespace navigation
 {
 
-    FaceTheObject::FaceTheObject(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-       : BT::SyncActionNode(name, config), _ros_node(node)
-    {
-
-    }
+    FaceTheObject::FaceTheObject(const std::string &name, const BT::NodeConfig &config,
+                                 std::shared_ptr<rclcpp::Node> node)
+        : BT::SyncActionNode(name, config), _ros_node(node)
+    {}
     BT::NodeStatus FaceTheObject::tick()
     {
         FACE_THE_OBJECT_DETECTION_TYPE det;
@@ -15,7 +14,7 @@ namespace navigation
         // We get the detected object by the AI
         getInput(FACE_THE_OBJECT_DETECTION, det);
 
-        if(!getInput<FACE_THE_OBJECT_TRAJECTORY_TYPE>(FACE_THE_OBJECT_TRAJECTORY))
+        if (!getInput<FACE_THE_OBJECT_TRAJECTORY_TYPE>(FACE_THE_OBJECT_TRAJECTORY))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
@@ -26,11 +25,11 @@ namespace navigation
 
         TrajectoryPose t;
         // We set the trajectory of the submarine to rotate on itself to face the object
-        t.positionX = 0.0; // We don't move on the x axis
-        t.positionY = 0.0; // We don't move on the x and y axis
-        t.positionZ = 0.0; // We don't move on the z axis
-        t.orientationX = 0.0; // We don't turn around the x axis
-        t.orientationY = 0.0; // We don't turn around the y axis
+        t.positionX = 0.0;                  // We don't move on the x axis
+        t.positionY = 0.0;                  // We don't move on the x and y axis
+        t.positionZ = 0.0;                  // We don't move on the z axis
+        t.orientationX = 0.0;               // We don't turn around the x axis
+        t.orientationY = 0.0;               // We don't turn around the y axis
         t.orientationZ = -det.angle_alpha;  // We turn around the z axis
         t.frame = 1;                        // 0: relative to current position, 1
         t.speed = 0;                        // Speed of the rotation

@@ -3,11 +3,10 @@
 namespace navigation
 {
 
-    TorpedoAiming::TorpedoAiming(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    : BT::SyncActionNode(name, config), _ros_node(node)
-    {
-
-    }
+    TorpedoAiming::TorpedoAiming(const std::string &name, const BT::NodeConfig &config,
+                                 std::shared_ptr<rclcpp::Node> node)
+        : BT::SyncActionNode(name, config), _ros_node(node)
+    {}
 
     BT::NodeStatus TorpedoAiming::tick()
     {
@@ -20,7 +19,7 @@ namespace navigation
         getInput(TORPEDO_AIMING_LAUNCHING_SIDE, launching_side);
         getInput(TORPEDO_AIMING_TARGET_OFFSET, target_offset);
 
-        if(!getInput<TORPEDO_AIMING_TRAJECTORY_TYPE>(TORPEDO_AIMING_TRAJECTORY))
+        if (!getInput<TORPEDO_AIMING_TRAJECTORY_TYPE>(TORPEDO_AIMING_TRAJECTORY))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
@@ -28,30 +27,30 @@ namespace navigation
         }
 
         RCLCPP_INFO(_ros_node->get_logger(), "Computing TorpedoAiming trajectory");
-        
+
         TrajectoryPose t;
-        t.positionX = det.distance - target_offset; // We take an offset with the target poster
-        t.positionY = det.distance_teta; // We move on the y axis
+        t.positionX = det.distance - target_offset;  // We take an offset with the target poster
+        t.positionY = det.distance_teta;             // We move on the y axis
         if (launching_side == "port_side")
         {
-            t.positionY -= CAMERA_TO_TORPIDO_PEPPER_OFFSET_X; // We move on the x axis
+            t.positionY -= CAMERA_TO_TORPIDO_PEPPER_OFFSET_X;  // We move on the x axis
         }
-        else if(launching_side == "starboard")
+        else if (launching_side == "starboard")
         {
-            t.positionY -= CAMERA_TO_TORPIDO_SALT_OFFSET_X; // We move on the x axis
+            t.positionY -= CAMERA_TO_TORPIDO_SALT_OFFSET_X;  // We move on the x axis
         }
-        t.positionZ = -det.distance_beta; // We move on the z axis
+        t.positionZ = -det.distance_beta;  // We move on the z axis
         if (launching_side == "port_side" || launching_side == "starboard")
         {
             t.positionZ += CAMERA_TO_TORPEDO_OFFSET_Y;
         }
-        t.orientationX = 0.0;       // We don't rotate on the x axis
-        t.orientationY = 0.0;       // We don't rotate on the y axis
-        t.orientationZ = 0.0;       // We don't rotate on the z axis
-        t.frame = 1;                // We use the relative positionning
+        t.orientationX = 0.0;  // We don't rotate on the x axis
+        t.orientationY = 0.0;  // We don't rotate on the y axis
+        t.orientationZ = 0.0;  // We don't rotate on the z axis
+        t.frame = 1;           // We use the relative positionning
         t.speed = 0;
-        t.precision = 0;            // We don't care about the precision
-        t.long_rotation = false;    // We don't care about the long rotation
+        t.precision = 0;          // We don't care about the precision
+        t.long_rotation = false;  // We don't care about the long rotation
 
         RCLCPP_INFO(_ros_node->get_logger(), "position en x: %f", t.positionX);
         RCLCPP_INFO(_ros_node->get_logger(), "position en y: %f", t.positionY);
