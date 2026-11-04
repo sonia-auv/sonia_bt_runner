@@ -1,13 +1,13 @@
 #pragma once
 
-#include "sonia_bt_runner/vision/SoniaVision.hpp"
-#include "sonia_bt_runner/navigation/SoniaNavigation.hpp"
-#include "sonia_bt_runner/init/SoniaInit.hpp"
 #include "sonia_bt_runner/actuator/SoniaActuator.hpp"
+#include "sonia_bt_runner/init/SoniaInit.hpp"
+#include "sonia_bt_runner/navigation/SoniaNavigation.hpp"
 #include "sonia_bt_runner/sensors/SoniaSensor.hpp"
 #include "sonia_bt_runner/utils/AiDetection.hpp"
 #include "sonia_bt_runner/utils/Point.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
+#include "sonia_bt_runner/vision/SoniaVision.hpp"
 
 using namespace BT;
 template <typename T>
@@ -27,32 +27,40 @@ static void registerJsonConverters()
 
 static void registerInitNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
-    factory.registerBuilder<init::MissionSwitchStatus>("MissionSwitchStatus", simpleBuilder<init::MissionSwitchStatus>(node));
+    factory.registerBuilder<init::MissionSwitchStatus>("MissionSwitchStatus",
+                                                       simpleBuilder<init::MissionSwitchStatus>(node));
     factory.registerBuilder<init::EnableDisableDVL>("EnableDisableDVL", configBuilder<init::EnableDisableDVL>(node));
     factory.registerBuilder<init::ControlSetMode>("ControlSetMode", configBuilder<init::ControlSetMode>(node));
-    factory.registerBuilder<init::Tare>("Tare", configBuilder<init::Tare>(node));     
+    factory.registerBuilder<init::Tare>("Tare", configBuilder<init::Tare>(node));
 }
 static void registerActuatorNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
     factory.registerBuilder<actuator::LaunchDropper>("LaunchDropper", configBuilder<actuator::LaunchDropper>(node));
-    factory.registerBuilder<actuator::ShootTorpedo>("ShootTorpedo", configBuilder<actuator::ShootTorpedo>(node)); 
+    factory.registerBuilder<actuator::ShootTorpedo>("ShootTorpedo", configBuilder<actuator::ShootTorpedo>(node));
 }
 static void registerNavigationNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
 {
     factory.registerBuilder<navigation::MoveToObject>("MoveToObject", configBuilder<navigation::MoveToObject>(node));
     factory.registerBuilder<navigation::FaceTheObject>("FaceTheObject", configBuilder<navigation::FaceTheObject>(node));
-    factory.registerBuilder<navigation::MoveAboveObject>("MoveAboveObject", configBuilder<navigation::MoveAboveObject>(node));
-    factory.registerBuilder<navigation::ObjectDrifting>("ObjectDrifting", configBuilder<navigation::ObjectDrifting>(node));
-    factory.registerBuilder<navigation::TorpedoAiming>("TorpedoAiming",  configBuilder<navigation::TorpedoAiming>(node));
-    factory.registerBuilder<navigation::MoveToPoint>("MoveToPoint",  configBuilder<navigation::MoveToPoint>(node));
-    factory.registerBuilder<navigation::SavePoint>("SavePoint",  configBuilder<navigation::SavePoint>(node));
+    factory.registerBuilder<navigation::MoveAboveObject>("MoveAboveObject",
+                                                         configBuilder<navigation::MoveAboveObject>(node));
+    factory.registerBuilder<navigation::ObjectDrifting>("ObjectDrifting",
+                                                        configBuilder<navigation::ObjectDrifting>(node));
+    factory.registerBuilder<navigation::TorpedoAiming>("TorpedoAiming", configBuilder<navigation::TorpedoAiming>(node));
+    factory.registerBuilder<navigation::MoveToPoint>("MoveToPoint", configBuilder<navigation::MoveToPoint>(node));
+    factory.registerBuilder<navigation::SavePoint>("SavePoint", configBuilder<navigation::SavePoint>(node));
     factory.registerNodeType<navigation::InitializeTrajectory>("InitializeTrajectory");
     factory.registerNodeType<navigation::TrajectoryAppendPose>("TrajectoryAppendPose");
-    factory.registerBuilder<navigation::SendTrajectory>("SendTrajectory", configBuilder<navigation::SendTrajectory>(node));
-    factory.registerBuilder<navigation::WaitTargetReached>("WaitTargetReached", configBuilder<navigation::WaitTargetReached>(node));
-    factory.registerBuilder<navigation::ComputeTrajectoryBetweenDetections>("ComputeTrajectoryBetweenDetections", configBuilder<navigation::ComputeTrajectoryBetweenDetections>(node));
-    factory.registerBuilder<navigation::SplitTrajectory>("SplitTrajectory", configBuilder<navigation::SplitTrajectory>(node));
-    factory.registerBuilder<navigation::SplitAiDetection>("SplitAiDetection", configBuilder<navigation::SplitAiDetection>(node));
+    factory.registerBuilder<navigation::SendTrajectory>("SendTrajectory",
+                                                        configBuilder<navigation::SendTrajectory>(node));
+    factory.registerBuilder<navigation::WaitTargetReached>("WaitTargetReached",
+                                                           configBuilder<navigation::WaitTargetReached>(node));
+    factory.registerBuilder<navigation::ComputeTrajectoryBetweenDetections>(
+        "ComputeTrajectoryBetweenDetections", configBuilder<navigation::ComputeTrajectoryBetweenDetections>(node));
+    factory.registerBuilder<navigation::SplitTrajectory>("SplitTrajectory",
+                                                         configBuilder<navigation::SplitTrajectory>(node));
+    factory.registerBuilder<navigation::SplitAiDetection>("SplitAiDetection",
+                                                          configBuilder<navigation::SplitAiDetection>(node));
 }
 
 static void registerSensorNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
@@ -66,11 +74,14 @@ static void registerVisionNodes(BT::BehaviorTreeFactory &factory, std::shared_pt
     factory.registerBuilder<vision::AiMock>("AiMock", configBuilder<vision::AiMock>(node));
     factory.registerBuilder<vision::AiFilter>("AiFilter", configBuilder<vision::AiFilter>(node));
     factory.registerBuilder<vision::TorpedoAiFilter>("TorpedoAiFilter", configBuilder<vision::TorpedoAiFilter>(node));
-    factory.registerBuilder<vision::SearchWhiteSlalom>("SearchWhiteSlalom", configBuilder<vision::SearchWhiteSlalom>(node));
-    factory.registerBuilder<vision::SearchClosestSlalom>("SearchClosestSlalom", configBuilder<vision::SearchClosestSlalom>(node));
+    factory.registerBuilder<vision::SearchWhiteSlalom>("SearchWhiteSlalom",
+                                                       configBuilder<vision::SearchWhiteSlalom>(node));
+    factory.registerBuilder<vision::SearchClosestSlalom>("SearchClosestSlalom",
+                                                         configBuilder<vision::SearchClosestSlalom>(node));
     factory.registerBuilder<vision::HasDetection>("HasDetection", configBuilder<vision::HasDetection>(node));
     factory.registerBuilder<vision::BinAiFilter>("BinAiFilter", configBuilder<vision::BinAiFilter>(node));
-    factory.registerBuilder<vision::OctogoneAiFilter>("OctogoneAiFilter", configBuilder<vision::OctogoneAiFilter>(node));
+    factory.registerBuilder<vision::OctogoneAiFilter>("OctogoneAiFilter",
+                                                      configBuilder<vision::OctogoneAiFilter>(node));
 }
 
 [[maybe_unused]] static void registerNodes(BT::BehaviorTreeFactory &factory, std::shared_ptr<rclcpp::Node> node)
@@ -84,16 +95,18 @@ static void registerVisionNodes(BT::BehaviorTreeFactory &factory, std::shared_pt
 }
 
 template <typename T>
-BT::NodeBuilder configBuilder(std::shared_ptr<rclcpp::Node> node){
-    return [node](const std::string &name, const BT::NodeConfig &config){
-        return std::make_unique<T>(name,config,node);
-    }; 
+BT::NodeBuilder configBuilder(std::shared_ptr<rclcpp::Node> node)
+{
+    return [node](const std::string &name, const BT::NodeConfig &config) {
+        return std::make_unique<T>(name, config, node);
+    };
 }
 
 template <typename T>
-BT::NodeBuilder simpleBuilder(std::shared_ptr<rclcpp::Node> node){
-    return [node](const std::string &name, const BT::NodeConfig &config){
+BT::NodeBuilder simpleBuilder(std::shared_ptr<rclcpp::Node> node)
+{
+    return [node](const std::string &name, const BT::NodeConfig &config) {
         (void)config;
-        return std::make_unique<T>(name,node);
-    }; 
+        return std::make_unique<T>(name, node);
+    };
 }

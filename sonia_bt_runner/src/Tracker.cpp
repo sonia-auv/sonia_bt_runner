@@ -2,20 +2,23 @@
 
 Tracker::Tracker(BT::Tree& tree, const std::shared_ptr<GoalHandle> goal)
     : BT::StatusChangeLogger(tree.rootNode()), _gl(goal)
-    {
-        _feedback =  std::make_shared<MissionControl::Feedback>();
-    }
+{
+    _feedback = std::make_shared<MissionControl::Feedback>();
+}
 
-    void Tracker::callback(BT::Duration, const BT::TreeNode& node, BT::NodeStatus, BT::NodeStatus status)
+void Tracker::callback(BT::Duration, const BT::TreeNode& node, BT::NodeStatus, BT::NodeStatus status)
+{
+    try
     {
-        try{
-            _feedback->status = BT::toStr(status);
-            _feedback->node_name= node.name();
-            _feedback->uid = node.UID();
-            _gl->publish_feedback(_feedback);
-        }catch(const rclcpp::exceptions::RCLError &e){ } //catching for no goal instance warning after process ends
-                
-        std::this_thread::sleep_for(std::chrono::milliseconds(_THREAD_SLEEP_TIME));   
+        _feedback->status = BT::toStr(status);
+        _feedback->node_name = node.name();
+        _feedback->uid = node.UID();
+        _gl->publish_feedback(_feedback);
     }
+    catch (const rclcpp::exceptions::RCLError& e)
+    {}  // catching for no goal instance warning after process ends
 
-    void Tracker::flush(){}
+    std::this_thread::sleep_for(std::chrono::milliseconds(_THREAD_SLEEP_TIME));
+}
+
+void Tracker::flush() {}
