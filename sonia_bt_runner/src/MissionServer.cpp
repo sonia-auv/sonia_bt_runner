@@ -1,5 +1,7 @@
 #include "sonia_bt_runner/MissionServer.hpp"
 
+#include <cstdlib>
+
 using std::filesystem::directory_iterator;
 using namespace std::placeholders;
 
@@ -11,7 +13,7 @@ MissionServer::MissionServer()
 
 		if (ws == NULL) {
 			std::cerr << "env var SONIA_WS not set" << std::endl;
-			return EXIT_FAILURE;
+			abort();
 		}
 
         _search_directory.assign(ws);
