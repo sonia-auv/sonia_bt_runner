@@ -33,11 +33,11 @@
 
 #define AI_MOCK_CONFIDENCE_MIN "Confidence_min"
 #define AI_MOCK_CONFIDENCE_MIN_PARAMS AI_MOCK_CONFIDENCE_MIN, 0.7, "Lower bound of the random confidence"
-#define AI_MOCK_CONFIDENCE_MIN_TYPE float
+#define AI_MOCK_CONFIDENCE_MIN_TYPE double
 
 #define AI_MOCK_CONFIDENCE_MAX "Confidence_max"
 #define AI_MOCK_CONFIDENCE_MAX_PARAMS AI_MOCK_CONFIDENCE_MAX, 1.0, "Upper bound of the random confidence"
-#define AI_MOCK_CONFIDENCE_MAX_TYPE float
+#define AI_MOCK_CONFIDENCE_MAX_TYPE double
 
 #define AI_MOCK_DISTANCE "Distance"
 #define AI_MOCK_DISTANCE_PARAMS AI_MOCK_DISTANCE, 0.0, "Distance to the mocked object in meters"

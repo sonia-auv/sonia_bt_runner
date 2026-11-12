@@ -3,8 +3,8 @@
     <BehaviorTree ID="CoinFlip">
         <Sequence>
             <SubTree ID="InitialSubmerge" Depth="0.3"/>
-            <SubTree ID="RotateToAbsoluteAngle" Angle="0"/>
-            <SubTree ID="MoveSinglePose" frame="1.0" positionX="1.0" positionY="0.0" positionZ="0.0" orientationX="0.0" orientationY="0.0" orientationZ="0.0"/>
+            <SubTree ID="RotateToAbsoluteAngle" Angle="0.0"/>
+            <SubTree ID="MoveSinglePose" frame="1" positionX="1.0" positionY="0.0" positionZ="0.0" orientationX="0.0" orientationY="0.0" orientationZ="0.0"/>
         </Sequence>
     </BehaviorTree>
     <BehaviorTree ID="CommunicationEmitter">
@@ -14,7 +14,7 @@
         <AlwaysSuccess/>
     </BehaviorTree>
     <BehaviorTree ID="Gate">
-        <InitialSubmerge Depth="{{Depth}}"/>
+        <SubTree ID="InitialSubmerge" Depth="{Depth}"/>
     </BehaviorTree>
     <BehaviorTree ID="Trickshot">
         <Sequence>
@@ -27,7 +27,7 @@
             <TrajectoryAppendPose precision="0" speed="2" orientationZ="0" orientationY="-180" orientationX="0" trajectory="{traj}" longRotation="false" positionX="0.000000" positionY="0.000000" frame="1" positionZ="0.000000"/>
             <TrajectoryAppendPose precision="0" speed="2" orientationZ="0" orientationY="-90" orientationX="0" trajectory="{traj}" longRotation="false" positionX="0.000000" positionY="0.000000" frame="1" positionZ="0.000000"/>
             <TrajectoryAppendPose precision="0" speed="2" orientationZ="0" orientationY="0.000000" orientationX="180" trajectory="{traj}" longRotation="false" positionX="0.000000" positionY="0.000000" frame="1" positionZ="0.000000"/>
-            <SubTree ID="SendTrajectoryOnly" Trajectory="{traj}" TimeBeforeFailing="5"/>
+            <SubTree ID="SendTrajectoryOnly" Trajectory="{traj}" TimeBeforeFailing="5.0"/>
         </Sequence>
     </BehaviorTree>
     <BehaviorTree ID="TrickshotLegacy">
@@ -39,7 +39,7 @@
             <TrajectoryAppendPose precision="0" speed="0" orientationZ="0.000000" orientationY="0.000000" orientationX="180" trajectory="{traj}" longRotation="false" positionX="0.000000" positionY="0.000000" frame="1" positionZ="0.000000"/>
             <TrajectoryAppendPose precision="0" speed="0" orientationZ="0.000000" orientationY="90" orientationX="0.000000" trajectory="{traj}" longRotation="false" positionX="0.000000" positionY="0.000000" frame="1" positionZ="0.000000"/>
             <TrajectoryAppendPose precision="0" speed="0" orientationZ="0.000000" orientationY="180" orientationX="0.000000" trajectory="{traj}" longRotation="false" positionX="0.000000" positionY="0.000000" frame="1" positionZ="0.000000"/>
-            <SubTree ID="SendTrajectoryOnly" Trajectory="{traj}" TimeBeforeFailing="20"/>
+            <SubTree ID="SendTrajectoryOnly" Trajectory="{traj}" TimeBeforeFailing="20.0"/>
         </Sequence>
     </BehaviorTree>
     <!-- Description of Node Models (used by Groot) -->

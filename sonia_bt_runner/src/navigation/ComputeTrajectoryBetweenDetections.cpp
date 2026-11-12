@@ -65,7 +65,7 @@ namespace navigation
         // float rot_angle_to_aim_betw_two_det{(furthest_det_angle + nearest_det_angle - std::abs(angle))/(-2.0f)};
 
         // We compute the angle between the two detection angle
-        float delta_alpha{std::abs(furthest_det_angle - nearest_det_angle) + std::abs(angle)};
+        float delta_alpha{static_cast<float>(std::abs(furthest_det_angle - nearest_det_angle) + std::abs(angle))};
         RCLCPP_INFO(_ros_node->get_logger(), "delta_alpha : %lf", delta_alpha * RAD_TO_DEG);
 
         // We compute the half of the distance between the 2 detection

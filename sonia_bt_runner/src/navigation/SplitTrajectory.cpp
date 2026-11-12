@@ -21,7 +21,7 @@ namespace navigation
         }
 
         // We verify if the offset is valid for an other trajectory
-        if (offset >= trajectory.trajectory.size())
+        if (offset < 0 || static_cast<size_t>(offset) >= trajectory.trajectory.size())
         {
             RCLCPP_INFO(_ros_node->get_logger(), "Over the offset, the block failed");
             return BT::NodeStatus::FAILURE;

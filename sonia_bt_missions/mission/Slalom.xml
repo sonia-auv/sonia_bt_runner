@@ -17,13 +17,13 @@
                                Camera="1"/>
         </ForceSuccess>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="-25"/>
+                 orientationZ="-25.0"/>
         <ForceSuccess>
           <SearchClosestSlalom Object_class="RED_SLALOM"
                                Side="&quot;&quot;"
@@ -38,13 +38,13 @@
                                Camera="1"/>
         </ForceSuccess>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="-25"/>
+                 orientationZ="-25.0"/>
         <ForceSuccess>
           <SearchClosestSlalom Object_class="RED_SLALOM"
                                Side="&quot;&quot;"
@@ -59,13 +59,13 @@
                                Camera="1"/>
         </ForceSuccess>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="75"/>
+                 orientationZ="75.0"/>
         <ForceSuccess>
           <SearchClosestSlalom Object_class="RED_SLALOM"
                                Side="&quot;&quot;"
@@ -80,13 +80,13 @@
                                Camera="1"/>
         </ForceSuccess>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="25"/>
+                 orientationZ="25.0"/>
         <ForceSuccess>
           <SearchClosestSlalom Object_class="RED_SLALOM"
                                Side="&quot;&quot;"
@@ -107,12 +107,12 @@
         <IfThenElse>
           <ScriptCondition code="rotate != 0"/>
           <SubTree ID="MoveSinglePose"
-                   frame="1.0"
+                   frame="1"
                    positionX="0.0"
                    positionY="0.0"
                    positionZ="0.0"
                    orientationX="0.0"
-                   orientationY="0"
+                   orientationY="0.0"
                    orientationZ="{rotate}"/>
           <AlwaysSuccess/>
         </IfThenElse>
@@ -121,7 +121,7 @@
                        Detection="{ClosestObjectDetection}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{Trajectory}"
-                 TimeBeforeFailing="10"/>
+                 TimeBeforeFailing="10.0"/>
       </Sequence>
     </Sequence>
   </BehaviorTree>
@@ -142,16 +142,16 @@
                              Camera="1"/>
       </ForceSuccess>
       <IfThenElse>
-        <ScriptCondition code="Side==&quot;Left&quot;"/>
+        <ScriptCondition code="Side=='Left'"/>
         <Sequence>
           <SubTree ID="MoveSinglePose"
-                   frame="1.0"
+                   frame="1"
                    positionX="0.0"
                    positionY="0.0"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
-                   orientationZ="-25"/>
+                   orientationZ="-25.0"/>
           <ForceSuccess>
             <SearchClosestSlalom Object_class="WHITE_SLALOM"
                                  Side="{Side}"
@@ -169,13 +169,13 @@
         </Sequence>
         <Sequence>
           <SubTree ID="MoveSinglePose"
-                   frame="1.0"
+                   frame="1"
                    positionX="0.0"
                    positionY="0.0"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
-                   orientationZ="25"/>
+                   orientationZ="25.0"/>
           <ForceSuccess>
             <SearchClosestSlalom Object_class="WHITE_SLALOM"
                                  Side="{Side}"
@@ -190,13 +190,13 @@
                                  Camera="1"/>
           </ForceSuccess>
           <SubTree ID="MoveSinglePose"
-                   frame="1.0"
+                   frame="1"
                    positionX="0.0"
                    positionY="0.0"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
-                   orientationZ="25"/>
+                   orientationZ="25.0"/>
           <ForceSuccess>
             <SearchClosestSlalom Object_class="WHITE_SLALOM"
                                  Side="{Side}"
@@ -221,7 +221,7 @@
     <Sequence>
       <Sequence>
         <SubTree ID="RotateToAbsoluteAngle"
-                 Angle="0"/>
+                 Angle="0.0"/>
         <ForceSuccess>
           <SearchClosestSlalom Object_class="RED_SLALOM"
                                Side="&quot;&quot;"
@@ -236,13 +236,13 @@
                                Camera="1"/>
         </ForceSuccess>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="-25"/>
+                 orientationZ="-25.0"/>
         <ForceSuccess>
           <SearchClosestSlalom Object_class="RED_SLALOM"
                                Side="&quot;&quot;"
@@ -257,13 +257,13 @@
                                Camera="1"/>
         </ForceSuccess>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="-25"/>
+                 orientationZ="-25.0"/>
         <ForceSuccess>
           <SearchClosestSlalom Object_class="RED_SLALOM"
                                Side="&quot;&quot;"
@@ -278,13 +278,13 @@
                                Camera="1"/>
         </ForceSuccess>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="75"/>
+                 orientationZ="75.0"/>
         <ForceSuccess>
           <SearchClosestSlalom Object_class="RED_SLALOM"
                                Side="&quot;&quot;"
@@ -299,13 +299,13 @@
                                Camera="1"/>
         </ForceSuccess>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="25"/>
+                 orientationZ="25.0"/>
         <ForceSuccess>
           <SearchClosestSlalom Object_class="RED_SLALOM"
                                Side="&quot;&quot;"
@@ -330,13 +330,13 @@
                       Detection="{ClosestObjectDetection}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{Trajectory}"
-                 TimeBeforeFailing="10"/>
+                 TimeBeforeFailing="10.0"/>
       </Sequence>
       <IfThenElse>
         <ScriptCondition code="ClosestObjectAngle&gt;0"/>
         <Sequence>
           <SubTree ID="MoveSinglePose"
-                   frame="1.0"
+                   frame="1"
                    positionX="0.0"
                    positionY="1.0"
                    positionZ="0.0"
@@ -344,31 +344,31 @@
                    orientationY="0.0"
                    orientationZ="0.0"/>
           <SubTree ID="MoveSinglePose"
-                   frame="1.0"
+                   frame="1"
                    positionX="0.0"
                    positionY="0.0"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
-                   orientationZ="-25"/>
+                   orientationZ="-25.0"/>
         </Sequence>
         <Sequence>
           <SubTree ID="MoveSinglePose"
-                   frame="1.0"
+                   frame="1"
                    positionX="0.0"
-                   positionY="-10"
+                   positionY="-10.0"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
                    orientationZ="0.0"/>
           <SubTree ID="MoveSinglePose"
-                   frame="1.0"
+                   frame="1"
                    positionX="0.0"
                    positionY="0.0"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
-                   orientationZ="25"/>
+                   orientationZ="25.0"/>
         </Sequence>
       </IfThenElse>
     </Sequence>
@@ -390,16 +390,16 @@
                              Camera="1"/>
       </ForceSuccess>
       <IfThenElse>
-        <ScriptCondition code="Side==&quot;Left&quot;"/>
+        <ScriptCondition code="Side=='Left'"/>
         <Sequence>
           <SubTree ID="MoveSinglePose"
-                   frame="1.0"
+                   frame="1"
                    positionX="0.0"
                    positionY="0.0"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
-                   orientationZ="-25"/>
+                   orientationZ="-25.0"/>
           <ForceSuccess>
             <SearchClosestSlalom Object_class="WHITE_SLALOM"
                                  Side="{Side}"
@@ -414,13 +414,13 @@
                                  Camera="1"/>
           </ForceSuccess>
           <SubTree ID="MoveSinglePose"
-                   frame="1.0"
+                   frame="1"
                    positionX="0.0"
                    positionY="0.0"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
-                   orientationZ="-25"/>
+                   orientationZ="-25.0"/>
           <ForceSuccess>
             <SearchClosestSlalom Object_class="WHITE_SLALOM"
                                  Side="{Side}"
@@ -438,13 +438,13 @@
         </Sequence>
         <Sequence>
           <SubTree ID="MoveSinglePose"
-                   frame="1.0"
+                   frame="1"
                    positionX="0.0"
                    positionY="0.0"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
-                   orientationZ="25"/>
+                   orientationZ="25.0"/>
           <ForceSuccess>
             <SearchClosestSlalom Object_class="WHITE_SLALOM"
                                  Side="{Side}"
@@ -459,13 +459,13 @@
                                  Camera="1"/>
           </ForceSuccess>
           <SubTree ID="MoveSinglePose"
-                   frame="1.0"
+                   frame="1"
                    positionX="0.0"
                    positionY="0.0"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
-                   orientationZ="25"/>
+                   orientationZ="25.0"/>
           <ForceSuccess>
             <SearchClosestSlalom Object_class="WHITE_SLALOM"
                                  Side="{Side}"
@@ -516,7 +516,7 @@
                        Detection="{RedSlalomDetection}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{Trajectory}"
-                 TimeBeforeFailing="5"/>
+                 TimeBeforeFailing="5.0"/>
         <SubTree ID="SearchClosestWhiteSlalom"
                  Side="{Side}"
                  RedDetection="{RedSlalomDetection}"
@@ -533,7 +533,7 @@
                                             DetectionA="{WhiteSlalomDetection}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{Trajectory}"
-                 TimeBeforeFailing="15"/>
+                 TimeBeforeFailing="15.0"/>
       </Sequence>
       <Repeat num_cycles="2">
         <Sequence>
@@ -554,7 +554,7 @@
                          Detection="{RedSlalomDetection}"/>
           <SubTree ID="SendTrajectoryOnly"
                    Trajectory="{Trajectory}"
-                   TimeBeforeFailing="5"/>
+                   TimeBeforeFailing="5.0"/>
           <SubTree ID="QuickSearchClosestWhiteSlalom"
                    Side="{Side}"
                    RedDetection="{RedSlalomDetection}"
@@ -571,7 +571,7 @@
                                               DetectionA="{WhiteSlalomDetection}"/>
           <SubTree ID="SendTrajectoryOnly"
                    Trajectory="{Trajectory}"
-                   TimeBeforeFailing="15"/>
+                   TimeBeforeFailing="15.0"/>
         </Sequence>
       </Repeat>
     </Sequence>

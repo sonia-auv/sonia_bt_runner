@@ -12,13 +12,13 @@
                  Max_frame_before_failing="0"
                  Min_detection_before_success="5"
                  Confidence="0.60000"
-                 Max_depth="25"/>
+                 Max_depth="25.0"/>
         <MoveToObject Trajectory="{Trajectory}"
                       Offset="-1"
                       Detection="{Aidetection}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{Trajectory}"
-                 TimeBeforeFailing="5"/>
+                 TimeBeforeFailing="5.0"/>
       </Sequence>
       <Sequence name="Pitch the sub to look at the right image">
         <InitializeTrajectory trajectory="{Trajectory}"/>
@@ -42,10 +42,10 @@
                       Camera="1"/>
           </Fallback>
           <IfThenElse>
-            <ScriptCondition code="Path==&quot;survey-repair&quot;"/>
+            <ScriptCondition code="Path=='survey-repair'"/>
             <AlwaysSuccess/>
             <SubTree ID="MoveSinglePose"
-                     frame="1.0"
+                     frame="1"
                      positionX="0.0"
                      positionY="0.0"
                      positionZ="0.0"
@@ -54,9 +54,9 @@
                      orientationZ="90.0"/>
           </IfThenElse>
           <IfThenElse>
-            <ScriptCondition code="Path==&quot;search-rescue&quot;"/>
+            <ScriptCondition code="Path=='search-rescue'"/>
             <SubTree ID="MoveSinglePose"
-                     frame="1.0"
+                     frame="1"
                      positionX="0.0"
                      positionY="0.0"
                      positionZ="0.0"
@@ -92,7 +92,7 @@
 
   <BehaviorTree ID="OctogoneGoodPath">
     <SubTree ID="MoveSinglePose"
-             frame="1.0"
+             frame="1"
              positionX="0.0"
              positionY="0.0"
              positionZ="0.0"

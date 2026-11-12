@@ -11,7 +11,7 @@
 #define MOVE_TO_OBJECT_DETECTION_TYPE AiDetection
 
 #define MOVE_TO_OBJECT_OFFSET "Offset"
-#define MOVE_TO_OBJECT_OFFSET_TYPE float
+#define MOVE_TO_OBJECT_OFFSET_TYPE double
 
 #define MOVE_TO_OBJECT_TRAJECTORY "Trajectory"
 #define MOVE_TO_OBJECT_TRAJECTORY_TYPE Trajectory

@@ -6,7 +6,7 @@
         <SubTree ID="InitialSubmerge"
                  Depth="0.3"/>
         <SubTree ID="RotateToAbsoluteAngle"
-                 Angle="180"/>
+                 Angle="180.0"/>
         <InitializeTrajectory trajectory="{trajectory}"/>
         <MoveToPoint Trajectory="{trajectory}"
                      OffsetPositionZ="0.000000"
@@ -15,7 +15,7 @@
                      Point="{point_retour}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{trajectory}"
-                 TimeBeforeFailing="15"/>
+                 TimeBeforeFailing="15.0"/>
       </Sequence>
       <Sequence name="Pass throw the gate">
         <InitializeTrajectory trajectory="{trajectory}"/>
@@ -43,7 +43,7 @@
                               positionZ="0.000000"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{trajectory}"
-                 TimeBeforeFailing="15"/>
+                 TimeBeforeFailing="15.0"/>
       </Sequence>
     </Sequence>
   </BehaviorTree>

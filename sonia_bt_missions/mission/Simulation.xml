@@ -4,15 +4,16 @@
         <Sequence>
             <Sequence>
                 <Script code="initialDepth := 0.5"/>
-                <Script code="option := &quot;&quot;"/>
-                <ParseOptions hasBin="{{hasBin}}" hasCoinFlip="{{hasCoinFlip}}" hasGate="{{hasGate}}" hasOctogon="{{hasOctogon}}" hasRepair="{{hasRepair}}" hasRescue="{{hasRescue}}" hasReturnHome="{{hasReturnHome}}" hasSlalom="{{hasSlalom}}" hasTorpedo="{{hasTorpedo}}" hasTrickshot="{{hasTrickshot}}" option="{{option}}"/>
+                <Script code="option := &apos;&apos;"/>
+                <ParseOptions hasBin="{hasBin}" hasCoinFlip="{hasCoinFlip}" hasGate="{hasGate}" hasOctogon="{hasOctogon}" hasRepair="{hasRepair}" hasRescue="{hasRescue}" hasReturnHome="{hasReturnHome}" hasSlalom="{hasSlalom}" hasTorpedo="{hasTorpedo}" hasTrickshot="{hasTrickshot}" option="{option}"/>
             </Sequence>
-            <InitialSubmerge Depth="{{initialDepth}}"/>
+            <SubTree ID="InitialSubmerge" Depth="{initialDepth}"/>
+            <SubTree ID="MoveSinglePose" frame="1" orientationX="0.0" orientationY="0.0" orientationZ="0.0" positionX="5.0" positionY="0.0" positionZ="0.0"/>
             <ForceSuccess>
                 <Sequence>
                     <IfThenElse>
                         <ScriptCondition code="hasCoinFlip"/>
-                        <CoinFlip depth="{initialDepth}"/>
+                        <SubTree ID="CoinFlip"/>
                         <AlwaysSuccess/>
                     </IfThenElse>
                 </Sequence>
@@ -30,7 +31,7 @@
                 <Sequence>
                     <IfThenElse>
                         <ScriptCondition code="hasReturnHome"/>
-                        <SavePoint Point="{{returnHomePoint}}"/>
+                        <SavePoint Point="{returnHomePoint}"/>
                         <AlwaysSuccess/>
                     </IfThenElse>
                 </Sequence>
@@ -91,4 +92,9 @@
             </ForceSuccess>
         </Sequence>
     </BehaviorTree>
+    <TreeNodesModel>
+        <SubTree ID="InitialSubmerge" editable="true">
+            <input_port name="Depth" default="0.5"/>
+        </SubTree>
+    </TreeNodesModel>
 </root>

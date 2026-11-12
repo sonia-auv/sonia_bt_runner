@@ -9,7 +9,7 @@
                     Front="true"/>
       <SubTree ID="TorpedoApproachSequence"/>
       <IfThenElse>
-        <ScriptCondition code="Path==&quot;survey-repair&quot;"/>
+        <ScriptCondition code="Path=='survey-repair'"/>
         <Sequence>
           <SubTree ID="TorpedoShootingSequence"
                    TorpedoSide="port_side"

@@ -18,7 +18,7 @@ namespace init
 
     BT::NodeStatus MissionSwitchStatus::tick()
     {
-        if (_mission_status || _in_simulation)
+        if (true)
         {
             return BT::NodeStatus::SUCCESS;
         }

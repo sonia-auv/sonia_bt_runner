@@ -24,32 +24,32 @@
                         Detection="{GateDetection}"/>
           <SubTree ID="SendTrajectoryOnly"
                    Trajectory="{GateTrajectory}"
-                   TimeBeforeFailing="5"/>
+                   TimeBeforeFailing="5.0"/>
         </Sequence>
         <SubTree ID="Nop"/>
         <SubTree ID="MissionFailed"/>
       </IfThenElse>
       <Sequence name="Move foward of 10m and change the orientation of z axis to turn.">
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="10"
+                 frame="1"
+                 positionX="10.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="90"/>
+                 orientationZ="90.0"/>
       </Sequence>
       <Sequence name="Turn around the marker">
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -57,7 +57,7 @@
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="-0.5"
                  positionZ="0.0"
@@ -65,7 +65,7 @@
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
@@ -73,7 +73,7 @@
                  orientationY="0.0"
                  orientationZ="90.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="-0.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -96,7 +96,7 @@
                         Detection="{GateDetection}"/>
           <SubTree ID="SendTrajectoryOnly"
                    Trajectory="{GateTrajectory}"
-                   TimeBeforeFailing="5"/>
+                   TimeBeforeFailing="5.0"/>
         </Sequence>
         <SubTree ID="Done"/>
         <SubTree ID="MissionFailed"/>
@@ -108,11 +108,11 @@
     <Sequence>
       <Sequence name="Initialize the sub">
         <SubTree ID="InitialSubmerge"
-                 Depth="1"/>
+                 Depth="1.0"/>
       </Sequence>
       <Sequence name="Move foward until the gate">
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="2.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -120,7 +120,7 @@
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -130,7 +130,7 @@
       </Sequence>
       <Sequence name="Move foward of 10m and change the orientation of z axis to turn">
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="2.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -138,7 +138,7 @@
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="2.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -146,7 +146,7 @@
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="2.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -154,7 +154,7 @@
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="1.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -162,17 +162,17 @@
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="90"/>
+                 orientationZ="90.0"/>
       </Sequence>
       <Sequence name="Turn around the marker">
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -180,7 +180,7 @@
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
@@ -188,7 +188,7 @@
                  orientationY="0.0"
                  orientationZ="90.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -198,7 +198,7 @@
       </Sequence>
       <Sequence name="Back to starting point">
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="2.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -206,7 +206,7 @@
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="2.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -214,7 +214,7 @@
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="2.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -222,7 +222,7 @@
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="2.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -230,7 +230,7 @@
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="2.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -238,7 +238,7 @@
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.5"
                  positionY="0.0"
                  positionZ="0.0"

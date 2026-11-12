@@ -7,21 +7,21 @@
       <Repeat num_cycles="2">
         <Sequence>
           <SubTree ID="MoveSinglePose"
-                   frame="1.0"
-                   positionX="1"
+                   frame="1"
+                   positionX="1.0"
                    positionY="0.0"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
                    orientationZ="0.0"/>
           <SubTree ID="MoveSinglePose"
-                   frame="1.0"
+                   frame="1"
                    positionX="0.0"
                    positionY="0.0"
                    positionZ="0.0"
                    orientationX="0.0"
                    orientationY="0.0"
-                   orientationZ="180"/>
+                   orientationZ="180.0"/>
         </Sequence>
       </Repeat>
     </Sequence>
@@ -35,26 +35,26 @@
         <Repeat num_cycles="2">
           <Sequence>
             <SubTree ID="MoveSinglePose"
-                     frame="1.0"
-                     positionX="1"
+                     frame="1"
+                     positionX="1.0"
                      positionY="0.0"
                      positionZ="0.0"
                      orientationX="0.0"
                      orientationY="0.0"
                      orientationZ="0.0"/>
             <SubTree ID="MoveSinglePose"
-                     frame="1.0"
+                     frame="1"
                      positionX="0.0"
                      positionY="0.0"
                      positionZ="0.0"
                      orientationX="0.0"
                      orientationY="0.0"
-                     orientationZ="45"/>
+                     orientationZ="45.0"/>
           </Sequence>
         </Repeat>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="1"
+                 frame="1"
+                 positionX="1.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
@@ -63,16 +63,16 @@
       </Sequence>
       <Sequence name="mv4">
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="135"/>
+                 orientationZ="135.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="2"
+                 frame="1"
+                 positionX="2.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
@@ -81,16 +81,16 @@
       </Sequence>
       <Sequence name="mv5">
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="90"/>
+                 orientationZ="90.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="2"
+                 frame="1"
+                 positionX="2.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
@@ -99,16 +99,16 @@
       </Sequence>
       <Sequence name="mv6">
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="75"/>
+                 orientationZ="75.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="1"
+                 frame="1"
+                 positionX="1.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
@@ -117,15 +117,15 @@
       </Sequence>
       <Sequence name="mv7">
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="90"/>
+                 orientationZ="90.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="1.5"
                  positionY="0.0"
                  positionZ="0.0"
@@ -135,16 +135,16 @@
       </Sequence>
       <Sequence name="mv6">
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
                  orientationY="0.0"
-                 orientationZ="120"/>
+                 orientationZ="120.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="2"
+                 frame="1"
+                 positionX="2.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
@@ -153,7 +153,7 @@
       </Sequence>
       <Sequence name="Return Home">
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
+                 frame="1"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"
@@ -161,7 +161,7 @@
                  orientationY="0.0"
                  orientationZ="-148.9"/>
         <SubTree ID="MoveSinglePose"
-                 frame="3.0"
+                 frame="3"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.5"
@@ -169,7 +169,7 @@
                  orientationY="0.0"
                  orientationZ="0.0"/>
         <SubTree ID="MoveSinglePose"
-                 frame="2.0"
+                 frame="2"
                  positionX="0.0"
                  positionY="0.0"
                  positionZ="0.0"

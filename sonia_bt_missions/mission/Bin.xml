@@ -14,14 +14,14 @@
                Max_frame_before_failing="0"
                Min_detection_before_success="5"
                Confidence="0.60000"
-               Max_depth="25"/>
+               Max_depth="25.0"/>
       <InitializeTrajectory trajectory="{BoxApproachTrajectory}"/>
       <MoveToObject Trajectory="{BoxApproachTrajectory}"
                     Offset="-2.0"
                     Detection="{DetectedBox}"/>
       <SubTree ID="SendTrajectoryOnly"
                Trajectory="{BoxApproachTrajectory}"
-               TimeBeforeFailing="5"/>
+               TimeBeforeFailing="5.0"/>
       <Sequence _description="Pitch to be able to see the four boxes.">
         <InitializeTrajectory trajectory="{BoxPitchTrajectory}"/>
         <TrajectoryAppendPose precision="0"
@@ -37,7 +37,7 @@
                               positionZ="0.000000"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{BoxPitchTrajectory}"
-                 TimeBeforeFailing="5"/>
+                 TimeBeforeFailing="5.0"/>
       </Sequence>
       <Sequence _description="Detect the four boxes.">
         <BinAiFilter Max_frame_before_failing="0"
@@ -63,7 +63,7 @@
                               positionZ="0.000000"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{BoxUnpitchTrajectory}"
-                 TimeBeforeFailing="5"/>
+                 TimeBeforeFailing="5.0"/>
       </Sequence>
       <Sequence _description="Save the origin point and drop all bins in boxes.">
         <SavePoint Point="{BoxOriginPoint}"/>
@@ -76,7 +76,7 @@
                                Detection="{Det}"/>
               <SubTree ID="SendTrajectoryOnly"
                        Trajectory="{MoveAboveBox}"
-                       TimeBeforeFailing="5"/>
+                       TimeBeforeFailing="5.0"/>
             </Sequence>
             <Sequence _description="Approach bin.">
               <AiActivation Bottom="true"
@@ -91,7 +91,7 @@
                                Detection="{BinDetection}"/>
               <SubTree ID="SendTrajectoryOnly"
                        Trajectory="{BinDetection}"
-                       TimeBeforeFailing="5"/>
+                       TimeBeforeFailing="5.0"/>
             </Sequence>
             <Sequence _description="Check with the bottom camera">
               <AiFilter Object_class=""
@@ -112,7 +112,7 @@
                            Point="{BoxOriginPoint}"/>
               <SubTree ID="SendTrajectoryOnly"
                        Trajectory="{BoxOriginPointTrajectory}"
-                       TimeBeforeFailing="5"/>
+                       TimeBeforeFailing="5.0"/>
             </Sequence>
             <Script code="detection_offset := detection_offset + 1"/>
           </Sequence>
@@ -135,13 +135,13 @@
                  Max_frame_before_failing="300"
                  Min_detection_before_success="5"
                  Confidence="0.60000"
-                 Max_depth="25"/>
+                 Max_depth="25.0"/>
         <MoveToObject Trajectory="{Trajectory}"
                       Offset="0"
                       Detection="{FrontAidetection}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{Trajectory}"
-                 TimeBeforeFailing="5"/>
+                 TimeBeforeFailing="5.0"/>
       </Sequence>
       <Sequence name="Align the dropper with the bin">
         <AiActivation Bottom="true"
@@ -151,7 +151,7 @@
           <Sequence>
             <InitializeTrajectory trajectory="{Trajectory}"/>
             <IfThenElse>
-              <ScriptCondition code="ObjectToAim==&quot;gate-shark&quot;"/>
+              <ScriptCondition code="ObjectToAim=='gate-shark'"/>
               <AiFilter Object_class="shark"
                         Max_frame_before_failing="300"
                         Detected_object="{AiDetection}"
@@ -173,7 +173,7 @@
                              Detection="{AiDetection}"/>
             <SubTree ID="SendTrajectoryOnly"
                      Trajectory="{Trajectory}"
-                     TimeBeforeFailing="5"/>
+                     TimeBeforeFailing="5.0"/>
           </Sequence>
         </Repeat>
       </Sequence>
@@ -198,13 +198,13 @@
                  Max_frame_before_failing="300"
                  Min_detection_before_success="5"
                  Confidence="0.60000"
-                 Max_depth="25"/>
+                 Max_depth="25.0"/>
         <MoveToObject Trajectory="{Trajectory}"
                       Offset="-1.5"
                       Detection="{FrontAidetection}"/>
         <SubTree ID="SendTrajectoryOnly"
                  Trajectory="{Trajectory}"
-                 TimeBeforeFailing="5"/>
+                 TimeBeforeFailing="5.0"/>
       </Sequence>
       <Sequence name="Align the dropper with the bin">
         <AiActivation Bottom="true"
@@ -214,7 +214,7 @@
           <Sequence>
             <InitializeTrajectory trajectory="{Trajectory}"/>
             <IfThenElse>
-              <ScriptCondition code="ObjectToAim==&quot;gate-shark&quot;"/>
+              <ScriptCondition code="ObjectToAim=='gate-shark'"/>
               <AiFilter Object_class="shark"
                         Max_frame_before_failing="300"
                         Detected_object="{AiDetection}"
@@ -236,15 +236,15 @@
                              Detection="{AiDetection}"/>
             <SubTree ID="SendTrajectoryOnly"
                      Trajectory="{Trajectory}"
-                     TimeBeforeFailing="5"/>
+                     TimeBeforeFailing="5.0"/>
           </Sequence>
         </Repeat>
       </Sequence>
       <LaunchDropper side="port_side"/>
       <Sequence name="Offsetting the sub to see the second bin">
         <SubTree ID="MoveSinglePose"
-                 frame="1.0"
-                 positionX="1"
+                 frame="1"
+                 positionX="1.0"
                  positionY="0.0"
                  positionZ="0.0"
                  orientationX="0.0"
@@ -256,7 +256,7 @@
           <Sequence>
             <InitializeTrajectory trajectory="{Trajectory}"/>
             <IfThenElse>
-              <ScriptCondition code="ObjectToAim==&quot;gate-shark&quot;"/>
+              <ScriptCondition code="ObjectToAim=='gate-shark'"/>
               <AiFilter Object_class="shark"
                         Max_frame_before_failing="300"
                         Detected_object="{AiDetection}"
@@ -278,7 +278,7 @@
                              Detection="{AiDetection}"/>
             <SubTree ID="SendTrajectoryOnly"
                      Trajectory="{Trajectory}"
-                     TimeBeforeFailing="5"/>
+                     TimeBeforeFailing="5.0"/>
           </Sequence>
         </Repeat>
       </Sequence>

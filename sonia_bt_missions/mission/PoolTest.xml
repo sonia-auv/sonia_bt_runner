@@ -10,7 +10,7 @@
       <SubTree ID="InitialSubmerge"
                Depth="0.3"/>
       <SubTree ID="MoveSinglePose"
-               frame="1.0"
+               frame="1"
                positionX="1.0"
                positionY="0.0"
                positionZ="0.0"
@@ -19,7 +19,7 @@
                orientationZ="0.0"/>
       <SavePoint Point="{Point}"/>
       <SubTree ID="MoveSinglePose"
-               frame="1.0"
+               frame="1"
                positionX="1.0"
                positionY="0.0"
                positionZ="0.0"
