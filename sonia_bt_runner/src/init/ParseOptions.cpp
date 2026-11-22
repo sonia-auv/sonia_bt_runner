@@ -28,7 +28,7 @@ namespace init
 #define OPTION_FLAGS_OCTOGON (1 << 6)
 #define OPTION_FLAGS_RETURN_HOME (1 << 7)
 
-#define OPTION_FLAGS_MISSION_ALL ((1 << 7) - 1)
+#define OPTION_FLAGS_MISSION_ALL ((1 << 8) - 1)
 
 // Path options
 #define OPTION_FLAGS_RESCUE (1 << 8)
@@ -62,22 +62,27 @@ namespace init
         };
         const auto option_input = getInput<PARSE_OPTIONS_OPTION_TYPE>(PARSE_OPTIONS_OPTION).value();
         size_t begin = 0;
-        size_t end = option_input.find(" ");
 
-        while (end != std::string::npos)
+        while (begin < option_input.size())
         {
-            auto sub = option_input.substr(begin, end - begin);
+            size_t end = option_input.find(' ', begin);
+
+            if (end == std::string::npos)
+            {
+                end = option_input.size();
+            }
+
+            const auto sub = option_input.substr(begin, end - begin);
 
             for (const auto &option : options)
             {
-                if (!strcmp(sub.c_str(), std::get<0>(option)))
+                if (sub == std::get<0>(option))
                 {
                     option_flags |= std::get<1>(option);
                 }
             }
 
-            begin += end + 1;
-            end = option_input.find(" ", begin);
+            begin = end + 1;
         }
 
         if (!(option_flags & path_options_mask))
