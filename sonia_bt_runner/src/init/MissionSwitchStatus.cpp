@@ -2,27 +2,29 @@
 
 using std::placeholders::_1;
 
-namespace init{     
+namespace init
+{
 
     MissionSwitchStatus::MissionSwitchStatus(const std::string &name, std::shared_ptr<rclcpp::Node> node)
-    : BT::ConditionNode(name, {}), _ros_node(node), _mission_status{false}, _in_simulation{false}
+        : BT::ConditionNode(name, {}), _ros_node(node), _mission_status{false}, _in_simulation{false}
     {
         rclcpp::QoS qos(10);
         qos.reliability(rclcpp::ReliabilityPolicy::Reliable);
-        _mission_sub= _ros_node->create_subscription<sonia_common_ros2::msg::MissionStatus>("/provider_rs485/mission_status", qos, std::bind(&MissionSwitchStatus::update_status,this, _1));
-        _simulation_sub= _ros_node->create_subscription<std_msgs::msg::Bool>("/proc_simulation/in_simulation", qos, std::bind(&MissionSwitchStatus::update_simulation_status,this, _1));
+        _mission_sub = _ros_node->create_subscription<sonia_common_ros2::msg::MissionStatus>(
+            "/provider_rs485/mission_status", qos, std::bind(&MissionSwitchStatus::update_status, this, _1));
+        _simulation_sub = _ros_node->create_subscription<std_msgs::msg::Bool>(
+            "/proc_simulation/in_simulation", qos, std::bind(&MissionSwitchStatus::update_simulation_status, this, _1));
     }
 
     BT::NodeStatus MissionSwitchStatus::tick()
     {
-        if(_mission_status || _in_simulation)
+        if (_mission_status || _in_simulation)
         {
-            return BT::NodeStatus::SUCCESS;   
+            return BT::NodeStatus::SUCCESS;
         }
         return BT::NodeStatus::FAILURE;
-        
     }
-    
+
     void MissionSwitchStatus::update_status(const sonia_common_ros2::msg::MissionStatus::ConstSharedPtr &msg)
     {
         _mission_status = msg->status;
@@ -33,4 +35,4 @@ namespace init{
         _in_simulation = msg->data;
     }
 
-} // namespace init
+}  // namespace init

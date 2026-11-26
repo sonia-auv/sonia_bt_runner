@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+
 #include "behaviortree_cpp/behavior_tree.h"
 #include "behaviortree_cpp/json_export.h"
 
@@ -35,7 +36,8 @@ BT_JSON_CONVERTER(TrajectoryPose, pose)
 
 namespace BT
 {
-    template <> inline TrajectoryPose convertFromString(StringView str)
+    template <>
+    inline TrajectoryPose convertFromString(StringView str)
     {
         // We expect real numbers separated by semicolons
         auto parts = splitString(str, ',');
@@ -54,7 +56,7 @@ namespace BT
         output.speed = convertFromString<int>(parts[7]);
         output.precision = convertFromString<int>(parts[8]);
         output.long_rotation = convertFromString<bool>(parts[9]);
-        
+
         return output;
     }
-} // end namespace BT
+}  // end namespace BT

@@ -11,25 +11,25 @@
 #define SPLIT_AI_DETECTION_SPLITTED_DETECTION_TYPE Point
 
 
-namespace navigation{
+namespace navigation
+{
     class SplitAiDetection : public BT::SyncActionNode
     {
         public:
-            SplitAiDetection(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~SplitAiDetection() override = default;
+        SplitAiDetection(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
+        ~SplitAiDetection() override = default;
 
-            static BT::PortsList providedPorts()
-            {
-
-                return {
-                    BT::BidirectionalPort<SPLIT_AI_DETECTION_OFFSET_TYPE>(SPLIT_AI_DETECTION_OFFSET_PARAM),
+        static BT::PortsList providedPorts()
+        {
+            return {BT::BidirectionalPort<SPLIT_AI_DETECTION_OFFSET_TYPE>(SPLIT_AI_DETECTION_OFFSET_PARAM),
                     BT::InputPort<SPLIT_AI_DETECTION_RECEIVED_TYPE>(SPLIT_AI_DETECTION_RECEIVED_DETECTION_PARAM),
-                    BT::OutputPort<SPLIT_AI_DETECTION_SPLITTED_DETECTION_TYPE>(SPLIT_AI_DETECTION_SPLITTED_DETECTION_PARAM)
-                };
-            }
+                    BT::OutputPort<SPLIT_AI_DETECTION_SPLITTED_DETECTION_TYPE>(
+                        SPLIT_AI_DETECTION_SPLITTED_DETECTION_PARAM)};
+        }
 
-            BT::NodeStatus tick() override;
-       private:
-            std::shared_ptr<rclcpp::Node> _ros_node;
+        BT::NodeStatus tick() override;
+
+        private:
+        std::shared_ptr<rclcpp::Node> _ros_node;
     };
-}
+}  // namespace navigation

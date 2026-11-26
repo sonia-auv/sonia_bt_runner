@@ -3,11 +3,10 @@
 namespace navigation
 {
 
-    ObjectDrifting::ObjectDrifting(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    : BT::SyncActionNode(name, config), _ros_node(node)
-    {
-
-    }
+    ObjectDrifting::ObjectDrifting(const std::string &name, const BT::NodeConfig &config,
+                                   std::shared_ptr<rclcpp::Node> node)
+        : BT::SyncActionNode(name, config), _ros_node(node)
+    {}
 
     BT::NodeStatus ObjectDrifting::tick()
     {
@@ -16,7 +15,7 @@ namespace navigation
         // We get the detected object by the AI
         getInput(OBJECT_DRIFTING_DETECTION, det);
 
-        if(!getInput<OBJECT_DRIFTING_TRAJECTORY_TYPE>(OBJECT_DRIFTING_TRAJECTORY))
+        if (!getInput<OBJECT_DRIFTING_TRAJECTORY_TYPE>(OBJECT_DRIFTING_TRAJECTORY))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
@@ -24,11 +23,11 @@ namespace navigation
         }
 
         RCLCPP_INFO(_ros_node->get_logger(), "Computing ObjectDrifting trajectory");
-        
+
         // We compute a rotation to make the sub rotate at 90 degrees to the target
         TrajectoryPose t1;
         t1.positionX = 0.0;
-        t1.positionY =0.0;
+        t1.positionY = 0.0;
         t1.positionZ = 0.0;
         t1.orientationX = 0.0;
         t1.orientationY = 0.0;
@@ -48,9 +47,9 @@ namespace navigation
         // We compute a translation in Y to go in front of the target
         TrajectoryPose t2;
         t2.positionX = 0.0;
-	// https://en.wikipedia.org/wiki/Radian
+        // https://en.wikipedia.org/wiki/Radian
 #define DEG_TO_RAD(angle) ((angle) * M_PI / 180)
-	t2.positionY = std::sin(DEG_TO_RAD(det.angle_teta)) * det.distance * -1.0;
+        t2.positionY = std::sin(DEG_TO_RAD(det.angle_teta)) * det.distance * -1.0;
 #undef DEG_TO_RAD
         t2.positionZ = 0.0;
         t2.orientationX = 0.0;

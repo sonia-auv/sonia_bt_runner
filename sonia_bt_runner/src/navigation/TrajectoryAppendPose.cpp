@@ -1,10 +1,10 @@
 #include "sonia_bt_runner/navigation/TrajectoryAppendPose.hpp"
 
-namespace navigation{
+namespace navigation
+{
     TrajectoryAppendPose::TrajectoryAppendPose(const std::string &name, const BT::NodeConfig &config)
-    : BT::SyncActionNode(name, config)
-    {
-    }
+        : BT::SyncActionNode(name, config)
+    {}
 
     BT::NodeStatus TrajectoryAppendPose::tick()
     {
@@ -48,4 +48,4 @@ namespace navigation{
 
         return BT::NodeStatus::SUCCESS;
     }
-}
+}  // namespace navigation

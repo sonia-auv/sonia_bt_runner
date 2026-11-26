@@ -1,11 +1,11 @@
-#include <mutex>
 #include <cassert>
-#include <sstream>
+#include <mutex>
 #include <optional>
+#include <sstream>
 
 // #include "ObjectVerification.hpp"
-#include "yaml-cpp/yaml.h"
 #include "behaviortree_cpp/behavior_tree.h"
+#include "yaml-cpp/yaml.h"
 
 static std::optional<std::vector<std::string>> definedObjects = {};
 // TODO: Maybe use a read-write lock it's better
@@ -28,29 +28,32 @@ static std::vector<std::string> parseConfig()
 
     definedObjectsValue.reserve(configNodeNamesMap.size());
 
-    for (auto &[_, nameValue] : configNodeNamesMap) {
-	    definedObjectsValue.push_back(nameValue);
+    for (auto &[_, nameValue] : configNodeNamesMap)
+    {
+        definedObjectsValue.push_back(nameValue);
     }
 
     return definedObjectsValue;
 }
 
-bool
-verifyObject(std::string object)
+bool verifyObject(std::string object)
 {
     definedObjectsGuard.lock();
 
-    if (!definedObjects.has_value()) {
-	    definedObjects = {parseConfig()};
+    if (!definedObjects.has_value())
+    {
+        definedObjects = {parseConfig()};
     }
 
     bool object_is_valid = false;
 
-    for (auto &definedObject : definedObjects.value()) {
-	    if (definedObject == object) {
-		    object_is_valid = true;
-		    break;
-	    }
+    for (auto &definedObject : definedObjects.value())
+    {
+        if (definedObject == object)
+        {
+            object_is_valid = true;
+            break;
+        }
     }
 
     definedObjectsGuard.unlock();

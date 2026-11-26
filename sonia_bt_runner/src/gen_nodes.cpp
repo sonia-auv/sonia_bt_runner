@@ -1,16 +1,18 @@
 #include <stdlib.h>
-#include <string>
+
 #include <fstream>
+#include <string>
+
 #include "behaviortree_cpp/bt_factory.h"
 #include "behaviortree_cpp/xml_parsing.h"
-
 #include "sonia_bt_runner/SoniaNodes.hpp"
 
 int main()
 {
     const char *ws = std::getenv("SONIA_WS");
 
-    if(ws == NULL){
+    if (ws == NULL)
+    {
         std::cerr << "env var SONIA_WS not set" << std::endl;
         return EXIT_FAILURE;
     }

@@ -1,12 +1,11 @@
 #include "sonia_bt_runner/navigation/MoveToPoint.hpp"
 
-namespace navigation {
+namespace navigation
+{
 
     MoveToPoint::MoveToPoint(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-    : BT::SyncActionNode(name, config), _ros_node(node)
-    {
-        
-    }
+        : BT::SyncActionNode(name, config), _ros_node(node)
+    {}
 
     BT::NodeStatus MoveToPoint::tick()
     {
@@ -16,15 +15,15 @@ namespace navigation {
         MOVE_TO_POINT_OFFSET_POSITION_Y_TYPE offset_position_y;
         MOVE_TO_POINT_OFFSET_POSITION_Z_TYPE offset_position_z;
 
-        
-        if(!getInput(MOVE_TO_POINT_POINT, point_retour))
+
+        if (!getInput(MOVE_TO_POINT_POINT, point_retour))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The point is not specified");
 
             return BT::NodeStatus::FAILURE;
         }
 
-        if(!getInput<MOVE_TO_POINT_TRAJECTORY_TYPE>(MOVE_TO_POINT_TRAJECTORY))
+        if (!getInput<MOVE_TO_POINT_TRAJECTORY_TYPE>(MOVE_TO_POINT_TRAJECTORY))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
@@ -51,4 +50,4 @@ namespace navigation {
         setOutput(MOVE_TO_POINT_TRAJECTORY, traj);
         return BT::NodeStatus::SUCCESS;
     }
-}
+}  // namespace navigation

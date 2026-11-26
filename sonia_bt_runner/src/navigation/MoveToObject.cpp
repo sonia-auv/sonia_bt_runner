@@ -3,11 +3,10 @@
 namespace navigation
 {
 
-    MoveToObject::MoveToObject(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
-       : BT::SyncActionNode(name, config), _ros_node(node)
-    {
-
-    }
+    MoveToObject::MoveToObject(const std::string &name, const BT::NodeConfig &config,
+                               std::shared_ptr<rclcpp::Node> node)
+        : BT::SyncActionNode(name, config), _ros_node(node)
+    {}
     BT::NodeStatus MoveToObject::tick()
     {
         MOVE_TO_OBJECT_DETECTION_TYPE det;
@@ -17,7 +16,7 @@ namespace navigation
         getInput(MOVE_TO_OBJECT_DETECTION, det);
         getInput(MOVE_TO_OBJECT_OFFSET, offset);
 
-        if(!getInput<MOVE_TO_OBJECT_TRAJECTORY_TYPE>(MOVE_TO_OBJECT_TRAJECTORY))
+        if (!getInput<MOVE_TO_OBJECT_TRAJECTORY_TYPE>(MOVE_TO_OBJECT_TRAJECTORY))
         {
             RCLCPP_INFO(_ros_node->get_logger(), "The Trajectory is not initialize");
 
@@ -28,11 +27,11 @@ namespace navigation
 
         TrajectoryPose t1;
         // We set the trajectory of the submarine to rotate on itself to face the object
-        t1.positionX = 0.0; // We don't move on the x axis
-        t1.positionY = 0.0; // We don't move on the x and y axis
-        t1.positionZ = 0.0; // We don't move on the z axis
-        t1.orientationX = 0.0; // We don't turn around the x axis
-        t1.orientationY = 0.0; // We don't turn around the y axis
+        t1.positionX = 0.0;                  // We don't move on the x axis
+        t1.positionY = 0.0;                  // We don't move on the x and y axis
+        t1.positionZ = 0.0;                  // We don't move on the z axis
+        t1.orientationX = 0.0;               // We don't turn around the x axis
+        t1.orientationY = 0.0;               // We don't turn around the y axis
         t1.orientationZ = -det.angle_alpha;  // We turn around the z axis
         t1.frame = 1;                        // 0: relative to current position, 1
         t1.speed = 0;                        // Speed of the rotation
@@ -48,16 +47,16 @@ namespace navigation
 
         // We move forward to go to the object
         TrajectoryPose t2;
-        t2.positionX = det.distance + offset; // We go to the object
-        t2.positionY = 0.0; // We don't move lateraly
-        t2.positionZ = 0.0; // We don't move up or down
-        t2.orientationX = 0.0; // We don't rotate on the X axes
-        t2.orientationY = 0.0; // We don't rotate on the Y axes
-        t2.orientationZ = 0.0; // We rotate on the Z axes to face
-        t2.frame = 1.0; // We use the frame in meter
-        t2.speed = 0; // We use the default speed of the motion controller
-        t2.precision = 0; // We use the default precision of the motion controller
-        t2.long_rotation = false; // We don't use long rotation
+        t2.positionX = det.distance + offset;  // We go to the object
+        t2.positionY = 0.0;                    // We don't move lateraly
+        t2.positionZ = 0.0;                    // We don't move up or down
+        t2.orientationX = 0.0;                 // We don't rotate on the X axes
+        t2.orientationY = 0.0;                 // We don't rotate on the Y axes
+        t2.orientationZ = 0.0;                 // We rotate on the Z axes to face
+        t2.frame = 1.0;                        // We use the frame in meter
+        t2.speed = 0;                          // We use the default speed of the motion controller
+        t2.precision = 0;                      // We use the default precision of the motion controller
+        t2.long_rotation = false;              // We don't use long rotation
 
         RCLCPP_INFO(_ros_node->get_logger(), "position en x: %f", t2.positionX);
         RCLCPP_INFO(_ros_node->get_logger(), "position en y: %f", t2.positionY);

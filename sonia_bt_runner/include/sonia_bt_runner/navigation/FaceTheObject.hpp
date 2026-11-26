@@ -1,8 +1,9 @@
 #pragma once
 
 #include <limits>
-#include "rclcpp/rclcpp.hpp"
+
 #include "behaviortree_cpp/behavior_tree.h"
+#include "rclcpp/rclcpp.hpp"
 #include "sonia_bt_runner/utils/AiDetection.hpp"
 #include "sonia_bt_runner/utils/Trajectory.hpp"
 
@@ -18,23 +19,23 @@ namespace navigation
     class FaceTheObject : public BT::SyncActionNode
     {
         public:
-            FaceTheObject(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
-            ~FaceTheObject() override = default;
-            static BT::PortsList providedPorts()
-            {
-                return {
-                    // Inputs
-                    BT::InputPort<FACE_THE_OBJECT_DETECTION_TYPE>(FACE_THE_OBJECT_DETECTION),
+        FaceTheObject(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node);
+        ~FaceTheObject() override = default;
+        static BT::PortsList providedPorts()
+        {
+            return {
+                // Inputs
+                BT::InputPort<FACE_THE_OBJECT_DETECTION_TYPE>(FACE_THE_OBJECT_DETECTION),
 
-                    // Outputs
-                    BT::BidirectionalPort<FACE_THE_OBJECT_TRAJECTORY_TYPE>(FACE_THE_OBJECT_TRAJECTORY),
-                };
-            }
+                // Outputs
+                BT::BidirectionalPort<FACE_THE_OBJECT_TRAJECTORY_TYPE>(FACE_THE_OBJECT_TRAJECTORY),
+            };
+        }
 
-            BT::NodeStatus tick() override;
-        
+        BT::NodeStatus tick() override;
+
         private:
-            std::shared_ptr<rclcpp::Node> _ros_node;
+        std::shared_ptr<rclcpp::Node> _ros_node;
     };
 
 }  // namespace navigation

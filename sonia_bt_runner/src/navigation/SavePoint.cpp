@@ -2,13 +2,15 @@
 
 using std::placeholders::_1;
 
-namespace navigation {
+namespace navigation
+{
 
     SavePoint::SavePoint(const std::string &name, const BT::NodeConfig &config, std::shared_ptr<rclcpp::Node> node)
         : BT::StatefulActionNode(name, config), _ros_node(node), _pose_msg(), _msg_received{false}
     {
         rclcpp::QoS qos(10);
-        _pose_sub = _ros_node->create_subscription<geometry_msgs::msg::Pose>("/proc_control/current_target", qos, std::bind(&SavePoint::pose_call_back,this, _1));
+        _pose_sub = _ros_node->create_subscription<geometry_msgs::msg::Pose>(
+            "/proc_control/current_target", qos, std::bind(&SavePoint::pose_call_back, this, _1));
     }
 
     BT::NodeStatus SavePoint::onStart()
@@ -21,7 +23,8 @@ namespace navigation {
     {
         std::chrono::duration<double> diff = std::chrono::system_clock::now() - _launch_time;
         _time_diff = diff.count();
-        if (_msg_received) {
+        if (_msg_received)
+        {
             SAVE_POINT_POINT_TYPE point_retour;
             point_retour.x = _pose_msg.position.x;
             point_retour.y = _pose_msg.position.y;
@@ -37,10 +40,7 @@ namespace navigation {
         return BT::NodeStatus::RUNNING;
     }
 
-    void SavePoint::onHalted()
-    {
-
-    }
+    void SavePoint::onHalted() {}
 
     void SavePoint::pose_call_back(const geometry_msgs::msg::Pose &msg)
     {
@@ -48,4 +48,4 @@ namespace navigation {
         _msg_received = true;
     }
 
-}
+}  // namespace navigation

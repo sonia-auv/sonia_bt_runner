@@ -20,7 +20,8 @@ BT_JSON_CONVERTER(Point, point)
 
 namespace BT
 {
-    template <> inline Point convertFromString(StringView str)
+    template <>
+    inline Point convertFromString(StringView str)
     {
         // We expect real numbers separated by semicolons
         auto parts = splitString(str, ';');
@@ -31,4 +32,4 @@ namespace BT
         return output;
     }
 
-} // end namespace BT
+}  // end namespace BT

@@ -17,23 +17,22 @@ namespace sensors
     class DepthCheck : public BT::ConditionNode
     {
         public:
-            DepthCheck(const std::string &name, std::shared_ptr<rclcpp::Node> node);
-            ~DepthCheck() override = default;
-            static BT::PortsList providedPorts()
-            {
-                return
-                {
-                    BT::InputPort<DEPTH_CHECK_TARGET_TYPE>(DEPTH_CHECK_TARGET_PARAMS),
-                    BT::InputPort<DEPTH_CHECK_IS_SMALLER_TYPE>(DEPTH_CHECK_IS_SMALLER_PARAMS),
-                };
-            }
-            BT::NodeStatus tick() override;
+        DepthCheck(const std::string &name, std::shared_ptr<rclcpp::Node> node);
+        ~DepthCheck() override = default;
+        static BT::PortsList providedPorts()
+        {
+            return {
+                BT::InputPort<DEPTH_CHECK_TARGET_TYPE>(DEPTH_CHECK_TARGET_PARAMS),
+                BT::InputPort<DEPTH_CHECK_IS_SMALLER_TYPE>(DEPTH_CHECK_IS_SMALLER_PARAMS),
+            };
+        }
+        BT::NodeStatus tick() override;
 
         private:
-            void update_status(const std_msgs::msg::Float32::ConstSharedPtr &msg);
+        void update_status(const std_msgs::msg::Float32::ConstSharedPtr &msg);
 
-            std::shared_ptr<rclcpp::Node> _ros_node;
-            rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr _depth_sub;
-            float _depth_val;
+        std::shared_ptr<rclcpp::Node> _ros_node;
+        rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr _depth_sub;
+        float _depth_val;
     };
 }  // namespace sensors

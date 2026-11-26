@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 #include "behaviortree_cpp/behavior_tree.h"
 #include "behaviortree_cpp/json_export.h"
 
@@ -44,7 +45,8 @@ BT_JSON_CONVERTER(AiDetection, detection)
 
 namespace BT
 {
-    template <> inline AiDetection convertFromString(StringView str)
+    template <>
+    inline AiDetection convertFromString(StringView str)
     {
         auto parts = splitString(str, ',');
         if (parts.size() != 11)
@@ -56,15 +58,15 @@ namespace BT
         output.classification = parts[0];
         output.confidence = convertFromString<float>(parts[1]);
         output.distance = convertFromString<float>(parts[2]);
-        output.top_left_x= convertFromString<float>(parts[3]);
-        output.top_left_y= convertFromString<float>(parts[4]);
-        output.top_right_x= convertFromString<float>(parts[5]);
-        output.top_right_y= convertFromString<float>(parts[6]);
-        output.bottom_left_x= convertFromString<float>(parts[7]);
-        output.bottom_left_y= convertFromString<float>(parts[8]);
-        output.bottom_right_x= convertFromString<float>(parts[9]);
-        output.bottom_right_y= convertFromString<float>(parts[10]);
+        output.top_left_x = convertFromString<float>(parts[3]);
+        output.top_left_y = convertFromString<float>(parts[4]);
+        output.top_right_x = convertFromString<float>(parts[5]);
+        output.top_right_y = convertFromString<float>(parts[6]);
+        output.bottom_left_x = convertFromString<float>(parts[7]);
+        output.bottom_left_y = convertFromString<float>(parts[8]);
+        output.bottom_right_x = convertFromString<float>(parts[9]);
+        output.bottom_right_y = convertFromString<float>(parts[10]);
 
         return output;
     }
-} // namespace BT
+}  // namespace BT

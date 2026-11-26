@@ -5,10 +5,11 @@
 #define INITIALIZE_TRAJECTORY_TRAJECTORY "trajectory"
 #define INITIALIZE_TRAJECTORY_TRAJECTORY_TYPE Trajectory
 
-namespace navigation{
+namespace navigation
+{
     class InitializeTrajectory : public BT::SyncActionNode
     {
-    public:
+        public:
         InitializeTrajectory(const std::string &name, const BT::NodeConfig &config);
         ~InitializeTrajectory() override = default;
         static BT::PortsList providedPorts()
@@ -20,4 +21,4 @@ namespace navigation{
 
         BT::NodeStatus tick() override;
     };
-}
+}  // namespace navigation
